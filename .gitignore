@@ -1,0 +1,20 @@
+####################
+# System Files     #
+####################
+.buildpath
+.project
+.modgit
+.modman
+nbproject
+.DS_Store
+.sass-cache
+.idea
+atlassian-ide-plugin.xml
+
+#########################################################
+# Ignore all files                                      #
+#########################################################
+*.*
+!.gitignore
+!lib/internal/
+!lib/internal/**
