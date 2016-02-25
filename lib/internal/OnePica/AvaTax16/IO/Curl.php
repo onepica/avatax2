@@ -11,15 +11,16 @@
  * to codemaster@onepica.com so we can send you a copy immediately.
  *
  * @category  OnePica
- * @package   OnePica_AvaTax
- * @copyright Copyright (c) 2015 One Pica, Inc. (http://www.onepica.com)
+ * @package   OnePica_AvaTax16
+ * @copyright Copyright (c) 2016 One Pica, Inc. (http://www.onepica.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+namespace OnePica\AvaTax16\IO;
 
 /**
- * Class OnePica_AvaTax16_IO_Curl
+ * Class \OnePica\AvaTax16\IO\Curl
  */
-class OnePica_AvaTax16_IO_Curl
+class Curl
 {
     /**
      * Version
@@ -262,7 +263,7 @@ class OnePica_AvaTax16_IO_Curl
         $this->setOpt(CURLINFO_HEADER_OUT, true);
         $this->setOpt(CURLOPT_HEADERFUNCTION, array($this, 'headerCallback'));
         $this->setOpt(CURLOPT_RETURNTRANSFER, true);
-        $this->_headers = new OnePica_AvaTax16_IO_CaseInsensitiveArray();
+        $this->_headers = new CaseInsensitiveArray();
         $this->setURL($base_url);
     }
 
@@ -1020,7 +1021,7 @@ class OnePica_AvaTax16_IO_Curl
     protected function _parseHeaders($raw_headers)
     {
         $raw_headers = preg_split('/\r\n/', $raw_headers, null, PREG_SPLIT_NO_EMPTY);
-        $http_headers = new OnePica_AvaTax16_IO_CaseInsensitiveArray();
+        $http_headers = new CaseInsensitiveArray();
 
         $raw_headers_count = count($raw_headers);
         for ($i = 1; $i < $raw_headers_count; $i++) {
@@ -1048,7 +1049,7 @@ class OnePica_AvaTax16_IO_Curl
      */
     protected function _parseRequestHeaders($raw_headers)
     {
-        $request_headers = new OnePica_AvaTax16_IO_CaseInsensitiveArray();
+        $request_headers = new CaseInsensitiveArray();
         list($first_line, $headers) = $this->_parseHeaders($raw_headers);
         $request_headers['Request-Line'] = $first_line;
         foreach ($headers as $key => $value) {
@@ -1105,7 +1106,7 @@ class OnePica_AvaTax16_IO_Curl
             }
         }
 
-        $response_headers = new OnePica_AvaTax16_IO_CaseInsensitiveArray();
+        $response_headers = new CaseInsensitiveArray();
         list($first_line, $headers) = $this->_parseHeaders($response_header);
         $response_headers['Status-Line'] = $first_line;
         foreach ($headers as $key => $value) {
