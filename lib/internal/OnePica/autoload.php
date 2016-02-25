@@ -11,8 +11,8 @@
  * to codemaster@onepica.com so we can send you a copy immediately.
  *
  * @category  OnePica
- * @package   OnePica_AvaTax
- * @copyright Copyright (c) 2015 One Pica, Inc. (http://www.onepica.com)
+ * @package   OnePica_AvaTax16
+ * @copyright Copyright (c) 2016 One Pica, Inc. (http://www.onepica.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -26,13 +26,13 @@ spl_autoload_register(
      * @param string $className
      */
     function ($className) {
-        $classPath = explode('_', $className);
+        $classPath = explode('\\', $className);
         if ($classPath[0] != 'OnePica') {
             return;
         }
-        // Drop 'OnePica', and maximum class file path depth in this project is 8.
-        $classPath = array_slice($classPath, 1, 8);
-        $filePath = dirname(__FILE__) . '/' . implode('/', $classPath) . '.php';
+        // Drop 'OnePica'
+        $classPath = array_slice($classPath, 1);
+        $filePath = dirname(__FILE__) . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $classPath) . '.php';
         if (file_exists($filePath)) {
             require_once($filePath);
         }
