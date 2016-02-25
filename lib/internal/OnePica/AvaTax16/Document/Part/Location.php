@@ -15,11 +15,27 @@
  * @copyright Copyright (c) 2015 One Pica, Inc. (http://www.onepica.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+namespace OnePica\AvaTax16\Document\Part;
 
 /**
- * Class OnePica_AvaTax16_Document_Part_Location
+ * Class \OnePica\AvaTax16\Document\Part\Location
+ *
+ * @method string getTaxLocationPurpose()
+ * @method setTaxLocationPurpose(string $value)
+ * @method \OnePica\AvaTax16\Document\Part\Location\LatLong getLatlong()
+ * @method setLatlong(\OnePica\AvaTax16\Document\Part\Location\LatLong $value)
+ * @method string getLocationCode()
+ * @method setLocationCode(string $value)
+ * @method string getIpAddress()
+ * @method setIpAddress(string $value)
+ * @method string getResolutionQuality()
+ * @method setResolutionQuality(string $value)
+ * @method string getAddressTaxPayerCode()
+ * @method setAddressTaxPayerCode(string $value)
+ * @method string getAddressBuyerType()
+ * @method setAddressBuyerType(string $value)
  */
-class OnePica_AvaTax16_Document_Part_Location extends OnePica_AvaTax16_Document_Part
+class Location extends \OnePica\AvaTax16\Document\Part
 {
     /**
      * Types of complex properties
@@ -28,13 +44,13 @@ class OnePica_AvaTax16_Document_Part_Location extends OnePica_AvaTax16_Document_
      */
     protected $_propertyComplexTypes = array(
         '_address' => array(
-            'type' => 'OnePica_AvaTax16_Document_Part_Location_Address'
+            'type' => '\OnePica\AvaTax16\Document\Part\Location\Address'
         ),
         '_latlong' => array(
-            'type' => 'OnePica_AvaTax16_Document_Part_Location_LatLong'
+            'type' => '\OnePica\AvaTax16\Document\Part\Location\LatLong'
         ),
         '_feedback' => array(
-            'type' => 'OnePica_AvaTax16_Document_Part_Feedback'
+            'type' => '\OnePica\AvaTax16\Document\Part\Feedback'
         ),
     );
 
@@ -48,14 +64,14 @@ class OnePica_AvaTax16_Document_Part_Location extends OnePica_AvaTax16_Document_
     /**
      * Address
      *
-     * @var OnePica_AvaTax16_Document_Part_Location_Address
+     * @var \OnePica\AvaTax16\Document\Part\Location\Address
      */
     protected $_address;
 
     /**
      * Latitude and longitude
      *
-     * @var OnePica_AvaTax16_Document_Part_Location_LatLong
+     * @var \OnePica\AvaTax16\Document\Part\Location\LatLong
      */
     protected $_latlong;
 
@@ -107,7 +123,7 @@ class OnePica_AvaTax16_Document_Part_Location extends OnePica_AvaTax16_Document_
     /**
      * Set Address
      *
-     * @param OnePica_AvaTax16_Document_Part_Location_Address $value
+     * @param \OnePica\AvaTax16\Document\Part\Location\Address $value
      * @return $this
      */
     public function setAddress($value)
@@ -119,7 +135,7 @@ class OnePica_AvaTax16_Document_Part_Location extends OnePica_AvaTax16_Document_
     /**
      * Get Address
      *
-     * @return OnePica_AvaTax16_Document_Part_Location_Address
+     * @return \OnePica\AvaTax16\Document\Part\Location\Address
      */
     public function getAddress()
     {

@@ -15,11 +15,12 @@
  * @copyright Copyright (c) 2015 One Pica, Inc. (http://www.onepica.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+namespace OnePica\AvaTax16\Document;
 
 /**
- * Class OnePica_AvaTax16_Document_Part
+ * Class \OnePica\AvaTax16\Document\Part
  */
-class OnePica_AvaTax16_Document_Part
+class Part
 {
     /**
      * Required properties
@@ -85,7 +86,7 @@ class OnePica_AvaTax16_Document_Part
                       . $trace[0]['file']
                       . ' on line '
                       . $trace[0]['line'];
-        throw new OnePica_AvaTax16_Exception($errorMessage);
+        throw new \OnePica\AvaTax16\Exception($errorMessage);
     }
 
     /**
@@ -112,7 +113,7 @@ class OnePica_AvaTax16_Document_Part
     public function toArray()
     {
         if (!$this->isValid()) {
-            throw new OnePica_AvaTax16_Exception("Not valid data in " . get_class($this));
+            throw new \OnePica\AvaTax16\Exception("Not valid data in " . get_class($this));
         }
         $result = array();
         foreach ($this as $key => $value) {
@@ -137,7 +138,7 @@ class OnePica_AvaTax16_Document_Part
     protected function _proceedToArrayItem($item)
     {
         $result = null;
-        $itemType = ($item instanceof OnePica_AvaTax16_Document_Part) ? 'documentPart' :
+        $itemType = ($item instanceof \OnePica\AvaTax16\Exception) ? 'documentPart' :
                 ((is_array($item)) ? 'array' : 'simple');
 
         switch ($itemType) {
@@ -198,7 +199,7 @@ class OnePica_AvaTax16_Document_Part
      * Create item object and fill data in it
      *
      * @param string $itemClassName
-     * @param StdClass|array $data
+     * @param \StdClass|array $data
      * @return object $item
      */
     protected function _createItemAndFillData($itemClassName, $data)

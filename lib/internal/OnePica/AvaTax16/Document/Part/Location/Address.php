@@ -15,11 +15,39 @@
  * @copyright Copyright (c) 2015 One Pica, Inc. (http://www.onepica.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+namespace OnePica\AvaTax16\Document\Part\Location;
 
 /**
- * Class OnePica_AvaTax16_Document_Part_Location_Address
+ * Class \OnePica\AvaTax16\Document\Part\Location\Address
+ *
+ * @method string getLine1()
+ * @method setLine1(string $value)
+ * @method string getLine2()
+ * @method setLine2(string $value)
+ * @method string getLine3()
+ * @method setLine3(string $value)
+ * @method string getLatitude()
+ * @method setLatitude(string $value)
+ * @method string getCity()
+ * @method setCity(string $value)
+ * @method string getMunicipality()
+ * @method setMunicipality(string $value)
+ * @method string getTown()
+ * @method setTown(string $value)
+ * @method string getState()
+ * @method setState(string $value)
+ * @method string getProvince()
+ * @method setProvince(string $value)
+ * @method string getCountry()
+ * @method setCountry(string $value)
+ * @method string getZipcode()
+ * @method setZipcode(string $value)
+ * @method string getPostalCode()
+ * @method setPostalCode(string $value)
+ * @method string getPostcode()
+ * @method setPostcode(string $value)
  */
-class OnePica_AvaTax16_Document_Part_Location_Address extends OnePica_AvaTax16_Document_Part
+class Address extends \OnePica\AvaTax16\Document\Part
 {
     /**
      * Required properties

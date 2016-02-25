@@ -15,11 +15,17 @@
  * @copyright Copyright (c) 2015 One Pica, Inc. (http://www.onepica.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+namespace OnePica\AvaTax16\Document\Part\Feedback;
 
 /**
- * Class OnePica_AvaTax16_Document_Part_Feedback_LatencyData
+ * Class \OnePica\AvaTax16\Document\Part\Feedback\LatencyData
+ *
+ * @method int getLatency()
+ * @method setLatency(int $value)
+ * @method string getVersionId()
+ * @method setVersionId(string $value)
  */
-class OnePica_AvaTax16_Document_Part_Feedback_LatencyData extends OnePica_AvaTax16_Document_Part
+class LatencyData extends \OnePica\AvaTax16\Document\Part
 {
     /**
      * Latency

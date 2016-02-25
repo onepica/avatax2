@@ -15,11 +15,17 @@
  * @copyright Copyright (c) 2015 One Pica, Inc. (http://www.onepica.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+namespace OnePica\AvaTax16\Document\Part\Location;
 
 /**
- * Class OnePica_AvaTax16_Document_Part_Location_LatLong
+ * Class \OnePica\AvaTax16\Document\Part\Location\LatLong
+ *
+ * @method string getLatitude()
+ * @method setLatitude(string $value)
+ * @method string getLongitude)
+ * @method setLongitude(string $value)
  */
-class OnePica_AvaTax16_Document_Part_Location_LatLong extends OnePica_AvaTax16_Document_Part
+class LatLong extends \OnePica\AvaTax16\Document\Part
 {
     /**
      * Latitude

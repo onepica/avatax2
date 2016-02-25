@@ -15,11 +15,27 @@
  * @copyright Copyright (c) 2015 One Pica, Inc. (http://www.onepica.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+namespace OnePica\AvaTax16\Document;
 
 /**
- * Class OnePica_AvaTax16_Document_Response
+ * Class \OnePica\AvaTax16\Document\Response
+ *
+ * @method bool getHasError()
+ * @method setHasError(bool $value)
+ * @method array getErrors()
+ * @method setErrors(array $value)
+ * @method \OnePica\AvaTax16\Document\Response\Header getHeader()
+ * @method setHeader(\OnePica\AvaTax16\Document\Response\Header $value)
+ * @method array getLines()
+ * @method setLines(array $value)
+ * @method \OnePica\AvaTax16\Document\Response\CalculatedTaxSummary getCalculatedTaxSummary()
+ * @method setCalculatedTaxSummary(\OnePica\AvaTax16\Document\Response\CalculatedTaxSummary $value)
+ * @method \OnePica\AvaTax16\Document\Part\Feedback getFeedback()
+ * @method setFeedback(\OnePica\AvaTax16\Document\Part\Feedback $value)
+ * @method \OnePica\AvaTax16\Document\Response\ProcessingInfo getProcessingInfo()
+ * @method setProcessingInfo(\OnePica\AvaTax16\Document\Response\ProcessingInfo $value)
  */
-class OnePica_AvaTax16_Document_Response extends OnePica_AvaTax16_Document_Part
+class Response extends \OnePica\AvaTax16\Document\Part
 {
     /**
      * Has error
@@ -42,55 +58,55 @@ class OnePica_AvaTax16_Document_Response extends OnePica_AvaTax16_Document_Part
      */
     protected $_propertyComplexTypes = array(
         '_header' => array(
-            'type' => 'OnePica_AvaTax16_Document_Response_Header'
+            'type' => '\OnePica\AvaTax16\Document\Response\Header'
         ),
         '_lines' => array(
-            'type' => 'OnePica_AvaTax16_Document_Response_Line',
+            'type' => '\OnePica\AvaTax16\Document\Response\Line',
             'isArrayOf' => 'true'
         ),
         '_calculatedTaxSummary' => array(
-            'type' => 'OnePica_AvaTax16_Document_Response_CalculatedTaxSummary'
+            'type' => '\OnePica\AvaTax16\Document\Response\CalculatedTaxSummary'
         ),
         '_feedback' => array(
-            'type' => 'OnePica_AvaTax16_Document_Part_Feedback'
+            'type' => '\OnePica\AvaTax16\Document\Part\Feedback'
         ),
         '_processingInfo' => array(
-            'type' => 'OnePica_AvaTax16_Document_Response_ProcessingInfo'
+            'type' => '\OnePica\AvaTax16\Document\Response\ProcessingInfo'
         ),
     );
 
     /**
      * Header
      *
-     * @var OnePica_AvaTax16_Document_Response_Header
+     * @var \OnePica\AvaTax16\Document\Response\Header
      */
     protected $_header;
 
     /**
      * Lines
      *
-     * @var OnePica_AvaTax16_Document_Response_Line[]
+     * @var \OnePica\AvaTax16\Document\Response\Line[]
      */
     protected $_lines;
 
     /**
      * Calculated Tax Summary
      *
-     * @var OnePica_AvaTax16_Document_Response_CalculatedTaxSummary
+     * @var \OnePica\AvaTax16\Document\Response\CalculatedTaxSummary
      */
     protected $_calculatedTaxSummary;
 
     /**
      * Feedback
      *
-     * @var OnePica_AvaTax16_Document_Part_Feedback
+     * @var \OnePica\AvaTax16\Document\Part\Feedback
      */
     protected $_feedback;
 
     /**
      * Processing Info
      *
-     * @var OnePica_AvaTax16_Document_Response_ProcessingInfo
+     * @var \OnePica\AvaTax16\Document\Response\ProcessingInfo
      */
     protected $_processingInfo;
 }

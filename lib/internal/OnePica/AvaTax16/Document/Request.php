@@ -15,11 +15,23 @@
  * @copyright Copyright (c) 2015 One Pica, Inc. (http://www.onepica.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+namespace OnePica\AvaTax16\Document;
 
 /**
- * Class OnePica_AvaTax16_Document_Request
+ * Class OnePica\AvaTax16\Document\Request
+ *
+ * @method bool getHasError()
+ * @method setHasError(bool $value)
+ * @method array getErrors()
+ * @method setErrors(array $value)
+ * @method \OnePica\AvaTax16\Document\Request\Header getHeader()
+ * @method setHeader(\OnePica\AvaTax16\Document\Request\Header $value)
+ * @method array getLines()
+ * @method setLines(array $value)
+ * @method \OnePica\AvaTax16\Document\Part\Feedback getFeedback()
+ * @method setFeedback(\OnePica\AvaTax16\Document\Part\Feedback $value)
  */
-class OnePica_AvaTax16_Document_Request extends OnePica_AvaTax16_Document_Part
+class Request extends \OnePica\AvaTax16\Document\Part
 {
     /**
      * Has error
@@ -42,35 +54,35 @@ class OnePica_AvaTax16_Document_Request extends OnePica_AvaTax16_Document_Part
      */
     protected $_propertyComplexTypes = array(
         '_header' => array(
-            'type' => 'OnePica_AvaTax16_Document_Request_Header'
+            'type' => '\OnePica\AvaTax16\Document\Request\Header'
         ),
         '_lines' => array(
-            'type' => 'OnePica_AvaTax16_Document_Request_Line',
+            'type' => '\OnePica\AvaTax16\Document\Request\Line',
             'isArrayOf' => 'true'
         ),
         '_feedback' => array(
-            'type' => 'OnePica_AvaTax16_Document_Part_Feedback'
+            'type' => '\OnePica\AvaTax16\Document\Part\Feedback'
         ),
     );
 
     /**
      * Header
      *
-     * @var OnePica_AvaTax16_Document_Request_Header
+     * @var \OnePica\AvaTax16\Document\Request\Header
      */
     protected $_header;
 
     /**
      * Lines
      *
-     * @var OnePica_AvaTax16_Document_Request_Line[]
+     * @var \OnePica\AvaTax16\Document\Request\Line[]
      */
     protected $_lines;
 
     /**
      * Feedback
      *
-     * @var OnePica_AvaTax16_Document_Part_Feedback
+     * @var \OnePica\AvaTax16\Document\Part\Feedback
      */
     protected $_feedback;
 }

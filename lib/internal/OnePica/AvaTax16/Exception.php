@@ -11,14 +11,15 @@
  * to codemaster@onepica.com so we can send you a copy immediately.
  *
  * @category  OnePica
- * @package   OnePica_AvaTax
- * @copyright Copyright (c) 2015 One Pica, Inc. (http://www.onepica.com)
+ * @package   OnePica_AvaTax16
+ * @copyright Copyright (c) 2016 One Pica, Inc. (http://www.onepica.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+namespace OnePica\AvaTax16;
 
 /**
- * Class OnePica_AvaTax16_Exception
+ * Class \OnePica\AvaTax16\IO\Exception
  */
-class OnePica_AvaTax16_Exception extends Exception
+class Exception extends \Exception
 {
 }
