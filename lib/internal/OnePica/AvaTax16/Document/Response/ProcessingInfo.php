@@ -21,6 +21,23 @@ use OnePica\AvaTax16\Document\Part;
 
 /**
  * Class \OnePica\AvaTax16\Document\Response\ProcessingInfo
+ *
+ * @method string getTransactionState()
+ * @method setTransactionState(string $value)
+ * @method string getVersionId()
+ * @method setVersionId(string $value)
+ * @method string getFormatId()
+ * @method setFormatId(string $value)
+ * @method float getDuration()
+ * @method setDuration(float $value)
+ * @method string getModifiedDate()
+ * @method setModifiedDate(string $value)
+ * @method string getBatchId()
+ * @method setBatchId(string $value)
+ * @method string getDocumentId()
+ * @method setDocumentId(string $value)
+ * @method string getMessage()
+ * @method setMessage(string $value)
  */
 class ProcessingInfo extends Part
 {

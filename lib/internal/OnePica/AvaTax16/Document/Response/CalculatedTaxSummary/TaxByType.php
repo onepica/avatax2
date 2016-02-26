@@ -21,6 +21,13 @@ use OnePica\AvaTax16\Document\Part;
 
 /**
  * Class \OnePica\AvaTax16\Document\Response\CalculatedTaxSummary\TaxByType
+ *
+ * @method float getTax()
+ * @method setTax(float $value)
+ * @method array getJurisdictions()
+ * @method setJurisdictions(array $value)
+ * @method string getComment()
+ * @method setComment(string $value)
  */
 class TaxByType extends Part
 {
@@ -46,7 +53,7 @@ class TaxByType extends Part
     /**
      * jurisdictions
      *
-     * @var \OnePica\AvaTax16\Document\Response\CalculatedTaxSummary\TaxByType\Details
+     * @var \OnePica\AvaTax16\Document\Response\CalculatedTaxSummary\TaxByType\Details[]
      */
     protected $_jurisdictions;
 

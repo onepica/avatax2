@@ -21,6 +21,19 @@ use OnePica\AvaTax16\Document\Part;
 
 /**
  * Class \OnePica\AvaTax16\Document\Response\CalculatedTaxSummary
+ *
+ * @method int getNumberOfLines()
+ * @method setNumberOfLines(int $value)
+ * @method float getSubtotal()
+ * @method setSubtotal(float $value)
+ * @method float getTotalTax()
+ * @method setTotalTax(float $value)
+ * @method array getTaxByType()
+ * @method setTaxByType(array $value)
+ * @method float getTax()
+ * @method setTax(float $value)
+ * @method float getGrandTotal()
+ * @method setGrandTotal(float $value)
  */
 class CalculatedTaxSummary extends Part
 {

@@ -21,6 +21,33 @@ use OnePica\AvaTax16\Document\Part;
 
 /**
  * Class \OnePica\AvaTax16\Document\Response\Line\CalculatedTax\Details
+ *
+ * @method string getJurisdictionName()
+ * @method setJurisdictionName(string $value)
+ * @method string getJurisdictionType()
+ * @method setJurisdictionType(string $value)
+ * @method string getTaxType()
+ * @method setTaxType(string $value)
+ * @method string getRateType()
+ * @method setRateType(string $value)
+ * @method string getScenario()
+ * @method setScenario(string $value)
+ * @method float getSubtotalTaxable()
+ * @method setSubtotalTaxable(float $value)
+ * @method float getSubtotalExempt()
+ * @method setSubtotalExempt(float $value)
+ * @method float getRate()
+ * @method setRate(float $value)
+ * @method float getTax()
+ * @method setTax(float $value)
+ * @method bool getExempt()
+ * @method setExempt(bool $value)
+ * @method string getExemptionReason()
+ * @method setExemptionReason(string $value)
+ * @method array getSignificantLocations()
+ * @method setSignificantLocations(array $value)
+ * @method string getComment()
+ * @method setComment(string $value)
  */
 class Details extends Part
 {

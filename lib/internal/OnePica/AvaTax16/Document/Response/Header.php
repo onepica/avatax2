@@ -21,6 +21,40 @@ use OnePica\AvaTax16\Document\Part;
 
 /**
  * Class \OnePica\AvaTax16\Document\Response\Header
+ *
+ * @method string getAccountId()
+ * @method setAccountId(string $value)
+ * @method string getCompanyCode()
+ * @method setCompanyCode(string $value)
+ * @method string getTransactionType()
+ * @method setTransactionType(string $value)
+ * @method string getDocumentCode()
+ * @method setDocumentCode(string $value)
+ * @method string getCustomerCode()
+ * @method setCustomerCode(string $value)
+ * @method string getVendorCode()
+ * @method setVendorCode(string $value)
+ * @method string getTransactionDate()
+ * @method setTransactionDate(string $value)
+ * @method string getCurrency()
+ * @method setCurrency(string $value)
+ * @method float getTotalTaxOverrideAmount()
+ * @method setTotalTaxOverrideAmount(float $value)
+ * @method string getTaxCalculationDate()
+ * @method setTaxCalculationDate(string $value)
+ * @method string getDefaultAvalaraGoodsAndServicesModifierType()
+ * @method setDefaultAvalaraGoodsAndServicesModifierType(string $value)
+ * @method array getDefaultLocations()
+ * @method setDefaultLocations(array $value)
+ * @method string getDefaultTaxPayerCode()
+ * @method setDefaultTaxPayerCode(string $value)
+ * @method string getDefaultBuyerType()
+ * @method setDefaultBuyerType(string $value)
+ * @method string getDefaultUseType()
+ * @method setDefaultUseType(string $value)
+ * @method string getPurchaseOrderNumber()
+ * @method setPurchaseOrderNumber(string $value)
+ * @method array getMetadata()
  */
 class Header extends Part
 {

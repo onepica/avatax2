@@ -21,6 +21,13 @@ use OnePica\AvaTax16\Document\Part;
 
 /**
  * Class \OnePica\AvaTax16\Document\Response\Line\CalculatedTax
+ *
+ * @method array getTaxByType()
+ * @method setTaxByType(array $value)
+ * @method float getTax()
+ * @method setTax(float $value)
+ * @method array getDetails()
+ * @method setDetails(array $value)
  */
 class CalculatedTax extends Part
 {

@@ -20,6 +20,9 @@ namespace OnePica\AvaTax16\Document\Response\Line\CalculatedTax;
 use OnePica\AvaTax16\Document\Part;
 /**
  * Class \OnePica\AvaTax16\Document\Response\Line\CalculatedTax\TaxByType
+ *
+ * @method float getTax()
+ * @method setTax(float $value)
  */
 class TaxByType extends Part
 {
