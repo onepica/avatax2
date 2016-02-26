@@ -17,6 +17,8 @@
  */
 namespace OnePica\AvaTax16\Document\Part;
 
+use OnePica\AvaTax16\Document\Part;
+
 /**
  * Class \OnePica\AvaTax16\Document\Part\Location
  *
@@ -35,7 +37,7 @@ namespace OnePica\AvaTax16\Document\Part;
  * @method string getAddressBuyerType()
  * @method setAddressBuyerType(string $value)
  */
-class Location extends \OnePica\AvaTax16\Document\Part
+class Location extends Part
 {
     /**
      * Types of complex properties

@@ -35,7 +35,7 @@ namespace OnePica\AvaTax16\Document;
  * @method \OnePica\AvaTax16\Document\Response\ProcessingInfo getProcessingInfo()
  * @method setProcessingInfo(\OnePica\AvaTax16\Document\Response\ProcessingInfo $value)
  */
-class Response extends \OnePica\AvaTax16\Document\Part
+class Response extends Part
 {
     /**
      * Has error

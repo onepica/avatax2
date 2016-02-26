@@ -17,13 +17,15 @@
  */
 namespace OnePica\AvaTax16\Document\Part;
 
+use OnePica\AvaTax16\Document\Part;
+
 /**
  * Class \OnePica\AvaTax16\Document\Part\Feedback
  *
  * @method \OnePica\AvaTax16\Document\Part\Feedback\LatencyData getLatencyData()
  * @method setLatencyData(\OnePica\AvaTax16\Document\Part\Feedback\LatencyData $value)
  */
-class Feedback extends \OnePica\AvaTax16\Document\Part
+class Feedback extends Part
 {
     /**
      * Latency Data

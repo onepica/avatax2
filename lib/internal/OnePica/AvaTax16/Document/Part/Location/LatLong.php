@@ -17,6 +17,8 @@
  */
 namespace OnePica\AvaTax16\Document\Part\Location;
 
+use OnePica\AvaTax16\Document\Part;
+
 /**
  * Class \OnePica\AvaTax16\Document\Part\Location\LatLong
  *
@@ -25,7 +27,7 @@ namespace OnePica\AvaTax16\Document\Part\Location;
  * @method string getLongitude)
  * @method setLongitude(string $value)
  */
-class LatLong extends \OnePica\AvaTax16\Document\Part
+class LatLong extends Part
 {
     /**
      * Latitude

@@ -31,7 +31,7 @@ namespace OnePica\AvaTax16\Document;
  * @method \OnePica\AvaTax16\Document\Part\Feedback getFeedback()
  * @method setFeedback(\OnePica\AvaTax16\Document\Part\Feedback $value)
  */
-class Request extends \OnePica\AvaTax16\Document\Part
+class Request extends Part
 {
     /**
      * Has error

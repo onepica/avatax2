@@ -17,6 +17,8 @@
  */
 namespace OnePica\AvaTax16\Document\Part\Location;
 
+use OnePica\AvaTax16\Document\Part;
+
 /**
  * Class \OnePica\AvaTax16\Document\Part\Location\Address
  *
@@ -47,7 +49,7 @@ namespace OnePica\AvaTax16\Document\Part\Location;
  * @method string getPostcode()
  * @method setPostcode(string $value)
  */
-class Address extends \OnePica\AvaTax16\Document\Part
+class Address extends Part
 {
     /**
      * Required properties

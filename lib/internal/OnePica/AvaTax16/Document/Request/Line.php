@@ -21,6 +21,38 @@ use OnePica\AvaTax16\Document\Part;
 
 /**
  * Class \OnePica\AvaTax16\Document\Request\Line
+ *
+ * @method string getLineCode()
+ * @method setLineCode(string $value)
+ * @method string getItemCode()
+ * @method setItemCode(string $value)
+ * @method string getAvalaraGoodsAndServicesType()
+ * @method setAvalaraGoodsAndServicesType(string $value)
+ * @method string getAvalaraGoodsAndServicesModifierType()
+ * @method setAvalaraGoodsAndServicesModifierType(string $value)
+ * @method float getNumberOfItems()
+ * @method setNumberOfItems(float $value)
+ * @method float getLineAmount()
+ * @method setLineAmount(float $value)
+ * @method bool getDiscounted()
+ * @method setDiscounted(bool $value)
+ * @method string getItemDescription()
+ * @method setItemDescription(string $value)
+ * @method string getUnitOfMeasure()
+ * @method setUnitOfMeasure(string $value)
+ * @method array getLocations()
+ * @method setLocations(array $value)
+ * @method string getTaxPayerCode()
+ * @method setTaxPayerCode(string $value)
+ * @method string getBuyerType()
+ * @method setBuyerType(string $value)
+ * @method string getUseType()
+ * @method setUseType(string $value)
+ * @method float getTaxOverrideAmount()
+ * @method setTaxOverrideAmount(float $value)
+ * @method bool getTaxIncluded()
+ * @method setTaxIncluded(bool $value)
+ * @method array getMetadata()
  */
 class Line extends Part
 {
@@ -164,7 +196,7 @@ class Line extends Part
     /**
      * Set Metadata
      *
-     * @param array|StdClass $value
+     * @param array|\StdClass $value
      * @return $this
      */
     public function setMetadata($value)
