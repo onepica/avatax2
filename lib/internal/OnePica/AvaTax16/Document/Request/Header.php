@@ -15,11 +15,13 @@
  * @copyright Copyright (c) 2015 One Pica, Inc. (http://www.onepica.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+namespace OnePica\AvaTax16\Document\Request;
 
+use OnePica\AvaTax16\Document\Part;
 /**
- * Class OnePica_AvaTax16_Document_Request_Header
+ * Class \OnePica\AvaTax16\Document\Request\Header
  */
-class OnePica_AvaTax16_Document_Request_Header extends OnePica_AvaTax16_Document_Part
+class Header extends Part
 {
     /**
      * Types of complex properties
@@ -28,7 +30,7 @@ class OnePica_AvaTax16_Document_Request_Header extends OnePica_AvaTax16_Document
      */
     protected $_propertyComplexTypes = array(
         '_defaultLocations' => array(
-            'type' => 'OnePica_AvaTax16_Document_Part_Location',
+            'type' => '\OnePica\AvaTax16\Document\Part\Location',
             'isArrayOf' => 'true'
         ),
     );
@@ -140,7 +142,7 @@ class OnePica_AvaTax16_Document_Request_Header extends OnePica_AvaTax16_Document
      * Default locations
      * (Required)
      *
-     * @var OnePica_AvaTax16_Document_Part_Location[]
+     * @var \OnePica\AvaTax16\Document\Part\Location[]
      */
     protected $_defaultLocations;
 
@@ -188,7 +190,7 @@ class OnePica_AvaTax16_Document_Request_Header extends OnePica_AvaTax16_Document
      */
     public function setMetadata($value)
     {
-        if ($value instanceof StdClass) {
+        if ($value instanceof \StdClass) {
             // convert object data to array
             // it is used during filling data from response
             $this->_metadata = (array) $value;
