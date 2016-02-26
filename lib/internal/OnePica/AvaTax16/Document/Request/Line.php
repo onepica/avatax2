@@ -15,11 +15,14 @@
  * @copyright Copyright (c) 2015 One Pica, Inc. (http://www.onepica.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+namespace OnePica\AvaTax16\Document\Request;
+
+use OnePica\AvaTax16\Document\Part;
 
 /**
- * Class OnePica_AvaTax16_Document_Request_Line
+ * Class \OnePica\AvaTax16\Document\Request\Line
  */
-class OnePica_AvaTax16_Document_Request_Line extends OnePica_AvaTax16_Document_Part
+class Line extends Part
 {
     /**
      * Required properties
@@ -35,7 +38,7 @@ class OnePica_AvaTax16_Document_Request_Line extends OnePica_AvaTax16_Document_P
      */
     protected $_propertyComplexTypes = array(
         '_locations' => array(
-            'type' => 'OnePica_AvaTax16_Document_Part_Location',
+            'type' => '\OnePica\AvaTax16\Document\Part\Location',
             'isArrayOf' => 'true'
         ),
     );
@@ -109,7 +112,7 @@ class OnePica_AvaTax16_Document_Request_Line extends OnePica_AvaTax16_Document_P
     /**
      * Locations
      *
-     * @var OnePica_AvaTax16_Document_Part_Location[]
+     * @var \OnePica\AvaTax16\Document\Part\Location[]
      */
     protected $_locations;
 
@@ -166,7 +169,7 @@ class OnePica_AvaTax16_Document_Request_Line extends OnePica_AvaTax16_Document_P
      */
     public function setMetadata($value)
     {
-        if ($value instanceof StdClass) {
+        if ($value instanceof \StdClass) {
             // convert object data to array
             // it is used during filling data from response
             $this->_metadata = (array) $value;

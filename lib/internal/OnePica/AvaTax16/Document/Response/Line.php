@@ -15,11 +15,14 @@
  * @copyright Copyright (c) 2015 One Pica, Inc. (http://www.onepica.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+namespace OnePica\AvaTax16\Document\Response;
+
+use OnePica\AvaTax16\Document\Part;
 
 /**
- * Class OnePica_AvaTax16_Document_Response_Line
+ * Class \OnePica\AvaTax16\Document\Response\Line
  */
-class OnePica_AvaTax16_Document_Response_Line extends OnePica_AvaTax16_Document_Part
+class Line extends Part
 {
     /**
      * Required properties
@@ -35,11 +38,11 @@ class OnePica_AvaTax16_Document_Response_Line extends OnePica_AvaTax16_Document_
      */
     protected $_propertyComplexTypes = array(
         '_locations' => array(
-            'type' => 'OnePica_AvaTax16_Document_Part_Location',
+            'type' => '\OnePica\AvaTax16\Document\Part\Location',
             'isArrayOf' => 'true'
         ),
         '_calculatedTax' => array(
-            'type' => 'OnePica_AvaTax16_Document_Response_Line_CalculatedTax',
+            'type' => '\OnePica\AvaTax16\Document\Response\Line\CalculatedTax',
         ),
     );
 
@@ -104,7 +107,7 @@ class OnePica_AvaTax16_Document_Response_Line extends OnePica_AvaTax16_Document_
     /**
      * Locations
      *
-     * @var OnePica_AvaTax16_Document_Part_Location[]
+     * @var \OnePica\AvaTax16\Document\Part\Location[]
      */
     protected $_locations;
 
@@ -165,19 +168,19 @@ class OnePica_AvaTax16_Document_Response_Line extends OnePica_AvaTax16_Document_
      * Calculated Tax
      * (Only response)
      *
-     * @var OnePica_AvaTax16_Document_Response_Line_CalculatedTax
+     * @var \OnePica\AvaTax16\Document\Response\Line\CalculatedTax
      */
     protected $_calculatedTax;
 
     /**
      * Set Metadata
      *
-     * @param array|StdClass $value
+     * @param array|\StdClass $value
      * @return $this
      */
     public function setMetadata($value)
     {
-        if ($value instanceof StdClass) {
+        if ($value instanceof \StdClass) {
             // convert object data to array
             // it is used during filling data from response
             $this->_metadata = (array) $value;

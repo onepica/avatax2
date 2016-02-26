@@ -52,7 +52,7 @@ class Part
         switch ($action) {
             case 'get':
                 $property = '_' . lcfirst(substr($name, 3));
-                if (property_exists($this,$property)) {
+                if (property_exists($this, $property)) {
                     return $this->{$property};
                 } else {
                     $this->_throwWrongMethodErrorException($name);
@@ -60,7 +60,7 @@ class Part
                 break;
             case 'set':
                 $property = '_' . lcfirst(substr($name, 3));
-                if (property_exists($this,$property)) {
+                if (property_exists($this, $property)) {
                     $this->{$property} = $arguments[0];
                 } else {
                     $this->_throwWrongMethodErrorException($name);
@@ -75,7 +75,7 @@ class Part
      * Throw Wrong Method Error Exception
      *
      * @param string $methodName
-     * @throws OnePica_AvaTax16_Exception
+     * @throws \OnePica\AvaTax16\Exception
      */
     protected function _throwWrongMethodErrorException($methodName)
     {
@@ -108,7 +108,7 @@ class Part
      * Convert object data to array
      *
      * @return array
-     * @throws OnePica_AvaTax16_Exception
+     * @throws \OnePica\AvaTax16\Exception
      */
     public function toArray()
     {
@@ -132,7 +132,7 @@ class Part
     /**
      * Convert object data to array
      *
-     * @param OnePica_AvaTax16_Document_Part|array|string $item
+     * @param \OnePica\AvaTax16\Document\Part|array|string $item
      * @return array|string
      */
     protected function _proceedToArrayItem($item)
@@ -161,7 +161,7 @@ class Part
     /**
      * Fill data from object
      *
-     * @param StdClass|array $data
+     * @param \StdClass|array $data
      * @return $this
      */
     public function fillData($data)
@@ -169,7 +169,7 @@ class Part
         foreach ($data as $key => $value) {
             $propName = '_' . $key;
             $method = 'set' . ucfirst($key);
-            if (!property_exists ($this, $propName)) {
+            if (!property_exists($this, $propName)) {
                 // skip unknown property received from response to prevent error
                 continue;
             }

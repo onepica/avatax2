@@ -15,12 +15,13 @@
  * @copyright Copyright (c) 2015 One Pica, Inc. (http://www.onepica.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+namespace OnePica\AvaTax16\Document\Response\Line\CalculatedTax;
 
+use OnePica\AvaTax16\Document\Part;
 /**
- * Class OnePica_AvaTax16_Document_Response_Line_CalculatedTax_TaxByType
+ * Class \OnePica\AvaTax16\Document\Response\Line\CalculatedTax\TaxByType
  */
-class OnePica_AvaTax16_Document_Response_Line_CalculatedTax_TaxByType
-    extends OnePica_AvaTax16_Document_Part
+class TaxByType extends Part
 {
     /**
      * Types of complex properties
@@ -29,7 +30,7 @@ class OnePica_AvaTax16_Document_Response_Line_CalculatedTax_TaxByType
      */
     protected $_propertyComplexTypes = array(
         '_jurisdictions' => array(
-            'type' => 'OnePica_AvaTax16_Document_Response_Line_CalculatedTax_TaxByType_Details',
+            'type' => '\OnePica\AvaTax16\Document\Response\Line\CalculatedTax\TaxByType\Details',
             'isArrayOf' => true
         )
     );

@@ -15,12 +15,14 @@
  * @copyright Copyright (c) 2015 One Pica, Inc. (http://www.onepica.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+namespace OnePica\AvaTax16\Document\Response\Line\CalculatedTax;
+
+use OnePica\AvaTax16\Document\Part;
 
 /**
- * Class OnePica_AvaTax16_Document_Response_Line_CalculatedTax_Details
+ * Class \OnePica\AvaTax16\Document\Response\Line\CalculatedTax\Details
  */
-class OnePica_AvaTax16_Document_Response_Line_CalculatedTax_Details
-    extends OnePica_AvaTax16_Document_Part
+class Details extends Part
 {
     /**
      * Jurisdiction Name

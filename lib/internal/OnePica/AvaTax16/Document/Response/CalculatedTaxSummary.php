@@ -15,12 +15,14 @@
  * @copyright Copyright (c) 2015 One Pica, Inc. (http://www.onepica.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+namespace OnePica\AvaTax16\Document\Response;
+
+use OnePica\AvaTax16\Document\Part;
 
 /**
- * Class OnePica_AvaTax16_Document_Response_CalculatedTaxSummary
+ * Class \OnePica\AvaTax16\Document\Response\CalculatedTaxSummary
  */
-class OnePica_AvaTax16_Document_Response_CalculatedTaxSummary
-    extends OnePica_AvaTax16_Document_Part
+class CalculatedTaxSummary extends Part
 {
     /**
      * Types of complex properties
@@ -29,7 +31,7 @@ class OnePica_AvaTax16_Document_Response_CalculatedTaxSummary
      */
     protected $_propertyComplexTypes = array(
         '_taxByType' => array(
-            'type' => 'OnePica_AvaTax16_Document_Response_CalculatedTaxSummary_TaxByType',
+            'type' => '\OnePica\AvaTax16\Document\Response\CalculatedTaxSummary\TaxByType',
             'isArrayOf' => 'true'
         )
     );
@@ -58,7 +60,7 @@ class OnePica_AvaTax16_Document_Response_CalculatedTaxSummary
     /**
      * Tax By Type
      *
-     * @var OnePica_AvaTax16_Document_Response_CalculatedTaxSummary_TaxByType[]
+     * @var \OnePica\AvaTax16\Document\Response\CalculatedTaxSummary\TaxByType[]
      */
     protected $_taxByType;
 
