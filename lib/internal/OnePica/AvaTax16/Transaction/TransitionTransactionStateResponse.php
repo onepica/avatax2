@@ -11,16 +11,25 @@
  * to codemaster@onepica.com so we can send you a copy immediately.
  *
  * @category  OnePica
- * @package   OnePica_AvaTax
- * @copyright Copyright (c) 2015 One Pica, Inc. (http://www.onepica.com)
+ * @package   OnePica_AvaTax16
+ * @copyright Copyright (c) 2016 One Pica, Inc. (http://www.onepica.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+namespace OnePica\AvaTax16\Transaction;
+
+use OnePica\AvaTax16\Document\Part;
 
 /**
- * Class OnePica_AvaTax16_Transaction_TransitionTransactionStateResponse
+ * Class \OnePica\AvaTax16\Transaction\TransitionTransactionStateResponse
+ *
+ * @method bool getHasError()
+ * @method setHasError(bool $value)
+ * @method array getErrors()
+ * @method setErrors(array $value)
+ * @method int getHttpStatus()
+ * @method setHttpStatus(int $value)
  */
-class OnePica_AvaTax16_Transaction_TransitionTransactionStateResponse
-    extends OnePica_AvaTax16_Document_Part
+class TransitionTransactionStateResponse extends Part
 {
     /**
      * Has error
