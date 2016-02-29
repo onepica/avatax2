@@ -11,15 +11,18 @@
  * to codemaster@onepica.com so we can send you a copy immediately.
  *
  * @category  OnePica
- * @package   OnePica_AvaTax
- * @copyright Copyright (c) 2015 One Pica, Inc. (http://www.onepica.com)
+ * @package   OnePica_AvaTax16
+ * @copyright Copyright (c) 2016 One Pica, Inc. (http://www.onepica.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+namespace OnePica\AvaTax16;
+
+use OnePica\AvaTax16\Transaction\TransitionTransactionStateResponse;
 
 /**
- * Class OnePica_AvaTax16_Transaction
+ * Class \OnePica\AvaTax16\Transaction
  */
-class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
+class Transaction extends ResourceAbstract
 {
     /**
      * Url path for calculations
@@ -34,8 +37,8 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
     /**
      * Create Transaction
      *
-     * @param OnePica_AvaTax16_Document_Request $documentRequest
-     * @return OnePica_AvaTax16_Document_Response $documentResponse
+     * @param \OnePica\AvaTax16\Document\Request $documentRequest
+     * @return \OnePica\AvaTax16\Document\Response $documentResponse
      */
     public function createTransaction($documentRequest)
     {
@@ -44,7 +47,7 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
         $requestOptions = array(
             'requestType' => 'POST',
             'data'        => $postData,
-            'returnClass' => 'OnePica_AvaTax16_Document_Response'
+            'returnClass' => '\OnePica\AvaTax16\Document\Response'
         );
         $documentResponse = $this->_sendRequest($postUrl, $requestOptions);
         return $documentResponse;
@@ -57,7 +60,7 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
      * @param string $documentCode
      * @param bool $recalculate
      * @param string $comment
-     * @return OnePica_AvaTax16_Document_Response $documentResponse
+     * @return \OnePica\AvaTax16\Document\Response $documentResponse
      */
     public function createTransactionFromCalculation($transactionType, $documentCode, $recalculate = null,
         $comment = null)
@@ -95,7 +98,7 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
      *
      * @param string $transactionType
      * @param string $documentCode
-     * @return OnePica_AvaTax16_Document_Response $documentResponse
+     * @return \OnePica\AvaTax16\Document\Response $documentResponse
      */
     public function getTransaction($transactionType, $documentCode)
     {
@@ -113,7 +116,7 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
 
         $requestOptions = array(
             'requestType' => 'GET',
-            'returnClass' => 'OnePica_AvaTax16_Document_Response'
+            'returnClass' => '\OnePica\AvaTax16\Document\Response'
         );
         $documentResponse = $this->_sendRequest($getUrl, $requestOptions);
         return $documentResponse;
@@ -127,7 +130,7 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
      * @param string $startDate
      * @param string $endDate
      * @param string $startCode (not implemented)
-     * @return OnePica_AvaTax16_Transaction_ListResponse $transactionListResponse
+     * @return \OnePica\AvaTax16\Transaction\ListResponse $transactionListResponse
      */
     public function getListOfTransactions($transactionType, $limit = null, $startDate = null, $endDate = null,
         $startCode = null)
@@ -152,7 +155,7 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
         $requestOptions = array(
             'requestType' => 'GET',
             'data'        => $filterData,
-            'returnClass' => 'OnePica_AvaTax16_Transaction_ListResponse'
+            'returnClass' => '\OnePica\AvaTax16\Transaction\ListResponse'
         );
         $transactionListResponse = $this->_sendRequest($getUrl, $requestOptions);
         return $transactionListResponse;
@@ -163,7 +166,7 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
      *
      * @param string $transactionType
      * @param string $documentCode
-     * @return OnePica_AvaTax16_Document_Request $transactionInput
+     * @return \OnePica\AvaTax16\Document\Request $transactionInput
      */
     public function getTransactionInput($transactionType, $documentCode)
     {
@@ -182,7 +185,7 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
 
         $requestOptions = array(
             'requestType' => 'GET',
-            'returnClass' => 'OnePica_AvaTax16_Document_Request'
+            'returnClass' => '\OnePica\AvaTax16\Document\Request'
         );
         $transactionInput = $this->_sendRequest($getUrl, $requestOptions);
         return $transactionInput;
@@ -195,7 +198,7 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
      * @param string $documentCode
      * @param string $type
      * @param string $comment
-     * @return OnePica_AvaTax16_Transaction_TransitionTransactionStateResponse $transitionTransactionStateResponse
+     * @return \OnePica\AvaTax16\Transaction\TransitionTransactionStateResponse $transitionTransactionStateResponse
      */
     public function transitionTransactionState($transactionType, $documentCode, $type, $comment)
     {
@@ -219,7 +222,7 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
 
         $curl = $this->_getCurlObjectWithHeaders();
         $curl->post($postUrl, $postData);
-        $transitionTransactionStateResponse = new OnePica_AvaTax16_Transaction_TransitionTransactionStateResponse();
+        $transitionTransactionStateResponse = new TransitionTransactionStateResponse();
         $this->_setErrorDataToResponseIfExists($transitionTransactionStateResponse, $curl);
         $transitionTransactionStateResponse->setHttpStatus($curl->getHttpStatusCode());
         return $transitionTransactionStateResponse;

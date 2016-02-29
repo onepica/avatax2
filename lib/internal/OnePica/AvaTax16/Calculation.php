@@ -11,15 +11,16 @@
  * to codemaster@onepica.com so we can send you a copy immediately.
  *
  * @category  OnePica
- * @package   OnePica_AvaTax
- * @copyright Copyright (c) 2015 One Pica, Inc. (http://www.onepica.com)
+ * @package   OnePica_AvaTax16
+ * @copyright Copyright (c) 2016 One Pica, Inc. (http://www.onepica.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+namespace OnePica\AvaTax16;
 
 /**
- * Class OnePica_AvaTax16_Calculation
+ * Class \OnePica\AvaTax16\Calculation
  */
-class OnePica_AvaTax16_Calculation extends OnePica_AvaTax16_ResourceAbstract
+class Calculation extends ResourceAbstract
 {
     /**
      * Url path for calculations
@@ -29,8 +30,8 @@ class OnePica_AvaTax16_Calculation extends OnePica_AvaTax16_ResourceAbstract
     /**
      * Create Calculation
      *
-     * @param OnePica_AvaTax16_Document_Request $documentRequest
-     * @return OnePica_AvaTax16_Document_Response $documentResponse
+     * @param \OnePica\AvaTax16\Document\Request $documentRequest
+     * @return \OnePica\AvaTax16\Document\Response $documentResponse
      */
     public function createCalculation($documentRequest)
     {
@@ -39,7 +40,7 @@ class OnePica_AvaTax16_Calculation extends OnePica_AvaTax16_ResourceAbstract
         $requestOptions = array(
             'requestType' => 'POST',
             'data'        => $postData,
-            'returnClass' => 'OnePica_AvaTax16_Document_Response'
+            'returnClass' => '\OnePica\AvaTax16\Document\Response'
         );
         $documentResponse = $this->_sendRequest($postUrl, $requestOptions);
         return $documentResponse;
@@ -50,7 +51,7 @@ class OnePica_AvaTax16_Calculation extends OnePica_AvaTax16_ResourceAbstract
      *
      * @param string $transactionType
      * @param string $documentCode
-     * @return OnePica_AvaTax16_Document_Response $documentResponse
+     * @return \OnePica\AvaTax16\Document\Response $documentResponse
      */
     public function getCalculation($transactionType, $documentCode)
     {
@@ -68,7 +69,7 @@ class OnePica_AvaTax16_Calculation extends OnePica_AvaTax16_ResourceAbstract
 
         $requestOptions = array(
             'requestType' => 'GET',
-            'returnClass' => 'OnePica_AvaTax16_Document_Response'
+            'returnClass' => '\OnePica\AvaTax16\Document\Response'
         );
         $documentResponse = $this->_sendRequest($getUrl, $requestOptions);
         return $documentResponse;
@@ -82,7 +83,7 @@ class OnePica_AvaTax16_Calculation extends OnePica_AvaTax16_ResourceAbstract
      * @param string $startDate
      * @param string $endDate
      * @param string $startCode (not implemented)
-     * @return OnePica_AvaTax16_Calculation_ListResponse $calculationListResponse
+     * @return \OnePica\AvaTax16\Calculation\ListResponse $calculationListResponse
      */
     public function getListOfCalculations($transactionType, $limit = null, $startDate = null, $endDate = null,
         $startCode = null)
@@ -106,7 +107,7 @@ class OnePica_AvaTax16_Calculation extends OnePica_AvaTax16_ResourceAbstract
         $requestOptions = array(
             'requestType' => 'GET',
             'data'        => $filterData,
-            'returnClass' => 'OnePica_AvaTax16_Calculation_ListResponse'
+            'returnClass' => '\OnePica\AvaTax16\Calculation\ListResponse'
         );
         $calculationListResponse = $this->_sendRequest($getUrl, $requestOptions);
         return $calculationListResponse;

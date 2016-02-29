@@ -11,15 +11,16 @@
  * to codemaster@onepica.com so we can send you a copy immediately.
  *
  * @category  OnePica
- * @package   OnePica_AvaTax
- * @copyright Copyright (c) 2015 One Pica, Inc. (http://www.onepica.com)
+ * @package   OnePica_AvaTax16
+ * @copyright Copyright (c) 2016 One Pica, Inc. (http://www.onepica.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+namespace OnePica\AvaTax16;
 
 /**
- * Class OnePica_AvaTax16_AddressResolution
+ * Class \OnePica\AvaTax16\AddressResolution
  */
-class OnePica_AvaTax16_AddressResolution extends OnePica_AvaTax16_ResourceAbstract
+class AddressResolution extends ResourceAbstract
 {
     /**
      * Url path for address resolution
@@ -29,8 +30,8 @@ class OnePica_AvaTax16_AddressResolution extends OnePica_AvaTax16_ResourceAbstra
     /**
      * Resolve a Single Address
      *
-     * @param OnePica_AvaTax16_Document_Part_Location_Address $address
-     * @return OnePica_AvaTax16_AddressResolution_ResolveSingleAddressResponse $result
+     * @param \OnePica\AvaTax16\Document\Part\Location\Address $address
+     * @return \OnePica\AvaTax16\AddressResolution\ResolveSingleAddressResponse $result
      */
     public function resolveSingleAddress($address)
     {
@@ -47,7 +48,7 @@ class OnePica_AvaTax16_AddressResolution extends OnePica_AvaTax16_ResourceAbstra
         $requestOptions = array(
             'requestType' => 'POST',
             'data'        => $postData,
-            'returnClass' => 'OnePica_AvaTax16_AddressResolution_ResolveSingleAddressResponse'
+            'returnClass' => '\OnePica\AvaTax16\AddressResolution\ResolveSingleAddressResponse'
         );
         $result = $this->_sendRequest($postUrl, $requestOptions);
         return $result;

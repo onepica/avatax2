@@ -11,15 +11,16 @@
  * to codemaster@onepica.com so we can send you a copy immediately.
  *
  * @category  OnePica
- * @package   OnePica_AvaTax
- * @copyright Copyright (c) 2015 One Pica, Inc. (http://www.onepica.com)
+ * @package   OnePica_AvaTax16
+ * @copyright Copyright (c) 2016 One Pica, Inc. (http://www.onepica.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+namespace OnePica\AvaTax16;
 
 /**
- * Class OnePica_AvaTax16_Config
+ * Class \OnePica\AvaTax16\Config
  */
-class OnePica_AvaTax16_Config
+class Config
 {
     /**
      * Accept header
@@ -84,7 +85,7 @@ class OnePica_AvaTax16_Config
      * Set base url
      *
      * @param string $value
-     * @return OnePica_AvaTax16_Config
+     * @return \OnePica\AvaTax16\Config
      */
     public function setBaseUrl($value)
     {
@@ -105,7 +106,7 @@ class OnePica_AvaTax16_Config
      * Set user agent
      *
      * @param string $value
-     * @return OnePica_AvaTax16_Config
+     * @return \OnePica\AvaTax16\Config
      */
     public function setUserAgent($value)
     {
@@ -126,7 +127,7 @@ class OnePica_AvaTax16_Config
      * Set account id
      *
      * @param string $value
-     * @return OnePica_AvaTax16_Config
+     * @return \OnePica\AvaTax16\Config
      */
     public function setAccountId($value)
     {
@@ -147,7 +148,7 @@ class OnePica_AvaTax16_Config
      * Set company code
      *
      * @param string $value
-     * @return OnePica_AvaTax16_Config
+     * @return \OnePica\AvaTax16\Config
      */
     public function setCompanyCode($value)
     {
@@ -168,7 +169,7 @@ class OnePica_AvaTax16_Config
      * Set authorization header
      *
      * @param string $value
-     * @return OnePica_AvaTax16_Config
+     * @return \OnePica\AvaTax16\Config
      */
     public function setAuthorizationHeader($value)
     {

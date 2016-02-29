@@ -11,27 +11,30 @@
  * to codemaster@onepica.com so we can send you a copy immediately.
  *
  * @category  OnePica
- * @package   OnePica_AvaTax
- * @copyright Copyright (c) 2015 One Pica, Inc. (http://www.onepica.com)
+ * @package   OnePica_AvaTax16
+ * @copyright Copyright (c) 2016 One Pica, Inc. (http://www.onepica.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+namespace OnePica\AvaTax16;
+
+use OnePica\AvaTax16\IO\Curl;
 
 /**
- * Abstract class OnePica_AvaTax16_ResourceAbstract
+ * Abstract class \OnePica\AvaTax16\ResourceAbstract
  */
-abstract class OnePica_AvaTax16_ResourceAbstract
+abstract class ResourceAbstract
 {
     /**
      * Config
      *
-     * @var OnePica_AvaTax16_Config
+     * @var \OnePica\AvaTax16\Config
      */
     protected $_config;
 
     /**
      * Construct
      *
-     * @param OnePica_AvaTax16_Config $config
+     * @param \OnePica\AvaTax16\Config $config
      */
     public function __construct($config)
     {
@@ -41,7 +44,7 @@ abstract class OnePica_AvaTax16_ResourceAbstract
     /**
      * Get config
      *
-     * @return OnePica_AvaTax16_Config
+     * @return \OnePica\AvaTax16\Config
      */
     public function getConfig()
     {
@@ -51,11 +54,11 @@ abstract class OnePica_AvaTax16_ResourceAbstract
     /**
      * Get Curl Object with headers from config
      *
-     * @return OnePica_AvaTax16_IO_Curl
+     * @return \OnePica\AvaTax16\IO\Curl
      */
     protected function _getCurlObjectWithHeaders()
     {
-        $curl = new OnePica_AvaTax16_IO_Curl();
+        $curl = new Curl();
         $config = $this->getConfig();
         $curl->setHeader('Authorization', $config->getAuthorizationHeader());
         $curl->setHeader('Accept', $config->getAcceptHeader());
@@ -67,8 +70,8 @@ abstract class OnePica_AvaTax16_ResourceAbstract
     /**
      * Set Error Data To Response If Exists
      *
-     * @param OnePica_AvaTax16_Document_Part $response
-     * @param OnePica_AvaTax16_IO_Curl $curl
+     * @param \OnePica\AvaTax16\Document\Part $response
+     * @param Curl $curl
      * @return $this
      */
     protected function _setErrorDataToResponseIfExists($response, $curl)
@@ -77,7 +80,7 @@ abstract class OnePica_AvaTax16_ResourceAbstract
             $response->setHasError(true);
             $errors = array();
             $responseData = $curl->getResponse();
-            if ($responseData instanceof stdClass) {
+            if ($responseData instanceof \stdClass) {
                 if (isset($responseData->errors) && count($responseData->errors)) {
                     foreach ($responseData->errors as $value) {
                         if (is_array($value)) {
