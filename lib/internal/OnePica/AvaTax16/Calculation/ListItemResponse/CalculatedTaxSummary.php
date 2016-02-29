@@ -11,16 +11,35 @@
  * to codemaster@onepica.com so we can send you a copy immediately.
  *
  * @category  OnePica
- * @package   OnePica_AvaTax
- * @copyright Copyright (c) 2015 One Pica, Inc. (http://www.onepica.com)
+ * @package   OnePica_AvaTax16
+ * @copyright Copyright (c) 2016 One Pica, Inc. (http://www.onepica.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+namespace OnePica\AvaTax16\Calculation\ListItemResponse;
+
+use OnePica\AvaTax16\Document\Part;
 
 /**
- * Class OnePica_AvaTax16_Calculation_ListItemResponse_CalculatedTaxSummary
+ * Class \OnePica\AvaTax16\Calculation\ListItemResponse\CalculatedTaxSummary
+ *
+ * @method int getNumberOfLines()
+ * @method setNumberOfLines(int $value)
+ * @method float getSubtotal()
+ * @method setSubtotal(float $value)
+ * @method float getTotalTax()
+ * @method setTotalTax(float $value)
+ * @method \OnePica\AvaTax16\Calculation\ListItemResponse\CalculatedTaxSummary\TaxByType getTaxByType()
+ * @method setTaxByType(\OnePica\AvaTax16\Calculation\ListItemResponse\CalculatedTaxSummary\TaxByType $value)
+ * @method float getSubtotalTaxable()
+ * @method setSubtotalTaxable(float $value)
+ * @method float getSubtotalExempt()
+ * @method setSubtotalExempt(float $value)
+ * @method float getTax()
+ * @method setTax(float $value)
+ * @method float getGrandTotal()
+ * @method setGrandTotal(float $value)
  */
-class OnePica_AvaTax16_Calculation_ListItemResponse_CalculatedTaxSummary
-    extends OnePica_AvaTax16_Document_Part
+class CalculatedTaxSummary extends Part
 {
     /**
      * Types of complex properties
@@ -29,7 +48,7 @@ class OnePica_AvaTax16_Calculation_ListItemResponse_CalculatedTaxSummary
      */
     protected $_propertyComplexTypes = array(
         '_taxByType' => array(
-            'type' => 'OnePica_AvaTax16_Calculation_ListItemResponse_CalculatedTaxSummary_TaxByType',
+            'type' => '\OnePica\AvaTax16\Calculation\ListItemResponse\CalculatedTaxSummary\TaxByType',
             'isArrayOf' => 'true'
         )
     );
@@ -58,7 +77,7 @@ class OnePica_AvaTax16_Calculation_ListItemResponse_CalculatedTaxSummary
     /**
      * Tax By Type
      *
-     * @var OnePica_AvaTax16_Calculation_ListItemResponse_CalculatedTaxSummary_TaxByType
+     * @var \OnePica\AvaTax16\Calculation\ListItemResponse\CalculatedTaxSummary\TaxByType
      */
     protected $_taxByType;
 

@@ -11,15 +11,35 @@
  * to codemaster@onepica.com so we can send you a copy immediately.
  *
  * @category  OnePica
- * @package   OnePica_AvaTax
- * @copyright Copyright (c) 2015 One Pica, Inc. (http://www.onepica.com)
+ * @package   OnePica_AvaTax16
+ * @copyright Copyright (c) 2016 One Pica, Inc. (http://www.onepica.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+namespace OnePica\AvaTax16\Calculation\ListItemResponse;
+
+use OnePica\AvaTax16\Document\Part;
 
 /**
- * Class OnePica_AvaTax16_Calculation_ListItemResponse_ProcessingInfo
+ * Class \OnePica\AvaTax16\Calculation\ListItemResponse\ProcessingInfo
+ *
+ * @method string getTransactionState()
+ * @method setTransactionState(string $value)
+ * @method string getVersionId()
+ * @method setVersionId(string $value)
+ * @method string getFormatId()
+ * @method setFormatId(string $value)
+ * @method float getDuration()
+ * @method setDuration(float $value)
+ * @method string getModifiedDate()
+ * @method setModifiedDate(string $value)
+ * @method string getBatchId()
+ * @method setBatchId(string $value)
+ * @method string getDocumentId()
+ * @method setDocumentId(string $value)
+ * @method string getMessage()
+ * @method setMessage(string $value)
  */
-class OnePica_AvaTax16_Calculation_ListItemResponse_ProcessingInfo extends OnePica_AvaTax16_Document_Part
+class ProcessingInfo extends Part
 {
     /**
      * Transaction State

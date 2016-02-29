@@ -11,16 +11,27 @@
  * to codemaster@onepica.com so we can send you a copy immediately.
  *
  * @category  OnePica
- * @package   OnePica_AvaTax
- * @copyright Copyright (c) 2015 One Pica, Inc. (http://www.onepica.com)
+ * @package   OnePica_AvaTax16
+ * @copyright Copyright (c) 2016 One Pica, Inc. (http://www.onepica.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+namespace OnePica\AvaTax16\Calculation\ListItemResponse\CalculatedTaxSummary\TaxByType;
+
+use OnePica\AvaTax16\Document\Part;
 
 /**
- * Class OnePica_AvaTax16_Calculation_ListItemResponse_CalculatedTaxSummary_TaxByType_Details
+ * Class \OnePica\AvaTax16\Calculation\ListItemResponse\CalculatedTaxSummary\TaxByType\Details
+ *
+ * @method string getJurisdictionName()
+ * @method setJurisdictionName(string $value)
+ * @method string getJurisdictionType()
+ * @method setJurisdictionType(string $value)
+ * @method float getTax()
+ * @method setTax(float $value)
+ * @method string getComment()
+ * @method setComment(string $value)
  */
-class OnePica_AvaTax16_Calculation_ListItemResponse_CalculatedTaxSummary_TaxByType_Details
-    extends OnePica_AvaTax16_Document_Part
+class Details extends Part
 {
     /**
      * Jurisdiction Name
