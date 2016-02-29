@@ -57,7 +57,7 @@ class Details extends Part
     /**
      * Comment
      *
-     * @var float
+     * @var string
      */
     protected $_comment;
 }
