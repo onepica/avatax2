@@ -38,18 +38,18 @@ class ListItemResponse extends Part
      *
      * @var array
      */
-    protected $_propertyComplexTypes = array(
-        '_header' => array(
+    protected $propertyComplexTypes = array(
+        'header' => array(
             'type' => '\OnePica\AvaTax16\Calculation\ListItemResponse\Header'
         ),
-        '_lines' => array(
+        'lines' => array(
             'type' => '\OnePica\AvaTax16\Calculation\ListItemResponse\Line',
             'isArrayOf' => 'true'
         ),
-        '_calculatedTaxSummary' => array(
+        'calculatedTaxSummary' => array(
             'type' => '\OnePica\AvaTax16\Calculation\ListItemResponse\CalculatedTaxSummary'
         ),
-        '_processingInfo' => array(
+        'processingInfo' => array(
             'type' => '\OnePica\AvaTax16\Calculation\ListItemResponse\ProcessingInfo'
         ),
     );
@@ -59,26 +59,26 @@ class ListItemResponse extends Part
      *
      * @var \OnePica\AvaTax16\Calculation\ListItemResponse\Header
      */
-    protected $_header;
+    protected $header;
 
     /**
      * Lines
      *
      * @var Array
      */
-    protected $_lines;
+    protected $lines;
 
     /**
      * Feedback
      *
      * @var \OnePica\AvaTax16\Calculation\ListItemResponse\CalculatedTaxSummary
      */
-    protected $_calculatedTaxSummary;
+    protected $calculatedTaxSummary;
 
     /**
      * Feedback
      *
      * @var \OnePica\AvaTax16\Calculation\ListItemResponse\ProcessingInfo
      */
-    protected $_processingInfo;
+    protected $processingInfo;
 }

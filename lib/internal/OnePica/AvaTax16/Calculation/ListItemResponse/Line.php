@@ -32,5 +32,5 @@ class Line extends Part
      *
      * @var string
      */
-    protected $_avalaraGoodsAndServicesModifierType;
+    protected $avalaraGoodsAndServicesModifierType;
 }

@@ -46,54 +46,54 @@ class Header extends Part
      *
      * @var string
      */
-    protected $_accountId;
+    protected $accountId;
 
     /**
      * Company Code
      *
      * @var string
      */
-    protected $_companyCode;
+    protected $companyCode;
 
     /**
      * Transaction Type
      *
      * @var string
      */
-    protected $_transactionType;
+    protected $transactionType;
 
     /**
      * Document Code
      *
      * @var string
      */
-    protected $_documentCode;
+    protected $documentCode;
 
     /**
      * Customer Code
      *
      * @var string
      */
-    protected $_customerCode;
+    protected $customerCode;
 
     /**
      * Transaction Date
      *
      * @var string
      */
-    protected $_transactionDate;
+    protected $transactionDate;
 
     /**
      * Currency
      *
      * @var string
      */
-    protected $_currency;
+    protected $currency;
 
     /**
      * Total Tax Override Amount
      *
      * @var string
      */
-    protected $_totalTaxOverrideAmount;
+    protected $totalTaxOverrideAmount;
 }

@@ -46,8 +46,8 @@ class CalculatedTaxSummary extends Part
      *
      * @var array
      */
-    protected $_propertyComplexTypes = array(
-        '_taxByType' => array(
+    protected $propertyComplexTypes = array(
+        'taxByType' => array(
             'type' => '\OnePica\AvaTax16\Calculation\ListItemResponse\CalculatedTaxSummary\TaxByType',
             'isArrayOf' => 'true'
         )
@@ -58,54 +58,54 @@ class CalculatedTaxSummary extends Part
      *
      * @var int
      */
-    protected $_numberOfLines;
+    protected $numberOfLines;
 
     /**
      * Subtotal
      *
      * @var float
      */
-    protected $_subtotal;
+    protected $subtotal;
 
     /**
      * Total Tax
      *
      * @var float
      */
-    protected $_totalTax;
+    protected $totalTax;
 
     /**
      * Tax By Type
      *
      * @var \OnePica\AvaTax16\Calculation\ListItemResponse\CalculatedTaxSummary\TaxByType
      */
-    protected $_taxByType;
+    protected $taxByType;
 
     /**
      * Subtotal Taxable
      *
      * @var float
      */
-    protected $_subtotalTaxable;
+    protected $subtotalTaxable;
 
     /**
      * Subtotal Exempt
      *
      * @var float
      */
-    protected $_subtotalExempt;
+    protected $subtotalExempt;
 
     /**
      * Tax
      *
      * @var float
      */
-    protected $_tax;
+    protected $tax;
 
     /**
      * Grand Total
      *
      * @var float
      */
-    protected $_grandTotal;
+    protected $grandTotal;
 }
