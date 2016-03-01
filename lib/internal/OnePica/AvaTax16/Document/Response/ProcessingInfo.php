@@ -46,54 +46,54 @@ class ProcessingInfo extends Part
      *
      * @var string
      */
-    protected $_transactionState;
+    protected $transactionState;
 
     /**
      * Version Id
      *
      * @var string
      */
-    protected $_versionId;
+    protected $versionId;
 
     /**
      * Format Id
      *
      * @var string
      */
-    protected $_formatId;
+    protected $formatId;
 
     /**
      * Duration
      *
      * @var float
      */
-    protected $_duration;
+    protected $duration;
 
     /**
      * Modified Date
      *
      * @var string
      */
-    protected $_modifiedDate;
+    protected $modifiedDate;
 
     /**
      * Batch Id
      *
      * @var string
      */
-    protected $_batchId;
+    protected $batchId;
 
     /**
      * Document Id
      *
      * @var string
      */
-    protected $_documentId;
+    protected $documentId;
 
     /**
      * Message
      *
      * @var string
      */
-    protected $_message;
+    protected $message;
 }

@@ -34,12 +34,12 @@ class LatLong extends Part
      *
      * @var string
      */
-    protected $_latitude;
+    protected $latitude;
 
     /**
      * Longitude
      *
      * @var string
      */
-    protected $_longitude;
+    protected $longitude;
 }

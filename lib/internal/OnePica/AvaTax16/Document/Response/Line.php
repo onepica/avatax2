@@ -63,19 +63,19 @@ class Line extends Part
      *
      * @var array
      */
-    protected $_requiredProperties = array('_lineCode', '_lineAmount');
+    protected $requiredProperties = array('lineCode', 'lineAmount');
 
     /**
      * Types of complex properties
      *
      * @var array
      */
-    protected $_propertyComplexTypes = array(
-        '_locations' => array(
+    protected $propertyComplexTypes = array(
+        'locations' => array(
             'type' => '\OnePica\AvaTax16\Document\Part\Location',
             'isArrayOf' => 'true'
         ),
-        '_calculatedTax' => array(
+        'calculatedTax' => array(
             'type' => '\OnePica\AvaTax16\Document\Response\Line\CalculatedTax',
         ),
     );
@@ -86,49 +86,49 @@ class Line extends Part
      *
      * @var string
      */
-    protected $_lineCode;
+    protected $lineCode;
 
     /**
      * Item code
      *
      * @var string
      */
-    protected $_itemCode;
+    protected $itemCode;
 
     /**
      * Avalara Goods And Services Type
      *
      * @var string
      */
-    protected $_avalaraGoodsAndServicesType;
+    protected $avalaraGoodsAndServicesType;
 
     /**
      * Avalara Goods And Services Modifier Type
      *
      * @var string
      */
-    protected $_avalaraGoodsAndServicesModifierType;
+    protected $avalaraGoodsAndServicesModifierType;
 
     /**
      * Number Of Items
      *
      * @var float
      */
-    protected $_numberOfItems;
+    protected $numberOfItems;
 
     /**
      * Line Amount
      *
      * @var float
      */
-    protected $_lineAmount;
+    protected $lineAmount;
 
     /**
      * Item Description
      *
      * @var string
      */
-    protected $_itemDescription;
+    protected $itemDescription;
 
     /**
      * Unit Of Measure
@@ -136,14 +136,14 @@ class Line extends Part
      *
      * @var string
      */
-    protected $_unitOfMeasure;
+    protected $unitOfMeasure;
 
     /**
      * Locations
      *
      * @var \OnePica\AvaTax16\Document\Part\Location[]
      */
-    protected $_locations;
+    protected $locations;
 
     /**
      * Tax Payer Code
@@ -151,21 +151,21 @@ class Line extends Part
      *
      * @var string
      */
-    protected $_taxPayerCode;
+    protected $taxPayerCode;
 
     /**
      * Buyer Type
      *
      * @var string
      */
-    protected $_buyerType;
+    protected $buyerType;
 
     /**
      * Use Type
      *
      * @var string
      */
-    protected $_useType;
+    protected $useType;
 
     /**
      * Line Attributes
@@ -173,7 +173,7 @@ class Line extends Part
      *
      * @var string
      */
-    protected $_lineAttributes;
+    protected $lineAttributes;
 
     /**
      * Tax Override Amount
@@ -181,7 +181,7 @@ class Line extends Part
      *
      * @var float
      */
-    protected $_taxOverrideAmount;
+    protected $taxOverrideAmount;
 
     /**
      * Tax Included
@@ -189,14 +189,14 @@ class Line extends Part
      *
      * @var bool
      */
-    protected $_taxIncluded;
+    protected $taxIncluded;
 
     /**
      * Tax Included
      *
      * @var array
      */
-    protected $_metadata;
+    protected $metadata;
 
     /**
      * Calculated Tax
@@ -204,7 +204,7 @@ class Line extends Part
      *
      * @var \OnePica\AvaTax16\Document\Response\Line\CalculatedTax
      */
-    protected $_calculatedTax;
+    protected $calculatedTax;
 
     /**
      * Set Metadata
@@ -217,9 +217,9 @@ class Line extends Part
         if ($value instanceof \StdClass) {
             // convert object data to array
             // it is used during filling data from response
-            $this->_metadata = (array) $value;
+            $this->metadata = (array) $value;
         } else {
-            $this->_metadata = $value;
+            $this->metadata = $value;
         }
     }
 }

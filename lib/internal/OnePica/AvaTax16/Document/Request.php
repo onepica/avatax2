@@ -38,29 +38,29 @@ class Request extends Part
      *
      * @var bool
      */
-    protected $_hasError = false;
+    protected $hasError = false;
 
     /**
      * Errors
      *
      * @var array
      */
-    protected $_errors;
+    protected $errors;
 
     /**
      * Types of complex properties
      *
      * @var array
      */
-    protected $_propertyComplexTypes = array(
-        '_header' => array(
+    protected $propertyComplexTypes = array(
+        'header' => array(
             'type' => '\OnePica\AvaTax16\Document\Request\Header'
         ),
-        '_lines' => array(
+        'lines' => array(
             'type' => '\OnePica\AvaTax16\Document\Request\Line',
             'isArrayOf' => 'true'
         ),
-        '_feedback' => array(
+        'feedback' => array(
             'type' => '\OnePica\AvaTax16\Document\Part\Feedback'
         ),
     );
@@ -70,19 +70,19 @@ class Request extends Part
      *
      * @var \OnePica\AvaTax16\Document\Request\Header
      */
-    protected $_header;
+    protected $header;
 
     /**
      * Lines
      *
      * @var \OnePica\AvaTax16\Document\Request\Line[]
      */
-    protected $_lines;
+    protected $lines;
 
     /**
      * Feedback
      *
      * @var \OnePica\AvaTax16\Document\Part\Feedback
      */
-    protected $_feedback;
+    protected $feedback;
 }

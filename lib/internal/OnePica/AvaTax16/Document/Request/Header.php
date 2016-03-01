@@ -65,8 +65,8 @@ class Header extends Part
      *
      * @var array
      */
-    protected $_propertyComplexTypes = array(
-        '_defaultLocations' => array(
+    protected $propertyComplexTypes = array(
+        'defaultLocations' => array(
             'type' => '\OnePica\AvaTax16\Document\Part\Location',
             'isArrayOf' => 'true'
         ),
@@ -77,8 +77,8 @@ class Header extends Part
      *
      * @var array
      */
-    protected $_requiredProperties = array('_accountId', '_companyCode', '_transactionType', '_documentCode',
-        '_customerCode', '_transactionDate', '_defaultLocations');
+    protected $requiredProperties = array('accountId', 'companyCode', 'transactionType', 'documentCode',
+        'customerCode', 'transactionDate', 'defaultLocations');
 
     /**
      * Account Id
@@ -86,7 +86,7 @@ class Header extends Part
      *
      * @var string
      */
-    protected $_accountId;
+    protected $accountId;
 
     /**
      * Company Code
@@ -94,7 +94,7 @@ class Header extends Part
      *
      * @var string
      */
-    protected $_companyCode;
+    protected $companyCode;
 
     /**
      * Transaction Type
@@ -102,7 +102,7 @@ class Header extends Part
      *
      * @var string
      */
-    protected $_transactionType;
+    protected $transactionType;
 
     /**
      * Document Code
@@ -110,7 +110,7 @@ class Header extends Part
      *
      * @var string
      */
-    protected $_documentCode;
+    protected $documentCode;
 
     /**
      * Customer Code
@@ -118,7 +118,7 @@ class Header extends Part
      *
      * @var string
      */
-    protected $_customerCode;
+    protected $customerCode;
 
     /**
      * Vendor Code
@@ -126,7 +126,7 @@ class Header extends Part
      *
      * @var string
      */
-    protected $_vendorCode;
+    protected $vendorCode;
 
     /**
      * Transaction Date
@@ -134,7 +134,7 @@ class Header extends Part
      *
      * @var string
      */
-    protected $_transactionDate;
+    protected $transactionDate;
 
     /**
      * Currency
@@ -142,7 +142,7 @@ class Header extends Part
      *
      * @var string
      */
-    protected $_currency;
+    protected $currency;
 
     /**
      * Total Tax Override Amount
@@ -150,14 +150,14 @@ class Header extends Part
      *
      * @var float
      */
-    protected $_totalTaxOverrideAmount;
+    protected $totalTaxOverrideAmount;
 
     /**
      * Tax Calculation Date
      *
      * @var string
      */
-    protected $_taxCalculationDate;
+    protected $taxCalculationDate;
 
     /**
      * Default Avalara Goods And Services Type
@@ -165,7 +165,7 @@ class Header extends Part
      *
      * @var string
      */
-    protected $_defaultAvalaraGoodsAndServicesType;
+    protected $defaultAvalaraGoodsAndServicesType;
 
     /**
      * Default Avalara Goods And Services Modifier Type
@@ -173,7 +173,7 @@ class Header extends Part
      *
      * @var string
      */
-    protected $_defaultAvalaraGoodsAndServicesModifierType;
+    protected $defaultAvalaraGoodsAndServicesModifierType;
 
     /**
      * Default locations
@@ -181,7 +181,7 @@ class Header extends Part
      *
      * @var \OnePica\AvaTax16\Document\Part\Location[]
      */
-    protected $_defaultLocations;
+    protected $defaultLocations;
 
     /**
      * Default Tax Payer Code
@@ -189,35 +189,35 @@ class Header extends Part
      *
      * @var string
      */
-    protected $_defaultTaxPayerCode;
+    protected $defaultTaxPayerCode;
 
     /**
      * Default Buyer Type
      *
      * @var string
      */
-    protected $_defaultBuyerType;
+    protected $defaultBuyerType;
 
     /**
      * Default Use Type
      *
      * @var string
      */
-    protected $_defaultUseType;
+    protected $defaultUseType;
 
     /**
      * Purchase Order Number
      *
      * @var string
      */
-    protected $_purchaseOrderNumber;
+    protected $purchaseOrderNumber;
 
     /**
      * Metadata
      *
      * @var array
      */
-    protected $_metadata;
+    protected $metadata;
 
     /**
      * Set Metadata
@@ -230,9 +230,9 @@ class Header extends Part
         if ($value instanceof \StdClass) {
             // convert object data to array
             // it is used during filling data from response
-            $this->_metadata = (array) $value;
+            $this->metadata = (array) $value;
         } else {
-            $this->_metadata = $value;
+            $this->metadata = $value;
         }
     }
 }

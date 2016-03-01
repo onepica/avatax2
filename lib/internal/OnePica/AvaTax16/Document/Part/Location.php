@@ -44,14 +44,14 @@ class Location extends Part
      *
      * @var array
      */
-    protected $_propertyComplexTypes = array(
-        '_address' => array(
+    protected $propertyComplexTypes = array(
+        'address' => array(
             'type' => '\OnePica\AvaTax16\Document\Part\Location\Address'
         ),
-        '_latlong' => array(
+        'latlong' => array(
             'type' => '\OnePica\AvaTax16\Document\Part\Location\LatLong'
         ),
-        '_feedback' => array(
+        'feedback' => array(
             'type' => '\OnePica\AvaTax16\Document\Part\Feedback'
         ),
     );
@@ -62,20 +62,20 @@ class Location extends Part
      *
      * @var string
      */
-    protected $_taxLocationPurpose;
+    protected $taxLocationPurpose;
     /**
      * Address
      *
      * @var \OnePica\AvaTax16\Document\Part\Location\Address
      */
-    protected $_address;
+    protected $address;
 
     /**
      * Latitude and longitude
      *
      * @var \OnePica\AvaTax16\Document\Part\Location\LatLong
      */
-    protected $_latlong;
+    protected $latlong;
 
     /**
      * Location code
@@ -83,7 +83,7 @@ class Location extends Part
      *
      * @var string
      */
-    protected $_locationCode;
+    protected $locationCode;
 
     /**
      * Ip Address
@@ -91,14 +91,14 @@ class Location extends Part
      *
      * @var string
      */
-    protected $_ipAddress;
+    protected $ipAddress;
 
     /**
      * Resolution Quality
      *
      * @var string
      */
-    protected $_resolutionQuality;
+    protected $resolutionQuality;
 
     /**
      * Address Tax Payer Code
@@ -106,21 +106,21 @@ class Location extends Part
      *
      * @var string
      */
-    protected $_addressTaxPayerCode;
+    protected $addressTaxPayerCode;
 
     /**
      * Address Buyer Type
      *
      * @var string
      */
-    protected $_addressBuyerType;
+    protected $addressBuyerType;
 
     /**
      * Address Use Type
      *
      * @var string
      */
-    protected $_addressUseType;
+    protected $addressUseType;
 
     /**
      * Set Address
@@ -130,7 +130,7 @@ class Location extends Part
      */
     public function setAddress($value)
     {
-        $this->_address = $value;
+        $this->address = $value;
         return $this;
     }
 
@@ -141,6 +141,6 @@ class Location extends Part
      */
     public function getAddress()
     {
-        return $this->_address;
+        return $this->address;
     }
 }

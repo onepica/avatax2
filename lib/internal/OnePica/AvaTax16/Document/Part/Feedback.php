@@ -32,5 +32,5 @@ class Feedback extends Part
      *
      * @var \OnePica\AvaTax16\Document\Part\Feedback\LatencyData
      */
-    protected $_latencyData;
+    protected $latencyData;
 }

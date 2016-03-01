@@ -56,7 +56,7 @@ class Address extends Part
      *
      * @var array
      */
-    protected $_requiredProperties = array('_line1');
+    protected $requiredProperties = array('line1');
 
     /**
      * Line 1
@@ -64,21 +64,21 @@ class Address extends Part
      *
      * @var string
      */
-    protected $_line1;
+    protected $line1;
 
     /**
      * Line 2
      *
      * @var string
      */
-    protected $_line2;
+    protected $line2;
 
     /**
      * Line3
      *
      * @var string
      */
-    protected $_line3;
+    protected $line3;
 
     /**
      * City
@@ -86,7 +86,7 @@ class Address extends Part
      *
      * @var string
      */
-    protected $_city;
+    protected $city;
 
     /**
      * Municipality
@@ -94,7 +94,7 @@ class Address extends Part
      *
      * @var string
      */
-    protected $_municipality;
+    protected $municipality;
 
     /**
      * Town
@@ -102,7 +102,7 @@ class Address extends Part
      *
      * @var string
      */
-    protected $_town;
+    protected $town;
 
     /**
      * State
@@ -110,7 +110,7 @@ class Address extends Part
      *
      * @var string
      */
-    protected $_state;
+    protected $state;
 
     /**
      * Province
@@ -118,14 +118,14 @@ class Address extends Part
      *
      * @var string
      */
-    protected $_province;
+    protected $province;
 
     /**
      * Country
      *
      * @var string
      */
-    protected $_country;
+    protected $country;
 
     /**
      * Zip Code
@@ -133,7 +133,7 @@ class Address extends Part
      *
      * @var string
      */
-    protected $_zipcode;
+    protected $zipcode;
 
     /**
      * Postal Code
@@ -141,7 +141,7 @@ class Address extends Part
      *
      * @var string
      */
-    protected $_postalCode;
+    protected $postalCode;
 
     /**
      * Post Code
@@ -149,5 +149,5 @@ class Address extends Part
      *
      * @var string
      */
-    protected $_postcode;
+    protected $postcode;
 }

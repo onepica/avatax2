@@ -36,12 +36,12 @@ class CalculatedTax extends Part
      *
      * @var array
      */
-    protected $_propertyComplexTypes = array(
-        '_taxByType' => array(
+    protected $propertyComplexTypes = array(
+        'taxByType' => array(
             'type' => '\OnePica\AvaTax16\Document\Response\Line\CalculatedTax\TaxByType',
             'isArrayOf' => 'true'
         ),
-        '_details' => array(
+        'details' => array(
             'type' => '\OnePica\AvaTax16\Document\Response\Line\CalculatedTax\Details',
             'isArrayOf' => 'true'
         )
@@ -52,19 +52,19 @@ class CalculatedTax extends Part
      *
      * @var \OnePica\AvaTax16\Document\Response\Line\CalculatedTax\TaxByType[]
      */
-    protected $_taxByType;
+    protected $taxByType;
 
     /**
      * Tax
      *
      * @var float
      */
-    protected $_tax;
+    protected $tax;
 
     /**
      * Details
      *
      * @var \OnePica\AvaTax16\Document\Response\Line\CalculatedTax\Details[]
      */
-    protected $_details;
+    protected $details;
 }

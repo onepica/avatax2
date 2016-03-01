@@ -36,8 +36,8 @@ class TaxByType extends Part
      *
      * @var array
      */
-    protected $_propertyComplexTypes = array(
-        '_jurisdictions' => array(
+    protected $propertyComplexTypes = array(
+        'jurisdictions' => array(
             'type' => '\OnePica\AvaTax16\Document\Response\CalculatedTaxSummary\TaxByType\Details',
             'isArrayOf' => true
         )
@@ -48,19 +48,19 @@ class TaxByType extends Part
      *
      * @var float
      */
-    protected $_tax;
+    protected $tax;
 
     /**
      * jurisdictions
      *
      * @var \OnePica\AvaTax16\Document\Response\CalculatedTaxSummary\TaxByType\Details[]
      */
-    protected $_jurisdictions;
+    protected $jurisdictions;
 
     /**
      * Comment
      *
      * @var string
      */
-    protected $_comment;
+    protected $comment;
 }

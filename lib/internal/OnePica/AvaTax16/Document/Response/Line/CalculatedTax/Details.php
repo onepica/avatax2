@@ -56,89 +56,89 @@ class Details extends Part
      *
      * @var string
      */
-    protected $_jurisdictionName;
+    protected $jurisdictionName;
 
     /**
      * Jurisdiction Type
      *
      * @var string
      */
-    protected $_jurisdictionType;
+    protected $jurisdictionType;
 
     /**
      * Tax Type
      *
      * @var string
      */
-    protected $_taxType;
+    protected $taxType;
 
     /**
      * Rate Type
      *
      * @var string
      */
-    protected $_rateType;
+    protected $rateType;
 
     /**
      * Scenario
      *
      * @var string
      */
-    protected $_scenario;
+    protected $scenario;
 
     /**
      * Subtotal Taxable
      *
      * @var float
      */
-    protected $_subtotalTaxable;
+    protected $subtotalTaxable;
 
     /**
      * Subtotal Exempt
      *
      * @var float
      */
-    protected $_subtotalExempt;
+    protected $subtotalExempt;
 
     /**
      * Rate
      *
      * @var float
      */
-    protected $_rate;
+    protected $rate;
 
     /**
      * Tax
      *
      * @var float
      */
-    protected $_tax;
+    protected $tax;
 
     /**
      * Exempt
      *
      * @var bool
      */
-    protected $_exempt;
+    protected $exempt;
 
     /**
      * ExemptionReason
      *
      * @var string
      */
-    protected $_exemptionReason;
+    protected $exemptionReason;
 
     /**
      * Significant Locations
      *
      * @var string[]
      */
-    protected $_significantLocations;
+    protected $significantLocations;
 
     /**
      * Comment
      *
      * @var string
      */
-    protected $_comment;
+    protected $comment;
 }

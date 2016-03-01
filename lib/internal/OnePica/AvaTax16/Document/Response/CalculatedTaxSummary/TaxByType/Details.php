@@ -38,26 +38,26 @@ class Details extends Part
      *
      * @var string
      */
-    protected $_jurisdictionName;
+    protected $jurisdictionName;
 
     /**
      * Jurisdiction Type
      *
      * @var string
      */
-    protected $_jurisdictionType;
+    protected $jurisdictionType;
 
     /**
      * Tax
      *
      * @var float
      */
-    protected $_tax;
+    protected $tax;
 
     /**
      * Comment
      *
      * @var string
      */
-    protected $_comment;
+    protected $comment;
 }

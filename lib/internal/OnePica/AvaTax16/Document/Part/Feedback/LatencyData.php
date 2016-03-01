@@ -34,12 +34,12 @@ class LatencyData extends Part
      *
      * @var int
      */
-    protected $_latency;
+    protected $latency;
 
     /**
      * Version Id
      *
      * @var string
      */
-    protected $_versionId;
+    protected $versionId;
 }

@@ -42,35 +42,35 @@ class Response extends Part
      *
      * @var bool
      */
-    protected $_hasError = false;
+    protected $hasError = false;
 
     /**
      * Errors
      *
      * @var array
      */
-    protected $_errors;
+    protected $errors;
 
     /**
      * Types of complex properties
      *
      * @var array
      */
-    protected $_propertyComplexTypes = array(
-        '_header' => array(
+    protected $propertyComplexTypes = array(
+        'header' => array(
             'type' => '\OnePica\AvaTax16\Document\Response\Header'
         ),
-        '_lines' => array(
+        'lines' => array(
             'type' => '\OnePica\AvaTax16\Document\Response\Line',
             'isArrayOf' => 'true'
         ),
-        '_calculatedTaxSummary' => array(
+        'calculatedTaxSummary' => array(
             'type' => '\OnePica\AvaTax16\Document\Response\CalculatedTaxSummary'
         ),
-        '_feedback' => array(
+        'feedback' => array(
             'type' => '\OnePica\AvaTax16\Document\Part\Feedback'
         ),
-        '_processingInfo' => array(
+        'processingInfo' => array(
             'type' => '\OnePica\AvaTax16\Document\Response\ProcessingInfo'
         ),
     );
@@ -80,33 +80,33 @@ class Response extends Part
      *
      * @var \OnePica\AvaTax16\Document\Response\Header
      */
-    protected $_header;
+    protected $header;
 
     /**
      * Lines
      *
      * @var \OnePica\AvaTax16\Document\Response\Line[]
      */
-    protected $_lines;
+    protected $lines;
 
     /**
      * Calculated Tax Summary
      *
      * @var \OnePica\AvaTax16\Document\Response\CalculatedTaxSummary
      */
-    protected $_calculatedTaxSummary;
+    protected $calculatedTaxSummary;
 
     /**
      * Feedback
      *
      * @var \OnePica\AvaTax16\Document\Part\Feedback
      */
-    protected $_feedback;
+    protected $feedback;
 
     /**
      * Processing Info
      *
      * @var \OnePica\AvaTax16\Document\Response\ProcessingInfo
      */
-    protected $_processingInfo;
+    protected $processingInfo;
 }
