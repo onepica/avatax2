@@ -27,21 +27,21 @@ class Part
      *
      * @var array
      */
-    protected $_requiredProperties = array();
+    protected $requiredProperties = array();
 
     /**
      * Excluded properties (will be ignored during toArray function)
      *
      * @var array
      */
-    protected $_excludedProperties = array();
+    protected $excludedProperties = array();
 
     /**
      * Types of complex properties
      *
      * @var array
      */
-    protected $_propertyComplexTypes = array();
+    protected $propertyComplexTypes = array();
 
     /**
      * Properties get and set methods
@@ -51,23 +51,23 @@ class Part
         $action = substr($name, 0, 3);
         switch ($action) {
             case 'get':
-                $property = '_' . lcfirst(substr($name, 3));
+                $property = lcfirst(substr($name, 3));
                 if (property_exists($this, $property)) {
                     return $this->{$property};
                 } else {
-                    $this->_throwWrongMethodErrorException($name);
+                    $this->throwWrongMethodErrorException($name);
                 }
                 break;
             case 'set':
-                $property = '_' . lcfirst(substr($name, 3));
+                $property = lcfirst(substr($name, 3));
                 if (property_exists($this, $property)) {
                     $this->{$property} = $arguments[0];
                 } else {
-                    $this->_throwWrongMethodErrorException($name);
+                    $this->throwWrongMethodErrorException($name);
                 }
                 break;
             default :
-                $this->_throwWrongMethodErrorException($name);
+                $this->throwWrongMethodErrorException($name);
         }
     }
 
@@ -77,7 +77,7 @@ class Part
      * @param string $methodName
      * @throws \OnePica\AvaTax16\Exception
      */
-    protected function _throwWrongMethodErrorException($methodName)
+    protected function throwWrongMethodErrorException($methodName)
     {
         $trace = debug_backtrace();
         $errorMessage = 'Undefined method  '
@@ -97,7 +97,7 @@ class Part
     public function isValid()
     {
         foreach ($this as $key => $value) {
-            if (in_array($key, $this->_requiredProperties) && (null === $value)) {
+            if (in_array($key, $this->requiredProperties) && (null === $value)) {
                 return false;
             }
         }
@@ -117,14 +117,14 @@ class Part
         }
         $result = array();
         foreach ($this as $key => $value) {
-            if (in_array($key, $this->_excludedProperties)
-                || in_array($key, array('_requiredProperties', '_excludedProperties', '_propertyComplexTypes'))
+            if (in_array($key, $this->excludedProperties)
+                || in_array($key, array('requiredProperties', 'excludedProperties', 'propertyComplexTypes'))
                 || (null === $value)) {
                 // skip property
                 continue;
             }
             $name = substr($key, 1);
-            $result[$name] = $this->_proceedToArrayItem($value);
+            $result[$name] = $this->proceedToArrayItem($value);
         }
         return $result;
     }
@@ -135,7 +135,7 @@ class Part
      * @param \OnePica\AvaTax16\Document\Part|array|string $item
      * @return array|string
      */
-    protected function _proceedToArrayItem($item)
+    protected function proceedToArrayItem($item)
     {
         $result = null;
         $itemType = ($item instanceof Part) ? 'documentPart' :
@@ -147,7 +147,7 @@ class Part
                 break;
             case 'array':
                 foreach ($item as $key => $value) {
-                    $result[$key] = $this->_proceedToArrayItem($value);
+                    $result[$key] = $this->proceedToArrayItem($value);
                 }
                 break;
             case 'simple':
@@ -167,25 +167,25 @@ class Part
     public function fillData($data)
     {
         foreach ($data as $key => $value) {
-            $propName = '_' . $key;
+            $propName = $key;
             $method = 'set' . ucfirst($key);
             if (!property_exists($this, $propName)) {
                 // skip unknown property received from response to prevent error
                 continue;
             }
-            if (isset($this->_propertyComplexTypes[$propName])) {
-                $propertyType = $this->_propertyComplexTypes[$propName]['type'];
-                if (isset($this->_propertyComplexTypes[$propName]['isArrayOf'])) {
+            if (isset($this->propertyComplexTypes[$propName])) {
+                $propertyType = $this->propertyComplexTypes[$propName]['type'];
+                if (isset($this->propertyComplexTypes[$propName]['isArrayOf'])) {
                     $items = null;
                     if (count($value) > 0) {
                         foreach ($value as $itemKey => $itemData) {
-                            $item = $this->_createItemAndFillData($propertyType, $itemData);
+                            $item = $this->createItemAndFillData($propertyType, $itemData);
                             $items[$itemKey] = $item;
                         }
                     }
                     $this->$method($items);
                 } else {
-                    $item = $value ? $this->_createItemAndFillData($propertyType, $value) : null;
+                    $item = $value ? $this->createItemAndFillData($propertyType, $value) : null;
                     $this->$method($item);
                 }
             } else {
@@ -202,7 +202,7 @@ class Part
      * @param \StdClass|array $data
      * @return object $item
      */
-    protected function _createItemAndFillData($itemClassName, $data)
+    protected function createItemAndFillData($itemClassName, $data)
     {
         $item = new $itemClassName();
         $item->fillData($data);
