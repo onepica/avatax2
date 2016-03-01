@@ -87,7 +87,7 @@ class Transaction extends ResourceAbstract
         $requestOptions = array(
             'requestType' => 'POST',
             'data'        => $postData,
-            'returnClass' => 'OnePica_AvaTax16_Document_Response'
+            'returnClass' => '\OnePica\AvaTax16\Document\Response'
         );
         $documentResponse = $this->_sendRequest($postUrl, $requestOptions);
         return $documentResponse;

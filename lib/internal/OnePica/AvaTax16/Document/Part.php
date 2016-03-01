@@ -138,7 +138,7 @@ class Part
     protected function _proceedToArrayItem($item)
     {
         $result = null;
-        $itemType = ($item instanceof \OnePica\AvaTax16\Exception) ? 'documentPart' :
+        $itemType = ($item instanceof Part) ? 'documentPart' :
                 ((is_array($item)) ? 'array' : 'simple');
 
         switch ($itemType) {
