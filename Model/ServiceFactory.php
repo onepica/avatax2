@@ -14,7 +14,7 @@
  */
 namespace OnePica\AvaTax2\Model;
 
-use Magento\Framework\ObjectManager\ObjectManager;
+use Magento\Framework\ObjectManagerInterface;
 use OnePica\AvaTax2\Api\ServiceInterface;
 
 /**
@@ -34,9 +34,9 @@ class ServiceFactory
     /**
      * ServiceFactory constructor.
      *
-     * @param \Magento\Framework\ObjectManager\ObjectManager $objectManager
+     * @param \Magento\Framework\ObjectManagerInterface $objectManager
      */
-    public function __construct(ObjectManager $objectManager)
+    public function __construct(ObjectManagerInterface $objectManager)
     {
         $this->objectManager = $objectManager;
     }
