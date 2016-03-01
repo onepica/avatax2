@@ -38,26 +38,26 @@ class TaxAuthority extends Part
      *
      * @var string
      */
-    protected $_avalaraId;
+    protected $avalaraId;
 
     /**
      * Jurisdiction Name
      *
      * @var string
      */
-    protected $_jurisdictionName;
+    protected $jurisdictionName;
 
     /**
      * Jurisdiction Type
      *
      * @var string
      */
-    protected $_jurisdictionType;
+    protected $jurisdictionType;
 
     /**
      * Signature Code
      *
      * @var string
      */
-    protected $_signatureCode;
+    protected $signatureCode;
 }

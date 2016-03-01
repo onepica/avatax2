@@ -42,28 +42,28 @@ class ResolveSingleAddressResponse extends Part
      *
      * @var bool
      */
-    protected $_hasError = false;
+    protected $hasError = false;
 
     /**
      * Errors
      *
      * @var array
      */
-    protected $_errors;
+    protected $errors;
 
     /**
      * Types of complex properties
      *
      * @var array
      */
-    protected $_propertyComplexTypes = array(
-        '_address' => array(
+    protected $propertyComplexTypes = array(
+        'address' => array(
             'type' => '\OnePica\AvaTax16\Document\Part\Location\Address'
         ),
-        '_coordinates' => array(
+        'coordinates' => array(
             'type' => '\OnePica\AvaTax16\Document\Part\Location\LatLong'
         ),
-        '_taxAuthorities' => array(
+        'taxAuthorities' => array(
             'type' => '\OnePica\AvaTax16\AddressResolution\TaxAuthority',
             'isArrayOf' => 'true'
         ),
@@ -74,26 +74,26 @@ class ResolveSingleAddressResponse extends Part
      *
      * @var \OnePica\AvaTax16\Document\Part\Location\Address
      */
-    protected $_address;
+    protected $address;
 
     /**
      * Coordinates
      *
      * @var \OnePica\AvaTax16\Document\Part\Location\LatLong
      */
-    protected $_coordinates;
+    protected $coordinates;
 
     /**
      * Resolution Quality
      *
      * @var string
      */
-    protected $_resolutionQuality;
+    protected $resolutionQuality;
 
     /**
      * Tax Authorities
      *
      * @var array
      */
-    protected $_taxAuthorities;
+    protected $taxAuthorities;
 }
