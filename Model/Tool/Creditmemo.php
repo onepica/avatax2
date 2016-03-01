@@ -46,7 +46,7 @@ class Creditmemo extends AbstractTool
         OrderCreditmemo $creditmemo
     ) {
         parent::__construct($config, $serviceFactory);
-        $this->creditmemo = $creditmemo;
+        $this->init($creditmemo);
     }
 
     /**
@@ -57,5 +57,18 @@ class Creditmemo extends AbstractTool
     public function execute()
     {
         return $this->getService()->creditmemo($this->creditmemo);
+    }
+
+    /**
+     * Init tool
+     *
+     * @param \Magento\Sales\Model\Order\Creditmemo $creditmemo
+     * @return $this
+     */
+    protected function init(OrderCreditmemo $creditmemo)
+    {
+        $this->creditmemo = $creditmemo;
+
+        return $this;
     }
 }

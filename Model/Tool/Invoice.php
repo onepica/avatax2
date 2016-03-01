@@ -46,7 +46,7 @@ class Invoice extends AbstractTool
         OrderInvoice $invoice
     ) {
         parent::__construct($config, $serviceFactory);
-        $this->invoice = $invoice;
+        $this->init($invoice);
     }
 
     /**
@@ -57,5 +57,18 @@ class Invoice extends AbstractTool
     public function execute()
     {
         return $this->getService()->invoice($this->invoice);
+    }
+
+    /**
+     * Init tool
+     *
+     * @param \Magento\Sales\Model\Order\Invoice $invoice
+     * @return $this
+     */
+    public function init(OrderInvoice $invoice)
+    {
+        $this->invoice = $invoice;
+
+        return $this;
     }
 }
