@@ -61,14 +61,14 @@ class Line extends Part
      *
      * @var array
      */
-    protected $_requiredProperties = array('lineCode', 'lineAmount');
+    protected $requiredProperties = array('lineCode', 'lineAmount');
 
     /**
      * Types of complex properties
      *
      * @var array
      */
-    protected $_propertyComplexTypes = array(
+    protected $propertyComplexTypes = array(
         'locations' => array(
             'type' => '\OnePica\AvaTax16\Document\Part\Location',
             'isArrayOf' => 'true'
