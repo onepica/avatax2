@@ -26,7 +26,7 @@ class Config extends AbstractHelper
     /**
      * Xml path to active service
      */
-    const AVATAX_ACTIVE_SERVICE = 'tax/avatax/service_type';
+    const AVATAX_ACTIVE_SERVICE = 'tax/avatax/active_service';
 
     /**
      * Get active service
