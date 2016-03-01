@@ -35,14 +35,14 @@ class Calculation extends ResourceAbstract
      */
     public function createCalculation($documentRequest)
     {
-        $postUrl = $this->_config->getBaseUrl() . self::CALCULATION_URL_PATH;
+        $postUrl = $this->getConfig()->getBaseUrl() . self::CALCULATION_URL_PATH;
         $postData = $documentRequest->toArray();
         $requestOptions = array(
             'requestType' => 'POST',
             'data'        => $postData,
             'returnClass' => '\OnePica\AvaTax16\Document\Response'
         );
-        $documentResponse = $this->_sendRequest($postUrl, $requestOptions);
+        $documentResponse = $this->sendRequest($postUrl, $requestOptions);
         return $documentResponse;
     }
 
@@ -71,7 +71,7 @@ class Calculation extends ResourceAbstract
             'requestType' => 'GET',
             'returnClass' => '\OnePica\AvaTax16\Document\Response'
         );
-        $documentResponse = $this->_sendRequest($getUrl, $requestOptions);
+        $documentResponse = $this->sendRequest($getUrl, $requestOptions);
         return $documentResponse;
     }
 
@@ -109,7 +109,7 @@ class Calculation extends ResourceAbstract
             'data'        => $filterData,
             'returnClass' => '\OnePica\AvaTax16\Calculation\ListResponse'
         );
-        $calculationListResponse = $this->_sendRequest($getUrl, $requestOptions);
+        $calculationListResponse = $this->sendRequest($getUrl, $requestOptions);
         return $calculationListResponse;
     }
 }

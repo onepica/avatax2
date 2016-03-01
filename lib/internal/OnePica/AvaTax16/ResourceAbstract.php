@@ -29,7 +29,7 @@ abstract class ResourceAbstract
      *
      * @var \OnePica\AvaTax16\Config
      */
-    protected $_config;
+    protected $config;
 
     /**
      * Construct
@@ -38,7 +38,7 @@ abstract class ResourceAbstract
      */
     public function __construct($config)
     {
-        $this->_config = $config;
+        $this->config = $config;
     }
 
     /**
@@ -48,7 +48,7 @@ abstract class ResourceAbstract
      */
     public function getConfig()
     {
-        return $this->_config;
+        return $this->config;
     }
 
     /**
@@ -56,7 +56,7 @@ abstract class ResourceAbstract
      *
      * @return \OnePica\AvaTax16\IO\Curl
      */
-    protected function _getCurlObjectWithHeaders()
+    protected function getCurlObjectWithHeaders()
     {
         $curl = new Curl();
         $config = $this->getConfig();
@@ -74,7 +74,7 @@ abstract class ResourceAbstract
      * @param Curl $curl
      * @return $this
      */
-    protected function _setErrorDataToResponseIfExists($response, $curl)
+    protected function setErrorDataToResponseIfExists($response, $curl)
     {
         if ($curl->getError()) {
             $response->setHasError(true);
@@ -107,12 +107,12 @@ abstract class ResourceAbstract
      * @param array $options
      * @return mixed $result
      */
-    protected function _sendRequest($url, $options = array())
+    protected function sendRequest($url, $options = array())
     {
         $requestType = (isset($options['requestType'])) ? $options['requestType'] : 'GET';
         $data = (isset($options['data'])) ? $options['data'] : null;
         $returnClass = (isset($options['returnClass'])) ? $options['returnClass'] : null;
-        $curl = $this->_getCurlObjectWithHeaders();
+        $curl = $this->getCurlObjectWithHeaders();
         $result = null;
         switch ($requestType) {
             case 'GET':
@@ -124,7 +124,7 @@ abstract class ResourceAbstract
         }
         if (isset($returnClass)) {
             $responseObject = new $returnClass();
-            $this->_setErrorDataToResponseIfExists($responseObject, $curl);
+            $this->setErrorDataToResponseIfExists($responseObject, $curl);
             if (!$responseObject->getHasError()) {
                 $responseData = $curl->getResponse();
                 $responseObject->fillData($responseData);

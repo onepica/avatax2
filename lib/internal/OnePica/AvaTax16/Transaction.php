@@ -42,14 +42,14 @@ class Transaction extends ResourceAbstract
      */
     public function createTransaction($documentRequest)
     {
-        $postUrl = $this->_config->getBaseUrl() . self::TRANSACTION_URL_PATH;
+        $postUrl = $this->getConfig()->getBaseUrl() . self::TRANSACTION_URL_PATH;
         $postData = $documentRequest->toArray();
         $requestOptions = array(
             'requestType' => 'POST',
             'data'        => $postData,
             'returnClass' => '\OnePica\AvaTax16\Document\Response'
         );
-        $documentResponse = $this->_sendRequest($postUrl, $requestOptions);
+        $documentResponse = $this->sendRequest($postUrl, $requestOptions);
         return $documentResponse;
     }
 
@@ -89,7 +89,7 @@ class Transaction extends ResourceAbstract
             'data'        => $postData,
             'returnClass' => '\OnePica\AvaTax16\Document\Response'
         );
-        $documentResponse = $this->_sendRequest($postUrl, $requestOptions);
+        $documentResponse = $this->sendRequest($postUrl, $requestOptions);
         return $documentResponse;
     }
 
@@ -118,7 +118,7 @@ class Transaction extends ResourceAbstract
             'requestType' => 'GET',
             'returnClass' => '\OnePica\AvaTax16\Document\Response'
         );
-        $documentResponse = $this->_sendRequest($getUrl, $requestOptions);
+        $documentResponse = $this->sendRequest($getUrl, $requestOptions);
         return $documentResponse;
     }
 
@@ -157,7 +157,7 @@ class Transaction extends ResourceAbstract
             'data'        => $filterData,
             'returnClass' => '\OnePica\AvaTax16\Transaction\ListResponse'
         );
-        $transactionListResponse = $this->_sendRequest($getUrl, $requestOptions);
+        $transactionListResponse = $this->sendRequest($getUrl, $requestOptions);
         return $transactionListResponse;
     }
 
@@ -187,7 +187,7 @@ class Transaction extends ResourceAbstract
             'requestType' => 'GET',
             'returnClass' => '\OnePica\AvaTax16\Document\Request'
         );
-        $transactionInput = $this->_sendRequest($getUrl, $requestOptions);
+        $transactionInput = $this->sendRequest($getUrl, $requestOptions);
         return $transactionInput;
     }
 
@@ -220,10 +220,10 @@ class Transaction extends ResourceAbstract
             'comment' => $comment
         );
 
-        $curl = $this->_getCurlObjectWithHeaders();
+        $curl = $this->getCurlObjectWithHeaders();
         $curl->post($postUrl, $postData);
         $transitionTransactionStateResponse = new TransitionTransactionStateResponse();
-        $this->_setErrorDataToResponseIfExists($transitionTransactionStateResponse, $curl);
+        $this->setErrorDataToResponseIfExists($transitionTransactionStateResponse, $curl);
         $transitionTransactionStateResponse->setHttpStatus($curl->getHttpStatusCode());
         return $transitionTransactionStateResponse;
     }

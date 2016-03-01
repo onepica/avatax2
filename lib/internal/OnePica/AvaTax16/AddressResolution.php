@@ -50,7 +50,7 @@ class AddressResolution extends ResourceAbstract
             'data'        => $postData,
             'returnClass' => '\OnePica\AvaTax16\AddressResolution\ResolveSingleAddressResponse'
         );
-        $result = $this->_sendRequest($postUrl, $requestOptions);
+        $result = $this->sendRequest($postUrl, $requestOptions);
         return $result;
     }
 }

@@ -42,35 +42,35 @@ class Config
      *
      * @var string
      */
-    protected $_baseUrl;
+    protected $baseUrl;
 
     /**
      * Account id
      *
      * @var string
      */
-    protected $_accountId;
+    protected $accountId;
 
     /**
      * Company code
      *
      * @var string
      */
-    protected $_companyCode;
+    protected $companyCode;
 
     /**
      * Authorization header
      *
      * @var string
      */
-    protected $_authorizationHeader;
+    protected $authorizationHeader;
 
     /**
      * User agent
      *
      * @var string
      */
-    protected $_userAgent;
+    protected $userAgent;
 
     /**
      * Construct
@@ -89,7 +89,7 @@ class Config
      */
     public function setBaseUrl($value)
     {
-        $this->_baseUrl = $value;
+        $this->baseUrl = $value;
     }
 
     /**
@@ -99,7 +99,7 @@ class Config
      */
     public function getBaseUrl()
     {
-        return $this->_baseUrl;
+        return $this->baseUrl;
     }
 
     /**
@@ -110,7 +110,7 @@ class Config
      */
     public function setUserAgent($value)
     {
-        $this->_userAgent = $value;
+        $this->userAgent = $value;
     }
 
     /**
@@ -120,7 +120,7 @@ class Config
      */
     public function getUserAgent()
     {
-        return $this->_userAgent;
+        return $this->userAgent;
     }
 
     /**
@@ -131,7 +131,7 @@ class Config
      */
     public function setAccountId($value)
     {
-        $this->_accountId = $value;
+        $this->accountId = $value;
     }
 
     /**
@@ -141,7 +141,7 @@ class Config
      */
     public function getAccountId()
     {
-        return $this->_accountId;
+        return $this->accountId;
     }
 
     /**
@@ -152,7 +152,7 @@ class Config
      */
     public function setCompanyCode($value)
     {
-        $this->_companyCode = $value;
+        $this->companyCode = $value;
     }
 
     /**
@@ -162,7 +162,7 @@ class Config
      */
     public function getCompanyCode()
     {
-        return $this->_companyCode;
+        return $this->companyCode;
     }
 
     /**
@@ -173,7 +173,7 @@ class Config
      */
     public function setAuthorizationHeader($value)
     {
-        $this->_authorizationHeader = $value;
+        $this->authorizationHeader = $value;
     }
 
     /**
@@ -183,7 +183,7 @@ class Config
      */
     public function getAuthorizationHeader()
     {
-        return $this->_authorizationHeader;
+        return $this->authorizationHeader;
     }
 
     /**

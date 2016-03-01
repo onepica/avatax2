@@ -26,13 +26,6 @@ use OnePica\AvaTax16\AddressResolution\PingResponse;
 class TaxService extends ResourceAbstract
 {
     /**
-     * Config
-     *
-     * @var \OnePica\AvaTax16\Config
-     */
-    protected $_config;
-
-    /**
      * Construct
      *
      * @param \OnePica\AvaTax16\Config $config
@@ -43,17 +36,7 @@ class TaxService extends ResourceAbstract
         if (!$config->isValid()) {
             throw new Exception("Not valid data in config!");
         }
-        $this->_config = $config;
-    }
-
-    /**
-     * Get config
-     *
-     * @return \OnePica\AvaTax16\Config
-     */
-    public function getConfig()
-    {
-        return $this->_config;
+        $this->config = $config;
     }
 
     /**
@@ -62,7 +45,7 @@ class TaxService extends ResourceAbstract
      * @param string $type
      * @return mixed $taxResource
      */
-    protected function _getTaxResource($type)
+    protected function getTaxResource($type)
     {
         $config  = $this->getConfig();
         $taxResource = null;
@@ -88,7 +71,7 @@ class TaxService extends ResourceAbstract
      */
     public function createCalculation($documentRequest)
     {
-        $calculationResource = $this->_getTaxResource('calculation');
+        $calculationResource = $this->getTaxResource('calculation');
         $documentResponse = $calculationResource->createCalculation($documentRequest);
         return $documentResponse;
     }
@@ -102,7 +85,7 @@ class TaxService extends ResourceAbstract
      */
     public function getCalculation($transactionType, $documentCode)
     {
-        $calculationResource = $this->_getTaxResource('calculation');
+        $calculationResource = $this->getTaxResource('calculation');
         $documentResponse = $calculationResource->getCalculation($transactionType, $documentCode);
         return $documentResponse;
     }
@@ -120,7 +103,7 @@ class TaxService extends ResourceAbstract
     public function getListOfCalculations($transactionType, $limit = null, $startDate = null, $endDate = null,
         $startCode = null)
     {
-        $calculationResource = $this->_getTaxResource('calculation');
+        $calculationResource = $this->getTaxResource('calculation');
         $calculationListResponse = $calculationResource->getListOfCalculations(
             $transactionType, $limit, $startDate, $endDate, $startCode
         );
@@ -135,7 +118,7 @@ class TaxService extends ResourceAbstract
      */
     public function createTransaction($documentRequest)
     {
-        $transactionResource = $this->_getTaxResource('transaction');
+        $transactionResource = $this->getTaxResource('transaction');
         $documentResponse = $transactionResource->createTransaction($documentRequest);
         return $documentResponse;
     }
@@ -152,7 +135,7 @@ class TaxService extends ResourceAbstract
     public function createTransactionFromCalculation($transactionType, $documentCode, $recalculate = null,
         $comment = null)
     {
-        $transactionResource = $this->_getTaxResource('transaction');
+        $transactionResource = $this->getTaxResource('transaction');
         $documentResponse = $transactionResource->createTransactionFromCalculation(
             $transactionType, $documentCode, $recalculate, $comment
         );
@@ -168,7 +151,7 @@ class TaxService extends ResourceAbstract
      */
     public function getTransaction($transactionType, $documentCode)
     {
-        $transactionResource = $this->_getTaxResource('transaction');
+        $transactionResource = $this->getTaxResource('transaction');
         $documentResponse = $transactionResource->getTransaction($transactionType, $documentCode);
         return $documentResponse;
     }
@@ -186,7 +169,7 @@ class TaxService extends ResourceAbstract
     public function getListOfTransactions($transactionType, $limit = null, $startDate = null, $endDate = null,
         $startCode = null)
     {
-        $transactionResource = $this->_getTaxResource('transaction');
+        $transactionResource = $this->getTaxResource('transaction');
         $transactionListResponse = $transactionResource->getListOfTransactions(
             $transactionType, $limit, $startDate, $endDate, $startCode
         );
@@ -202,7 +185,7 @@ class TaxService extends ResourceAbstract
      */
     public function getTransactionInput($transactionType, $documentCode)
     {
-        $transactionResource = $this->_getTaxResource('transaction');
+        $transactionResource = $this->getTaxResource('transaction');
         $transactionInput = $transactionResource->getTransactionInput($transactionType, $documentCode);
         return $transactionInput;
     }
@@ -218,7 +201,7 @@ class TaxService extends ResourceAbstract
      */
     public function transitionTransactionState($transactionType, $documentCode, $type, $comment)
     {
-        $transactionResource = $this->_getTaxResource('transaction');
+        $transactionResource = $this->getTaxResource('transaction');
         $transitionTransactionStateResponse = $transactionResource->transitionTransactionState(
             $transactionType, $documentCode, $type, $comment
         );
@@ -233,7 +216,7 @@ class TaxService extends ResourceAbstract
      */
     public function resolveSingleAddress($address)
     {
-        $addressResolutionResource = $this->_getTaxResource('addressResolution');
+        $addressResolutionResource = $this->getTaxResource('addressResolution');
         $resolvedAddressResponse = $addressResolutionResource->resolveSingleAddress($address);
         return $resolvedAddressResponse;
     }
@@ -251,7 +234,7 @@ class TaxService extends ResourceAbstract
         $address->setLine1('Avenue');
         $address->setZipcode('10022');
         $address->setCountry('USA');
-        $addressResolutionResource = $this->_getTaxResource('addressResolution');
+        $addressResolutionResource = $this->getTaxResource('addressResolution');
         $resolvedAddress = $addressResolutionResource->resolveSingleAddress($address);
         // set data to response object
         $pingResponse = new PingResponse();
