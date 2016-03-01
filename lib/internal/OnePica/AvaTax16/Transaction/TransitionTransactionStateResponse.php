@@ -36,19 +36,19 @@ class TransitionTransactionStateResponse extends Part
      *
      * @var bool
      */
-    protected $_hasError = false;
+    protected $hasError = false;
 
     /**
      * Errors
      *
      * @var array
      */
-    protected $_errors;
+    protected $errors;
 
     /**
      * Http Status (code)
      *
      * @var int
      */
-    protected $_httpStatus;
+    protected $httpStatus;
 }

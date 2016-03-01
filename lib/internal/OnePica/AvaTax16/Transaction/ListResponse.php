@@ -36,21 +36,21 @@ class ListResponse extends Part
      *
      * @var bool
      */
-    protected $_hasError = false;
+    protected $hasError = false;
 
     /**
      * Errors
      *
      * @var array
      */
-    protected $_errors;
+    protected $errors;
 
     /**
      * List items
      *
      * @var \OnePica\AvaTax16\Transaction\ListItemResponse[]
      */
-    protected $_items;
+    protected $items;
 
     /**
      * Fill data from object
