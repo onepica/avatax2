@@ -15,7 +15,7 @@
 namespace OnePica\AvaTax2\Model\Service;
 
 use Magento\Framework\DataObject;
-use Magento\Framework\ObjectManager\ObjectManager;
+use Magento\Framework\ObjectManagerInterface;
 use Magento\Quote\Api\Data\ShippingAssignmentInterface;
 use Magento\Sales\Model\Order\Creditmemo;
 use Magento\Sales\Model\Order\Invoice;
@@ -81,9 +81,9 @@ abstract class AbstractService implements ServiceInterface
     /**
      * AbstractService constructor.
      *
-     * @param \Magento\Framework\ObjectManager\ObjectManager $objectManager
+     * @param \Magento\Framework\ObjectManagerInterface $objectManager
      */
-    public function __construct(ObjectManager $objectManager)
+    public function __construct(ObjectManagerInterface $objectManager)
     {
         $this->objectManager = $objectManager;
     }
