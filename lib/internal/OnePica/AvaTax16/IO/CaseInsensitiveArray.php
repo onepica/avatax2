@@ -27,7 +27,7 @@ class CaseInsensitiveArray implements \ArrayAccess, \Countable, \Iterator
      *
      * @var array
      */
-    protected $_container = array();
+    protected $container = array();
 
     /**
      * Offset Set
@@ -39,14 +39,14 @@ class CaseInsensitiveArray implements \ArrayAccess, \Countable, \Iterator
     public function offsetSet($offset, $value)
     {
         if ($offset === null) {
-            $this->_container[] = $value;
+            $this->container[] = $value;
         } else {
-            $index = array_search(strtolower($offset), array_keys(array_change_key_case($this->_container, CASE_LOWER)));
+            $index = array_search(strtolower($offset), array_keys(array_change_key_case($this->container, CASE_LOWER)));
             if (!($index === false)) {
-                $keys = array_keys($this->_container);
-                unset($this->_container[$keys[$index]]);
+                $keys = array_keys($this->container);
+                unset($this->container[$keys[$index]]);
             }
-            $this->_container[$offset] = $value;
+            $this->container[$offset] = $value;
         }
     }
 
@@ -58,7 +58,7 @@ class CaseInsensitiveArray implements \ArrayAccess, \Countable, \Iterator
      */
     public function offsetExists($offset)
     {
-        return array_key_exists(strtolower($offset), array_change_key_case($this->_container, CASE_LOWER));
+        return array_key_exists(strtolower($offset), array_change_key_case($this->container, CASE_LOWER));
     }
 
     /**
@@ -69,7 +69,7 @@ class CaseInsensitiveArray implements \ArrayAccess, \Countable, \Iterator
      */
     public function offsetUnset($offset)
     {
-        unset($this->_container[$offset]);
+        unset($this->container[$offset]);
     }
 
     /**
@@ -80,12 +80,12 @@ class CaseInsensitiveArray implements \ArrayAccess, \Countable, \Iterator
      */
     public function offsetGet($offset)
     {
-        $index = array_search(strtolower($offset), array_keys(array_change_key_case($this->_container, CASE_LOWER)));
+        $index = array_search(strtolower($offset), array_keys(array_change_key_case($this->container, CASE_LOWER)));
         if ($index === false) {
             return null;
         }
 
-        $values = array_values($this->_container);
+        $values = array_values($this->container);
         return $values[$index];
     }
 
@@ -96,7 +96,7 @@ class CaseInsensitiveArray implements \ArrayAccess, \Countable, \Iterator
      */
     public function count()
     {
-        return count($this->_container);
+        return count($this->container);
     }
 
     /**
@@ -106,7 +106,7 @@ class CaseInsensitiveArray implements \ArrayAccess, \Countable, \Iterator
      */
     public function current()
     {
-        return current($this->_container);
+        return current($this->container);
     }
 
     /**
@@ -116,7 +116,7 @@ class CaseInsensitiveArray implements \ArrayAccess, \Countable, \Iterator
      */
     public function next()
     {
-        return next($this->_container);
+        return next($this->container);
     }
 
     /**
@@ -126,7 +126,7 @@ class CaseInsensitiveArray implements \ArrayAccess, \Countable, \Iterator
      */
     public function key()
     {
-        return key($this->_container);
+        return key($this->container);
     }
 
     /**
@@ -146,6 +146,6 @@ class CaseInsensitiveArray implements \ArrayAccess, \Countable, \Iterator
      */
     public function rewind()
     {
-        reset($this->_container);
+        reset($this->container);
     }
 }
