@@ -123,7 +123,7 @@ class Part
                 // skip property
                 continue;
             }
-            $name = substr($key, 1);
+            $name = $key;
             $result[$name] = $this->proceedToArrayItem($value);
         }
         return $result;
