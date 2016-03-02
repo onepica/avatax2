@@ -1,6 +1,6 @@
 <?php
 /**
- * OnePica_AvaTax2
+ * OnePica_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
@@ -12,12 +12,12 @@
  * @copyright  Copyright (c) 2016 One Pica, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax2\Api;
+namespace OnePica\AvaTax\Api;
 
 /**
  * Interface ToolInterface
  *
- * @package OnePica\AvaTax2\Api
+ * @package OnePica\AvaTax\Api
  */
 interface ToolInterface
 {

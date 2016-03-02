@@ -1,6 +1,6 @@
 <?php
 /**
- * OnePica_AvaTax2
+ * OnePica_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
@@ -12,15 +12,15 @@
  * @copyright  Copyright (c) 2016 One Pica, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax2\Model\Service\Result;
+namespace OnePica\AvaTax\Model\Service\Result;
 
 use Magento\Framework\DataObject;
-use OnePica\AvaTax2\Api\ResultInterface;
+use OnePica\AvaTax\Api\ResultInterface;
 
 /**
  * Class AbstractResult
  *
- * @package OnePica\AvaTax2\Model\Service\Result
+ * @package OnePica\AvaTax\Model\Service\Result
  */
 class BaseResult extends DataObject implements ResultInterface
 {

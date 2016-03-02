@@ -1,6 +1,6 @@
 <?php
 /**
- * OnePica_AvaTax2
+ * OnePica_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
@@ -12,7 +12,7 @@
  * @copyright  Copyright (c) 2016 One Pica, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax2\Model\Service;
+namespace OnePica\AvaTax\Model\Service;
 
 use Magento\Framework\DataObject;
 use Magento\Framework\ObjectManagerInterface;
@@ -20,19 +20,19 @@ use Magento\Quote\Api\Data\ShippingAssignmentInterface;
 use Magento\Sales\Model\Order\Creditmemo;
 use Magento\Sales\Model\Order\Invoice;
 use Magento\Store\Model\Store;
-use OnePica\AvaTax2\Api\ResultInterface;
-use OnePica\AvaTax2\Api\Service\CalculationResourceInterface;
-use OnePica\AvaTax2\Api\Service\CreditmemoResourceInterface;
-use OnePica\AvaTax2\Api\Service\InvoiceResourceInterface;
-use OnePica\AvaTax2\Api\Service\PingResourceInterface;
-use OnePica\AvaTax2\Api\Service\ValidationResourceInterface;
-use OnePica\AvaTax2\Api\ServiceInterface;
-use OnePica\AvaTax2\Model\Service\Result\BaseResult;
+use OnePica\AvaTax\Api\ResultInterface;
+use OnePica\AvaTax\Api\Service\CalculationResourceInterface;
+use OnePica\AvaTax\Api\Service\CreditmemoResourceInterface;
+use OnePica\AvaTax\Api\Service\InvoiceResourceInterface;
+use OnePica\AvaTax\Api\Service\PingResourceInterface;
+use OnePica\AvaTax\Api\Service\ValidationResourceInterface;
+use OnePica\AvaTax\Api\ServiceInterface;
+use OnePica\AvaTax\Model\Service\Result\BaseResult;
 
 /**
  * Class AbstractService
  *
- * @package OnePica\AvaTax2\Model\Service
+ * @package OnePica\AvaTax\Model\Service
  */
 abstract class AbstractService implements ServiceInterface
 {

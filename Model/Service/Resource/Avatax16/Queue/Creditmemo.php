@@ -1,6 +1,6 @@
 <?php
 /**
- * OnePica_AvaTax2
+ * OnePica_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
@@ -12,28 +12,26 @@
  * @copyright  Copyright (c) 2016 One Pica, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax2\Model\Service\Resource\Avatax;
+namespace OnePica\AvaTax\Model\Service\Resource\Avatax16\Queue;
 
-use Magento\Store\Model\Store;
-use OnePica\AvaTax2\Api\ResultInterface;
-use OnePica\AvaTax2\Api\Service\PingResourceInterface;
-use OnePica\AvaTax2\Model\Service\Resource\AbstractResource;
+use OnePica\AvaTax\Api\ResultInterface;
+use OnePica\AvaTax\Api\Service\CreditmemoResourceInterface;
 
 /**
- * Class Ping
+ * Class Creditmemo
  *
- * @package OnePica\AvaTax2\Model\Service\Resource\Avatax
+ * @package OnePica\AvaTax\Model\Service\Resource\Avatax\Queue
  */
-class Ping extends AbstractResource implements PingResourceInterface
+class Creditmemo extends AbstractQueue implements CreditmemoResourceInterface
 {
     /**
-     * Ping
+     * Creditmemo
      *
-     * @param \Magento\Store\Model\Store $store
+     * @param \Magento\Sales\Model\Order\Creditmemo $creditmemo
      * @return ResultInterface
      */
-    public function ping(Store $store)
+    public function creditmemo(\Magento\Sales\Model\Order\Creditmemo $creditmemo)
     {
-        // TODO: Implement ping() method.
+        // TODO: Implement creditmemo() method.
     }
 }

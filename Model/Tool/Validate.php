@@ -1,6 +1,6 @@
 <?php
 /**
- * OnePica_AvaTax2
+ * OnePica_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
@@ -12,17 +12,17 @@
  * @copyright  Copyright (c) 2016 One Pica, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax2\Model\Tool;
+namespace OnePica\AvaTax\Model\Tool;
 
 use Magento\Framework\DataObject;
-use OnePica\AvaTax2\Api\ResultInterface;
-use OnePica\AvaTax2\Helper\Config as ConfigHelper;
-use OnePica\AvaTax2\Model\ServiceFactory;
+use OnePica\AvaTax\Api\ResultInterface;
+use OnePica\AvaTax\Helper\Config as ConfigHelper;
+use OnePica\AvaTax\Model\ServiceFactory;
 
 /**
  * Class Validate
  *
- * @package OnePica\AvaTax2\Model\Tool
+ * @package OnePica\AvaTax\Model\Tool
  */
 class Validate extends AbstractTool
 {
@@ -36,9 +36,9 @@ class Validate extends AbstractTool
     /**
      * Validate constructor.
      *
-     * @param \OnePica\AvaTax2\Helper\Config        $config
-     * @param \OnePica\AvaTax2\Model\ServiceFactory $serviceFactory
-     * @param \Magento\Framework\DataObject         $object
+     * @param \OnePica\AvaTax\Helper\Config        $config
+     * @param \OnePica\AvaTax\Model\ServiceFactory $serviceFactory
+     * @param \Magento\Framework\DataObject        $object
      * @todo need to specify which object ($object) will be passed to this method
      */
     public function __construct(

@@ -1,6 +1,6 @@
 <?php
 /**
- * OnePica_AvaTax2
+ * OnePica_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
@@ -12,26 +12,26 @@
  * @copyright  Copyright (c) 2016 One Pica, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax2\Model\Service\Resource\Avatax\Queue;
+namespace OnePica\AvaTax\Model\Service\Resource\Avatax16\Queue;
 
-use OnePica\AvaTax2\Api\ResultInterface;
-use OnePica\AvaTax2\Api\Service\CreditmemoResourceInterface;
+use OnePica\AvaTax\Api\ResultInterface;
+use OnePica\AvaTax\Api\Service\InvoiceResourceInterface;
 
 /**
- * Class Creditmemo
+ * Class Invoice
  *
- * @package OnePica\AvaTax2\Model\Service\Resource\Avatax\Queue
+ * @package OnePica\AvaTax\Model\Service\Resource\Avatax\Queue
  */
-class Creditmemo extends AbstractQueue implements CreditmemoResourceInterface
+class Invoice extends AbstractQueue implements InvoiceResourceInterface
 {
     /**
-     * Creditmemo
+     * Invoice
      *
-     * @param \Magento\Sales\Model\Order\Creditmemo $creditmemo
+     * @param \Magento\Sales\Model\Order\Invoice $invoice
      * @return ResultInterface
      */
-    public function creditmemo(\Magento\Sales\Model\Order\Creditmemo $creditmemo)
+    public function invoice(\Magento\Sales\Model\Order\Invoice $invoice)
     {
-        // TODO: Implement creditmemo() method.
+        // TODO: Implement invoice() method.
     }
 }

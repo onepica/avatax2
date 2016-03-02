@@ -1,6 +1,6 @@
 <?php
 /**
- * OnePica_AvaTax2
+ * OnePica_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
@@ -12,26 +12,28 @@
  * @copyright  Copyright (c) 2016 One Pica, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax2\Model\Service\Resource\Avatax\Queue;
+namespace OnePica\AvaTax\Model\Service\Resource\Avatax16;
 
-use OnePica\AvaTax2\Api\ResultInterface;
-use OnePica\AvaTax2\Api\Service\InvoiceResourceInterface;
+use Magento\Store\Model\Store;
+use OnePica\AvaTax\Api\ResultInterface;
+use OnePica\AvaTax\Api\Service\PingResourceInterface;
+use OnePica\AvaTax\Model\Service\Resource\AbstractResource;
 
 /**
- * Class Invoice
+ * Class Ping
  *
- * @package OnePica\AvaTax2\Model\Service\Resource\Avatax\Queue
+ * @package OnePica\AvaTax\Model\Service\Resource\Avatax
  */
-class Invoice extends AbstractQueue implements InvoiceResourceInterface
+class Ping extends AbstractResource implements PingResourceInterface
 {
     /**
-     * Invoice
+     * Ping
      *
-     * @param \Magento\Sales\Model\Order\Invoice $invoice
+     * @param \Magento\Store\Model\Store $store
      * @return ResultInterface
      */
-    public function invoice(\Magento\Sales\Model\Order\Invoice $invoice)
+    public function ping(Store $store)
     {
-        // TODO: Implement invoice() method.
+        // TODO: Implement ping() method.
     }
 }
