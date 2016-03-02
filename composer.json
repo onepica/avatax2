@@ -15,7 +15,7 @@
       "registration.php"
     ],
     "psr-4": {
-      "OnePica\\AvaTax2\\": ""
+      "OnePica\\AvaTax\\": ""
     }
   }
 }

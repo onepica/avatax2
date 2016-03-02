@@ -17,6 +17,6 @@
 
 \Magento\Framework\Component\ComponentRegistrar::register(
     \Magento\Framework\Component\ComponentRegistrar::MODULE,
-    'OnePica_AvaTax2',
+    'OnePica_AvaTax',
     __DIR__
 );
