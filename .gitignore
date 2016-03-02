@@ -16,5 +16,6 @@ atlassian-ide-plugin.xml
 #########################################################
 *.*
 !.gitignore
-!lib/internal/
-!lib/internal/**
+!composer.json
+!src/
+!src/**
