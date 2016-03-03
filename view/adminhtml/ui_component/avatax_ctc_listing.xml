@@ -129,6 +129,18 @@
 
         </filters>
 
+        <!-- define paging -->
+        <paging name="listing_paging">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="provider" xsi:type="string">avatax_ctc_listing.avatax_ctc_listing.listing_top.bookmarks</item>
+                        <item name="namespace" xsi:type="string">current.paging</item>
+                    </item>
+                </item>
+            </argument>
+        </paging>
+
     </container>
 
     <!-- define column listing -->
