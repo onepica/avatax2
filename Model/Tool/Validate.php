@@ -16,7 +16,7 @@ namespace OnePica\AvaTax\Model\Tool;
 
 use Magento\Framework\DataObject;
 use OnePica\AvaTax\Api\ResultInterface;
-use OnePica\AvaTax\Helper\Config as ConfigHelper;
+use OnePica\AvaTax\Api\Service\ResolverInterface;
 use OnePica\AvaTax\Model\ServiceFactory;
 
 /**
@@ -36,17 +36,17 @@ class Validate extends AbstractTool
     /**
      * Validate constructor.
      *
-     * @param \OnePica\AvaTax\Helper\Config        $config
-     * @param \OnePica\AvaTax\Model\ServiceFactory $serviceFactory
-     * @param \Magento\Framework\DataObject        $object
+     * @param \OnePica\AvaTax\Api\Service\ResolverInterface $resolver
+     * @param \OnePica\AvaTax\Model\ServiceFactory          $serviceFactory
+     * @param \Magento\Framework\DataObject                 $object
      * @todo need to specify which object ($object) will be passed to this method
      */
     public function __construct(
-        ConfigHelper $config,
+        ResolverInterface $resolver,
         ServiceFactory $serviceFactory,
         DataObject $object
     ) {
-        parent::__construct($config, $serviceFactory);
+        parent::__construct($resolver, $serviceFactory);
         $this->object = $object;
     }
 

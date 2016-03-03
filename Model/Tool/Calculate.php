@@ -16,7 +16,7 @@ namespace OnePica\AvaTax\Model\Tool;
 
 use Magento\Quote\Api\Data\ShippingAssignmentInterface;
 use OnePica\AvaTax\Api\ResultInterface;
-use OnePica\AvaTax\Helper\Config as ConfigHelper;
+use OnePica\AvaTax\Api\Service\ResolverInterface;
 use OnePica\AvaTax\Model\ServiceFactory;
 
 /**
@@ -36,16 +36,16 @@ class Calculate extends AbstractTool
     /**
      * Calculate constructor.
      *
-     * @param \OnePica\AvaTax\Helper\Config                       $config
+     * @param \OnePica\AvaTax\Api\Service\ResolverInterface       $resolver
      * @param \OnePica\AvaTax\Model\ServiceFactory                $serviceFactory
      * @param \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignment
      */
     public function __construct(
-        ConfigHelper $config,
+        ResolverInterface $resolver,
         ServiceFactory $serviceFactory,
         ShippingAssignmentInterface $shippingAssignment
     ) {
-        parent::__construct($config, $serviceFactory);
+        parent::__construct($resolver, $serviceFactory);
         $this->shippingAssignment = $shippingAssignment;
     }
 

@@ -15,7 +15,7 @@
 namespace OnePica\AvaTax\Model\Tool;
 
 use OnePica\AvaTax\Api\ResultInterface;
-use OnePica\AvaTax\Helper\Config as ConfigHelper;
+use OnePica\AvaTax\Api\Service\ResolverInterface;
 use OnePica\AvaTax\Model\ServiceFactory;
 use Magento\Sales\Model\Order\Creditmemo as OrderCreditmemo;
 
@@ -36,16 +36,16 @@ class Creditmemo extends AbstractTool
     /**
      * Creditmemo constructor.
      *
-     * @param \OnePica\AvaTax\Helper\Config         $config
-     * @param \OnePica\AvaTax\Model\ServiceFactory $serviceFactory
-     * @param \Magento\Sales\Model\Order\Creditmemo $creditmemo
+     * @param \OnePica\AvaTax\Api\Service\ResolverInterface $resolver
+     * @param \OnePica\AvaTax\Model\ServiceFactory          $serviceFactory
+     * @param \Magento\Sales\Model\Order\Creditmemo         $creditmemo
      */
     public function __construct(
-        ConfigHelper $config,
+        ResolverInterface $resolver,
         ServiceFactory $serviceFactory,
         OrderCreditmemo $creditmemo
     ) {
-        parent::__construct($config, $serviceFactory);
+        parent::__construct($resolver, $serviceFactory);
         $this->init($creditmemo);
     }
 
