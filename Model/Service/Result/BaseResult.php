@@ -127,13 +127,13 @@ class BaseResult extends DataObject implements ResultInterface
 
     /**
      * Get error as string
-     *
      * Convert array error messages to plain string
      *
+     * @param string $glue
      * @return string
      */
-    public function getErrorsAsString()
+    public function getErrorsAsString($glue = ', ')
     {
-        return implode(', ', $this->getErrors());
+        return implode($glue, $this->getErrors());
     }
 }
