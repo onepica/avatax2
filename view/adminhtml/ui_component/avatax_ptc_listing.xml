@@ -134,12 +134,17 @@
     <!-- define column listing -->
     <columns name="avatax_ptc_listing_columns">
 
-        <column name="class_id">
+        <column name="op_avatax_code">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
-                    <item name="sorting" xsi:type="string">asc</item>
-                    <item name="label" xsi:type="string" translate="true">ID</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">text</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                    <item name="label" xsi:type="string" translate="true">AvaTax Code</item>
                 </item>
             </argument>
         </column>
@@ -155,21 +160,6 @@
                         </item>
                     </item>
                     <item name="label" xsi:type="string" translate="true">Class Name</item>
-                </item>
-            </argument>
-        </column>
-
-        <column name="class_type">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">text</item>
-                    <item name="editor" xsi:type="array">
-                        <item name="editorType" xsi:type="string">text</item>
-                        <item name="validation" xsi:type="array">
-                            <item name="required-entry" xsi:type="boolean">true</item>
-                        </item>
-                    </item>
-                    <item name="label" xsi:type="string" translate="true">Class Type</item>
                 </item>
             </argument>
         </column>
