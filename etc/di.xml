@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="OnePica\AvaTax\Api\ConfigRepositoryInterface" type="OnePica\AvaTax\Model\Service\ConfigRepository"/>
+    <preference for="OnePica\AvaTax\Api\Service\ResolverInterface" type="OnePica\AvaTax\Model\Service\Resolver"/>
+    <type name="OnePica\AvaTax\Model\Service\Resolver">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="avatax16" xsi:type="array">
+                    <item name="service" xsi:type="string">OnePica\AvaTax\Model\Service\Avatax16</item>
+                    <item name="service_config" xsi:type="string">OnePica\AvaTax\Model\Service\Avatax16\Config</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+</config>
