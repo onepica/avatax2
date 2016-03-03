@@ -15,6 +15,9 @@
 namespace OnePica\AvaTax\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
+use Magento\Framework\App\Helper\Context;
+use Magento\Framework\App\ProductMetadataInterface;
+use Magento\Framework\AppInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\Store;
 
@@ -35,6 +38,25 @@ class Config extends AbstractHelper
     const AVATAX_SERVICE_LICENCE_KEY    = 'tax/avatax/license_key';
     const AVATAX_SERVICE_COMPANY_CODE   = 'tax/avatax/company_code';
     /**#@-*/
+
+    /**
+     * Product metadata
+     *
+     * @var \Magento\Framework\App\ProductMetadataInterface
+     */
+    protected $productMetadata;
+
+    /**
+     * Config constructor.
+     *
+     * @param \Magento\Framework\App\Helper\Context           $context
+     * @param \Magento\Framework\App\ProductMetadataInterface $productMetadata
+     */
+    public function __construct(Context $context, ProductMetadataInterface $productMetadata)
+    {
+        parent::__construct($context);
+        $this->productMetadata = $productMetadata;
+    }
 
     /**
      * Get active service
@@ -99,6 +121,20 @@ class Config extends AbstractHelper
     public function getServiceCompanyCode($store = null)
     {
         return (string)$this->getConfig(self::AVATAX_SERVICE_COMPANY_CODE, $store);
+    }
+
+    /**
+     * Get user agent
+     *
+     * @return string
+     */
+    public function getUserAgent()
+    {
+        $userAgent = $this->productMetadata->getName() . ' ';
+        $userAgent .= $this->productMetadata->getEdition() . ' v';
+        $userAgent .= $this->productMetadata->getVersion();
+
+        return $userAgent;
     }
 
     /**
