@@ -15,7 +15,7 @@
 namespace OnePica\AvaTax\Model\Tool;
 
 use OnePica\AvaTax\Api\ResultInterface;
-use OnePica\AvaTax\Helper\Config as ConfigHelper;
+use OnePica\AvaTax\Api\Service\ResolverInterface;
 use OnePica\AvaTax\Model\ServiceFactory;
 use Magento\Sales\Model\Order\Invoice as OrderInvoice;
 
@@ -36,16 +36,16 @@ class Invoice extends AbstractTool
     /**
      * Invoice constructor.
      *
-     * @param \OnePica\AvaTax\Helper\Config        $config
-     * @param \OnePica\AvaTax\Model\ServiceFactory $serviceFactory
-     * @param \Magento\Sales\Model\Order\Invoice   $invoice
+     * @param \OnePica\AvaTax\Api\Service\ResolverInterface $resolver
+     * @param \OnePica\AvaTax\Model\ServiceFactory          $serviceFactory
+     * @param \Magento\Sales\Model\Order\Invoice            $invoice
      */
     public function __construct(
-        ConfigHelper $config,
+        ResolverInterface $resolver,
         ServiceFactory $serviceFactory,
         OrderInvoice $invoice
     ) {
-        parent::__construct($config, $serviceFactory);
+        parent::__construct($resolver, $serviceFactory);
         $this->init($invoice);
     }
 

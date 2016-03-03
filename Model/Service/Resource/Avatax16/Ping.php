@@ -17,11 +17,14 @@ namespace OnePica\AvaTax\Model\Service\Resource\Avatax16;
 use Magento\Store\Model\Store;
 use OnePica\AvaTax\Api\ResultInterface;
 use OnePica\AvaTax\Api\Service\PingResourceInterface;
+use OnePica\AvaTax\Model\Service\Avatax16\Config;
 use OnePica\AvaTax\Model\Service\Resource\AbstractResource;
+use OnePica\AvaTax\Model\Service\Result\BaseResult;
 
 /**
  * Class Ping
  *
+ * @property \OnePica\AvaTax\Model\Service\ConfigRepository $configRepository
  * @package OnePica\AvaTax\Model\Service\Resource\Avatax
  */
 class Ping extends AbstractResource implements PingResourceInterface
@@ -34,6 +37,35 @@ class Ping extends AbstractResource implements PingResourceInterface
      */
     public function ping(Store $store)
     {
-        // TODO: Implement ping() method.
+        $result = $this->getResultObject();
+
+        /** @var Config $config */
+        try {
+            $config = $this->configRepository->getConfigByStore($store);
+            $libResult = $config->getConnection()->ping();
+
+            $result->setResponse($libResult->toArray());
+            $result->setHasError($libResult->getHasError());
+            $result->setErrors($libResult->getErrors());
+
+            if ($libResult->getHasError() && !$libResult->getErrors()) {
+                $result->setErrors([__('The user or account could not be authenticated.')]);
+            }
+        } catch (\Exception $e) {
+            $result->setHasError(true);
+            $result->setErrors([$e->getMessage()]);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Get result object
+     *
+     * @return BaseResult
+     */
+    protected function getResultObject()
+    {
+        return $this->objectManager->create(BaseResult::class);
     }
 }

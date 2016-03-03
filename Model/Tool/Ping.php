@@ -15,7 +15,7 @@
 namespace OnePica\AvaTax\Model\Tool;
 
 use Magento\Store\Model\Store;
-use OnePica\AvaTax\Helper\Config as ConfigHelper;
+use OnePica\AvaTax\Api\Service\ResolverInterface;
 use OnePica\AvaTax\Model\Service\Result\BaseResult;
 use OnePica\AvaTax\Model\ServiceFactory;
 
@@ -36,16 +36,16 @@ class Ping extends AbstractTool
     /**
      * Ping constructor.
      *
-     * @param \OnePica\AvaTax\Helper\Config        $config
-     * @param \OnePica\AvaTax\Model\ServiceFactory $serviceFactory
-     * @param \Magento\Store\Model\Store           $store
+     * @param \OnePica\AvaTax\Api\Service\ResolverInterface $resolver
+     * @param \OnePica\AvaTax\Model\ServiceFactory          $serviceFactory
+     * @param \Magento\Store\Model\Store                    $store
      */
     public function __construct(
-        ConfigHelper $config,
+        ResolverInterface $resolver,
         ServiceFactory $serviceFactory,
         Store $store
     ) {
-        parent::__construct($config, $serviceFactory);
+        parent::__construct($resolver, $serviceFactory);
         $this->store = $store;
     }
 

@@ -14,9 +14,9 @@
  */
 namespace OnePica\AvaTax\Model\Tool;
 
+use OnePica\AvaTax\Api\Service\ResolverInterface;
 use OnePica\AvaTax\Api\ServiceInterface;
 use OnePica\AvaTax\Api\ToolInterface;
-use OnePica\AvaTax\Helper\Config as ConfigHelper;
 use OnePica\AvaTax\Model\ServiceFactory;
 
 /**
@@ -26,13 +26,6 @@ use OnePica\AvaTax\Model\ServiceFactory;
  */
 abstract class AbstractTool implements ToolInterface
 {
-    /**
-     * Config helper
-     *
-     * @var \OnePica\AvaTax\Helper\Config
-     */
-    protected $config;
-
     /**
      * Service factory
      *
@@ -50,14 +43,13 @@ abstract class AbstractTool implements ToolInterface
     /**
      * AbstractTool constructor.
      *
-     * @param \OnePica\AvaTax\Helper\Config         $config
-     * @param \OnePica\AvaTax\Model\ServiceFactory $serviceFactory
+     * @param \OnePica\AvaTax\Api\Service\ResolverInterface $resolver
+     * @param \OnePica\AvaTax\Model\ServiceFactory          $serviceFactory
      */
-    public function __construct(ConfigHelper $config, ServiceFactory $serviceFactory)
+    public function __construct(ResolverInterface $resolver, ServiceFactory $serviceFactory)
     {
-        $this->config = $config;
         $this->serviceFactory = $serviceFactory;
-        $this->service = $this->serviceFactory->create($this->config->getActiveService());
+        $this->service = $this->serviceFactory->create($resolver->getServiceClass());
     }
 
     /**
