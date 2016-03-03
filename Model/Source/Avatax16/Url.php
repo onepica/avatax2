@@ -26,7 +26,7 @@ class Url implements OptionSourceInterface
     /**#@+
      * Url
      */
-    const DEVELOPER_URL  = 'https://tax-qa.avlr.sh/';
+    const DEVELOPER_URL  = 'https://tax-qa.avlr.sh/v2';
     const PRODUCTION_URL = 'https://tax.api.avalara.com/v2';
     /**#@-*/
 
