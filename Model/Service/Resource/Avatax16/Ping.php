@@ -47,6 +47,10 @@ class Ping extends AbstractResource implements PingResourceInterface
             $result->setResponse($libResult->toArray());
             $result->setHasError($libResult->getHasError());
             $result->setErrors($libResult->getErrors());
+
+            if ($libResult->getHasError() && !$libResult->getErrors()) {
+                $result->setErrors([__('The user or account could not be authenticated.')]);
+            }
         } catch (\Exception $e) {
             $result->setHasError(true);
             $result->setErrors([$e->getMessage()]);
