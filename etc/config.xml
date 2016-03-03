@@ -5,6 +5,11 @@
         <tax>
             <avatax>
                 <active_service>OnePica\AvaTax\Model\Service\Avatax</active_service>
+                <validate_address>0</validate_address>
+                <normalize_address>0</normalize_address>
+                <onepage_normalize_message>Your shipping address has been modified during our validation process. Please confirm the address to the right is accurate.</onepage_normalize_message>
+                <multiaddress_normalize_message>Your shipping addresses have been modified during our validation process. Please confirm they are still correct.</multiaddress_normalize_message>
+                <validate_address_message>The address '%s' appears invalid. Please correct it or select another address.</validate_address_message>
             </avatax>
         </tax>
     </default>
