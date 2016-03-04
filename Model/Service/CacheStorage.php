@@ -86,7 +86,8 @@ class CacheStorage
      */
     protected function loadDataFromSession()
     {
-        $data = $this->session->getData($this->cacheId);
+        $sessionMethodName = 'get' . ucfirst($this->cacheId);
+        $data = $this->session->$sessionMethodName();
         if ($data) {
             $this->data = unserialize($data);
         }
