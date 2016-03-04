@@ -4,7 +4,7 @@
     <default>
         <tax>
             <avatax>
-                <active_service>OnePica\AvaTax\Model\Service\Avatax</active_service>
+                <active_service>avatax16</active_service>
                 <validate_address>0</validate_address>
                 <normalize_address>0</normalize_address>
                 <onepage_normalize_message>Your shipping address has been modified during our validation process. Please confirm the address to the right is accurate.</onepage_normalize_message>
