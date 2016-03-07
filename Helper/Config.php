@@ -183,7 +183,8 @@ class Config extends AbstractHelper
     {
         $userAgent = $this->productMetadata->getName() . ' ';
         $userAgent .= $this->productMetadata->getEdition() . ' v';
-        $userAgent .= $this->productMetadata->getVersion();
+        $userAgent .= $this->productMetadata->getVersion() . ' ';
+        $userAgent .= self::MODULE_NAME . ' v' . $this->getModuleVersion();
 
         return $userAgent;
     }
