@@ -14,4 +14,7 @@
             </argument>
         </arguments>
     </type>
+    <type name="Magento\Checkout\Model\ShippingInformationManagement">
+        <plugin name="onepica_avatax_addressvalidation" type="OnePica\AvaTax\Plugin\Checkout\Model\ShippingInformationManagement" />
+    </type>
 </config>
