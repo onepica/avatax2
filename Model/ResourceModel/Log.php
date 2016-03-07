@@ -14,7 +14,10 @@
  */
 namespace OnePica\AvaTax\Model\ResourceModel;
 
+use Magento\Framework\DB\Adapter\AdapterInterface;
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+use Magento\Framework\Model\ResourceModel\Db\Context;
+use Magento\Framework\Stdlib\DateTime;
 use OnePica\AvaTax\Api\Data\LogInterface;
 
 /**
@@ -25,6 +28,29 @@ use OnePica\AvaTax\Api\Data\LogInterface;
 class Log extends AbstractDb
 {
     /**
+     * DateTime model
+     *
+     * @var \Magento\Framework\Stdlib\DateTime
+     */
+    protected $dateTime;
+
+    /**
+     * Log constructor.
+     *
+     * @param Context  $context
+     * @param DateTime $dateTime
+     * @param null     $connectionName
+     */
+    public function __construct(
+        Context $context,
+        DateTime $dateTime,
+        $connectionName = null
+    ) {
+        parent::__construct($context, $connectionName);
+        $this->dateTime = $dateTime;
+    }
+
+    /**
      * Resource initialization
      *
      * @return void
@@ -32,5 +58,26 @@ class Log extends AbstractDb
     protected function _construct()
     {
         $this->_init('avatax_log', LogInterface::LOG_ID);
+    }
+
+    /**
+     * Delete log by interval
+     *
+     * @param int $days
+     * @return int
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function deleteLogsByInterval($days)
+    {
+        $connection = $this->getConnection();
+
+        $periodExpr = $connection
+            ->getDateSubSql(
+                $connection->quote($this->dateTime->formatDate(true)),
+                (int)$days,
+                AdapterInterface::INTERVAL_DAY
+            );
+
+        return $connection->delete($this->getMainTable(), sprintf('created_at < %s', $periodExpr));
     }
 }
