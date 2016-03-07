@@ -5,6 +5,7 @@
         <tax>
             <avatax>
                 <active_service>avatax16</active_service>
+                <allowed_log_types>Ping,Calculation,Transaction,Filter,Validate,Queue</allowed_log_types>
             </avatax>
         </tax>
     </default>
