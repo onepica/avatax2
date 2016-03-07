@@ -61,7 +61,7 @@ class Log extends AbstractModel implements LogInterface
      * Set store id
      *
      * @param int $storeId
-     * @return mixed
+     * @return $this
      */
     public function setStoreId($storeId)
     {
@@ -84,7 +84,7 @@ class Log extends AbstractModel implements LogInterface
      * Set log level
      *
      * @param string $logLevel
-     * @return mixed
+     * @return $this
      */
     public function setLogLevel($logLevel)
     {
@@ -107,7 +107,7 @@ class Log extends AbstractModel implements LogInterface
      * Set log type
      *
      * @param string $logType
-     * @return string
+     * @return $this
      */
     public function setLogType($logType)
     {
@@ -130,7 +130,7 @@ class Log extends AbstractModel implements LogInterface
      * Set request
      *
      * @param string $request
-     * @return string
+     * @return $this
      */
     public function setRequest($request)
     {
@@ -153,7 +153,7 @@ class Log extends AbstractModel implements LogInterface
      * Set response
      *
      * @param string $response
-     * @return string
+     * @return $this
      */
     public function setResponse($response)
     {
@@ -176,7 +176,7 @@ class Log extends AbstractModel implements LogInterface
      * Set additional info
      *
      * @param string $additionalInfo
-     * @return string
+     * @return $this
      */
     public function setAdditionalInfo($additionalInfo)
     {
@@ -199,12 +199,42 @@ class Log extends AbstractModel implements LogInterface
      * Set created at
      *
      * @param string $createdAt
-     * @return string
+     * @return $this
      */
     public function setCreatedAt($createdAt)
     {
         $this->setData(self::CREATED_AT, $createdAt);
 
         return $this;
+    }
+
+    /**
+     * Get log types
+     *
+     * @return array
+     */
+    public function getAvailableLogTypes()
+    {
+        return [
+            self::PING        => __('Ping'),
+            self::CALCULATION => __('Calculation'),
+            self::TRANSACTION => __('Transaction'),
+            self::FILTER      => __('Filter'),
+            self::VALIDATE    => __('Validate'),
+            self::QUEUE       => __('Queue'),
+        ];
+    }
+
+    /**
+     * Get log levels
+     *
+     * @return array
+     */
+    public function getAvailableLogLevels()
+    {
+        return [
+            self::LOG_LEVEL_SUCCESS => __('Success'),
+            self::LOG_LEVEL_ERROR   => __('Error')
+        ];
     }
 }
