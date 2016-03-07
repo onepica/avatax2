@@ -14,6 +14,7 @@
  */
 namespace OnePica\AvaTax\Model\Service;
 
+use OnePica\AvaTax\Api\Service\CacheStorageInterface;
 use Magento\Customer\Model\Session;
 
 /**
@@ -22,7 +23,7 @@ use Magento\Customer\Model\Session;
  * @package OnePica\AvaTax\Model\Service
  */
 
-class CacheStorage
+class CacheStorage implements CacheStorageInterface
 {
     /**
      * Id of cache storage

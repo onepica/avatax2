@@ -22,6 +22,9 @@ use OnePica\AvaTax\Model\Service\Avatax16\Config;
 use OnePica\AvaTax16\Document\Part\Location\Address as AvaTax16LibAddress;
 use OnePica\AvaTax\Model\Service\Result\AddressValidationResult;
 use OnePica\AvaTax\Model\Service\Request\Address as RequestAddress;
+use OnePica\AvaTax\Api\Service\CacheStorageInterface;
+use Magento\Framework\ObjectManagerInterface;
+use OnePica\AvaTax\Api\ConfigRepositoryInterface;
 
 /**
  * Class Validation
@@ -38,6 +41,30 @@ class Validation extends AbstractResource implements ValidationResourceInterface
     protected $successResolutionQuality = array('Rooftop');
 
     /**
+     * Cache Storage
+     *
+     * @var CacheStorageInterface
+     */
+    protected $cacheStorage;
+
+    /**
+     * Constructor.
+     *
+     * @param ConfigRepositoryInterface $configRepository
+     * @param ObjectManagerInterface     $objectManager
+     * @param CacheStorageInterface $cacheStorage
+     */
+    public function __construct(
+        ConfigRepositoryInterface $configRepository,
+        ObjectManagerInterface $objectManager,
+        CacheStorageInterface $cacheStorage
+    ) {
+        $cacheStorage->setCacheId('AddressValidation');
+        $this->cacheStorage = $cacheStorage;
+        parent::__construct($configRepository, $objectManager);
+    }
+
+    /**
      * Validate
      *
      * @param RequestAddress $address
@@ -52,7 +79,14 @@ class Validation extends AbstractResource implements ValidationResourceInterface
             /** @var Config $config */
             $config = $this->configRepository->getConfigByStore($store);
             $libAddress = $this->getLibAddress($address);
-            $libResult = $config->getConnection()->resolveSingleAddress($libAddress);
+            $hash = $this->generateHashKey($libAddress);
+
+            if ($this->cacheStorage->get($hash)) {
+                $libResult = $this->cacheStorage->get($hash);
+            } else {
+                $libResult = $config->getConnection()->resolveSingleAddress($libAddress);
+                $this->cacheStorage->put($hash, $libResult);
+            }
 
             $result->setRequest($libAddress->toArray());
             $result->setResponse($libResult->toArray());
@@ -124,5 +158,17 @@ class Validation extends AbstractResource implements ValidationResourceInterface
         $address->setCountry($addressResult->getCountry());
 
         return $this;
+    }
+
+    /**
+     * Generates a hash key for object
+     *
+     * @param  mixed $object
+     * @return string
+     */
+    protected function generateHashKey($object)
+    {
+        $hash = sprintf("%u", crc32(serialize($object)));
+        return $hash;
     }
 }
