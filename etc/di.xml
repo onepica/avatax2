@@ -3,6 +3,7 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="OnePica\AvaTax\Api\ConfigRepositoryInterface" type="OnePica\AvaTax\Model\Service\ConfigRepository"/>
     <preference for="OnePica\AvaTax\Api\Service\ResolverInterface" type="OnePica\AvaTax\Model\Service\Resolver"/>
+    <preference for="OnePica\AvaTax\Api\Service\LoggerInterface" type="OnePica\AvaTax\Model\Service\Logger"/>
     <type name="OnePica\AvaTax\Model\Service\Resolver">
         <arguments>
             <argument name="data" xsi:type="array">
