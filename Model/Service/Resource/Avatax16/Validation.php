@@ -79,7 +79,7 @@ class Validation extends AbstractResource implements ValidationResourceInterface
             /** @var Config $config */
             $config = $this->configRepository->getConfigByStore($store);
             $libAddress = $this->getLibAddress($address);
-            $hash = $this->generateHashKey($libAddress);
+            $hash = $this->cacheStorage->generateHashKeyForData($libAddress);
 
             if ($this->cacheStorage->get($hash)) {
                 $libResult = $this->cacheStorage->get($hash);
@@ -158,17 +158,5 @@ class Validation extends AbstractResource implements ValidationResourceInterface
         $address->setCountry($addressResult->getCountry());
 
         return $this;
-    }
-
-    /**
-     * Generates a hash key for object
-     *
-     * @param  mixed $object
-     * @return string
-     */
-    protected function generateHashKey($object)
-    {
-        $hash = sprintf("%u", crc32(serialize($object)));
-        return $hash;
     }
 }

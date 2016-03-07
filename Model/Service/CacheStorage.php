@@ -132,4 +132,16 @@ class CacheStorage implements CacheStorageInterface
 
         return $this;
     }
+
+    /**
+     * Generates a hash key for data object
+     *
+     * @param  mixed $object
+     * @return string
+     */
+    public function generateHashKeyForData($object)
+    {
+        $hash = sprintf("%u", crc32(serialize($object)));
+        return $hash;
+    }
 }
