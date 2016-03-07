@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">avatax_ctc_edit_form.avatax_ctc_edit_form_data_source</item>
+            <item name="deps" xsi:type="string">avatax_ctc_edit_form.avatax_ctc_edit_form_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">Customer Tax Class Information</item>
+        <item name="layout" xsi:type="array">
+            <item name="type" xsi:type="string">tabs</item>
+        </item>
+        <item name="buttons" xsi:type="array">
+            <item name="back" xsi:type="string">OnePica\AvaTax\Block\Adminhtml\Edit\BackButton</item>
+            <item name="reset" xsi:type="string">OnePica\AvaTax\Block\Adminhtml\Edit\ResetButton</item>
+            <item name="save" xsi:type="string">OnePica\AvaTax\Block\Adminhtml\Edit\SaveButton</item>
+            <item name="save_and_continue" xsi:type="string">OnePica\AvaTax\Block\Adminhtml\Edit\SaveAndContinueButton</item>
+        </item>
+    </argument>
+
+    <dataSource name="avatax_ctc_edit_form_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">OnePica\AvaTax\Model\DataProvider</argument>
+            <argument name="name" xsi:type="string">avatax_ctc_edit_form_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">class_id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="submit_url" xsi:type="url" path="avatax/customertaxclasses/save"/>
+                    <item name="model" xsi:type="string">Magento\Tax\Model\ClassModel</item>
+                    <item name="fieldset" xsi:type="string">tax_class</item>
+                    <!--<item name="validate_url" xsi:type="url" path="customer/index/validate"/>-->
+                </item>
+            </argument>
+        </argument>
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+    </dataSource>
+
+    <!-- fieldset name need to have name as item:name[source], at least looks like -->
+    <fieldset name="tax_class">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="label" xsi:type="string" translate="true">Customer Tax Class</item>
+            </item>
+        </argument>
+        <field name="class_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">tax_class</item>
+                </item>
+            </argument>
+        </field>
+        <field name="op_avatax_code">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string">AvaTax Code</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">tax_class</item>
+                </item>
+            </argument>
+        </field>
+        <field name="class_name">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string">Class Name</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">tax_class</item>
+                </item>
+            </argument>
+        </field>
+        <field name="class_type">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">tax_class</item>
+                </item>
+            </argument>
+        </field>
+
+    </fieldset>
+
+</form>

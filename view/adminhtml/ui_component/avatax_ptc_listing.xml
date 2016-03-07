@@ -13,14 +13,14 @@
             <item name="deps" xsi:type="string">avatax_ptc_listing.ptc_listing_data_source</item>
         </item>
         <item name="spinner" xsi:type="string">avatax_ptc_listing_columns</item> <!-- columns listing configuration name in the file below -->
-        <!--<item name="buttons" xsi:type="array">
+        <item name="buttons" xsi:type="array">
             <item name="add" xsi:type="array">
                 <item name="name" xsi:type="string">add</item>
                 <item name="label" xsi:type="string" translate="true">Add New Class</item>
                 <item name="class" xsi:type="string">primary</item>
                 <item name="url" xsi:type="string">*/*/create</item>
             </item>
-        </item>-->
+        </item>
     </argument>
 
     <!-- link grid data source with di data grid provider -->
@@ -175,6 +175,16 @@
                 </item>
             </argument>
         </column>
+
+        <actionsColumn name="actions" class="OnePica\AvaTax\Ui\Component\Listing\Column\Actions">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="urlAction" xsi:type="string">avatax/producttaxclasses/edit</item>
+                    <item name="urlTitle" xsi:type="string">Edit</item>
+                    <item name="idField" xsi:type="string">class_id</item>
+                </item>
+            </argument>
+        </actionsColumn>
 
     </columns>
 </listing>

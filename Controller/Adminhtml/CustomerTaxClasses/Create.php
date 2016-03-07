@@ -17,18 +17,17 @@ namespace OnePica\AvaTax\Controller\Adminhtml\CustomerTaxClasses;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
-use Magento\Framework\View\Result\PageFactory;
 use Magento\Framework\Controller\Result\ForwardFactory;
 
 /**
- * Class Index
+ * Class Create
  *
  * @package OnePica\AvaTax\Controller\Adminhtml\CustomerTaxClasses
  */
-class Index extends Action
+class Create extends Action
 {
     /**
-     * @var PageFactory
+     * @var
      */
     protected $resultPageFactory;
 
@@ -38,43 +37,28 @@ class Index extends Action
     protected $resultForwardFactory;
 
     /**
-     * Index constructor.
+     * Create constructor.
      *
      * @param Context        $context
-     * @param PageFactory    $resultPageFactory
      * @param ForwardFactory $resultForwardFactory
      */
     public function __construct(
         Context $context,
-        PageFactory $resultPageFactory,
         ForwardFactory $resultForwardFactory
     )
     {
         parent::__construct($context);
-        $this->resultPageFactory = $resultPageFactory;
         $this->resultForwardFactory = $resultForwardFactory;
     }
 
     /**
-     * @return \Magento\Backend\Model\View\Result\Page
+     * @return $this
      */
     public function execute()
     {
-        try{
-            /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
-            $resultPage = $this->resultPageFactory->create();
-            $resultPage->setActiveMenu('OnePica_AvaTax::customer_tax_classes');
-            $resultPage->addBreadcrumb(__('AvaTax'), __('AvaTax'));
-            $resultPage->addBreadcrumb(__('Customer Tax Classes'), __('Customer Tax Classes'));
-            $resultPage->getConfig()->getTitle()->prepend(__('Customer Tax Classes'));
-        } catch (\Exception $e) {
-            $this->_objectManager->get('Psr\Log\LoggerInterface')->critical($e);
-            $resultForward = $this->resultForwardFactory->create();
-            $resultForward->forward('noroute');
-            return $resultForward;
-        }
-
-        return $resultPage;
+        /** @var \Magento\Backend\Model\View\Result\Forward $resultForward */
+        $resultForward = $this->resultForwardFactory->create();
+        return $resultForward->forward('edit');
     }
 
     /**
