@@ -48,4 +48,18 @@ class Collection extends AbstractCollection
     {
         $this->_init(LogModel::class, LogResource::class);
     }
+
+    /**
+     * Get export data
+     *
+     * Return table data without loading collection.
+     *
+     * @return array
+     */
+    public function getExportData()
+    {
+        $select = $this->getConnection()->select()->from($this->getMainTable());
+
+        return $this->getConnection()->fetchAll($select);
+    }
 }

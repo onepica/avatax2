@@ -17,6 +17,7 @@ namespace OnePica\AvaTax\Helper;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\App\ProductMetadataInterface;
+use Magento\Framework\Module\ModuleListInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\Store;
 
@@ -27,6 +28,11 @@ use Magento\Store\Model\Store;
  */
 class Config extends AbstractHelper
 {
+    /**
+     * Module name
+     */
+    const MODULE_NAME = 'OnePica_AvaTax';
+
     /**#@+
      * Config xml path
      */
@@ -36,7 +42,7 @@ class Config extends AbstractHelper
     const AVATAX_SERVICE_ACCOUNT_NUMBER    = 'tax/avatax/account_number';
     const AVATAX_SERVICE_LICENCE_KEY       = 'tax/avatax/license_key';
     const AVATAX_SERVICE_COMPANY_CODE      = 'tax/avatax/company_code';
-    const AVATAX_SERVICE_ALLOWED_LOG_TYPES = 'tax/avatax/allowed_log_types';
+    const AVATAX_SERVICE_ALLOWED_LOG_TYPES = 'tax/avatax/avatax_log_group/allowed_log_types';
     /**#@-*/
 
     /**
@@ -47,15 +53,27 @@ class Config extends AbstractHelper
     protected $productMetadata;
 
     /**
+     * Module list
+     *
+     * @var \Magento\Framework\Module\ModuleListInterface
+     */
+    protected $moduleList;
+
+    /**
      * Config constructor.
      *
      * @param \Magento\Framework\App\Helper\Context           $context
      * @param \Magento\Framework\App\ProductMetadataInterface $productMetadata
+     * @param \Magento\Framework\Module\ModuleListInterface   $moduleList
      */
-    public function __construct(Context $context, ProductMetadataInterface $productMetadata)
-    {
+    public function __construct(
+        Context $context,
+        ProductMetadataInterface $productMetadata,
+        ModuleListInterface $moduleList
+    ) {
         parent::__construct($context);
         $this->productMetadata = $productMetadata;
+        $this->moduleList = $moduleList;
     }
 
     /**
@@ -66,6 +84,16 @@ class Config extends AbstractHelper
     public function getActiveService()
     {
         return $this->scopeConfig->getValue(self::AVATAX_ACTIVE_SERVICE);
+    }
+
+    /**
+     * Get module version
+     *
+     * @return string
+     */
+    public function getModuleVersion()
+    {
+        return $this->moduleList->getOne(self::MODULE_NAME)['setup_version'];
     }
 
     /**

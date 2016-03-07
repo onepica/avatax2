@@ -1,0 +1,51 @@
+<?php
+/**
+ * OnePica_AvaTax
+ * NOTICE OF LICENSE
+ * This source file is subject to the Open Software License (OSL 3.0),
+ * a copy of which is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ * @copyright  Copyright (c) 2016 One Pica, Inc.
+ * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ */
+namespace OnePica\AvaTax\Block\Adminhtml\System\Config\Form\Field\Log;
+
+use Magento\Config\Block\System\Config\Form\Field;
+use Magento\Framework\Data\Form\Element\AbstractElement;
+
+/**
+ * Class Export
+ *
+ * @package OnePica\AvaTax\Block\Adminhtml\System\Config\Form\Field\Log
+ */
+class Export extends Field
+{
+    /**
+     * Retrieve element HTML markup
+     *
+     * @param \Magento\Framework\Data\Form\Element\AbstractElement $element
+     * @return string
+     */
+    protected function _getElementHtml(AbstractElement $element)
+    {
+        /** @var \Magento\Backend\Block\Widget\Button $buttonBlock */
+        $buttonBlock = $this->getForm()->getLayout()->createBlock('Magento\Backend\Block\Widget\Button');
+
+
+        $url = $this->getUrl("avatax/log/export");
+        $data = [
+            'id'      => 'system_avatax_log_export_button',
+            'label'   => __('Export'),
+            'onclick' => "setLocation('" . $url . "')",
+        ];
+
+        $html = $buttonBlock->setData($data)->toHtml();
+
+        return $html;
+    }
+
+}
