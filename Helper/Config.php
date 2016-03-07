@@ -43,6 +43,7 @@ class Config extends AbstractHelper
     const AVATAX_SERVICE_LICENCE_KEY       = 'tax/avatax/license_key';
     const AVATAX_SERVICE_COMPANY_CODE      = 'tax/avatax/company_code';
     const AVATAX_SERVICE_ALLOWED_LOG_TYPES = 'tax/avatax/avatax_log_group/allowed_log_types';
+    const AVATAX_SERVICE_LOG_LIFETIME      = 'tax/avatax/avatax_log_group/log_lifetime';
     /**#@-*/
 
     /**
@@ -160,6 +161,17 @@ class Config extends AbstractHelper
     public function getAllowedLogTypes($store = null)
     {
         return explode(',', $this->getConfig(self::AVATAX_SERVICE_ALLOWED_LOG_TYPES, $store));
+    }
+
+    /**
+     * Get log lifetime
+     *
+     * @param Store|int $store
+     * @return int
+     */
+    public function getLogLifetime($store = null)
+    {
+        return (int)$this->getConfig(self::AVATAX_SERVICE_LOG_LIFETIME, $store);
     }
 
     /**

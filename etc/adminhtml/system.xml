@@ -32,7 +32,11 @@
                         <source_model>OnePica\AvaTax\Model\Source\Avatax16\LogType</source_model>
                         <can_be_empty>1</can_be_empty>
                     </field>
-                    <field id="export_log_button" type="button" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="log_lifetime" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Log Entry Lifetime</label>
+                        <validate>required-entry validate-digits validate-digits-range digits-range-1-</validate>
+                    </field>
+                    <field id="export_log_button" type="button" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Export Logs</label>
                         <frontend_model>OnePica\AvaTax\Block\Adminhtml\System\Config\Form\Field\Log\Export</frontend_model>
                     </field>
