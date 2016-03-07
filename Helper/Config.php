@@ -17,7 +17,6 @@ namespace OnePica\AvaTax\Helper;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\App\ProductMetadataInterface;
-use Magento\Framework\AppInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\Store;
 
@@ -31,12 +30,13 @@ class Config extends AbstractHelper
     /**#@+
      * Config xml path
      */
-    const AVATAX_ACTIVE_SERVICE         = 'tax/avatax/active_service';
-    const AVATAX_SERVICE_ACTION         = 'tax/avatax/action';
-    const AVATAX_SERVICE_URL            = 'tax/avatax/url';
-    const AVATAX_SERVICE_ACCOUNT_NUMBER = 'tax/avatax/account_number';
-    const AVATAX_SERVICE_LICENCE_KEY    = 'tax/avatax/license_key';
-    const AVATAX_SERVICE_COMPANY_CODE   = 'tax/avatax/company_code';
+    const AVATAX_ACTIVE_SERVICE            = 'tax/avatax/active_service';
+    const AVATAX_SERVICE_ACTION            = 'tax/avatax/action';
+    const AVATAX_SERVICE_URL               = 'tax/avatax/url';
+    const AVATAX_SERVICE_ACCOUNT_NUMBER    = 'tax/avatax/account_number';
+    const AVATAX_SERVICE_LICENCE_KEY       = 'tax/avatax/license_key';
+    const AVATAX_SERVICE_COMPANY_CODE      = 'tax/avatax/company_code';
+    const AVATAX_SERVICE_ALLOWED_LOG_TYPES = 'tax/avatax/allowed_log_types';
     /**#@-*/
 
     /**
@@ -121,6 +121,17 @@ class Config extends AbstractHelper
     public function getServiceCompanyCode($store = null)
     {
         return (string)$this->getConfig(self::AVATAX_SERVICE_COMPANY_CODE, $store);
+    }
+
+    /**
+     * Get service company code
+     *
+     * @param Store|int $store
+     * @return array
+     */
+    public function getAllowedLogTypes($store = null)
+    {
+        return explode(',', $this->getConfig(self::AVATAX_SERVICE_ALLOWED_LOG_TYPES, $store));
     }
 
     /**
