@@ -15,135 +15,59 @@
 
 namespace OnePica\AvaTax\Controller\Adminhtml\ProductTaxClasses;
 
-use Magento\Backend\App\Action;
-use Magento\Backend\App\Action\Context;
-use Magento\Framework\View\Result\PageFactory;
-use Magento\Framework\Controller\Result\ForwardFactory;
-use Magento\Tax\Api\TaxClassRepositoryInterface;
-use Magento\Tax\Model\ClassModelFactory;
-use Magento\Framework\Registry;
 
-use Magento\Framework\Exception\NoSuchEntityException;
+use OnePica\AvaTax\Controller\Adminhtml\TaxClass\AbstractEditAction;
+use Magento\Tax\Model\ClassModel;
+use Magento\Backend\Model\View\Result\Page;
 
 /**
  * Class Edit
  *
  * @package OnePica\AvaTax\Controller\Adminhtml\ProductTaxClasses
  */
-class Edit extends Action
+class Edit extends AbstractEditAction
 {
     /**
-     * @var PageFactory
-     */
-    protected $resultPageFactory;
-
-    /**
-     * @var ForwardFactory
-     */
-    protected $resultForwardFactory;
-
-    /**
-     * @var TaxClassRepositoryInterface
-     */
-    protected $repositoryTaxClass;
-
-    /**
-     * @var ClassModelFactory
-     */
-    protected $factoryTaxClass;
-
-    /**
-     * @var Registry
-     */
-    protected $coreRegistry;
-
-    /**
-     * Edit constructor.
+     * Init Page
      *
-     * @param Context                     $context
-     * @param PageFactory                 $resultPageFactory
-     * @param ForwardFactory              $resultForwardFactory
-     * @param TaxClassRepositoryInterface $repositoryTaxClass
-     * @param ClassModelFactory           $factoryTaxClass
-     * @param Registry                    $registry
-     */
-    public function __construct(
-        Context $context,
-        PageFactory $resultPageFactory,
-        ForwardFactory $resultForwardFactory,
-        TaxClassRepositoryInterface $repositoryTaxClass,
-        ClassModelFactory $factoryTaxClass,
-        Registry $registry
-    )
-    {
-        parent::__construct($context);
-        $this->resultPageFactory = $resultPageFactory;
-        $this->resultForwardFactory = $resultForwardFactory;
-        $this->repositoryTaxClass = $repositoryTaxClass;
-        $this->factoryTaxClass = $factoryTaxClass;
-        $this->coreRegistry = $registry;
-    }
-
-    /**
-     * Init actions
+     * @param Page       $resultPage
+     * @param ClassModel $model
      *
-     * @return \Magento\Backend\Model\View\Result\Page
+     * @return $this
      */
-    protected function _initAction()
+    protected function _initPage(Page $resultPage, ClassModel $model)
     {
-        // load layout, set active menu and breadcrumbs
-        /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
-        $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu('OnePica_AvaTax::product_tax_classes')
             ->addBreadcrumb(__('AvaTax'), __('AvaTax'))
-            ->addBreadcrumb(__('Product Tax Class'), __('Product Tax Class'));
-        return $resultPage;
+            ->addBreadcrumb(__('Product Tax Classes'), __('Product Tax Classes'));
+
+        $resultPage->addBreadcrumb(
+            $model->getId() ? __('Edit Tax Class') : __('New Tax Class'),
+            $model->getId() ? __('Edit Tax Class') : __('New Tax Class')
+        );
+
+        $resultPage->getConfig()->getTitle()->prepend(__('Tax Classes'));
+        $resultPage->getConfig()->getTitle()
+            ->prepend($model->getId() ? $model->getTitle() : __('New Tax Class'));
+
+        return $this;
     }
 
     /**
-     * @return $this|\Magento\Backend\Model\View\Result\Page|\Magento\Framework\Controller\Result\Forward
+     * Validate model and redirect if validation fails
+     *
+     * @param ClassModel $model
+     *
+     * @return $this|null
      */
-    public function execute()
+    protected function _validateAndRedirect(ClassModel $model)
     {
-        try {
-            $id = $this->getRequest()->getParam('id');
-            $model = (!isset($id)) ? $this->factoryTaxClass->create()
-                : $this->repositoryTaxClass->get($id);
-
-            if (isset($id) && $model->getClassType()=='CUSTOMER') {
-                $resultRedirect = $this->resultRedirectFactory->create();
-                return $resultRedirect->setPath("*/customertaxclasses/edit/id/{$id}/");
-            }
-
-            $data = $this->_objectManager->get(\Magento\Backend\Model\Session::class)
-                ->getFormData(true);
-            if (!empty($data)) {
-                $model->setData($data);
-            }
-
-            $this->coreRegistry->register('tax_class', $model);
-
-            /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
-            $resultPage = $this->_initAction();
-            $resultPage->addBreadcrumb(
-                $id ? __('Edit Tax Class') : __('New Tax Class'),
-                $id ? __('Edit Tax Class') : __('New Tax Class')
-            );
-            $resultPage->getConfig()->getTitle()->prepend(__('Tax Classes'));
-            $resultPage->getConfig()->getTitle()
-                 ->prepend($model->getId() ? $model->getTitle() : __('New Tax Class'));
-        } catch(NoSuchEntityException $e) {
-            $this->messageManager->addError(__('This tax class no longer exists.'));
+        if ( $model->getClassType()=='CUSTOMER') {
             $resultRedirect = $this->resultRedirectFactory->create();
-            return $resultRedirect->setPath('*/*/');
-        } catch (\Exception $e) {
-            $this->_objectManager->get('Psr\Log\LoggerInterface')->critical($e);
-            $this->messageManager->addError(__($e->getMessage()));
-            $resultRedirect = $this->resultRedirectFactory->create();
-            return $resultRedirect->setPath('*/*/');
+            return $resultRedirect->setPath("*/customertaxclasses/edit/id/{$model->getId()}/");
         }
 
-        return $resultPage;
+        return null;
     }
 
     /**

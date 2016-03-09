@@ -15,66 +15,33 @@
 
 namespace OnePica\AvaTax\Controller\Adminhtml\ProductTaxClasses;
 
-use Magento\Backend\App\Action;
-use Magento\Backend\App\Action\Context;
-use Magento\Framework\View\Result\PageFactory;
-use Magento\Framework\Controller\Result\ForwardFactory;
+use OnePica\AvaTax\Controller\Adminhtml\TaxClass\AbstractIndexAction;
+
+use Magento\Backend\Model\View\Result\Page;
 
 /**
  * Class Index
  *
  * @package OnePica\AvaTax\Controller\Adminhtml\ProductTaxClasses
  */
-class Index extends Action
+class Index extends AbstractIndexAction
 {
-    /**
-     * @var PageFactory
-     */
-    protected $resultPageFactory;
 
     /**
-     * @var ForwardFactory
-     */
-    protected $resultForwardFactory;
-
-    /**
-     * Index constructor.
+     * Init Page
      *
-     * @param Context        $context
-     * @param PageFactory    $resultPageFactory
-     * @param ForwardFactory $resultForwardFactory
+     * @param Page $resultPage
+     *
+     * @return $this
      */
-    public function __construct(
-        Context $context,
-        PageFactory $resultPageFactory,
-        ForwardFactory $resultForwardFactory
-    )
+    protected function _initPage(Page $resultPage)
     {
-        parent::__construct($context);
-        $this->resultPageFactory = $resultPageFactory;
-        $this->resultForwardFactory = $resultForwardFactory;
-    }
+        $resultPage->setActiveMenu('OnePica_AvaTax::product_tax_classes');
+        $resultPage->addBreadcrumb(__('AvaTax'), __('AvaTax'));
+        $resultPage->addBreadcrumb(__('Product Tax Classes'), __('Product Tax Classes'));
+        $resultPage->getConfig()->getTitle()->prepend(__('Product Tax Classes'));
 
-    /**
-     * @return \Magento\Backend\Model\View\Result\Page
-     */
-    public function execute()
-    {
-        try{
-            /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
-            $resultPage = $this->resultPageFactory->create();
-            $resultPage->setActiveMenu('OnePica_AvaTax::product_tax_classes');
-            $resultPage->addBreadcrumb(__('AvaTax'), __('AvaTax'));
-            $resultPage->addBreadcrumb(__('Product Tax Classes'), __('Product Tax Classes'));
-            $resultPage->getConfig()->getTitle()->prepend(__('Product Tax Classes'));
-        } catch (\Exception $e) {
-            $this->_objectManager->get('Psr\Log\LoggerInterface')->critical($e);
-            $resultForward = $this->_forwardFactory->create();
-            $resultForward->forward('noroute');
-            return $resultForward;
-        }
-
-        return $resultPage;
+        return $this;
     }
 
     /**

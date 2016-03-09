@@ -54,6 +54,8 @@
             </item>
         </argument>
 
+
+
         <!-- [Default View] button bookmarks -->
         <!--<bookmark name="bookmarks">
             <argument name="data" xsi:type="array">
@@ -125,6 +127,30 @@
 
         </filters>
 
+        <massaction name="listing_massaction">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="selectProvider" xsi:type="string">avatax_ctc_listing.avatax_ctc_listing.avatax_ctc_listing_columns.ids</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/tree-massactions</item>
+                    <item name="indexField" xsi:type="string">class_id</item>
+                    <item name="sortOrder" xsi:type="number">10</item>
+                </item>
+            </argument>
+            <action name="delete">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">delete</item>
+                        <item name="label" xsi:type="string" translate="true">Delete</item>
+                        <item name="url" xsi:type="url" path="*/*/massDelete"/>
+                        <item name="confirm" xsi:type="array">
+                            <item name="title" xsi:type="string" translate="true">Delete items</item>
+                            <item name="message" xsi:type="string" translate="true">Are you sure you wan't to delete selected items?</item>
+                        </item>
+                    </item>
+                </argument>
+            </action>
+        </massaction>
+
         <!-- define paging -->
         <paging name="listing_paging">
             <argument name="data" xsi:type="array">
@@ -133,6 +159,7 @@
                         <item name="provider" xsi:type="string">avatax_ctc_listing.avatax_ctc_listing.listing_top.bookmarks</item>
                         <item name="namespace" xsi:type="string">current.paging</item>
                     </item>
+                    <item name="selectProvider" xsi:type="string">avatax_ctc_listing.avatax_ctc_listing.avatax_ctc_listing_columns.ids</item>
                 </item>
             </argument>
         </paging>
@@ -141,6 +168,47 @@
 
     <!-- define column listing -->
     <columns name="avatax_ctc_listing_columns">
+
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="storageConfig" xsi:type="array">
+                    <item name="provider" xsi:type="string">avatax_ctc_listing.avatax_ctc_listing.listing_top.bookmarks</item>
+                    <item name="namespace" xsi:type="string">current</item>
+                </item>
+                <!--<item name="editorConfig" xsi:type="array">
+                    <item name="selectProvider" xsi:type="string">avatax_ctc_listing.avatax_ctc_listing.avatax_ctc_listing_columns.ids</item>
+                    <item name="enabled" xsi:type="boolean">true</item>
+                    <item name="indexField" xsi:type="string">class_id</item>
+                    <item name="clientConfig" xsi:type="array">
+                        <item name="saveUrl" xsi:type="url" path="customer/index/inlineEdit"/>
+                        <item name="validateBeforeSave" xsi:type="boolean">false</item>
+                    </item>
+                </item>-->
+                <!--<item name="childDefaults" xsi:type="array">
+                    <item name="fieldAction" xsi:type="array">
+                        <item name="provider" xsi:type="string">customer_listing.customer_listing.customer_columns_editor</item>
+                        <item name="target" xsi:type="string">startEdit</item>
+                        <item name="params" xsi:type="array">
+                            <item name="0" xsi:type="string">${ $.$data.rowIndex }</item>
+                            <item name="1" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="provider" xsi:type="string">customer_listing.customer_listing.listing_top.bookmarks</item>
+                        <item name="root" xsi:type="string">columns.${ $.index }</item>
+                        <item name="namespace" xsi:type="string">current.${ $.storageConfig.root }</item>
+                    </item>
+                </item>-->
+            </item>
+        </argument>
+
+        <selectionsColumn name="ids">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="indexField" xsi:type="string">class_id</item>
+                </item>
+            </argument>
+        </selectionsColumn>
 
         <column name="op_avatax_code">
             <argument name="data" xsi:type="array">

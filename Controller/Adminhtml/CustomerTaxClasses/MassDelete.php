@@ -15,20 +15,12 @@
 
 namespace OnePica\AvaTax\Controller\Adminhtml\CustomerTaxClasses;
 
-use OnePica\AvaTax\Controller\Adminhtml\TaxClass\AbstractCreateAction;
+use OnePica\AvaTax\Controller\Adminhtml\TaxClass\AbstractMassDelete;
 
 /**
- * Class Create
- *
- * @package OnePica\AvaTax\Controller\Adminhtml\CustomerTaxClasses
+ * Class MassDelete
  */
-class Create extends AbstractCreateAction
+class MassDelete extends AbstractMassDelete
 {
-    /**
-     * @return bool
-     */
-    protected function _isAllowed()
-    {
-        return $this->_authorization->isAllowed('OnePica_AvaTax::customer_tax_classes');
-    }
+
 }

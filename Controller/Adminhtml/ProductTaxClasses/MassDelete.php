@@ -13,22 +13,14 @@
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
-namespace OnePica\AvaTax\Controller\Adminhtml\CustomerTaxClasses;
+namespace OnePica\AvaTax\Controller\Adminhtml\ProductTaxClasses;
 
-use OnePica\AvaTax\Controller\Adminhtml\TaxClass\AbstractCreateAction;
+use OnePica\AvaTax\Controller\Adminhtml\TaxClass\AbstractMassDelete;
 
 /**
- * Class Create
- *
- * @package OnePica\AvaTax\Controller\Adminhtml\CustomerTaxClasses
+ * Class MassDelete
  */
-class Create extends AbstractCreateAction
+class MassDelete extends AbstractMassDelete
 {
-    /**
-     * @return bool
-     */
-    protected function _isAllowed()
-    {
-        return $this->_authorization->isAllowed('OnePica_AvaTax::customer_tax_classes');
-    }
+
 }

@@ -8,60 +8,24 @@
 
 namespace OnePica\AvaTax\Controller\Adminhtml\CustomerTaxClasses;
 
-use Magento\Backend\App\Action;
-use Magento\TestFramework\Event\Magento;
+use OnePica\AvaTax\Controller\Adminhtml\TaxClass\AbstractSaveAction;
 
-class Save extends Action
+/**
+ * Class Save
+ *
+ * @package OnePica\AvaTax\Controller\Adminhtml\CustomerTaxClasses
+ */
+class Save extends AbstractSaveAction
 {
     /**
-     * Save action
+     * Get Tax Class Type
      *
-     * @return \Magento\Framework\Controller\ResultInterface
+     * @return string
      */
-    public function execute()
+    protected function _getClassType()
     {
-        $data = $this->getRequest()->getPostValue('tax_class');
-        /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
-        $resultRedirect = $this->resultRedirectFactory->create();
-        if ($data) {
-            /** @var \Magento\Tax\Model\ClassModel $model */
-            $model = $this->_objectManager->create(\Magento\Tax\Model\ClassModel::class);
-
-            $id = (isset($data['class_id'])) ? $data['class_id'] : null;
-            if ($id) {
-                $model->load($id);
-            }
-
-            $model->setData($data);
-            $model->setClassType('CUSTOMER');
-
-            $this->_eventManager->dispatch(
-                'tax_class_prepare_save',
-                ['tax_class' => $model, 'request' => $this->getRequest()]
-            );
-
-            try {
-                $model->save();
-                $this->messageManager->addSuccess(__('You saved this Class.'));
-                $this->_objectManager->get(\Magento\Backend\Model\Session::class)->setFormData(false);
-                if ($this->getRequest()->getParam('back')) {
-                    return $resultRedirect->setPath('*/*/edit', ['id' => $model->getId(), '_current' => true]);
-                }
-                return $resultRedirect->setPath('*/*/');
-            } catch (\LocalizedException $e) {
-                $this->messageManager->addError($e->getMessage());
-            } catch (\RuntimeException $e) {
-                $this->messageManager->addError($e->getMessage());
-            } catch (\Exception $e) {
-                $this->messageManager->addException($e, __('Something went wrong while saving the tax class.'));
-            }
-
-            $this->_getSession()->setFormData($data);
-            return $resultRedirect->setPath('*/*/edit', ['id' => $id]);
-        }
-        return $resultRedirect->setPath('*/*/');
+        return 'CUSTOMER';
     }
-
 
     /**
      * @return bool
