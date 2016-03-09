@@ -33,6 +33,7 @@ class Save extends Action
             }
 
             $model->setData($data);
+            $model->setClassType('CUSTOMER');
 
             $this->_eventManager->dispatch(
                 'tax_class_prepare_save',

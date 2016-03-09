@@ -21,7 +21,9 @@ use Magento\Framework\View\Result\PageFactory;
 use Magento\Framework\Controller\Result\ForwardFactory;
 use Magento\Tax\Api\TaxClassRepositoryInterface;
 use Magento\Tax\Model\ClassModelFactory;
-use \Magento\Framework\Registry;
+use Magento\Framework\Registry;
+
+use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
  * Class Edit
@@ -108,11 +110,9 @@ class Edit extends Action
             $model = (!isset($id)) ? $this->factoryTaxClass->create()
                 : $this->repositoryTaxClass->get($id);
 
-            if (!isset($model)) {
-                $this->messageManager->addError(__('This tax class no longer exists.'));
-                /** \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
+            if (isset($id) && $model->getClassType()=='CUSTOMER') {
                 $resultRedirect = $this->resultRedirectFactory->create();
-                return $resultRedirect->setPath('*/*/');
+                return $resultRedirect->setPath("*/customertaxclasses/edit/id/{$id}/");
             }
 
             $data = $this->_objectManager->get(\Magento\Backend\Model\Session::class)
@@ -132,11 +132,15 @@ class Edit extends Action
             $resultPage->getConfig()->getTitle()->prepend(__('Tax Classes'));
             $resultPage->getConfig()->getTitle()
                  ->prepend($model->getId() ? $model->getTitle() : __('New Tax Class'));
+        } catch(NoSuchEntityException $e) {
+            $this->messageManager->addError(__('This tax class no longer exists.'));
+            $resultRedirect = $this->resultRedirectFactory->create();
+            return $resultRedirect->setPath('*/*/');
         } catch (\Exception $e) {
             $this->_objectManager->get('Psr\Log\LoggerInterface')->critical($e);
-            $resultForward = $this->resultForwardFactory->create();
-            $resultForward->forward('*/*/');
-            return $resultForward;
+            $this->messageManager->addError(__($e->getMessage()));
+            $resultRedirect = $this->resultRedirectFactory->create();
+            return $resultRedirect->setPath('*/*/');
         }
 
         return $resultPage;

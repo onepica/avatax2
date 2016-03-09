@@ -15,7 +15,7 @@
     </type>
 
 <!-- Customer Tax Classes -->
-    <virtualType name="Magento\Tax\Model\ResourceModel\Grid\Collection" type="OnePica\AvaTax\Model\ResourceModel\Customer\TaxClass\Grid\Collection">
+    <virtualType name="Magento\Tax\Model\ResourceModel\Customer\Grid\Collection" type="OnePica\AvaTax\Model\ResourceModel\Customer\TaxClass\Grid\Collection">
         <arguments>
             <argument name="mainTable" xsi:type="string">tax_class</argument>
             <argument name="resourceModel" xsi:type="string">Magento\Tax\Model\ResourceModel\TaxClass</argument>
@@ -26,7 +26,7 @@
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
         <arguments>
             <argument name="collections" xsi:type="array">
-                <item name="ctc_listing_data_source" xsi:type="string">Magento\Tax\Model\ResourceModel\Grid\Collection</item>
+                <item name="ctc_listing_data_source" xsi:type="string">Magento\Tax\Model\ResourceModel\Customer\Grid\Collection</item>
             </argument>
         </arguments>
     </type>
