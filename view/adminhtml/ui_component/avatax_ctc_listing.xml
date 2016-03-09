@@ -54,8 +54,6 @@
             </item>
         </argument>
 
-
-
         <!-- [Default View] button bookmarks -->
         <!--<bookmark name="bookmarks">
             <argument name="data" xsi:type="array">
@@ -175,18 +173,18 @@
                     <item name="provider" xsi:type="string">avatax_ctc_listing.avatax_ctc_listing.listing_top.bookmarks</item>
                     <item name="namespace" xsi:type="string">current</item>
                 </item>
-                <!--<item name="editorConfig" xsi:type="array">
+                <item name="editorConfig" xsi:type="array">
                     <item name="selectProvider" xsi:type="string">avatax_ctc_listing.avatax_ctc_listing.avatax_ctc_listing_columns.ids</item>
                     <item name="enabled" xsi:type="boolean">true</item>
                     <item name="indexField" xsi:type="string">class_id</item>
                     <item name="clientConfig" xsi:type="array">
-                        <item name="saveUrl" xsi:type="url" path="customer/index/inlineEdit"/>
+                        <item name="saveUrl" xsi:type="url" path="avatax/customertaxclasses/inlineEdit"/>
                         <item name="validateBeforeSave" xsi:type="boolean">false</item>
                     </item>
-                </item>-->
-                <!--<item name="childDefaults" xsi:type="array">
+                </item>
+                <item name="childDefaults" xsi:type="array">
                     <item name="fieldAction" xsi:type="array">
-                        <item name="provider" xsi:type="string">customer_listing.customer_listing.customer_columns_editor</item>
+                        <item name="provider" xsi:type="string">avatax_ctc_listing.avatax_ctc_listing.avatax_ctc_listing_columns_editor</item>
                         <item name="target" xsi:type="string">startEdit</item>
                         <item name="params" xsi:type="array">
                             <item name="0" xsi:type="string">${ $.$data.rowIndex }</item>
@@ -194,11 +192,11 @@
                         </item>
                     </item>
                     <item name="storageConfig" xsi:type="array">
-                        <item name="provider" xsi:type="string">customer_listing.customer_listing.listing_top.bookmarks</item>
+                        <item name="provider" xsi:type="string">avatax_ctc_listing.avatax_ctc_listing.listing_top.bookmarks</item>
                         <item name="root" xsi:type="string">columns.${ $.index }</item>
                         <item name="namespace" xsi:type="string">current.${ $.storageConfig.root }</item>
                     </item>
-                </item>-->
+                </item>
             </item>
         </argument>
 
@@ -216,9 +214,6 @@
                     <item name="filter" xsi:type="string">text</item>
                     <item name="editor" xsi:type="array">
                         <item name="editorType" xsi:type="string">text</item>
-                        <item name="validation" xsi:type="array">
-                            <item name="required-entry" xsi:type="boolean">true</item>
-                        </item>
                     </item>
                     <item name="label" xsi:type="string" translate="true">AvaTax Code</item>
                 </item>
