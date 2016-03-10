@@ -94,17 +94,16 @@ class Validation extends AbstractResource implements ValidationResourceInterface
             $result->setErrors($libResult->getErrors());
 
             // set result address
-            $this->updateAddressFromServiceResponse($address, $libResult);
-            $result->setAddress($address);
+            if (!$libResult->getHasError()) {
+                $this->updateAddressFromServiceResponse($address, $libResult);
+                $result->setAddress($address);
+            }
 
             // set resolution
             $resolutionQuality = $libResult->getResolutionQuality();
             $resolution = (in_array($resolutionQuality, $this->successResolutionQuality)) ? true : false;
             $result->setResolution($resolution);
 
-            if ($libResult->getHasError() && !$libResult->getErrors()) {
-                $result->setErrors([__('Error during address validation')]);
-            }
         } catch (\Exception $e) {
             $result->setHasError(true);
             $result->setErrors([$e->getMessage()]);

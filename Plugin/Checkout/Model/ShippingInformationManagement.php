@@ -14,11 +14,42 @@
  */
 namespace OnePica\AvaTax\Plugin\Checkout\Model;
 
+use Magento\Quote\Api\CartRepositoryInterface;
+use OnePica\AvaTax\Helper\Config;
+use OnePica\AvaTax\Model\Service\Validator;
+
 /**
  * Class ShippingInformationManagement
  */
 class ShippingInformationManagement
 {
+    /**
+     * @var Config
+     */
+    protected $config = null;
+
+    /**
+     * @var Validator
+     */
+    protected $validator = null;
+
+    /**
+     * ShippingInformationManagement constructor
+     *
+     * @param Config $config
+     * @param CartRepositoryInterface $quoteRepository
+     * @param Validator $validator
+     */
+    public function __construct(
+        Config $config,
+        CartRepositoryInterface $quoteRepository,
+        Validator $validator
+    ) {
+        $this->config = $config;
+        $this->quoteRepository = $quoteRepository;
+        $this->validator = $validator;
+    }
+
     /**
      * Save Address Information
      *
@@ -33,10 +64,30 @@ class ShippingInformationManagement
         $cartId,
         \Magento\Checkout\Api\Data\ShippingInformationInterface $addressInformation
     ) {
-        // @todo: implement address validation
-
-        $paymentInformation =  $proceed($cartId, $addressInformation);
+        $quote = $this->quoteRepository->getActive($cartId);
+        $storeId = $quote->getStoreId();
+        $this->validateAndNormalize($storeId, $addressInformation);
+        $paymentInformation = $proceed($cartId, $addressInformation);
         return $paymentInformation;
+    }
+
+    /**
+     * Validate and normalize
+     *
+     * @param int $storeId,
+     * @param \Magento\Checkout\Api\Data\ShippingInformationInterface $addressInformation
+     */
+    protected function validateAndNormalize(
+        $storeId,
+        \Magento\Checkout\Api\Data\ShippingInformationInterface $addressInformation
+    ) {
+        $shippingAddress = $addressInformation->getShippingAddress();
+        $this->validator->setStoreId($storeId);
+        $validationResult = $this->validator->validate($shippingAddress);
+
+        if ($validationResult !== true) {
+            $this->showErrorsAndStopCheckout($validationResult);
+        }
     }
 
     /**
