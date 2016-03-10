@@ -44,4 +44,76 @@
             </argument>
         </arguments>
     </type>
+
+<!-- Customer Tax Classes -->
+    <virtualType name="Magento\Tax\Model\ResourceModel\Customer\Grid\Collection" type="OnePica\AvaTax\Model\ResourceModel\Customer\TaxClass\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">tax_class</argument>
+            <argument name="resourceModel" xsi:type="string">Magento\Tax\Model\ResourceModel\TaxClass</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- 2 define data source for grid using virtual grid tax collection class-->
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="ctc_listing_data_source" xsi:type="string">Magento\Tax\Model\ResourceModel\Customer\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- define filter pool provider (cache pool provider) -->
+    <virtualType name="FPCustomerTax" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- define grid data provider -->
+    <virtualType name="GDPCustomerTax" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Magento\Tax\Model\ResourceModel\Grid\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">FPCustomerTax</argument>
+        </arguments>
+    </virtualType>
+<!--  -->
+
+<!-- Product Tax Classes -->
+    <virtualType name="Magento\Tax\Model\ResourceModel\Product\Grid\Collection" type="OnePica\AvaTax\Model\ResourceModel\Product\TaxClass\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">tax_class</argument>
+            <argument name="resourceModel" xsi:type="string">Magento\Tax\Model\ResourceModel\TaxClass</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- 2 define data source for grid using virtual grid tax collection class-->
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="ptc_listing_data_source" xsi:type="string">Magento\Tax\Model\ResourceModel\Product\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- define filter pool provider (cache pool provider) -->
+    <virtualType name="FPProductTax" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- define grid data provider -->
+    <virtualType name="GDPProductTax" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Magento\Tax\Model\ResourceModel\Grid\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">FPProductTax</argument>
+        </arguments>
+    </virtualType>
+    <!--  -->
 </config>
