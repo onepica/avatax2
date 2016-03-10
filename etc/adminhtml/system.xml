@@ -2,7 +2,7 @@
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
         <section id="tax">
-            <group id="avatax" translate="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="avatax" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Avatax</label>
                 <field id="action" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Action</label>
@@ -24,6 +24,23 @@
                     <label>Company Code</label>
                     <validate>required-entry</validate>
                 </field>
+                <group id="avatax_log_group" translate="label" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Log Settings</label>
+                    <attribute type="expanded">1</attribute>
+                    <field id="allowed_log_types" translate="label" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Allowed Log Types</label>
+                        <source_model>OnePica\AvaTax\Model\Source\Avatax16\LogType</source_model>
+                        <can_be_empty>1</can_be_empty>
+                    </field>
+                    <field id="log_lifetime" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Log Entry Lifetime</label>
+                        <validate>required-entry validate-digits validate-digits-range digits-range-1-</validate>
+                    </field>
+                    <field id="export_log_button" type="button" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Export Logs</label>
+                        <frontend_model>OnePica\AvaTax\Block\Adminhtml\System\Config\Form\Field\Log\Export</frontend_model>
+                    </field>
+                </group>
             </group>
         </section>
     </system>
