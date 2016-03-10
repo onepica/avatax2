@@ -55,7 +55,7 @@
         </argument>
 
         <!-- [Default View] button bookmarks -->
-        <!--<bookmark name="bookmarks">
+        <bookmark name="bookmarks">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="storageConfig" xsi:type="array">
@@ -63,10 +63,10 @@
                     </item>
                 </item>
             </argument>
-        </bookmark>-->
+        </bookmark>
 
         <!-- [Columns] button -->
-        <container name="columns_controls">
+        <component name="columns_controls">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="columnsData" xsi:type="array">
@@ -76,7 +76,7 @@
                     <item name="displayArea" xsi:type="string">dataGridActions</item>
                 </item>
             </argument>
-        </container>
+        </component>
 
         <!-- [Search by keyword] control -->
         <!--<filterSearch name="fulltext">
