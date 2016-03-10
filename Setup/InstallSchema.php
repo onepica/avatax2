@@ -17,12 +17,10 @@ namespace OnePica\AvaTax\Setup;
 
 use Magento\Framework\DB\Adapter\AdapterInterface;
 use Magento\Framework\DB\Ddl\Table;
-use Magento\Framework\Db\Ddl\Table  as DdlTable;
 use Magento\Framework\Setup\InstallSchemaInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
 
-use Magento\Tax\Model\ClassModelFactory;
 use Magento\Tax\Model\ResourceModel\TaxClass as TaxClassResourceModel;
 
 /**
@@ -32,27 +30,27 @@ use Magento\Tax\Model\ResourceModel\TaxClass as TaxClassResourceModel;
  */
 class InstallSchema implements InstallSchemaInterface
 {
-        /**
-         *
-         */
-        const COLUMN_OP_AVATAX_CODE = 'op_avatax_code';
+    /**
+     *  Avatax Tax Class OP Column Name
+     */
+    const COLUMN_OP_AVATAX_CODE = 'op_avatax_code';
 
-        /**
-         * @var TaxClassResourceModel
-         */
-        protected $taxClassResourceModel;
+    /**
+     * @var TaxClassResourceModel
+     */
+    protected $taxClassResourceModel;
 
-        /**
-         * InstallSchema constructor.
-         *
-         * @param TaxClassResourceModel $resource
-         */
-        public function __construct(
-            TaxClassResourceModel $resource
-        )
-        {
-                $this->taxClassResourceModel = $resource;
-        }
+    /**
+     * InstallSchema constructor.
+     *
+     * @param TaxClassResourceModel $resource
+     */
+    public function __construct(
+        TaxClassResourceModel $resource
+    )
+    {
+        $this->taxClassResourceModel = $resource;
+    }
 
     /**
      * Installs DB schema for a module
@@ -66,6 +64,7 @@ class InstallSchema implements InstallSchemaInterface
         $setup->startSetup();
 
         $this->installAvataxLogTable($setup, $context);
+        $this->installAvataxTaxClassOpColumn($setup, $context);
 
         $setup->endSetup();
     }
@@ -149,23 +148,30 @@ class InstallSchema implements InstallSchemaInterface
         return $this;
     }
 
-        protected function installAvataxTaxClassOp(SchemaSetupInterface $setup, ModuleContextInterface $context)
-        {
-                $tableName = $setup->getTable($this->taxClassResourceModel->getMainTable());
-                $columns = $setup->getConnection()->describeTable($tableName);
-                if (!isset($columns[self::COLUMN_OP_AVATAX_CODE])) {
-                        $setup->getConnection()
-                            ->addColumn(
-                                $tableName,
-                                self::COLUMN_OP_AVATAX_CODE,
-                                array(
-                                    'type'     => DdlTable::TYPE_TEXT,
-                                    'nullable' => false,
-                                    'length'   => 255,
-                                    'default'  => '',
-                                    'comment'  => 'Used by One Pica AvaTax extension'
-                                )
-                            );
-                }
+    /**
+     * Install Avatax Tax Class OP Column
+     * @param SchemaSetupInterface   $setup
+     * @param ModuleContextInterface $context
+     *
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    protected function installAvataxTaxClassOpColumn(SchemaSetupInterface $setup, ModuleContextInterface $context)
+    {
+        $tableName = $setup->getTable($this->taxClassResourceModel->getMainTable());
+        $columns = $setup->getConnection()->describeTable($tableName);
+        if (!isset($columns[self::COLUMN_OP_AVATAX_CODE])) {
+            $setup->getConnection()
+                ->addColumn(
+                    $tableName,
+                    self::COLUMN_OP_AVATAX_CODE,
+                    array(
+                        'type'     => Table::TYPE_TEXT,
+                        'nullable' => false,
+                        'length'   => 255,
+                        'default'  => '',
+                        'comment'  => 'Used by One Pica AvaTax extension'
+                    )
+                );
         }
+    }
 }
