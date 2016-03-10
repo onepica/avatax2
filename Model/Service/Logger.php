@@ -14,6 +14,7 @@
  */
 namespace OnePica\AvaTax\Model\Service;
 
+use OnePica\AvaTax\Api\LogRepositoryInterface;
 use OnePica\AvaTax\Api\ResultInterface;
 use OnePica\AvaTax\Api\Service\LoggerInterface;
 use OnePica\AvaTax\Helper\Config;
@@ -42,15 +43,24 @@ class Logger implements LoggerInterface
     protected $logFactory;
 
     /**
+     * Log repository
+     *
+     * @var \OnePica\AvaTax\Api\LogRepositoryInterface
+     */
+    protected $logRepository;
+
+    /**
      * Logger constructor.
      *
-     * @param \OnePica\AvaTax\Model\LogFactory $logFactory
-     * @param \OnePica\AvaTax\Helper\Config    $config
+     * @param \OnePica\AvaTax\Model\LogFactory           $logFactory
+     * @param \OnePica\AvaTax\Helper\Config              $config
+     * @param \OnePica\AvaTax\Api\LogRepositoryInterface $logRepository
      */
-    public function __construct(LogFactory $logFactory, Config $config)
+    public function __construct(LogFactory $logFactory, Config $config, LogRepositoryInterface $logRepository)
     {
         $this->config = $config;
         $this->logFactory = $logFactory;
+        $this->logRepository = $logRepository;
     }
 
     /**
@@ -79,8 +89,9 @@ class Logger implements LoggerInterface
             ->setLogLevel($level)
             ->setRequest(var_export($request, true))
             ->setResponse(var_export($result->getResponse(), true))
-            ->setAdditionalInfo(var_export($additional, true))
-            ->save();
+            ->setAdditionalInfo(var_export($additional, true));
+
+        $this->logRepository->save($logModel);
 
         return $this;
     }
