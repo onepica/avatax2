@@ -55,7 +55,7 @@ class Edit extends AbstractEditAction
      */
     protected function _validateAndRedirect(ClassModel $model)
     {
-        if ( $model->getClassType()=='CUSTOMER') {
+        if ($model->getClassType() == 'CUSTOMER') {
             $resultRedirect = $this->resultRedirectFactory->create();
             return $resultRedirect->setPath("*/customertaxclasses/edit/id/{$model->getId()}/");
         }
@@ -64,6 +64,8 @@ class Edit extends AbstractEditAction
     }
 
     /**
+     * Access rights checking
+     *
      * @return bool
      */
     protected function _isAllowed()

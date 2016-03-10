@@ -17,8 +17,18 @@ namespace OnePica\AvaTax\Controller\Adminhtml\ProductTaxClasses;
 
 use OnePica\AvaTax\Controller\Adminhtml\TaxClass\AbstractCreateAction;
 
+/**
+ * Class Create
+ *
+ * @package OnePica\AvaTax\Controller\Adminhtml\ProductTaxClasses
+ */
 class Create extends AbstractCreateAction
 {
+    /**
+     * Access rights checking
+     *
+     * @return bool
+     */
     protected function _isAllowed()
     {
         return $this->_authorization->isAllowed('OnePica_AvaTax::product_tax_classes');

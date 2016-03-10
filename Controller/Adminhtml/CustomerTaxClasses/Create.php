@@ -25,6 +25,8 @@ use OnePica\AvaTax\Controller\Adminhtml\TaxClass\AbstractCreateAction;
 class Create extends AbstractCreateAction
 {
     /**
+     * Access rights checking
+     *
      * @return bool
      */
     protected function _isAllowed()

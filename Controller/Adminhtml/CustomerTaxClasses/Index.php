@@ -45,6 +45,8 @@ class Index extends AbstractIndexAction
     }
 
     /**
+     * Access rights checking
+     *
      * @return bool
      */
     protected function _isAllowed()

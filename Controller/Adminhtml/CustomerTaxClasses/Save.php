@@ -28,6 +28,8 @@ class Save extends AbstractSaveAction
     }
 
     /**
+     * Access rights checking
+     *
      * @return bool
      */
     protected function _isAllowed()

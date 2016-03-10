@@ -38,7 +38,7 @@ abstract class AbstractMassDelete extends AbstractMassAction
                 $this->taxClassRepository->deleteById($taxClassId);
                 $taxClassesDeleted++;
             } catch (NoSuchEntityException $e) {
-                //object already deleted
+                $this->getMessageManager()->addError(__("Tax class with id '{$taxClassId}' no longer exists."));
             }
         }
 

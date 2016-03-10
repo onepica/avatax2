@@ -67,7 +67,7 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
         $this->objectManager = $objectManager;
         $this->connection = $resourceConnection->getConnection('core_read');
 
-        $this->_Init();
+        $this->_init();
     }
 
     /**
@@ -75,7 +75,7 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
      *
      * @return $this
      */
-    protected function _Init()
+    protected function _init()
     {
         $config = $this->data['config'];
 

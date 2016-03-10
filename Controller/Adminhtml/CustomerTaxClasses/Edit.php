@@ -54,7 +54,7 @@ class Edit extends AbstractEditAction
      */
     protected function _validateAndRedirect(ClassModel $model)
     {
-        if ( $model->getClassType()=='PRODUCT') {
+        if ($model->getClassType() == 'PRODUCT') {
             $resultRedirect = $this->resultRedirectFactory->create();
             return $resultRedirect->setPath("*/producttaxclasses/edit/id/{$model->getId()}/");
         }
@@ -63,6 +63,8 @@ class Edit extends AbstractEditAction
     }
 
     /**
+     * Access rights checking
+     *
      * @return bool
      */
     protected function _isAllowed()

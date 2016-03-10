@@ -22,5 +22,13 @@ use OnePica\AvaTax\Controller\Adminhtml\TaxClass\AbstractMassDelete;
  */
 class MassDelete extends AbstractMassDelete
 {
-
+    /**
+     * Access rights checking
+     *
+     * @return bool
+     */
+    protected function _isAllowed()
+    {
+        return $this->_authorization->isAllowed('OnePica_AvaTax::customer_tax_classes');
+    }
 }
