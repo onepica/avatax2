@@ -17,8 +17,10 @@ namespace OnePica\AvaTax\Controller\Adminhtml\Log;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Result\PageFactory;
+use OnePica\AvaTax\Api\LogRepositoryInterface;
 use OnePica\AvaTax\Block\Adminhtml\Log\View;
 use OnePica\AvaTax\Model\Log;
 
@@ -44,17 +46,30 @@ class Edit extends Action
     protected $registry;
 
     /**
+     * Log repository
+     *
+     * @var \OnePica\AvaTax\Api\LogRepositoryInterface
+     */
+    protected $logRepository;
+
+    /**
      * Index constructor.
      *
      * @param \Magento\Backend\App\Action\Context        $context
      * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
      * @param Registry                                   $registry
+     * @param \OnePica\AvaTax\Api\LogRepositoryInterface $logRepository
      */
-    public function __construct(Context $context, PageFactory $resultPageFactory, Registry $registry)
-    {
+    public function __construct(
+        Context $context,
+        PageFactory $resultPageFactory,
+        Registry $registry,
+        LogRepositoryInterface $logRepository
+    ) {
         parent::__construct($context);
         $this->resultPageFactory = $resultPageFactory;
         $this->registry = $registry;
+        $this->logRepository = $logRepository;
     }
 
     /**
@@ -66,12 +81,12 @@ class Edit extends Action
     public function execute()
     {
         $id = $this->getRequest()->getParam('log_id');
-        /** @var Log $model */
-        $model = $this->_objectManager->create(Log::class);
 
-        $model->load($id);
-        if (!$model->getId()) {
-            $this->messageManager->addError(__('This log no longer exists.'));
+        try {
+            /** @var Log $model */
+            $model = $this->logRepository->getById($id);
+        } catch (LocalizedException $e) {
+            $this->messageManager->addError($e->getMessage());
             /** \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
             $resultRedirect = $this->resultRedirectFactory->create();
 
