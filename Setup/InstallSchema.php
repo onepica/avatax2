@@ -14,6 +14,7 @@
  */
 namespace OnePica\AvaTax\Setup;
 
+use Magento\Framework\DB\Adapter\AdapterInterface;
 use Magento\Framework\DB\Ddl\Table;
 use Magento\Framework\Setup\InstallSchemaInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
@@ -106,6 +107,14 @@ class InstallSchema implements InstallSchemaInterface
                 $setup->getTable('store'),
                 'store_id',
                 Table::ACTION_CASCADE
+            )->addIndex(
+                $setup->getIdxName(
+                    $setup->getTable('avatax_log'),
+                    ['log_level', 'log_type', 'created_at'],
+                    AdapterInterface::INDEX_TYPE_INDEX
+                ),
+                ['log_level', 'log_type', 'created_at'],
+                AdapterInterface::INDEX_TYPE_INDEX
             );
 
         $setup->getConnection()->createTable($table);
