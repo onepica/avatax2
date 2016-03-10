@@ -10,6 +10,7 @@ namespace OnePica\AvaTax\Controller\Adminhtml\TaxClass;
 
 use Magento\Backend\App\Action;
 use Magento\TestFramework\Event\Magento;
+use Magento\Tax\Model\ClassModel;
 
 /**
  * Class AbstractSaveAction
@@ -30,7 +31,7 @@ abstract class AbstractSaveAction extends Action
         $resultRedirect = $this->resultRedirectFactory->create();
         if ($data) {
             /** @var \Magento\Tax\Model\ClassModel $model */
-            $model = $this->_objectManager->create(\Magento\Tax\Model\ClassModel::class);
+            $model = $this->_objectManager->create(ClassModel::class);
 
             $id = (isset($data['class_id'])) ? $data['class_id'] : null;
             if ($id) {
@@ -47,18 +48,18 @@ abstract class AbstractSaveAction extends Action
 
             try {
                 $model->save();
-                $this->messageManager->addSuccess(__('You saved this Class.'));
+                $this->getMessageManager()->addSuccess(__('You saved this Class.'));
                 $this->_objectManager->get(\Magento\Backend\Model\Session::class)->setFormData(false);
                 if ($this->getRequest()->getParam('back')) {
                     return $resultRedirect->setPath('*/*/edit', ['id' => $model->getId(), '_current' => true]);
                 }
                 return $resultRedirect->setPath('*/*/');
             } catch (\LocalizedException $e) {
-                $this->messageManager->addError($e->getMessage());
+                $this->getMessageManager()->addError($e->getMessage());
             } catch (\RuntimeException $e) {
-                $this->messageManager->addError($e->getMessage());
+                $this->getMessageManager()->addError($e->getMessage());
             } catch (\Exception $e) {
-                $this->messageManager->addException($e, __('Something went wrong while saving the tax class.'));
+                $this->getMessageManager()->addException($e, __('Something went wrong while saving the tax class.'));
             }
 
             $this->_getSession()->setFormData($data);

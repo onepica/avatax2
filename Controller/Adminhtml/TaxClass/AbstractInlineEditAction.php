@@ -18,7 +18,6 @@ namespace OnePica\AvaTax\Controller\Adminhtml\TaxClass;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\Controller\Result\JsonFactory;
-use Psr\Log\LoggerInterface;
 
 use Magento\Tax\Api\TaxClassRepositoryInterface;
 
@@ -36,27 +35,21 @@ abstract class AbstractInlineEditAction extends Action
     /** @var \Magento\Framework\Controller\Result\JsonFactory  */
     protected $resultJsonFactory;
 
-    /** @var \Psr\Log\LoggerInterface */
-    protected $logger;
-
     /**
      * AbstractInlineEditAction constructor.
      *
      * @param Context                     $context
      * @param TaxClassRepositoryInterface $customerRepository
      * @param JsonFactory                 $resultJsonFactory
-     * @param LoggerInterface             $logger
      */
     public function __construct(
         Context $context,
         TaxClassRepositoryInterface $customerRepository,
-        JsonFactory $resultJsonFactory,
-        LoggerInterface $logger
+        JsonFactory $resultJsonFactory
     )
     {
         $this->taxClassRepository = $customerRepository;
         $this->resultJsonFactory = $resultJsonFactory;
-        $this->logger = $logger;
         parent::__construct($context);
     }
 
@@ -91,8 +84,8 @@ abstract class AbstractInlineEditAction extends Action
         }
         catch(\Exception $e)
         {
-            $this->getMessageManager()->addError($e->getMessage());
-            $this->logger->critical($e);
+            $this->_objectManager->get('Psr\Log\LoggerInterface')->critical($e);
+            $this->getMessageManager()->addException($e, __('Something went wrong while saving the tax class.'));
         }
 
         return $resultJson->setData(

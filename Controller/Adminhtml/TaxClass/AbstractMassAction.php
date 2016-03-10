@@ -58,7 +58,7 @@ abstract class AbstractMassAction extends Action
             $ids = $this->getRequest()->getParam(Filter::SELECTED_PARAM);
             $ids = (isset($ids)) ? $ids : array();
 
-            $rowProcessed = $this->massAction($ids);
+            $this->massAction($ids);
 
             /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
             $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
@@ -67,7 +67,8 @@ abstract class AbstractMassAction extends Action
             return $resultRedirect;
 
         } catch (\Exception $e) {
-            $this->messageManager->addError($e->getMessage());
+            $this->_objectManager->get('Psr\Log\LoggerInterface')->critical($e);
+            $this->getMessageManager()->addException($e, __('Something went wrong while saving the tax class.'));
             /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
             $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
             return $resultRedirect->setPath('*/*/');

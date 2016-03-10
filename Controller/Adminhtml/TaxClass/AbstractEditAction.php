@@ -115,12 +115,12 @@ abstract class AbstractEditAction extends Action
             $this->_initPage($resultPage, $model);
 
         } catch(NoSuchEntityException $e) {
-            $this->messageManager->addError(__('This tax class no longer exists.'));
+            $this->getMessageManager()->addError(__('This tax class no longer exists.'));
             $resultRedirect = $this->resultRedirectFactory->create();
             return $resultRedirect->setPath('*/*/');
         } catch (\Exception $e) {
             $this->_objectManager->get('Psr\Log\LoggerInterface')->critical($e);
-            $this->messageManager->addError(__($e->getMessage()));
+            $this->getMessageManager()->addException($e, __('Something went wrong while saving the tax class.'));
             /** \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
             $resultRedirect = $this->resultRedirectFactory->create();
             return $resultRedirect->setPath('*/*/');

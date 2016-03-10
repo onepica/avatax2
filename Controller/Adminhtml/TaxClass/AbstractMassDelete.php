@@ -24,6 +24,8 @@ use OnePica\AvaTax\Controller\Adminhtml\TaxClass\AbstractMassAction;
 abstract class AbstractMassDelete extends AbstractMassAction
 {
     /**
+     * Process mass action
+     *
      * @param array $ids
      *
      * @return int
@@ -41,7 +43,7 @@ abstract class AbstractMassDelete extends AbstractMassAction
         }
 
         if ($taxClassesDeleted) {
-            $this->messageManager->addSuccess(__('A total of %1 record(s) were deleted.', $taxClassesDeleted));
+            $this->getMessageManager()->addSuccess(__('A total of %1 record(s) were deleted.', $taxClassesDeleted));
         }
 
         return $taxClassesDeleted;

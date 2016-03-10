@@ -14,7 +14,6 @@
  */
 namespace OnePica\AvaTax\Block\Adminhtml\Edit;
 
-use Magento\Customer\Api\AccountManagementInterface;
 use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
 
 /**
@@ -23,6 +22,8 @@ use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
 class SaveAndContinueButton extends GenericButton implements ButtonProviderInterface
 {
     /**
+     * Get Button Data
+     *
      * @return array
      */
     public function getButtonData()

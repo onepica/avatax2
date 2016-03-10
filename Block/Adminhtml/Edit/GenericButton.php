@@ -14,7 +14,8 @@
  */
 namespace OnePica\AvaTax\Block\Adminhtml\Edit;
 
-use Magento\Customer\Controller\RegistryConstants;
+use Magento\Backend\Block\Widget\Context;
+use Magento\Framework\Registry;
 
 /**
  * Class GenericButton
@@ -43,22 +44,12 @@ class GenericButton
      * @param \Magento\Framework\Registry $registry
      */
     public function __construct(
-        \Magento\Backend\Block\Widget\Context $context,
-        \Magento\Framework\Registry $registry
+        Context $context,
+        Registry $registry
     )
     {
         $this->urlBuilder = $context->getUrlBuilder();
         $this->registry = $registry;
-    }
-
-    /**
-     * Return the customer Id.
-     *
-     * @return int|null
-     */
-    public function getCustomerId()
-    {
-        return $this->registry->registry(RegistryConstants::CURRENT_CUSTOMER_ID);
     }
 
     /**
