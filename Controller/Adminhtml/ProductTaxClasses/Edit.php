@@ -37,18 +37,11 @@ class Edit extends AbstractEditAction
      */
     protected function _initPage(Page $resultPage, ClassModel $model)
     {
-        $resultPage->setActiveMenu('OnePica_AvaTax::product_tax_classes')
-            ->addBreadcrumb(__('AvaTax'), __('AvaTax'))
-            ->addBreadcrumb(__('Product Tax Classes'), __('Product Tax Classes'));
-
-        $resultPage->addBreadcrumb(
-            $model->getId() ? __('Edit Tax Class') : __('New Tax Class'),
-            $model->getId() ? __('Edit Tax Class') : __('New Tax Class')
-        );
+        $resultPage->setActiveMenu('OnePica_AvaTax::product_tax_classes');
 
         $resultPage->getConfig()->getTitle()->prepend(__('Tax Classes'));
         $resultPage->getConfig()->getTitle()
-            ->prepend($model->getId() ? $model->getTitle() : __('New Tax Class'));
+            ->prepend($model->getId() ? $model->getClassName() : __('New Tax Class'));
 
         return $this;
     }
