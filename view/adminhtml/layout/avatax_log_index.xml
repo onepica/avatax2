@@ -3,7 +3,7 @@
     <update handle="styles"/>
     <body>
         <referenceContainer name="content">
-            <block class="OnePica\AvaTax\Block\Adminhtml\Log" name="avatax_log"/>
+            <uiComponent name="avatax_log_listing" />
         </referenceContainer>
     </body>
 </page>

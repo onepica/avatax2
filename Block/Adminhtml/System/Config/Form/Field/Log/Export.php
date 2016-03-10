@@ -35,7 +35,6 @@ class Export extends Field
         /** @var \Magento\Backend\Block\Widget\Button $buttonBlock */
         $buttonBlock = $this->getForm()->getLayout()->createBlock('Magento\Backend\Block\Widget\Button');
 
-
         $url = $this->getUrl("avatax/log/export");
         $data = [
             'id'      => 'system_avatax_log_export_button',
@@ -47,5 +46,4 @@ class Export extends Field
 
         return $html;
     }
-
 }
