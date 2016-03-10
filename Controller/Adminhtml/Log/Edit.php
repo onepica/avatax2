@@ -14,7 +14,6 @@
  */
 namespace OnePica\AvaTax\Controller\Adminhtml\Log;
 
-use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Exception\LocalizedException;
@@ -22,6 +21,7 @@ use Magento\Framework\Registry;
 use Magento\Framework\View\Result\PageFactory;
 use OnePica\AvaTax\Api\LogRepositoryInterface;
 use OnePica\AvaTax\Block\Adminhtml\Log\View;
+use OnePica\AvaTax\Controller\Adminhtml\AbstractLogAction;
 use OnePica\AvaTax\Model\Log;
 
 /**
@@ -29,7 +29,7 @@ use OnePica\AvaTax\Model\Log;
  *
  * @package OnePica\AvaTax\Controller\Adminhtml\Log
  */
-class Edit extends Action
+class Edit extends AbstractLogAction
 {
     /**
      * Result page factory

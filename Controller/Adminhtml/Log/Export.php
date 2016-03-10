@@ -14,11 +14,11 @@
  */
 namespace OnePica\AvaTax\Controller\Adminhtml\Log;
 
-use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\Response\Http\FileFactory;
 use Magento\Framework\App\ResponseInterface;
+use OnePica\AvaTax\Controller\Adminhtml\AbstractLogAction;
 use OnePica\AvaTax\Model\Log\Export\Csv;
 
 /**
@@ -26,7 +26,7 @@ use OnePica\AvaTax\Model\Log\Export\Csv;
  *
  * @package OnePica\AvaTax\Controller\Adminhtml\Log
  */
-class Export extends Action
+class Export extends AbstractLogAction
 {
     /**
      * File factory

@@ -14,17 +14,17 @@
  */
 namespace OnePica\AvaTax\Controller\Adminhtml\Log;
 
-use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\View\Result\PageFactory;
+use OnePica\AvaTax\Controller\Adminhtml\AbstractLogAction;
 
 /**
  * Class Index
  *
  * @package OnePica\AvaTax\Controller\Adminhtml\Log
  */
-class Index extends Action
+class Index extends AbstractLogAction
 {
     /**
      * Result page factory
