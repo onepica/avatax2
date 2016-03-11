@@ -20,6 +20,8 @@ use \Magento\Store\Model\StoreManagerInterface;
 use OnePica\AvaTax\Helper\Config;
 use OnePica\AvaTax\Model\Tool\Validate;
 use OnePica\AvaTax\Model\Service\Request\Address as RequestAddress;
+use OnePica\AvaTax\Model\Service\Result\AddressValidationResult;
+
 /**
  * Quote address validator
  *
@@ -92,6 +94,7 @@ class AddressValidator
         $requestAddress = $this->convertAddressToRequestAddress($address);
         $validator = $this->objectManager->create(Validate::class, ['object' => $requestAddress]);
         $serviceResult = $validator->execute();
+        $this->normalizeAddress($address, $serviceResult);
         $result = $serviceResult->getErrors() ? $serviceResult->getErrors() : true;
 
         return $result;
@@ -123,6 +126,7 @@ class AddressValidator
     {
         return $this->config->getValidateAddress($this->storeManager->getStore());
     }
+
     /**
      * Convert Address To Request Address
      *
@@ -142,5 +146,39 @@ class AddressValidator
         $requestAddress->setCountry($address->getCountry());
 
         return $requestAddress;
+    }
+
+    /**
+     * Normalize Address
+     *
+     * @param AbstractAddress $address
+     * @param AddressValidationResult $serviceResult
+     */
+    protected function normalizeAddress(AbstractAddress $address, AddressValidationResult $serviceResult)
+    {
+        if ($this->isNormalizeAddressEnabled() && !$serviceResult->getHasError()) {
+            $normalizedAddress = $serviceResult->getAddress();
+            $street[] = $normalizedAddress->getLine1();
+            if ($normalizedAddress->getLine2()) {
+                $street[] = $normalizedAddress->getLine2();
+            }
+            $address->setStreet($street);
+            $address->setCity($normalizedAddress->getCity());
+            $address->setRegion($normalizedAddress->getRegion());
+            $address->setPostcode($normalizedAddress->getPostcode());
+            $address->setCountry($normalizedAddress->getCountry());
+            $address->setFirstname('______________');
+            $address->setData('is_normalized', true);
+        }
+    }
+
+    /**
+     * Is Normalize Address Enabled
+     *
+     * @return bool
+     */
+    protected function isNormalizeAddressEnabled()
+    {
+        return $this->config->getNormalizeAddress($this->storeManager->getStore());
     }
 }

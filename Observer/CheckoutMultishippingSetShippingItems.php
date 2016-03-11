@@ -47,6 +47,9 @@ class CheckoutMultishippingSetShippingItems implements ObserverInterface
         }
         if (!empty($errors)) {
             $this->handleErrors($errors);
+        } else {
+            // save normalized data
+            $quote->save();
         }
     }
 
