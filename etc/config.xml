@@ -9,6 +9,16 @@
                     <log_lifetime>3</log_lifetime>
                     <allowed_log_types>Ping,Calculation,Transaction,Filter,Validate,Queue</allowed_log_types>
                 </avatax_log_group>
+                <avatax_data_mapping_group>
+                    <cust_code_format>1</cust_code_format>
+                    <shipping_sku>Shipping</shipping_sku>
+                    <gw_items_sku>GwItems</gw_items_sku>
+                    <gw_order_sku>GwOrder</gw_order_sku>
+                    <gw_printed_card_sku>GwPrintedCard</gw_printed_card_sku>
+                    <adjustment_positive_sku>Adjustment</adjustment_positive_sku>
+                    <adjustment_negative_sku>Adjustment</adjustment_negative_sku>
+                    <sales_person_code>Magento</sales_person_code>
+                </avatax_data_mapping_group>
             </avatax>
         </tax>
     </default>
