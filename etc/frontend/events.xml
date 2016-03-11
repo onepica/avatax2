@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="checkout_type_multishipping_set_shipping_items">
+        <observer name="checkout_multishipping_set_shipping_items" instance="OnePica\AvaTax\Observer\CheckoutMultishippingSetShippingItems" />
+    </event>
+</config>
