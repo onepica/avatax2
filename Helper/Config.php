@@ -19,6 +19,7 @@ use Magento\Framework\App\Helper\Context;
 use Magento\Framework\App\ProductMetadataInterface;
 use Magento\Framework\App\ScopeInterface as AppScopeInterface;
 use Magento\Framework\Module\ModuleListInterface;
+use Magento\Sales\Model\Order\Shipment;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\Store;
 
@@ -334,6 +335,72 @@ class Config extends AbstractHelper
     public function getUpcCode($scopeCode = null)
     {
         return (string)$this->getConfig(self::AVATAX_SERVICE_UPC_CODE, $scopeCode);
+    }
+
+    /**
+     * Get origin first street line
+     *
+     * @param null|string|AppScopeInterface $scopeCode
+     * @return string
+     */
+    public function getOriginFirstStreetLine($scopeCode = null)
+    {
+        return (string)$this->getConfig(Shipment::XML_PATH_STORE_ADDRESS1, $scopeCode);
+    }
+
+    /**
+     * Get origin second street line
+     *
+     * @param null|string|AppScopeInterface $scopeCode
+     * @return string
+     */
+    public function getOriginSecondStreetLine($scopeCode = null)
+    {
+        return (string)$this->getConfig(Shipment::XML_PATH_STORE_ADDRESS2, $scopeCode);
+    }
+
+    /**
+     * Get origin city
+     *
+     * @param null|string|AppScopeInterface $scopeCode
+     * @return string
+     */
+    public function getOriginCity($scopeCode = null)
+    {
+        return (string)$this->getConfig(Shipment::XML_PATH_STORE_CITY, $scopeCode);
+    }
+
+    /**
+     * Get origin region id
+     *
+     * @param null|string|AppScopeInterface $scopeCode
+     * @return int
+     */
+    public function getOriginRegionId($scopeCode = null)
+    {
+        return (int)$this->getConfig(Shipment::XML_PATH_STORE_REGION_ID, $scopeCode);
+    }
+
+    /**
+     * Get origin country id
+     *
+     * @param null|string|AppScopeInterface $scopeCode
+     * @return int
+     */
+    public function getOriginCountryId($scopeCode = null)
+    {
+        return (int)$this->getConfig(Shipment::XML_PATH_STORE_COUNTRY_ID, $scopeCode);
+    }
+
+    /**
+     * Get origin zip
+     *
+     * @param null|string|AppScopeInterface $scopeCode
+     * @return string
+     */
+    public function getOriginZip($scopeCode = null)
+    {
+        return (string)$this->getConfig(Shipment::XML_PATH_STORE_ZIP, $scopeCode);
     }
 
     /**
