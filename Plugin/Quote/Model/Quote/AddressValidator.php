@@ -16,7 +16,7 @@ namespace OnePica\AvaTax\Plugin\Quote\Model\Quote;
 
 use Magento\Customer\Model\Address\AbstractAddress;
 use Magento\Framework\ObjectManagerInterface;
-use \Magento\Store\Model\StoreManagerInterface;
+use Magento\Store\Model\StoreManagerInterface;
 use OnePica\AvaTax\Helper\Config;
 use OnePica\AvaTax\Model\Tool\Validate;
 use OnePica\AvaTax\Model\Service\Request\Address as RequestAddress;
