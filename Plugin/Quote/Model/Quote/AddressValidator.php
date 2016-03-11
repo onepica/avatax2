@@ -12,29 +12,21 @@
  * @copyright  Copyright (c) 2016 One Pica, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model\Service;
+namespace OnePica\AvaTax\Plugin\Quote\Model\Quote;
 
 use Magento\Customer\Model\Address\AbstractAddress;
 use Magento\Framework\ObjectManagerInterface;
-use Magento\Store\Model\Store;
+use \Magento\Store\Model\StoreManagerInterface;
 use OnePica\AvaTax\Helper\Config;
 use OnePica\AvaTax\Model\Tool\Validate;
 use OnePica\AvaTax\Model\Service\Request\Address as RequestAddress;
-
 /**
- * Class Validator
+ * Quote address validator
  *
- * @package OnePica\AvaTax\Model\Service\Validator
+ * @package OnePica\AvaTax\Plugin\Quote\Model\Quote\AddressValidator
  */
-class Validator
+class AddressValidator
 {
-    /**
-     * Store id
-     *
-     * @var int
-    */
-    protected $storeId;
-
     /**
      * @var Config
      */
@@ -48,47 +40,53 @@ class Validator
     protected $objectManager;
 
     /**
+     * Store manager
+     *
+     * @var \Magento\Store\Model\StoreManagerInterface
+     */
+    protected $storeManager;
+
+    /**
      * ShippingInformationManagement constructor
      *
      * @param Config $config
      * @param ObjectManagerInterface $objectManager
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         Config $config,
-        ObjectManagerInterface $objectManager
+        ObjectManagerInterface $objectManager,
+        StoreManagerInterface $storeManager
     ) {
         $this->config = $config;
         $this->objectManager = $objectManager;
+        $this->storeManager = $storeManager;
     }
 
     /**
-     * Set Store Id
+     * After validate
      *
-     * @param int $storeId
+     * @param \Magento\Customer\Model\Address\AbstractAddress $subject
+     * @param array|bool $result
+     * @return array|bool
      */
-    public function setStoreId($storeId) {
-        $this->storeId = $storeId;
-    }
-
-    /**
-     * Get Store Id
-     *
-     * @return int $storeId
-     */
-    public function getStoreId() {
-        return $this->storeId ? $this->storeId : Store::DEFAULT_STORE_ID;
+    public function afterValidate(AbstractAddress $subject, $result)
+    {
+        if ($result !== true) {
+            return $result;
+        }
+        return $this->validate($subject);
     }
 
     /**
      * Validate customer address
      *
      * @param AbstractAddress $address
-     * @return true|Array
+     * @return array|bool
      */
     public function validate(AbstractAddress $address)
     {
-        $isValidationEnabled = $this->config->getValidateAddress($this->getStoreid());
-        if (!$isValidationEnabled) {
+        if (!$this->isValidationRequired($address)) {
             return true;
         }
         $requestAddress = $this->convertAddressToRequestAddress($address);
@@ -100,6 +98,32 @@ class Validator
     }
 
     /**
+     * Is validation required
+     *
+     * @param AbstractAddress $address
+     * @return bool
+     */
+    protected function isValidationRequired(AbstractAddress $address)
+    {
+        if ($this->getValidationMode() ||
+            $address->getAddressType() == \Magento\Quote\Model\Quote\Address::ADDRESS_TYPE_SHIPPING
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Get Validation Mode
+     *
+     * @return int
+     */
+    protected function getValidationMode()
+    {
+        return $this->config->getValidateAddress($this->storeManager->getStore());
+    }
+    /**
      * Convert Address To Request Address
      *
      * @param AbstractAddress $address
@@ -108,7 +132,7 @@ class Validator
     protected function convertAddressToRequestAddress(AbstractAddress $address)
     {
         $requestAddress = $this->objectManager->create('OnePica\AvaTax\Model\Service\Request\Address');
-        $store = $this->objectManager->get('Magento\Store\Model\StoreManagerInterface')->getStore($this->getStoreid());
+        $store = $this->storeManager->getStore();
         $requestAddress->setStore($store);
         $requestAddress->setLine1($address->getStreetLine(1));
         $requestAddress->setLine2($address->getStreetLine(2));

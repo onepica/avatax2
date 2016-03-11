@@ -16,7 +16,6 @@ namespace OnePica\AvaTax\Plugin\Checkout\Model;
 
 use Magento\Quote\Api\CartRepositoryInterface;
 use OnePica\AvaTax\Helper\Config;
-use OnePica\AvaTax\Model\Service\Validator;
 
 /**
  * Class ShippingInformationManagement
@@ -29,25 +28,17 @@ class ShippingInformationManagement
     protected $config = null;
 
     /**
-     * @var Validator
-     */
-    protected $validator = null;
-
-    /**
      * ShippingInformationManagement constructor
      *
      * @param Config $config
      * @param CartRepositoryInterface $quoteRepository
-     * @param Validator $validator
      */
     public function __construct(
         Config $config,
-        CartRepositoryInterface $quoteRepository,
-        Validator $validator
+        CartRepositoryInterface $quoteRepository
     ) {
         $this->config = $config;
         $this->quoteRepository = $quoteRepository;
-        $this->validator = $validator;
     }
 
     /**
@@ -81,9 +72,9 @@ class ShippingInformationManagement
         $storeId,
         \Magento\Checkout\Api\Data\ShippingInformationInterface $addressInformation
     ) {
+
         $shippingAddress = $addressInformation->getShippingAddress();
-        $this->validator->setStoreId($storeId);
-        $validationResult = $this->validator->validate($shippingAddress);
+        $validationResult = $shippingAddress->validate();
 
         if ($validationResult !== true) {
             $this->showErrorsAndStopCheckout($validationResult);
