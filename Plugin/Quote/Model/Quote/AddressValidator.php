@@ -108,7 +108,7 @@ class AddressValidator
      */
     protected function isValidationRequired(AbstractAddress $address)
     {
-        if ($this->getValidationMode() ||
+        if ($this->getValidationMode() &&
             $address->getAddressType() == \Magento\Quote\Model\Quote\Address::ADDRESS_TYPE_SHIPPING
         ) {
             return true;
@@ -167,7 +167,6 @@ class AddressValidator
             $address->setRegion($normalizedAddress->getRegion());
             $address->setPostcode($normalizedAddress->getPostcode());
             $address->setCountry($normalizedAddress->getCountry());
-            $address->setFirstname('______________');
             $address->setData('is_normalized', true);
         }
     }
