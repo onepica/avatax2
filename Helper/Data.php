@@ -29,14 +29,14 @@ class Data extends AbstractHelper
     const SHIPPING_ADDRESS_VALIDATION_DISABLE = 0;
 
     /**
-     * Shipping address validation enable + allow order
-     */
-    const SHIPPING_ADDRESS_VALIDATION_ALLOW = 1;
-
-    /**
      * Shipping address validation enable + prevent order
      */
-    const SHIPPING_ADDRESS_VALIDATION_PREVENT = 2;
+    const SHIPPING_ADDRESS_VALIDATION_PREVENT = 1;
+
+    /**
+     * Shipping address validation enable + allow order
+     */
+    const SHIPPING_ADDRESS_VALIDATION_ALLOW = 2;
 
     /**
      * Message group code
