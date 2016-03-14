@@ -15,6 +15,7 @@
 namespace OnePica\AvaTax\Model\Source;
 
 use Magento\Framework\Data\OptionSourceInterface;
+use OnePica\AvaTax\Helper\Data as AvataxDataHelper;
 
 /**
  * Class ValidateAddress
@@ -23,14 +24,6 @@ use Magento\Framework\Data\OptionSourceInterface;
  */
 class ValidateAddress implements OptionSourceInterface
 {
-    /**#@+
-     * Actions
-     */
-    const DISABLED              = 0;
-    const ENABLED_PREVENT_ORDER = 1;
-    const ENABLED_ALLOW_ORDER   = 2;
-    /**#@-*/
-
     /**
      * Return array of options as value-label pairs
      *
@@ -40,15 +33,15 @@ class ValidateAddress implements OptionSourceInterface
     {
         return [
             [
-                'value' => self::DISABLED,
+                'value' => AvataxDataHelper::SHIPPING_ADDRESS_VALIDATION_DISABLE,
                 'label' => __('Disabled')
             ],
             [
-                'value' => self::ENABLED_PREVENT_ORDER,
+                'value' => AvataxDataHelper::SHIPPING_ADDRESS_VALIDATION_ALLOW,
                 'label' => __('Enabled + Prevent Order')
             ],
             [
-                'value' => self::ENABLED_ALLOW_ORDER,
+                'value' => AvataxDataHelper::SHIPPING_ADDRESS_VALIDATION_PREVENT,
                 'label' => __('Enabled + Allow Order')
             ],
         ];
