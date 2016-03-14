@@ -74,7 +74,7 @@ class ChangedSectionTax implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        $store = $this->storeManager->getStore($observer->getData('store'));
+        $store = $this->storeManager->getStore((int)$observer->getData('store'));
         $this->sendPing($store);
     }
 

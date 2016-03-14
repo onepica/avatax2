@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="OnePica_AvaTax::sales_tax" title="AvaTax" module="OnePica_AvaTax" sortOrder="80" dependsOnModule="Magento_Sales" parent="Magento_Sales::sales" resource="OnePica_AvaTax::sales_tax"/>
+        <add id="OnePica_AvaTax::customer_tax_classes" title="Customer Tax Classes" module="OnePica_AvaTax" sortOrder="20" dependsOnModule="Magento_Sales" parent="OnePica_AvaTax::sales_tax" action="avatax/customertaxclasses/index" resource="OnePica_AvaTax::customer_tax_classes"/>
+        <add id="OnePica_AvaTax::product_tax_classes" title="Product Tax Classes" module="OnePica_AvaTax" sortOrder="40" dependsOnModule="Magento_Sales" parent="OnePica_AvaTax::sales_tax" action="avatax/producttaxclasses/index" resource="OnePica_AvaTax::product_tax_classes"/>
+
+        <add id="OnePica_AvaTax::sales_avatax" title="AvaTax" module="OnePica_AvaTax" sortOrder="25"
+             parent="Magento_Backend::stores" resource="OnePica_AvaTax::manage_tax"/>
+        <add id="OnePica_AvaTax::sales_avatax_log" title="Log" module="OnePica_AvaTax" sortOrder="15"
+             parent="OnePica_AvaTax::sales_avatax" action="avatax/log" resource="OnePica_AvaTax::manage_tax"/>
+    </menu>
+</config>

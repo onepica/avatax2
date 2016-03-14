@@ -17,7 +17,7 @@ namespace OnePica\AvaTax\Helper;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\App\ProductMetadataInterface;
-use Magento\Framework\AppInterface;
+use Magento\Framework\Module\ModuleListInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\Store;
 
@@ -28,6 +28,11 @@ use Magento\Store\Model\Store;
  */
 class Config extends AbstractHelper
 {
+    /**
+     * Module name
+     */
+    const MODULE_NAME = 'OnePica_AvaTax';
+
     /**#@+
      * Config xml path
      */
@@ -37,6 +42,8 @@ class Config extends AbstractHelper
     const AVATAX_SERVICE_ACCOUNT_NUMBER         = 'tax/avatax/account_number';
     const AVATAX_SERVICE_LICENCE_KEY            = 'tax/avatax/license_key';
     const AVATAX_SERVICE_COMPANY_CODE           = 'tax/avatax/company_code';
+    const AVATAX_SERVICE_ALLOWED_LOG_TYPES      = 'tax/avatax/avatax_log_group/allowed_log_types';
+    const AVATAX_SERVICE_LOG_LIFETIME           = 'tax/avatax/avatax_log_group/log_lifetime';
     const AVATAX_VALIDATE_ADDRESS               = 'tax/avatax/validate_address';
     const AVATAX_NORMALIZE_ADDRESS              = 'tax/avatax/normalize_address';
     const AVATAX_ONEPAGE_NORMALIZE_MESSAGE      = 'tax/avatax/onepage_normalize_message';
@@ -54,15 +61,27 @@ class Config extends AbstractHelper
     protected $productMetadata;
 
     /**
+     * Module list
+     *
+     * @var \Magento\Framework\Module\ModuleListInterface
+     */
+    protected $moduleList;
+
+    /**
      * Config constructor.
      *
      * @param \Magento\Framework\App\Helper\Context           $context
      * @param \Magento\Framework\App\ProductMetadataInterface $productMetadata
+     * @param \Magento\Framework\Module\ModuleListInterface   $moduleList
      */
-    public function __construct(Context $context, ProductMetadataInterface $productMetadata)
-    {
+    public function __construct(
+        Context $context,
+        ProductMetadataInterface $productMetadata,
+        ModuleListInterface $moduleList
+    ) {
         parent::__construct($context);
         $this->productMetadata = $productMetadata;
+        $this->moduleList = $moduleList;
     }
 
     /**
@@ -73,6 +92,16 @@ class Config extends AbstractHelper
     public function getActiveService()
     {
         return $this->scopeConfig->getValue(self::AVATAX_ACTIVE_SERVICE);
+    }
+
+    /**
+     * Get module version
+     *
+     * @return string
+     */
+    public function getModuleVersion()
+    {
+        return $this->moduleList->getOne(self::MODULE_NAME)['setup_version'];
     }
 
     /**
@@ -131,6 +160,28 @@ class Config extends AbstractHelper
     }
 
     /**
+     * Get service company code
+     *
+     * @param Store|int $store
+     * @return array
+     */
+    public function getAllowedLogTypes($store = null)
+    {
+        return explode(',', $this->getConfig(self::AVATAX_SERVICE_ALLOWED_LOG_TYPES, $store));
+    }
+
+    /**
+     * Get log lifetime
+     *
+     * @param Store|int $store
+     * @return int
+     */
+    public function getLogLifetime($store = null)
+    {
+        return (int)$this->getConfig(self::AVATAX_SERVICE_LOG_LIFETIME, $store);
+    }
+
+    /**
      * Get user agent
      *
      * @return string
@@ -139,7 +190,8 @@ class Config extends AbstractHelper
     {
         $userAgent = $this->productMetadata->getName() . ' ';
         $userAgent .= $this->productMetadata->getEdition() . ' v';
-        $userAgent .= $this->productMetadata->getVersion();
+        $userAgent .= $this->productMetadata->getVersion() . ' ';
+        $userAgent .= self::MODULE_NAME . ' v' . $this->getModuleVersion();
 
         return $userAgent;
     }

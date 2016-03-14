@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Magento_Sales::sales" title="Sales" sortOrder="20">
+                    <resource id="OnePica_AvaTax::sales_tax" title="AvaTax" sortOrder="120" >
+                        <resource id="OnePica_AvaTax::customer_tax_classes"   title="Customer Tax Classes" sortOrder="20" />
+                        <resource id="OnePica_AvaTax::product_tax_classes"   title="Product Tax Classes" sortOrder="40" />
+                        <resource id="OnePica_AvaTax::avatax_log" title="AvaTax Log" sortOrder="60" />
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

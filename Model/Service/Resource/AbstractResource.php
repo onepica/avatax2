@@ -17,6 +17,8 @@ namespace OnePica\AvaTax\Model\Service\Resource;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Store\Model\Store;
 use OnePica\AvaTax\Api\ConfigRepositoryInterface;
+use OnePica\AvaTax\Api\Service\LoggerInterface;
+use OnePica\AvaTax\Helper\Config;
 
 /**
  * Class AbstractResource
@@ -40,15 +42,30 @@ abstract class AbstractResource
     protected $objectManager;
 
     /**
+     * Service logger
+     *
+     * @var \OnePica\AvaTax\Api\Service\LoggerInterface
+     */
+    protected $logger;
+
+    /**
      * AbstractResource constructor.
      *
      * @param \OnePica\AvaTax\Api\ConfigRepositoryInterface $configRepository
      * @param \Magento\Framework\ObjectManagerInterface     $objectManager
+     * @param \OnePica\AvaTax\Helper\Config                 $config
+     * @param \OnePica\AvaTax\Api\Service\LoggerInterface   $logger
      */
-    public function __construct(ConfigRepositoryInterface $configRepository, ObjectManagerInterface $objectManager)
-    {
+    public function __construct(
+        ConfigRepositoryInterface $configRepository,
+        ObjectManagerInterface $objectManager,
+        Config $config,
+        LoggerInterface $logger
+    ) {
         $this->configRepository = $configRepository;
         $this->objectManager = $objectManager;
+        $this->config = $config;
+        $this->logger = $logger;
     }
 
     /**

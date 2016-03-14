@@ -1,0 +1,37 @@
+<?php /** @var $this \OnePica\AvaTax\Block\Adminhtml\Log\View */ ?>
+<section class="admin__page-section">
+    <div class="admin__page-section-title">
+        <span class="title"><?php echo __('Log Information') ?></span>
+    </div>
+    <div class="admin__page-section-content">
+        <div class="admin__page-section-item order-comments-history">
+            <div class="admin__page-section-item-title">
+                <span class="title"><?php echo __('Request') ?></span>
+            </div>
+            <div class="admin__page-section-item-content">
+                <textarea readonly style="width:100%; height:500px"
+                          class="admin__control-textarea"><?php echo $this->getLogRequest(); ?></textarea>
+            </div>
+        </div>
+
+        <div class="admin__page-section-item order-totals">
+            <div class="admin__page-section-item-title">
+                <span class="title"><?php echo __('Response') ?></span>
+            </div>
+            <div class="admin__page-section-item-content">
+                <textarea readonly style="width:100%; height:500px"
+                          class="admin__control-textarea"><?php echo $this->getLogResponse(); ?></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin__page-section-item order-comments-history">
+        <div class="admin__page-section-item-title">
+            <span class="title"><?php echo __('Additional Info') ?></span>
+        </div>
+        <div class="admin__page-section-item-content">
+            <textarea readonly style="width:100%; height:500px"
+                      class="admin__control-textarea"><?php echo $this->getLogAdditionalInfo(); ?></textarea>
+        </div>
+    </div>
+</section>
