@@ -28,4 +28,11 @@ interface ConfigInterface
      * @return mixed
      */
     public function getConnection();
+
+    /**
+     * Get lib config
+     *
+     * @return mixed
+     */
+    public function getLibConfig();
 }
