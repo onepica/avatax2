@@ -15,6 +15,7 @@
 namespace OnePica\AvaTax\Plugin\Checkout\Model;
 
 use Magento\Quote\Api\CartRepositoryInterface;
+use Magento\Quote\Model\Quote\Address;
 use OnePica\AvaTax\Helper\Config;
 
 /**
@@ -55,9 +56,7 @@ class ShippingInformationManagement
         $cartId,
         \Magento\Checkout\Api\Data\ShippingInformationInterface $addressInformation
     ) {
-        $quote = $this->quoteRepository->getActive($cartId);
-        $storeId = $quote->getStoreId();
-        $this->validateAndNormalize($storeId, $addressInformation);
+        $this->validateAndNormalize($addressInformation);
         $paymentInformation = $proceed($cartId, $addressInformation);
         return $paymentInformation;
     }
@@ -65,19 +64,22 @@ class ShippingInformationManagement
     /**
      * Validate and normalize
      *
-     * @param int $storeId,
      * @param \Magento\Checkout\Api\Data\ShippingInformationInterface $addressInformation
      */
     protected function validateAndNormalize(
-        $storeId,
         \Magento\Checkout\Api\Data\ShippingInformationInterface $addressInformation
     ) {
-
         $shippingAddress = $addressInformation->getShippingAddress();
+        $shippingAddress->setAddressType(Address::ADDRESS_TYPE_SHIPPING);
         $validationResult = $shippingAddress->validate();
 
         if ($validationResult !== true) {
             $this->showErrorsAndStopCheckout($validationResult);
+        } elseif ($shippingAddress->getData('is_normalized')) {
+            /** fix for logged in users with address
+             * due to address changes it will be new address
+             */
+            $shippingAddress->setCustomerAddressId(null);
         }
     }
 
