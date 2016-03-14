@@ -10,7 +10,7 @@
                     <allowed_log_types>Ping,Calculation,Transaction,Filter,Validate,Queue</allowed_log_types>
                 </avatax_log_group>
                 <avatax_data_mapping_group>
-                    <cust_code_format>1</cust_code_format>
+                    <customer_code_format>1</customer_code_format>
                     <shipping_sku>Shipping</shipping_sku>
                     <gw_items_sku>GwItems</gw_items_sku>
                     <gw_order_sku>GwOrder</gw_order_sku>

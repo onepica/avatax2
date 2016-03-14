@@ -385,11 +385,11 @@ class Config extends AbstractHelper
      * Get origin country id
      *
      * @param null|string|AppScopeInterface $scopeCode
-     * @return int
+     * @return string
      */
     public function getOriginCountryId($scopeCode = null)
     {
-        return (int)$this->getConfig(Shipment::XML_PATH_STORE_COUNTRY_ID, $scopeCode);
+        return (string)$this->getConfig(Shipment::XML_PATH_STORE_COUNTRY_ID, $scopeCode);
     }
 
     /**
