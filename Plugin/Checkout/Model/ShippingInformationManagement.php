@@ -91,6 +91,6 @@ class ShippingInformationManagement
      */
     protected function showErrorsAndStopCheckout(array $errors)
     {
-        throw new \Exception(implode(', ', $errors));
+        throw new \Magento\Framework\Webapi\Exception(new \Magento\Framework\Phrase(implode(', ', $errors)));
     }
 }
