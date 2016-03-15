@@ -17,6 +17,7 @@ namespace OnePica\AvaTax\Observer;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use OnePica\AvaTax\Helper\Config;
 
 /**
  * Class CheckoutMultishippingSetShippingItems
@@ -25,6 +26,42 @@ use Magento\Store\Model\StoreManagerInterface;
  */
 class CheckoutMultishippingSetShippingItems implements ObserverInterface
 {
+    /**
+     * @var Config
+     */
+    protected $config = null;
+
+    /**
+     * Store manager
+     *
+     * @var \Magento\Store\Model\StoreManagerInterface
+     */
+    protected $storeManager;
+
+    /**
+     * Message manager object
+     *
+     * @var \Magento\Framework\Message\ManagerInterface
+     */
+    protected $messageManager;
+
+    /**
+     * CheckoutMultishippingSetShippingItems constructor
+     *
+     * @param Config $config
+     * @param StoreManagerInterface $storeManager
+     * @param \Magento\Framework\Message\ManagerInterface $messageManager
+     */
+    public function __construct(
+        Config $config,
+        StoreManagerInterface $storeManager,
+        \Magento\Framework\Message\ManagerInterface $messageManager
+    ) {
+        $this->config = $config;
+        $this->storeManager = $storeManager;
+        $this->messageManager = $messageManager;
+    }
+
     /**
      * Execute
      * Shipping addresses validation
@@ -42,7 +79,7 @@ class CheckoutMultishippingSetShippingItems implements ObserverInterface
             $itemResult = $address->validate();
             if (is_array($itemResult)) {
                 // @todo refactor deprecated method
-                $errors[] = $address->format('oneline');
+                $errors[] = sprintf($this->getValidateAddressMessage(), $address->format('oneline'));
             }
         }
         if (!empty($errors)) {
@@ -62,6 +99,20 @@ class CheckoutMultishippingSetShippingItems implements ObserverInterface
      */
     protected function handleErrors($errors)
     {
+        foreach ($errors as $error) {
+            $this->messageManager->addError($error);
+        }
+        // stop go to next step of checkout
         throw new \Exception('Validation error');
+    }
+
+    /**
+     * Get Validate Address Message
+     *
+     * @return int
+     */
+    protected function getValidateAddressMessage()
+    {
+        return $this->config->getValidateAddressMessage($this->storeManager->getStore());
     }
 }
