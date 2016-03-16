@@ -44,13 +44,13 @@ class Config extends AbstractHelper
     const AVATAX_SERVICE_COMPANY_CODE           = 'tax/avatax/company_code';
     const AVATAX_SERVICE_ALLOWED_LOG_TYPES      = 'tax/avatax/avatax_log_group/allowed_log_types';
     const AVATAX_SERVICE_LOG_LIFETIME           = 'tax/avatax/avatax_log_group/log_lifetime';
-    const AVATAX_VALIDATE_ADDRESS               = 'tax/avatax/validate_address';
-    const AVATAX_NORMALIZE_ADDRESS              = 'tax/avatax/normalize_address';
-    const AVATAX_ONEPAGE_NORMALIZE_MESSAGE      = 'tax/avatax/onepage_normalize_message';
-    const AVATAX_MULTIADDRESS_NORMALIZE_MESSAGE = 'tax/avatax/multiaddress_normalize_message';
-    const AVATAX_VALIDATE_ADDRESS_MESSAGE       = 'tax/avatax/validate_address_message';
-    const AVATAX_FIELD_REQUIRED_LIST            = 'tax/avatax/field_required_list';
-    const AVATAX_FIELD_RULE                     = 'tax/avatax/field_rule';
+    const AVATAX_VALIDATE_ADDRESS               = 'tax/avatax/address_validation_group/validate_address';
+    const AVATAX_NORMALIZE_ADDRESS              = 'tax/avatax/address_validation_group/normalize_address';
+    const AVATAX_ONEPAGE_NORMALIZE_MESSAGE      = 'tax/avatax/address_validation_group/onepage_normalize_message';
+    const AVATAX_MULTIADDRESS_NORMALIZE_MESSAGE = 'tax/avatax/address_validation_group/multiaddress_normalize_message';
+    const AVATAX_VALIDATE_ADDRESS_MESSAGE       = 'tax/avatax/address_validation_group/validate_address_message';
+    const AVATAX_FIELD_REQUIRED_LIST            = 'tax/avatax/address_validation_group/field_required_list';
+    const AVATAX_FIELD_RULE                     = 'tax/avatax/address_validation_group/field_rule';
     /**#@-*/
 
     /**
