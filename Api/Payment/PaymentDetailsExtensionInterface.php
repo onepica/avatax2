@@ -17,7 +17,7 @@ namespace OnePica\AvaTax\Api\Payment;
 /**
  * Interface PaymentDetailsExtensionInterface
  *
- * @package OnePica\AvaTax\Model
+ * @package OnePica\AvaTax\Api\Payment
  */
 interface PaymentDetailsExtensionInterface extends \Magento\Checkout\Api\Data\PaymentDetailsExtensionInterface
 {

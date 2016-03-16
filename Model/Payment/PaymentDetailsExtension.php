@@ -12,14 +12,14 @@
  * @copyright  Copyright (c) 2016 One Pica, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model;
+namespace OnePica\AvaTax\Model\Payment;
 
 use OnePica\AvaTax\Api\Payment\PaymentDetailsExtensionInterface;
 
 /**
  * Class PaymentDetailsExtension
  *
- * @package OnePica\AvaTax\Model
+ * @package OnePica\AvaTax\Model\Payment
  */
 class PaymentDetailsExtension extends \Magento\Framework\Api\AbstractSimpleObject implements PaymentDetailsExtensionInterface
 {
