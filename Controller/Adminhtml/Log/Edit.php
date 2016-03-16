@@ -80,7 +80,7 @@ class Edit extends AbstractLogAction
      */
     public function execute()
     {
-        $id = $this->getRequest()->getParam('log_id');
+        $id = $this->getRequest()->getParam('id');
 
         try {
             /** @var Log $model */
