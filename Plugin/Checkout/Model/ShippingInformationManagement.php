@@ -16,6 +16,7 @@ namespace OnePica\AvaTax\Plugin\Checkout\Model;
 
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\Quote\Address;
+use Magento\Framework\ObjectManagerInterface;
 use OnePica\AvaTax\Helper\Config;
 
 /**
@@ -26,20 +27,28 @@ class ShippingInformationManagement
     /**
      * @var Config
      */
-    protected $config = null;
+    protected $config;
+
+    /**
+     * @var ObjectManagerInterface
+     */
+    protected $objectManager;
 
     /**
      * ShippingInformationManagement constructor
      *
      * @param Config $config
      * @param CartRepositoryInterface $quoteRepository
+     * @param ObjectManagerInterface $objectManager
      */
     public function __construct(
         Config $config,
-        CartRepositoryInterface $quoteRepository
+        CartRepositoryInterface $quoteRepository,
+        ObjectManagerInterface $objectManager
     ) {
         $this->config = $config;
         $this->quoteRepository = $quoteRepository;
+        $this->objectManager = $objectManager;
     }
 
     /**
@@ -58,6 +67,11 @@ class ShippingInformationManagement
     ) {
         $this->validateAndNormalize($addressInformation);
         $paymentInformation = $proceed($cartId, $addressInformation);
+        // set updated addresses for response
+        $paymentDetailsExtensionAttributes = $this->objectManager->get('\OnePica\AvaTax\Model\PaymentDetailsExtension');
+        $paymentDetailsExtensionAttributes->setValidatedAddress($addressInformation->getShippingAddress());
+        $paymentInformation->setExtensionAttributes($paymentDetailsExtensionAttributes);
+
         return $paymentInformation;
     }
 
