@@ -102,6 +102,14 @@ class AddressValidator
         if (!$this->isValidationRequired($address)) {
             return true;
         }
+
+        $addressFieldsErrors = $this->checkAddressFields($address);
+        if ($addressFieldsErrors) {
+            $addressFieldsErrors = $this->processErrors($addressFieldsErrors);
+            // We have errors so we will not continue address validation by AvaTax service
+            return $addressFieldsErrors ? $addressFieldsErrors : true;
+        }
+
         $requestAddress = $this->convertAddressToRequestAddress($address);
         $validator = $this->objectManager->create(Validate::class, ['object' => $requestAddress]);
         $serviceResult = $validator->execute();
@@ -115,17 +123,31 @@ class AddressValidator
             return true;
         }
 
-        $errors = [];
-        foreach ($result as $message) {
-            if ($this->getValidateAddressMode() == AvataxDataHelper::SHIPPING_ADDRESS_VALIDATION_ALLOW) {
-                $this->_addNotice($message);
-            } elseif ($this->getValidateAddressMode() == AvataxDataHelper::SHIPPING_ADDRESS_VALIDATION_PREVENT) {
-                $errors[] = $message;
-            }
-        }
+        $errors = $this->processErrors($result);
 
         return empty($errors) ? true : $errors;
     }
+
+    /**
+     * Process Errors
+     *
+     * @param array $errors
+     * @return array|null
+     */
+    protected function processErrors(array $errors)
+    {
+        $returnErrors = [];
+        foreach ($errors as $message) {
+            if ($this->getValidateAddressMode() == AvataxDataHelper::SHIPPING_ADDRESS_VALIDATION_ALLOW) {
+                $this->_addNotice($message);
+            } elseif ($this->getValidateAddressMode() == AvataxDataHelper::SHIPPING_ADDRESS_VALIDATION_PREVENT) {
+                $returnErrors[] = $message;
+            }
+        }
+
+        return !empty($returnErrors) ? $returnErrors : null;
+    }
+
 
     /**
      * Is validation required
@@ -227,7 +249,7 @@ class AddressValidator
      *
      * @return int
      */
-    public function getValidateAddressMode()
+    protected function getValidateAddressMode()
     {
         return $this->config->getValidateAddress($this->storeManager->getStore());
     }
@@ -237,8 +259,47 @@ class AddressValidator
      *
      * @return string
      */
-    public function getOnepageNormalizeMessage()
+    protected function getOnepageNormalizeMessage()
     {
         return $this->config->getOnepageNormalizeMessage($this->storeManager->getStore());
+    }
+
+    /**
+     * Check Address Fields
+     *
+     * @param AbstractAddress $address
+     * @return array|null
+     */
+    protected function checkAddressFields(AbstractAddress $address)
+    {
+        $store = $this->storeManager->getStore();
+        $requiredFields = explode(",", $this->config->getFieldRequiredList($store));
+        $fieldRules = explode(",", $this->config->getFieldRule($store));
+        $errors = null;
+        $countryFactory = $this->objectManager->get('\Magento\Directory\Model\CountryFactory');
+
+        foreach ($requiredFields as $field) {
+
+            switch ($field) {
+                case 'country_id':
+                    $fieldValue = $countryFactory->create()->loadByCode($address->getCountry())->getName();
+                    $field = __('Country ');
+                    break;
+                case 'region':
+                    $fieldValue = $address->getRegion();
+                    break;
+                default:
+                    $fieldValue = $address->getData($field);
+                    break;
+            }
+
+            foreach ($fieldRules as $rule) {
+                if ($fieldValue == $rule || !$fieldValue) {
+                    $errors[] = __('Invalid ') . __($field);
+                }
+            }
+        }
+
+        return $errors;
     }
 }

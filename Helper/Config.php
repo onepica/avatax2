@@ -49,8 +49,8 @@ class Config extends AbstractHelper
     const AVATAX_ONEPAGE_NORMALIZE_MESSAGE      = 'tax/avatax/address_validation_group/onepage_normalize_message';
     const AVATAX_MULTIADDRESS_NORMALIZE_MESSAGE = 'tax/avatax/address_validation_group/multiaddress_normalize_message';
     const AVATAX_VALIDATE_ADDRESS_MESSAGE       = 'tax/avatax/address_validation_group/validate_address_message';
-    const AVATAX_FIELD_REQUIRED_LIST            = 'tax/avatax/address_validation_group/field_required_list';
-    const AVATAX_FIELD_RULE                     = 'tax/avatax/address_validation_group/field_rule';
+    const AVATAX_FIELD_REQUIRED_LIST            = 'tax/avatax/request_settings_group/field_required_list';
+    const AVATAX_FIELD_RULE                     = 'tax/avatax/request_settings_group/field_rule';
     /**#@-*/
 
     /**
