@@ -27,6 +27,7 @@ use OnePica\AvaTax\Api\Service\CacheStorageInterface;
 use OnePica\AvaTax\Api\ConfigRepositoryInterface;
 use OnePica\AvaTax\Api\Service\LoggerInterface;
 use OnePica\AvaTax\Helper\Config as ConfigHelper;
+use OnePica\AvaTax\Model\Log;
 
 /**
  * Class Validation
@@ -55,6 +56,8 @@ class Validation extends AbstractResource implements ValidationResourceInterface
      * @param ConfigRepositoryInterface $configRepository
      * @param ObjectManagerInterface     $objectManager
      * @param CacheStorageInterface $cacheStorage
+     * @param ConfigHelper $config
+     * @param LoggerInterface $logger
      */
     public function __construct(
         ConfigRepositoryInterface $configRepository,
@@ -77,6 +80,7 @@ class Validation extends AbstractResource implements ValidationResourceInterface
     public function validate($address)
     {
         $result = $this->getResultObject();
+        $isResultFromCache = false;
 
         try {
             $store = $address->getStore();
@@ -87,6 +91,7 @@ class Validation extends AbstractResource implements ValidationResourceInterface
 
             if ($this->cacheStorage->get($hash)) {
                 $libResult = $this->cacheStorage->get($hash);
+                $isResultFromCache = true;
             } else {
                 $libResult = $config->getConnection()->resolveSingleAddress($libAddress);
                 $this->cacheStorage->put($hash, $libResult);
@@ -96,6 +101,15 @@ class Validation extends AbstractResource implements ValidationResourceInterface
             $result->setResponse($libResult->toArray());
             $result->setHasError($libResult->getHasError());
             $result->setErrors($libResult->getErrors());
+
+            if (!$isResultFromCache) {
+                // log AvaTax validation request
+                $this->logger->log(
+                    Log::VALIDATE, $libAddress->toArray(),
+                    $result,
+                    $store->getId(),
+                    $config->getConnection());
+            }
 
             // set result address
             if (!$libResult->getHasError()) {
