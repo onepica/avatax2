@@ -17,6 +17,9 @@ namespace OnePica\AvaTax\Observer;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\Framework\Message\ManagerInterface;
+use Magento\Framework\Exception\LocalizedException;
+use \Magento\Framework\Phrase;
 use OnePica\AvaTax\Helper\Config;
 
 /**
@@ -55,7 +58,7 @@ class CheckoutMultishippingSetShippingItems implements ObserverInterface
     public function __construct(
         Config $config,
         StoreManagerInterface $storeManager,
-        \Magento\Framework\Message\ManagerInterface $messageManager
+        ManagerInterface $messageManager
     ) {
         $this->config = $config;
         $this->storeManager = $storeManager;
@@ -94,16 +97,13 @@ class CheckoutMultishippingSetShippingItems implements ObserverInterface
      * Handle Errors
      *
      * @param array $errors
-     * @return void
      * @throws \Exception
      */
     protected function handleErrors($errors)
     {
-        foreach ($errors as $error) {
-            $this->messageManager->addError($error);
-        }
+        $errorsStr = implode('<br />', $errors);
         // stop go to next step of checkout
-        throw new \Exception('Validation error');
+        throw new LocalizedException(new Phrase($errorsStr));
     }
 
     /**
