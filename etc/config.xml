@@ -5,6 +5,9 @@
         <tax>
             <avatax>
                 <active_service>avatax16</active_service>
+                <region_filter_group>
+                    <taxable_country>CA,US</taxable_country>
+                </region_filter_group>
                 <avatax_log_group>
                     <log_lifetime>3</log_lifetime>
                     <allowed_log_types>Ping,Calculation,Transaction,Filter,Validate,Queue</allowed_log_types>
