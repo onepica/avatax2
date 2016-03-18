@@ -38,19 +38,18 @@ define(
         ) {
         'use strict';
 
+        function updateAddress(address, newAddress) {
+            address.region = newAddress.region;
+            address.regionCode = newAddress.region_code;
+            address.regionId = newAddress.region_id;
+            address.postcode = newAddress.postcode;
+            address.city = newAddress.city;
+            address.street = newAddress.street;
+        }
+
         return {
             saveShippingInformation: function () {
-                var payload,
-                    updateAddress;
-
-                updateAddress = function (address, newAddress) {
-                    address.region = newAddress.region;
-                    address.regionCode = newAddress.region_code;
-                    address.regionId = newAddress.region_id;
-                    address.postcode = newAddress.postcode;
-                    address.city = newAddress.city;
-                    address.street = newAddress.street;
-                };
+                var payload;
 
                 if (!quote.billingAddress()) {
                     selectBillingAddressAction(quote.shippingAddress());
@@ -74,7 +73,6 @@ define(
                     function (response) {
                         quote.setTotals(response.totals);
                         paymentService.setPaymentMethods(methodConverter(response.payment_methods));
-                        debugger;
                         updateAddress(quote.shippingAddress(), response.extension_attributes.validated_address);
                         updateAddress(quote.billingAddress(), response.extension_attributes.validated_address);
                         fullScreenLoader.stopLoader();
