@@ -9,6 +9,13 @@
                     <log_lifetime>3</log_lifetime>
                     <allowed_log_types>Ping,Calculation,Transaction,Filter,Validate,Queue</allowed_log_types>
                 </avatax_log_group>
+                <address_validation_group>
+                    <validate_address>0</validate_address>
+                    <normalize_address>0</normalize_address>
+                    <onepage_normalize_message>Your shipping address has been modified during our validation process. Please confirm the address to the right is accurate.</onepage_normalize_message>
+                    <multiaddress_normalize_message>Your shipping addresses have been modified during our validation process. Please confirm they are still correct.</multiaddress_normalize_message>
+                    <validate_address_message>The address '%s' appears invalid. Please correct it or select another address.</validate_address_message>
+                </address_validation_group>
             </avatax>
         </tax>
     </default>

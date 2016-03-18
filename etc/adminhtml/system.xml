@@ -2,7 +2,7 @@
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
         <section id="tax">
-            <group id="avatax" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="avatax" translate="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Avatax</label>
                 <field id="action" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Action</label>
@@ -24,7 +24,45 @@
                     <label>Company Code</label>
                     <validate>required-entry</validate>
                 </field>
-                <group id="avatax_log_group" translate="label" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                <group id="address_validation_group" translate="label" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Shipping Address Options</label>
+                    <attribute type="expanded">1</attribute>
+                    <field id="validate_address" translate="label comment" type="select" sortOrder="310" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Address Validation</label>
+                        <source_model>OnePica\AvaTax\Model\Source\ValidateAddress</source_model>
+                        <comment>Require a validated address from AvaTax to checkout</comment>
+                    </field>
+                    <field id="normalize_address" translate="label comment" type="select" sortOrder="320" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Address Normalization</label>
+                        <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                        <comment>Replace address with well-formed one from AvaTax</comment>
+                    </field>
+                    <field id="onepage_normalize_message" translate="label comment" type="textarea" sortOrder="330" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Onepage Checkout Address Normalized Notice</label>
+                        <comment>Only applies if address normalization is enabled</comment>
+                    </field>
+                    <field id="multiaddress_normalize_message" translate="label comment" type="textarea" sortOrder="340" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Multi-Address Checkout Address Normalized Notice</label>
+                        <comment>Only applies if address normalization is enabled</comment>
+                    </field>
+                    <field id="validate_address_message" translate="label comment" type="textarea" sortOrder="350" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Multi-Address Address Validation Error</label>
+                        <comment>Only applies if address validation is enabled and shows ONLY for the multi-address checkout</comment>
+                    </field>
+                </group>
+                <group id="request_settings_group" translate="label" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Request Settings</label>
+                    <attribute type="expanded">1</attribute>
+                    <field id="field_required_list" translate="label comment" type="multiselect" sortOrder="370" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Required Fileds</label>
+                        <source_model>OnePica\AvaTax\Model\Source\AddressFieldList</source_model>
+                    </field>
+                    <field id="field_rule" translate="label" type="text" sortOrder="380" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Field Rule</label>
+                        <comment>Example: ' ,-,_'</comment>
+                    </field>
+                </group>
+                <group id="avatax_log_group" translate="label" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Log Settings</label>
                     <attribute type="expanded">1</attribute>
                     <field id="allowed_log_types" translate="label" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">

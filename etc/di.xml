@@ -3,6 +3,7 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="OnePica\AvaTax\Api\ConfigRepositoryInterface" type="OnePica\AvaTax\Model\Service\ConfigRepository"/>
     <preference for="OnePica\AvaTax\Api\Service\ResolverInterface" type="OnePica\AvaTax\Model\Service\Resolver"/>
+    <preference for="OnePica\AvaTax\Api\Service\CacheStorageInterface" type="OnePica\AvaTax\Model\Service\CacheStorage"/>
     <preference for="OnePica\AvaTax\Api\Service\LoggerInterface" type="OnePica\AvaTax\Model\Service\Logger"/>
     <preference for="OnePica\AvaTax\Api\LogRepositoryInterface" type="OnePica\AvaTax\Model\LogRepository"/>
     <type name="OnePica\AvaTax\Model\Service\Resolver">
@@ -14,6 +15,12 @@
                 </item>
             </argument>
         </arguments>
+    </type>
+    <type name="Magento\Checkout\Model\ShippingInformationManagement">
+        <plugin name="onepica_avatax_onepage_address_validation" type="OnePica\AvaTax\Plugin\Checkout\Model\ShippingInformationManagement" />
+    </type>
+    <type name="Magento\Quote\Model\Quote\Address">
+        <plugin name="quote_model_quote_address_validator" type="OnePica\AvaTax\Plugin\Quote\Model\Quote\AddressValidator" />
     </type>
     <virtualType name="LogGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
         <arguments>
