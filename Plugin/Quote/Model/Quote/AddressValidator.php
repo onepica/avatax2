@@ -1,0 +1,305 @@
+<?php
+/**
+ * OnePica_AvaTax
+ * NOTICE OF LICENSE
+ * This source file is subject to the Open Software License (OSL 3.0),
+ * a copy of which is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ * @copyright  Copyright (c) 2016 One Pica, Inc.
+ * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ */
+namespace OnePica\AvaTax\Plugin\Quote\Model\Quote;
+
+use Magento\Customer\Model\Address\AbstractAddress;
+use Magento\Framework\ObjectManagerInterface;
+use Magento\Store\Model\StoreManagerInterface;
+use OnePica\AvaTax\Helper\Config;
+use OnePica\AvaTax\Model\Tool\Validate;
+use OnePica\AvaTax\Model\Service\Request\Address as RequestAddress;
+use OnePica\AvaTax\Model\Service\Result\AddressValidationResult;
+use OnePica\AvaTax\Helper\Data as AvataxDataHelper;
+
+/**
+ * Quote address validator
+ *
+ * @package OnePica\AvaTax\Plugin\Quote\Model\Quote\AddressValidator
+ */
+class AddressValidator
+{
+    /**
+     * @var Config
+     */
+    protected $config = null;
+
+    /**
+     * Object manager
+     *
+     * @var \Magento\Framework\ObjectManagerInterface
+     */
+    protected $objectManager;
+
+    /**
+     * Store manager
+     *
+     * @var \Magento\Store\Model\StoreManagerInterface
+     */
+    protected $storeManager;
+
+    /**
+     * Message manager object
+     *
+     * @var \Magento\Framework\Message\ManagerInterface
+     */
+    protected $messageManager;
+
+    /**
+     * ShippingInformationManagement constructor
+     *
+     * @param Config $config
+     * @param ObjectManagerInterface $objectManager
+     * @param StoreManagerInterface $storeManager
+     * @param \Magento\Framework\Message\ManagerInterface $messageManager
+     */
+    public function __construct(
+        Config $config,
+        ObjectManagerInterface $objectManager,
+        StoreManagerInterface $storeManager,
+        \Magento\Framework\Message\ManagerInterface $messageManager
+    ) {
+        $this->config = $config;
+        $this->objectManager = $objectManager;
+        $this->storeManager = $storeManager;
+        $this->messageManager = $messageManager;
+    }
+
+    /**
+     * After validate
+     *
+     * @param \Magento\Customer\Model\Address\AbstractAddress $subject
+     * @param array|bool $result
+     * @return array|bool
+     */
+    public function afterValidate(AbstractAddress $subject, $result)
+    {
+        if ($result !== true) {
+            return $result;
+        }
+        return $this->validate($subject);
+    }
+
+    /**
+     * Validate customer address
+     *
+     * @param AbstractAddress $address
+     * @return array|bool
+     */
+    public function validate(AbstractAddress $address)
+    {
+        if (!$this->isValidationRequired($address)) {
+            return true;
+        }
+
+        $addressFieldsErrors = $this->checkAddressFields($address);
+        if ($addressFieldsErrors) {
+            $addressFieldsErrors = $this->processErrors($addressFieldsErrors);
+            // We have errors so we will not continue address validation by AvaTax service
+            return $addressFieldsErrors ? $addressFieldsErrors : true;
+        }
+
+        $requestAddress = $this->convertAddressToRequestAddress($address);
+        $validator = $this->objectManager->create(Validate::class, ['object' => $requestAddress]);
+        $serviceResult = $validator->execute();
+        $this->normalizeAddress($address, $serviceResult);
+        if ($address->getData('is_normalized') === true) {
+            $message = $this->getOnepageNormalizeMessage();
+            $this->_addNotice($message);
+        }
+        $result = $serviceResult->getErrors() ? $serviceResult->getErrors() : true;
+        if ($result === true) {
+            return true;
+        }
+
+        $errors = $this->processErrors($result);
+
+        return empty($errors) ? true : $errors;
+    }
+
+    /**
+     * Process Errors
+     *
+     * @param array $errors
+     * @return array|null
+     */
+    protected function processErrors(array $errors)
+    {
+        $returnErrors = [];
+        foreach ($errors as $message) {
+            if ($this->getValidateAddressMode() == AvataxDataHelper::SHIPPING_ADDRESS_VALIDATION_ALLOW) {
+                $this->_addNotice($message);
+            } elseif ($this->getValidateAddressMode() == AvataxDataHelper::SHIPPING_ADDRESS_VALIDATION_PREVENT) {
+                $returnErrors[] = $message;
+            }
+        }
+
+        return !empty($returnErrors) ? $returnErrors : null;
+    }
+
+
+    /**
+     * Is validation required
+     *
+     * @param AbstractAddress $address
+     * @return bool
+     */
+    protected function isValidationRequired(AbstractAddress $address)
+    {
+        if ($this->getValidationMode() &&
+            $address->getAddressType() == \Magento\Quote\Model\Quote\Address::ADDRESS_TYPE_SHIPPING
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Get Validation Mode
+     *
+     * @return int
+     */
+    protected function getValidationMode()
+    {
+        return $this->config->getValidateAddress($this->storeManager->getStore());
+    }
+
+    /**
+     * Convert Address To Request Address
+     *
+     * @param AbstractAddress $address
+     * @return RequestAddress
+     */
+    protected function convertAddressToRequestAddress(AbstractAddress $address)
+    {
+        $requestAddress = $this->objectManager->create('OnePica\AvaTax\Model\Service\Request\Address');
+        $store = $this->storeManager->getStore();
+        $requestAddress->setStore($store);
+        $requestAddress->setLine1($address->getStreetLine(1));
+        $requestAddress->setLine2($address->getStreetLine(2));
+        $requestAddress->setCity($address->getCity());
+        $requestAddress->setRegion($address->getRegion());
+        $requestAddress->setPostcode($address->getPostcode());
+        $requestAddress->setCountry($address->getCountry());
+
+        return $requestAddress;
+    }
+
+    /**
+     * Normalize Address
+     *
+     * @param AbstractAddress $address
+     * @param AddressValidationResult $serviceResult
+     */
+    protected function normalizeAddress(AbstractAddress $address, AddressValidationResult $serviceResult)
+    {
+        if ($this->isNormalizeAddressEnabled() && !$serviceResult->getHasError()) {
+            $normalizedAddress = $serviceResult->getAddress();
+            $street[] = $normalizedAddress->getLine1();
+            if ($normalizedAddress->getLine2()) {
+                $street[] = $normalizedAddress->getLine2();
+            }
+            $address->setStreet($street);
+            $address->setCity($normalizedAddress->getCity());
+            $address->setRegion($normalizedAddress->getRegion());
+            $address->setPostcode($normalizedAddress->getPostcode());
+            $address->setCountry($normalizedAddress->getCountry());
+            $address->setData('is_normalized', true);
+        }
+    }
+
+    /**
+     * Is Normalize Address Enabled
+     *
+     * @return bool
+     */
+    protected function isNormalizeAddressEnabled()
+    {
+        return $this->config->getNormalizeAddress($this->storeManager->getStore());
+    }
+
+    /**
+     * Add notice
+     *
+     * @param string $message
+     * @return $this
+     */
+    protected function _addNotice($message)
+    {
+        // TODO: investigate of displays messages using meddage group
+       // $this->messageManager->addNotice($message, AvataxDataHelper::MESSAGE_GROUP_CODE);
+        $this->messageManager->addNotice($message);
+        return $this;
+    }
+
+    /**
+     * Get Validate Address Mode
+     *
+     * @return int
+     */
+    protected function getValidateAddressMode()
+    {
+        return $this->config->getValidateAddress($this->storeManager->getStore());
+    }
+
+    /**
+     * Get Onepage Normalize Message
+     *
+     * @return string
+     */
+    protected function getOnepageNormalizeMessage()
+    {
+        return $this->config->getOnepageNormalizeMessage($this->storeManager->getStore());
+    }
+
+    /**
+     * Check Address Fields
+     *
+     * @param AbstractAddress $address
+     * @return array|null
+     */
+    protected function checkAddressFields(AbstractAddress $address)
+    {
+        $store = $this->storeManager->getStore();
+        $requiredFields = explode(",", $this->config->getFieldRequiredList($store));
+        $fieldRules = explode(",", $this->config->getFieldRule($store));
+        $errors = null;
+        $countryFactory = $this->objectManager->get('\Magento\Directory\Model\CountryFactory');
+
+        foreach ($requiredFields as $field) {
+
+            switch ($field) {
+                case 'country_id':
+                    $fieldValue = $countryFactory->create()->loadByCode($address->getCountry())->getName();
+                    $field = __('Country ');
+                    break;
+                case 'region':
+                    $fieldValue = $address->getRegion();
+                    break;
+                default:
+                    $fieldValue = $address->getData($field);
+                    break;
+            }
+
+            foreach ($fieldRules as $rule) {
+                if ($fieldValue == $rule || !$fieldValue) {
+                    $errors[] = __('Invalid ') . __($field);
+                }
+            }
+        }
+
+        return $errors;
+    }
+}
