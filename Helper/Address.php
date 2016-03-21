@@ -136,9 +136,9 @@ class Address extends AbstractHelper
         }
 
         if ($filter) {
-            $addressData = $address->toString();
-            $hash = $this->cacheStorage->generateHashKeyForData($addressData);
+            $hash = $this->cacheStorage->generateHashKeyForData($address->format('text'));
             if (!$this->cacheStorage->get($hash)) {
+                $addressData = $address->debug();
                 $this->cacheStorage->put($hash, $addressData);
                 $config = $this->configRepository->getConfigByStore($store);
                 $result = $this->objectManager->create(BaseResult::Class);
