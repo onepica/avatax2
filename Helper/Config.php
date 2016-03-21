@@ -51,6 +51,7 @@ class Config extends AbstractHelper
     const AVATAX_VALIDATE_ADDRESS_MESSAGE       = 'tax/avatax/address_validation_group/validate_address_message';
     const AVATAX_FIELD_REQUIRED_LIST            = 'tax/avatax/request_settings_group/field_required_list';
     const AVATAX_FIELD_RULE                     = 'tax/avatax/request_settings_group/field_rule';
+    const AVATAX_REGION_FILTER_TAXABLE_COUNTRY  = 'tax/avatax/region_filter_group/taxable_country';
     /**#@-*/
 
     /**
@@ -284,5 +285,16 @@ class Config extends AbstractHelper
     public function getFieldRule($store = null)
     {
         return (string)$this->getConfig(self::AVATAX_FIELD_RULE, $store);
+    }
+
+    /**
+     * Get Region Filter Taxable Countries
+     *
+     * @param Store|int $store
+     * @return string
+     */
+    public function getRegionFilterTaxableCountries($store = null)
+    {
+        return (string)$this->getConfig(self::AVATAX_REGION_FILTER_TAXABLE_COUNTRY, $store);
     }
 }

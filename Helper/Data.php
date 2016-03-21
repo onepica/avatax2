@@ -39,6 +39,21 @@ class Data extends AbstractHelper
     const SHIPPING_ADDRESS_VALIDATION_ALLOW = 2;
 
     /**
+     * Region filter disable mode
+     */
+    const REGION_FILTER_MODE_OFF = 0;
+
+    /**
+     * Region filter tax mode
+     */
+    const REGION_FILTER_MODE_TAX = 1;
+
+    /**
+     * Region filter all mode
+     */
+    const REGION_FILTER_MODE_ALL = 2;
+
+    /**
      * Message group code
      */
     const MESSAGE_GROUP_CODE = 'avatax';
