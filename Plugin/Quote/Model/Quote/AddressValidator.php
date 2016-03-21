@@ -22,6 +22,7 @@ use OnePica\AvaTax\Model\Tool\Validate;
 use OnePica\AvaTax\Model\Service\Request\Address as RequestAddress;
 use OnePica\AvaTax\Model\Service\Result\AddressValidationResult;
 use OnePica\AvaTax\Helper\Data as AvataxDataHelper;
+use OnePica\AvaTax\Helper\Address as AvataxAddressHelper;
 
 /**
  * Quote address validator
@@ -57,23 +58,33 @@ class AddressValidator
     protected $messageManager;
 
     /**
+     * Address helper
+     *
+     * @var AvataxAddressHelper
+     */
+    protected $addressHelper;
+
+    /**
      * ShippingInformationManagement constructor
      *
      * @param Config $config
      * @param ObjectManagerInterface $objectManager
      * @param StoreManagerInterface $storeManager
      * @param \Magento\Framework\Message\ManagerInterface $messageManager
+     * @param AvataxAddressHelper $addressHelper
      */
     public function __construct(
         Config $config,
         ObjectManagerInterface $objectManager,
         StoreManagerInterface $storeManager,
-        \Magento\Framework\Message\ManagerInterface $messageManager
+        \Magento\Framework\Message\ManagerInterface $messageManager,
+        AvataxAddressHelper $addressHelper
     ) {
         $this->config = $config;
         $this->objectManager = $objectManager;
         $this->storeManager = $storeManager;
         $this->messageManager = $messageManager;
+        $this->addressHelper = $addressHelper;
     }
 
     /**
@@ -159,6 +170,12 @@ class AddressValidator
     {
         if ($this->getValidationMode() &&
             $address->getAddressType() == \Magento\Quote\Model\Quote\Address::ADDRESS_TYPE_SHIPPING
+            && $this->addressHelper->isAddressActionable(
+                    $address,
+                    $this->storeManager->getStore(),
+                    AvataxDataHelper::REGION_FILTER_MODE_ALL,
+                    true
+                )
         ) {
             return true;
         }
