@@ -16,6 +16,9 @@ namespace OnePica\AvaTax\Api;
 
 use Magento\Quote\Api\Data\AddressInterface;
 use Magento\Store\Model\Store;
+use Magento\Quote\Model\Quote\Item as QuoteItem;
+use Magento\Sales\Model\Order\Creditmemo\Item as CreditmemoItem;
+use Magento\Sales\Model\Order\Invoice\Item as InvoiceItem;
 
 /**
  * Class DataSource
@@ -45,11 +48,10 @@ interface DataSourceInterface
     /**
      * Get default buyer type
      *
-     * @param Store            $store
      * @param AddressInterface $address
      * @return string
      */
-    public function getDefaultBuyerType($store, $address);
+    public function getDefaultBuyerType($address);
 
     /**
      * Get default location
@@ -59,4 +61,76 @@ interface DataSourceInterface
      * @return array
      */
     public function getDefaultLocations($store, $address);
+
+    /**
+     * Get shipping tax class
+     *
+     * @param null|Store $store
+     * @return string
+     */
+    public function getShippingTaxClass($store = null);
+
+    /**
+     * Tax included
+     *
+     * @param null|Store $store
+     * @return bool
+     */
+    public function taxIncluded($store = null);
+
+    /**
+     * Apply tax after discount
+     *
+     * @param null|Store $store
+     * @return mixed
+     */
+    public function applyTaxAfterDiscount($store = null);
+
+    /**
+     * Is discounted
+     *
+     * @param QuoteItem|InvoiceItem|CreditmemoItem $item
+     * @param Store                                $store
+     * @return string 'true' or 'false'
+     */
+    public function isDiscounted($item, $store);
+
+    /**
+     * Get item code
+     *
+     * @param QuoteItem|InvoiceItem|CreditmemoItem $item
+     * @param Store                                $store
+     * @return string
+     */
+    public function getItemCode($item, $store);
+
+    /**
+     * Get item avalara goods and services type
+     *
+     * Tax class
+     *
+     * @param QuoteItem|InvoiceItem|CreditmemoItem $item
+     * @param Store                                $store
+     * @return string|null
+     */
+    public function getItemAvalaraGoodsAndServicesType($item, $store);
+
+    /**
+     * Get item meta data
+     *
+     * @param QuoteItem|InvoiceItem|CreditmemoItem $item
+     * @param Store                                $store
+     * @return array
+     */
+    public function getItemMetaData($item, $store);
+
+    /**
+     * Get gw item avalara goods and services type
+     *
+     * Tax class
+     *
+     * @param Store                                $store
+     * @return string|null
+     */
+    public function getGwItemAvalaraGoodsAndServicesType($store);
 }

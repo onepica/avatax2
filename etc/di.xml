@@ -5,6 +5,7 @@
     <preference for="OnePica\AvaTax\Api\Service\ResolverInterface" type="OnePica\AvaTax\Model\Service\Resolver"/>
     <preference for="OnePica\AvaTax\Api\Service\LoggerInterface" type="OnePica\AvaTax\Model\Service\Logger"/>
     <preference for="OnePica\AvaTax\Api\LogRepositoryInterface" type="OnePica\AvaTax\Model\LogRepository"/>
+    <preference for="OnePica\AvaTax\Api\DataSourceInterface" type="OnePica\AvaTax\Model\Service\DataSource"/>
     <type name="OnePica\AvaTax\Model\Service\Resolver">
         <arguments>
             <argument name="data" xsi:type="array">
