@@ -142,7 +142,9 @@ class Address extends AbstractHelper
                 $this->cacheStorage->put($hash, $addressData);
                 $config = $this->configRepository->getConfigByStore($store);
                 $result = $this->objectManager->create(BaseResult::Class);
-                $type = ($filterMode == AvataxDataHelper::REGION_FILTER_MODE_TAX) ? 'tax_calc' : 'tax_calc|address_opts';
+                $type = ($filterMode == AvataxDataHelper::REGION_FILTER_MODE_TAX)
+                      ? 'tax_calc'
+                      : 'tax_calc|address_opts';
                 $resultStr = 'filter: ' . $filter . ', type: ' . $type;
                 $result->setResponse(['result' => $resultStr]);
                 $this->logger->log(
@@ -150,7 +152,8 @@ class Address extends AbstractHelper
                     $addressData,
                     $result,
                     $store->getId(),
-                    $config->getConnection());
+                    $config->getConnection()
+                );
             }
         }
 
@@ -177,8 +180,8 @@ class Address extends AbstractHelper
      */
     protected function getFilterRegion(
         AbstractAddress $address,
-        Store $store)
-    {
+        Store $store
+    ) {
         $filter        = false;
         $regionFilters = explode(',', $this->config->getRegionFilterList($store));
         $entityId      = $address->getRegionId();
