@@ -66,7 +66,8 @@ class ResultStorage implements ResultStorageInterface
      */
     protected function initCalculationRates()
     {
-        $this->resultStorage = (array)$this->session->getCalculationResults();
+        $results = $this->session->getCalculationResults();
+        $this->resultStorage = $results ?: [];
 
         foreach ($this->resultStorage as $key => $result) {
             if ($this->isExpired($result)) {
@@ -127,15 +128,20 @@ class ResultStorage implements ResultStorageInterface
     public function setResult($request, ResultInterface $result)
     {
         $this->resultStorage[$this->genRequestHash($request)] = $result;
+        $this->save();
 
         return $this;
     }
 
     /**
-     * Destructor
+     * Save results to session
+     *
+     * @return $this
      */
-    public function __destruct()
+    public function save()
     {
         $this->session->setCalculationResults($this->resultStorage);
+
+        return $this;
     }
 }
