@@ -404,6 +404,16 @@ class Config extends AbstractHelper
     }
 
     /**
+     * Get magento edition
+     *
+     * @return string
+     */
+    public function getMagentoEdition()
+    {
+        return $this->productMetadata->getEdition();
+    }
+
+    /**
      * Get user agent
      *
      * @return string
@@ -411,7 +421,7 @@ class Config extends AbstractHelper
     public function getUserAgent()
     {
         $userAgent = $this->productMetadata->getName() . ' ';
-        $userAgent .= $this->productMetadata->getEdition() . ' v';
+        $userAgent .= $this->getMagentoEdition() . ' v';
         $userAgent .= $this->productMetadata->getVersion() . ' ';
         $userAgent .= self::MODULE_NAME . ' v' . $this->getModuleVersion();
 
