@@ -15,6 +15,8 @@
 namespace OnePica\AvaTax\Api\Service;
 
 use Magento\Quote\Api\Data\ShippingAssignmentInterface;
+use Magento\Quote\Model\Quote;
+use Magento\Quote\Model\Quote\Address\Total;
 use OnePica\AvaTax\Api\ResultInterface;
 
 /**
@@ -27,8 +29,10 @@ interface CalculationResourceInterface
     /**
      * Calculate
      *
-     * @param \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignment
-     * @return ResultInterface
+     * @param Quote                       $quote
+     * @param ShippingAssignmentInterface $shippingAssignment
+     * @param Total                       $total
+     * @return \OnePica\AvaTax\Api\ResultInterface
      */
-    public function calculate(ShippingAssignmentInterface $shippingAssignment);
+    public function calculate(Quote $quote, ShippingAssignmentInterface $shippingAssignment, Total $total);
 }
