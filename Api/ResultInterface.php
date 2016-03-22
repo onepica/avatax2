@@ -68,10 +68,10 @@ interface ResultInterface
     /**
      * Set response
      *
-     * @param array $response
+     * @param mixed $response
      * @return $this
      */
-    public function setResponse(array $response);
+    public function setResponse($response);
 
     /**
      * Set request
