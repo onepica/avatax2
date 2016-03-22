@@ -156,7 +156,7 @@ class Address extends AbstractHelper
                 );
             }
         }
-
+        // if we have filter then the address is not actionable
         return $filter ? false : true;
     }
 
