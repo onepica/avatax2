@@ -47,8 +47,7 @@ class InstallSchema implements InstallSchemaInterface
      */
     public function __construct(
         TaxClassResourceModel $resource
-    )
-    {
+    ) {
         $this->taxClassResourceModel = $resource;
     }
 
@@ -65,6 +64,7 @@ class InstallSchema implements InstallSchemaInterface
 
         $this->installAvataxLogTable($setup, $context);
         $this->installAvataxTaxClassOpColumn($setup, $context);
+        $this->installAvataxQueueTable($setup, $context);
 
         $setup->endSetup();
     }
@@ -173,5 +173,96 @@ class InstallSchema implements InstallSchemaInterface
                     )
                 );
         }
+    }
+
+    /**
+     * Install avatax_queue table
+     *
+     * @param \Magento\Framework\Setup\SchemaSetupInterface   $setup
+     * @param \Magento\Framework\Setup\ModuleContextInterface $context
+     * @return $this
+     */
+    protected function installAvataxQueueTable(SchemaSetupInterface $setup, ModuleContextInterface $context)
+    {
+        $table = $setup->getConnection()->newTable($setup->getTable('avatax_queue'))
+            ->addColumn(
+                'queue_id',
+                Table::TYPE_INTEGER,
+                null,
+                ['identity' => true, 'unsigned' => true, 'nullable' => false, 'primary' => true],
+                'Queue ID'
+            )->addColumn(
+                'store_id',
+                Table::TYPE_SMALLINT,
+                null,
+                ['unsigned' => true, 'default' => '0'],
+                'Store Id'
+            )->addColumn(
+                'entity_id',
+                Table::TYPE_INTEGER,
+                null,
+                ['unsigned' => true, 'nullable' => false],
+                'Entity id'
+            )->addColumn(
+                'entity_increment_id',
+                Table::TYPE_TEXT,
+                50,
+                [],
+                'Entity increment id'
+            )->addColumn(
+                'type',
+                Table::TYPE_TEXT,
+                50,
+                [],
+                'Type'
+            )->addColumn(
+                'status',
+                Table::TYPE_TEXT,
+                50,
+                [],
+                'Status'
+            )->addColumn(
+                'attempt',
+                Table::TYPE_SMALLINT,
+                null,
+                ['unsigned' => true, 'default' => '0'],
+                'Attempt'
+            )->addColumn(
+                'message',
+                Table::TYPE_TEXT,
+                null,
+                [],
+                'Message'
+            )->addColumn(
+                'created_at',
+                Table::TYPE_TIMESTAMP,
+                null,
+                ['nullable' => false, 'default' => Table::TIMESTAMP_INIT],
+                'Created At'
+            )->addColumn(
+                'updated_at',
+                Table::TYPE_TIMESTAMP,
+                null,
+                ['nullable' => false, 'default' => Table::TIMESTAMP_INIT],
+                'Updated At'
+            )->addForeignKey(
+                $setup->getFkName('avatax_queue', 'store_id', 'store', 'store_id'),
+                'store_id',
+                $setup->getTable('store'),
+                'store_id',
+                Table::ACTION_CASCADE
+            )->addIndex(
+                $setup->getIdxName(
+                    $setup->getTable('avatax_queue'),
+                    ['entity_id', 'entity_increment_id', 'type', 'status', 'attempt', 'created_at', 'updated_at'],
+                    AdapterInterface::INDEX_TYPE_INDEX
+                ),
+                ['entity_id', 'entity_increment_id', 'type', 'status', 'attempt', 'created_at', 'updated_at'],
+                AdapterInterface::INDEX_TYPE_INDEX
+            );
+
+        $setup->getConnection()->createTable($table);
+
+        return $this;
     }
 }
