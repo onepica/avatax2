@@ -254,10 +254,58 @@ class InstallSchema implements InstallSchemaInterface
             )->addIndex(
                 $setup->getIdxName(
                     $setup->getTable('avatax_queue'),
-                    ['entity_id', 'entity_increment_id', 'type', 'status', 'attempt', 'created_at', 'updated_at'],
+                    ['entity_id'],
                     AdapterInterface::INDEX_TYPE_INDEX
                 ),
-                ['entity_id', 'entity_increment_id', 'type', 'status', 'attempt', 'created_at', 'updated_at'],
+                ['entity_id'],
+                AdapterInterface::INDEX_TYPE_INDEX
+            )->addIndex(
+                $setup->getIdxName(
+                    $setup->getTable('avatax_queue'),
+                    ['entity_increment_id'],
+                    AdapterInterface::INDEX_TYPE_INDEX
+                ),
+                ['entity_increment_id'],
+                AdapterInterface::INDEX_TYPE_INDEX
+            )->addIndex(
+                $setup->getIdxName(
+                    $setup->getTable('avatax_queue'),
+                    ['type'],
+                    AdapterInterface::INDEX_TYPE_INDEX
+                ),
+                ['type'],
+                AdapterInterface::INDEX_TYPE_INDEX
+            )->addIndex(
+                $setup->getIdxName(
+                    $setup->getTable('avatax_queue'),
+                    ['status'],
+                    AdapterInterface::INDEX_TYPE_INDEX
+                ),
+                ['status'],
+                AdapterInterface::INDEX_TYPE_INDEX
+            )->addIndex(
+                $setup->getIdxName(
+                    $setup->getTable('avatax_queue'),
+                    ['attempt'],
+                    AdapterInterface::INDEX_TYPE_INDEX
+                ),
+                ['attempt'],
+                AdapterInterface::INDEX_TYPE_INDEX
+            )->addIndex(
+                $setup->getIdxName(
+                    $setup->getTable('avatax_queue'),
+                    ['created_at'],
+                    AdapterInterface::INDEX_TYPE_INDEX
+                ),
+                ['created_at'],
+                AdapterInterface::INDEX_TYPE_INDEX
+            )->addIndex(
+                $setup->getIdxName(
+                    $setup->getTable('avatax_queue'),
+                    ['updated_at'],
+                    AdapterInterface::INDEX_TYPE_INDEX
+                ),
+                ['updated_at'],
                 AdapterInterface::INDEX_TYPE_INDEX
             );
 
