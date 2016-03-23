@@ -58,4 +58,18 @@ class Queue extends AbstractDb
     {
         $this->_init('avatax_queue', QueueInterface::QUEUE_ID);
     }
+
+    /**
+     * Process queue data before saving
+     *
+     * @param \Magento\Framework\Model\AbstractModel $object
+     * @return $this
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    protected function _beforeSave(\Magento\Framework\Model\AbstractModel $object)
+    {
+        $object->setUpdatedAt($this->dateTime->formatDate(true));
+
+        return parent::_beforeSave($object);
+    }
 }
