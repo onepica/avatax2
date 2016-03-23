@@ -111,11 +111,42 @@ class Address extends AbstractHelper
             return false;
         }
 
+        // filter by country
+        $filter = $this->filterByCountry($address, $store, $isAddressValidation);
+
+        if (!$filter) {
+            // filter by region
+            $filter = $this->filterByRegion($address, $store, $isAddressValidation, $filterMode);
+        }
+
+        if ($filter) {
+            $this->logFilter($address, $store, $filter, $filterMode);
+        }
+
+        // if we have filter then the address is not actionable
+        return $filter ? false : true;
+    }
+
+    /**
+     * Filter by region
+     *
+     * @param AbstractAddress $address
+     * @param Store $store
+     * @param bool $isAddressValidation
+     * @param string $filterMode
+     * @return string|bool
+     */
+    protected function filterByRegion(
+        AbstractAddress $address,
+        Store $store = null,
+        $isAddressValidation,
+        $filterMode
+    ) {
         $filter = false;
         $regionFilterModeByStore = $this->getRegionFilterModByStore($store);
 
         if ($regionFilterModeByStore >= $filterMode) {
-            // filter by region
+            // get region filter
             $filter = $this->getFilterRegion($address, $store);
         }
 
@@ -127,7 +158,23 @@ class Address extends AbstractHelper
             $filter = false;
         }
 
-        // filter by country
+        return $filter;
+    }
+
+    /**
+     * Filter by country
+     *
+     * @param AbstractAddress $address
+     * @param Store $store
+     * @param bool $isAddressValidation
+     * @return string|bool
+     */
+    protected function filterByCountry(
+        AbstractAddress $address,
+        Store $store = null,
+        $isAddressValidation
+    ) {
+        $filter = false;
         $countryId = $address->getCountryId();
         if (!in_array($countryId, $this->getTaxableCountryByStore($store))
             || ($isAddressValidation && !in_array($countryId, $this->getAddressValidationCountries()))
@@ -135,29 +182,42 @@ class Address extends AbstractHelper
             $filter = 'country';
         }
 
-        if ($filter) {
-            $hash = $this->cacheStorage->generateHashKeyForData($address->format('text'));
-            if (!$this->cacheStorage->get($hash)) {
-                $addressData = $address->debug();
-                $this->cacheStorage->put($hash, $addressData);
-                $config = $this->configRepository->getConfigByStore($store);
-                $result = $this->objectManager->create(BaseResult::Class);
-                $type = ($filterMode == AvataxDataHelper::REGION_FILTER_MODE_TAX)
-                      ? 'tax_calc'
-                      : 'tax_calc|address_opts';
-                $resultStr = 'filter: ' . $filter . ', type: ' . $type;
-                $result->setResponse(['result' => $resultStr]);
-                $this->logger->log(
-                    Log::FILTER,
-                    $addressData,
-                    $result,
-                    $store->getId(),
-                    $config->getConnection()
-                );
-            }
+        return $filter;
+    }
+
+    /**
+     * Log filter
+     *
+     * @param AbstractAddress $address
+     * @param Store $store
+     * @param string $filter
+     * @param string $filterMode
+     */
+    protected function logFilter(
+        AbstractAddress $address,
+        Store $store = null,
+        $filter,
+        $filterMode
+    ) {
+        $hash = $this->cacheStorage->generateHashKeyForData($address->format('text'));
+        if (!$this->cacheStorage->get($hash)) {
+            $addressData = $address->debug();
+            $this->cacheStorage->put($hash, $addressData);
+            $config = $this->configRepository->getConfigByStore($store);
+            $result = $this->objectManager->create(BaseResult::Class);
+            $type = ($filterMode == AvataxDataHelper::REGION_FILTER_MODE_TAX)
+                ? 'tax_calc'
+                : 'tax_calc|address_opts';
+            $resultStr = 'filter: ' . $filter . ', type: ' . $type;
+            $result->setResponse(['result' => $resultStr]);
+            $this->logger->log(
+                Log::FILTER,
+                $addressData,
+                $result,
+                $store->getId(),
+                $config->getConnection()
+            );
         }
-        // if we have filter then the address is not actionable
-        return $filter ? false : true;
     }
 
     /**
