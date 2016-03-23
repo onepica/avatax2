@@ -96,4 +96,16 @@
         </arguments>
     </virtualType>
     <!--  -->
+
+    <!-- this type should be in etc/di.xml, otherwise it can broke native functionality -->
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="avatax_queue_listing_data_source" xsi:type="string">OnePica\AvaTax\Model\ResourceModel\Queue\Grid\Collection</item>
+                <item name="avatax_log_listing_data_source" xsi:type="string">OnePica\AvaTax\Model\ResourceModel\Log\Grid\Collection</item>
+                <item name="ctc_listing_data_source" xsi:type="string">Magento\Tax\Model\ResourceModel\Customer\Grid\Collection</item>
+                <item name="ptc_listing_data_source" xsi:type="string">Magento\Tax\Model\ResourceModel\Product\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
 </config>
