@@ -65,7 +65,7 @@ class RegionList implements OptionSourceInterface
      */
     public function toOptionArray()
     {
-        $options = Array();
+        $options = array();
         $countries = explode(',', $this->config->getRegionFilterTaxableCountries());
         foreach ($countries as $country) {
             $regions = $this->regionSource->toOptionArray(true, $country);
