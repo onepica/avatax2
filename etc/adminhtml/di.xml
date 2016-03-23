@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- Queue -->
+    <virtualType name="QueueGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">OnePica\AvaTax\Model\ResourceModel\Queue\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">QueueGirdFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="QueueGirdFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="OnePica\AvaTax\Model\ResourceModel\Queue\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">avatax_queue</argument>
+            <argument name="eventPrefix" xsi:type="string">onepica_avatax_queue_collection</argument>
+            <argument name="eventObject" xsi:type="string">avatax_queue_collection</argument>
+            <argument name="resourceModel" xsi:type="string">OnePica\AvaTax\Model\ResourceModel\Queue</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="avatax_queue_listing_data_source" xsi:type="string">OnePica\AvaTax\Model\ResourceModel\Queue\Grid\Collection</item>
+                <item name="avatax_log_listing_data_source" xsi:type="string">OnePica\AvaTax\Model\ResourceModel\Log\Grid\Collection</item>
+                <item name="ctc_listing_data_source" xsi:type="string">Magento\Tax\Model\ResourceModel\Customer\Grid\Collection</item>
+                <item name="ptc_listing_data_source" xsi:type="string">Magento\Tax\Model\ResourceModel\Product\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <!-- Queue END -->
+    <!--@todo: move code that belongs to admin from etc/di.xml to etc/adminhtml/di.xml  -->
+</config>

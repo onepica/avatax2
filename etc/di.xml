@@ -44,14 +44,6 @@
             <argument name="resourceModel" xsi:type="string">OnePica\AvaTax\Model\ResourceModel\Log</argument>
         </arguments>
     </type>
-    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
-        <arguments>
-            <argument name="collections" xsi:type="array">
-                <item name="avatax_log_listing_data_source" xsi:type="string">OnePica\AvaTax\Model\ResourceModel\Log\Grid\Collection</item>
-            </argument>
-        </arguments>
-    </type>
-
 <!-- Customer Tax Classes -->
     <virtualType name="Magento\Tax\Model\ResourceModel\Customer\Grid\Collection" type="OnePica\AvaTax\Model\ResourceModel\Customer\TaxClass\Grid\Collection">
         <arguments>
@@ -59,15 +51,6 @@
             <argument name="resourceModel" xsi:type="string">Magento\Tax\Model\ResourceModel\TaxClass</argument>
         </arguments>
     </virtualType>
-
-    <!-- 2 define data source for grid using virtual grid tax collection class-->
-    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
-        <arguments>
-            <argument name="collections" xsi:type="array">
-                <item name="ctc_listing_data_source" xsi:type="string">Magento\Tax\Model\ResourceModel\Customer\Grid\Collection</item>
-            </argument>
-        </arguments>
-    </type>
 
     <!-- define filter pool provider (cache pool provider) -->
     <virtualType name="FPCustomerTax" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
@@ -87,7 +70,6 @@
         </arguments>
     </virtualType>
 <!--  -->
-
 <!-- Product Tax Classes -->
     <virtualType name="Magento\Tax\Model\ResourceModel\Product\Grid\Collection" type="OnePica\AvaTax\Model\ResourceModel\Product\TaxClass\Grid\Collection">
         <arguments>
@@ -95,15 +77,6 @@
             <argument name="resourceModel" xsi:type="string">Magento\Tax\Model\ResourceModel\TaxClass</argument>
         </arguments>
     </virtualType>
-
-    <!-- 2 define data source for grid using virtual grid tax collection class-->
-    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
-        <arguments>
-            <argument name="collections" xsi:type="array">
-                <item name="ptc_listing_data_source" xsi:type="string">Magento\Tax\Model\ResourceModel\Product\Grid\Collection</item>
-            </argument>
-        </arguments>
-    </type>
 
     <!-- define filter pool provider (cache pool provider) -->
     <virtualType name="FPProductTax" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
