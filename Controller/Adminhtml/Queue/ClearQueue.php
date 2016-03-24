@@ -51,8 +51,13 @@ class ClearQueue extends AbstractQueueAction
      */
     public function execute()
     {
-        $this->queueProcessor->clear();
-        $this->getMessageManager()->addSuccess(__('Queues were cleared successfully'));
+        try {
+            $this->queueProcessor->clear();
+            $this->getMessageManager()->addSuccess(__('Queues were cleared successfully'));
+        } catch (\Exception $e) {
+            $this->getMessageManager()->addError(__('Unable to clear Queues'));
+        }
+
         /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
         $resultRedirect = $this->resultRedirectFactory->create();
         return $resultRedirect->setPath('*/*/');

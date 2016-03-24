@@ -45,4 +45,12 @@ interface QueueRepositoryInterface
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getById($queueId);
+
+    /**
+     * Load Queue data collection by given search criteria
+     *
+     * @param \Magento\Framework\Api\SearchCriteriaInterface $criteria
+     * @return \Magento\Cms\Model\ResourceModel\Page\Collection
+     */
+    public function getList(\Magento\Framework\Api\SearchCriteriaInterface $criteria);
 }
