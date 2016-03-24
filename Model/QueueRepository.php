@@ -16,8 +16,10 @@ namespace OnePica\AvaTax\Model;
 
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Api\SortOrder;
 use OnePica\AvaTax\Api\Data;
 use OnePica\AvaTax\Api\QueueRepositoryInterface;
+use OnePica\AvaTax\Model\ResourceModel\Queue\CollectionFactory as QueueCollectionFactory;
 
 /**
  * Class QueueRepository
@@ -41,15 +43,41 @@ class QueueRepository implements QueueRepositoryInterface
     protected $resourceModel;
 
     /**
+     * @var QueueCollectionFactory
+     */
+    protected $queueCollectionFactory;
+
+    /**
+     * @var Data\QueueSearchResultsInterfaceFactory
+     */
+    protected $searchResultsFactory;
+
+    /**
+     * @var Data\QueueInterfaceFactory
+     */
+    protected $dataQueueFactory;
+
+    /**
      * QueueRepository constructor.
      *
      * @param \OnePica\AvaTax\Model\QueueFactory        $queueFactory
      * @param \OnePica\AvaTax\Model\ResourceModel\Queue $queueResource
+     * @param QueueCollectionFactory $queueCollectionFactory,
+     * @param Data\QueueSearchResultsInterfaceFactory $searchResultsFactory
+     * @param Data\QueueInterfaceFactory $dataQueueFactory
      */
-    public function __construct(QueueFactory $queueFactory, ResourceModel\Queue $queueResource)
-    {
+    public function __construct(
+        QueueFactory $queueFactory,
+        ResourceModel\Queue $queueResource,
+        QueueCollectionFactory $queueCollectionFactory,
+        Data\QueueSearchResultsInterfaceFactory $searchResultsFactory,
+        Data\QueueInterfaceFactory $dataQueueFactory
+    ) {
         $this->queueFactory = $queueFactory;
         $this->resourceModel = $queueResource;
+        $this->queueCollectionFactory = $queueCollectionFactory;
+        $this->searchResultsFactory = $searchResultsFactory;
+        $this->dataQueueFactory = $dataQueueFactory;
     }
 
     /**
@@ -105,5 +133,44 @@ class QueueRepository implements QueueRepositoryInterface
         }
 
         return $queue;
+    }
+
+    /**
+     * Load Queue data collection by given search criteria
+     *
+     * @param \Magento\Framework\Api\SearchCriteriaInterface $criteria
+     * @return \Magento\Cms\Model\ResourceModel\Page\Collection
+     */
+    public function getList(\Magento\Framework\Api\SearchCriteriaInterface $criteria)
+    {
+        $searchResults = $this->searchResultsFactory->create();
+        $searchResults->setSearchCriteria($criteria);
+
+        $collection = $this->queueCollectionFactory->create();
+        foreach ($criteria->getFilterGroups() as $filterGroup) {
+            foreach ($filterGroup->getFilters() as $filter) {
+                if ($filter->getField() === 'store_id') {
+                    $collection->addStoreFilter($filter->getValue(), false);
+                    continue;
+                }
+                $condition = $filter->getConditionType() ?: 'eq';
+                $collection->addFieldToFilter($filter->getField(), [$condition => $filter->getValue()]);
+            }
+        }
+        $searchResults->setTotalCount($collection->getSize());
+        $sortOrders = $criteria->getSortOrders();
+        if ($sortOrders) {
+            /** @var SortOrder $sortOrder */
+            foreach ($sortOrders as $sortOrder) {
+                $collection->addOrder(
+                    $sortOrder->getField(),
+                    ($sortOrder->getDirection() == SortOrder::SORT_ASC) ? 'ASC' : 'DESC'
+                );
+            }
+        }
+        $collection->setCurPage($criteria->getCurrentPage());
+        $collection->setPageSize($criteria->getPageSize());
+        $searchResults->setItems($collection->getItems());
+        return $searchResults;
     }
 }

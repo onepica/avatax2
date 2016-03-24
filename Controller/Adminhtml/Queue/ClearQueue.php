@@ -15,6 +15,8 @@
 namespace OnePica\AvaTax\Controller\Adminhtml\Queue;
 
 use OnePica\AvaTax\Controller\Adminhtml\AbstractQueueAction;
+use Magento\Backend\App\Action\Context;
+use OnePica\AvaTax\Model\Queue\Processor as QueueProcessor;
 
 /**
  * Class ClearQueue
@@ -24,10 +26,35 @@ use OnePica\AvaTax\Controller\Adminhtml\AbstractQueueAction;
 class ClearQueue extends AbstractQueueAction
 {
     /**
+     * Queue processor model
+     *
+     * @var QueueProcessor
+     */
+    protected $queueProcessor;
+
+    /**
+     * Constructor
+     *
+     * @param Context        $context
+     * @param QueueProcessor $queueProcessor
+     */
+    public function __construct(
+        Context $context,
+        QueueProcessor $queueProcessor)
+    {
+        parent::__construct($context);
+        $this->queueProcessor = $queueProcessor;
+    }
+
+    /**
      * Dispatch request
      */
     public function execute()
     {
-        exit('Clear');
+        $this->queueProcessor->clear();
+        $this->getMessageManager()->addSuccess(__('Queues were cleared successfully'));
+        /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
+        $resultRedirect = $this->resultRedirectFactory->create();
+        return $resultRedirect->setPath('*/*/');
     }
 }

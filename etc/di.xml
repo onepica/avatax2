@@ -6,6 +6,9 @@
     <preference for="OnePica\AvaTax\Api\Service\CacheStorageInterface" type="OnePica\AvaTax\Model\Service\CacheStorage"/>
     <preference for="OnePica\AvaTax\Api\Service\LoggerInterface" type="OnePica\AvaTax\Model\Service\Logger"/>
     <preference for="OnePica\AvaTax\Api\LogRepositoryInterface" type="OnePica\AvaTax\Model\LogRepository"/>
+    <preference for="OnePica\AvaTax\Api\QueueRepositoryInterface" type="OnePica\AvaTax\Model\QueueRepository"/>
+    <preference for="OnePica\AvaTax\Api\Data\QueueSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+    <preference for="OnePica\AvaTax\Api\Data\QueueInterface" type="OnePica\AvaTax\Model\Queue"/>
     <type name="OnePica\AvaTax\Model\Service\Resolver">
         <arguments>
             <argument name="data" xsi:type="array">

@@ -14,7 +14,10 @@
  */
 namespace OnePica\AvaTax\Model\Queue;
 
-use \OnePica\AvaTax\Api\QueueRepositoryInterface;
+use Magento\Framework\Api\FilterBuilder;
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use OnePica\AvaTax\Api\QueueRepositoryInterface;
+use OnePica\AvaTax\Model\Queue;
 
 /**
  * Class Processor
@@ -32,22 +35,55 @@ class Processor
     protected $queueRepository;
 
     /**
+    * @var SearchCriteriaBuilder
+    */
+    private $searchCriteriaBuilder;
+
+    /**
+     * @var FilterBuilder
+     */
+    private $filterBuilder;
+
+    /**
      * Constructor.
      *
      * @param QueueRepositoryInterface $queueRepository
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder,
+     * @param FilterBuilder $filterBuilder
      */
-    public function __construct(QueueRepositoryInterface $queueRepository)
-    {
+    public function __construct(
+        QueueRepositoryInterface $queueRepository,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        FilterBuilder $filterBuilder
+    ) {
         $this->queueRepository = $queueRepository;
+        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
+        $this->filterBuilder = $filterBuilder;
     }
 
     /**
-     * Clear queue old processed items
+     * Clear queue processed items
      *
      * @return $this
      */
     public function clear()
     {
+        $filters = array_map(function ($value) {
+            return $this->filterBuilder
+                ->setConditionType('in')
+                ->setField(Queue::STATUS)
+                ->setValue($value)
+                ->create();
+        }, [[Queue::STATUS_FAILED, Queue::STATUS_UNBALANCED, Queue::STATUS_COMPLETE]]);
+        $this->searchCriteriaBuilder->addFilters($filters);
+        $items = $this->queueRepository->getList(
+            $this->searchCriteriaBuilder->create()
+        )->getItems();
+
+        foreach ($items as $item) {
+            $this->queueRepository->delete($item);
+        }
+
         return $this;
     }
 }
