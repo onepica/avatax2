@@ -118,7 +118,9 @@ class Processor
     {
         $this->cleanCompleted()
             ->cleanFailed()
-            ->cleanUnbalanced();
+            ->cleanUnbalanced()
+            ->processInvoices()
+            ->processCreditMemos();
         return $this;
     }
 
@@ -211,6 +213,30 @@ class Processor
         foreach ($items as $item) {
             $this->queueRepository->delete($item);
         }
+
+        return $this;
+    }
+
+    /**
+     * Attempt to send any pending invoices to Avalara
+     *
+     * @return $this
+     */
+    protected function processInvoices()
+    {
+        // @todo: implement invoicess processing
+
+        return $this;
+    }
+
+    /**
+     * Attempt to send any pending credit memos to Avalara
+     *
+     * @return $this
+     */
+    protected function processCreditMemos()
+    {
+        // @todo: implement credit memos processing
 
         return $this;
     }
