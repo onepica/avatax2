@@ -6,6 +6,9 @@
     <preference for="OnePica\AvaTax\Api\Service\CacheStorageInterface" type="OnePica\AvaTax\Model\Service\CacheStorage"/>
     <preference for="OnePica\AvaTax\Api\Service\LoggerInterface" type="OnePica\AvaTax\Model\Service\Logger"/>
     <preference for="OnePica\AvaTax\Api\LogRepositoryInterface" type="OnePica\AvaTax\Model\LogRepository"/>
+    <preference for="OnePica\AvaTax\Api\QueueRepositoryInterface" type="OnePica\AvaTax\Model\QueueRepository"/>
+    <preference for="OnePica\AvaTax\Api\Data\QueueSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+    <preference for="OnePica\AvaTax\Api\Data\QueueInterface" type="OnePica\AvaTax\Model\Queue"/>
     <type name="OnePica\AvaTax\Model\Service\Resolver">
         <arguments>
             <argument name="data" xsi:type="array">
@@ -44,14 +47,6 @@
             <argument name="resourceModel" xsi:type="string">OnePica\AvaTax\Model\ResourceModel\Log</argument>
         </arguments>
     </type>
-    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
-        <arguments>
-            <argument name="collections" xsi:type="array">
-                <item name="avatax_log_listing_data_source" xsi:type="string">OnePica\AvaTax\Model\ResourceModel\Log\Grid\Collection</item>
-            </argument>
-        </arguments>
-    </type>
-
 <!-- Customer Tax Classes -->
     <virtualType name="Magento\Tax\Model\ResourceModel\Customer\Grid\Collection" type="OnePica\AvaTax\Model\ResourceModel\Customer\TaxClass\Grid\Collection">
         <arguments>
@@ -59,15 +54,6 @@
             <argument name="resourceModel" xsi:type="string">Magento\Tax\Model\ResourceModel\TaxClass</argument>
         </arguments>
     </virtualType>
-
-    <!-- 2 define data source for grid using virtual grid tax collection class-->
-    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
-        <arguments>
-            <argument name="collections" xsi:type="array">
-                <item name="ctc_listing_data_source" xsi:type="string">Magento\Tax\Model\ResourceModel\Customer\Grid\Collection</item>
-            </argument>
-        </arguments>
-    </type>
 
     <!-- define filter pool provider (cache pool provider) -->
     <virtualType name="FPCustomerTax" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
@@ -87,7 +73,6 @@
         </arguments>
     </virtualType>
 <!--  -->
-
 <!-- Product Tax Classes -->
     <virtualType name="Magento\Tax\Model\ResourceModel\Product\Grid\Collection" type="OnePica\AvaTax\Model\ResourceModel\Product\TaxClass\Grid\Collection">
         <arguments>
@@ -95,15 +80,6 @@
             <argument name="resourceModel" xsi:type="string">Magento\Tax\Model\ResourceModel\TaxClass</argument>
         </arguments>
     </virtualType>
-
-    <!-- 2 define data source for grid using virtual grid tax collection class-->
-    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
-        <arguments>
-            <argument name="collections" xsi:type="array">
-                <item name="ptc_listing_data_source" xsi:type="string">Magento\Tax\Model\ResourceModel\Product\Grid\Collection</item>
-            </argument>
-        </arguments>
-    </type>
 
     <!-- define filter pool provider (cache pool provider) -->
     <virtualType name="FPProductTax" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
@@ -123,4 +99,16 @@
         </arguments>
     </virtualType>
     <!--  -->
+
+    <!-- this type should be in etc/di.xml, otherwise it can broke native functionality -->
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="avatax_queue_listing_data_source" xsi:type="string">OnePica\AvaTax\Model\ResourceModel\Queue\Grid\Collection</item>
+                <item name="avatax_log_listing_data_source" xsi:type="string">OnePica\AvaTax\Model\ResourceModel\Log\Grid\Collection</item>
+                <item name="ctc_listing_data_source" xsi:type="string">Magento\Tax\Model\ResourceModel\Customer\Grid\Collection</item>
+                <item name="ptc_listing_data_source" xsi:type="string">Magento\Tax\Model\ResourceModel\Product\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
 </config>
