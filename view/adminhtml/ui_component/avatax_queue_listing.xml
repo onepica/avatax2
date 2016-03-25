@@ -6,6 +6,20 @@
             <item name="deps" xsi:type="string">avatax_queue_listing.avatax_queue_listing_data_source</item>
         </item>
         <item name="spinner" xsi:type="string">avatax_queue_columns</item>
+        <item name="buttons" xsi:type="array">
+            <item name="process" xsi:type="array">
+                <item name="name" xsi:type="string">process</item>
+                <item name="label" xsi:type="string" translate="true">Process Queue now</item>
+                <item name="class" xsi:type="string">primary</item>
+                <item name="url" xsi:type="string">*/*/processQueue</item>
+            </item>
+            <item name="clear" xsi:type="array">
+                <item name="name" xsi:type="string">clear</item>
+                <item name="label" xsi:type="string" translate="true">Clear Queue now</item>
+                <item name="class" xsi:type="string">primary</item>
+                <item name="url" xsi:type="string">*/*/clearQueue</item>
+            </item>
+        </item>
     </argument>
     <dataSource name="avatax_queue_listing_data_source">
         <argument name="dataProvider" xsi:type="configurableObject">
