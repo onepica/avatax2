@@ -44,6 +44,8 @@ class Config extends AbstractHelper
     const AVATAX_SERVICE_COMPANY_CODE           = 'tax/avatax/company_code';
     const AVATAX_SERVICE_ALLOWED_LOG_TYPES      = 'tax/avatax/avatax_log_group/allowed_log_types';
     const AVATAX_SERVICE_LOG_LIFETIME           = 'tax/avatax/avatax_log_group/log_lifetime';
+    const AVATAX_SERVICE_QUEUE_SUCCESS_LIFETIME = 'tax/avatax/avatax_log_group/queue_success_lifetime';
+    const AVATAX_SERVICE_QUEUE_FAILED_LIFETIME  = 'tax/avatax/avatax_log_group/queue_failed_lifetime';
     const AVATAX_VALIDATE_ADDRESS               = 'tax/avatax/address_validation_group/validate_address';
     const AVATAX_NORMALIZE_ADDRESS              = 'tax/avatax/address_validation_group/normalize_address';
     const AVATAX_ONEPAGE_NORMALIZE_MESSAGE      = 'tax/avatax/address_validation_group/onepage_normalize_message';
@@ -183,6 +185,28 @@ class Config extends AbstractHelper
     public function getLogLifetime($store = null)
     {
         return (int)$this->getConfig(self::AVATAX_SERVICE_LOG_LIFETIME, $store);
+    }
+
+    /**
+     * Get Queue Failed Lifetime
+     *
+     * @param Store|int $store
+     * @return int
+     */
+    public function getQueueFailedLifetime($store = null)
+    {
+        return (int)$this->getConfig(self::AVATAX_SERVICE_QUEUE_FAILED_LIFETIME, $store);
+    }
+
+    /**
+     * Get Queue Success Lifetime
+     *
+     * @param Store|int $store
+     * @return int
+     */
+    public function getQueueSuccessLifetime($store = null)
+    {
+        return (int)$this->getConfig(self::AVATAX_SERVICE_QUEUE_SUCCESS_LIFETIME, $store);
     }
 
     /**
