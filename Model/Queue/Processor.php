@@ -86,4 +86,14 @@ class Processor
 
         return $this;
     }
+
+    /**
+     * Process queues
+     *
+     * @return $this
+     */
+    public function processQueues()
+    {
+        return $this;
+    }
 }
