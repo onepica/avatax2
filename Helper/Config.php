@@ -49,8 +49,12 @@ class Config extends AbstractHelper
     const AVATAX_ONEPAGE_NORMALIZE_MESSAGE      = 'tax/avatax/address_validation_group/onepage_normalize_message';
     const AVATAX_MULTIADDRESS_NORMALIZE_MESSAGE = 'tax/avatax/address_validation_group/multiaddress_normalize_message';
     const AVATAX_VALIDATE_ADDRESS_MESSAGE       = 'tax/avatax/address_validation_group/validate_address_message';
+    const AVATAX_ADDRESS_VALIDATION_COUNTRIES   = 'tax/avatax/address_validation_group/address_validation_countries';
     const AVATAX_FIELD_REQUIRED_LIST            = 'tax/avatax/request_settings_group/field_required_list';
     const AVATAX_FIELD_RULE                     = 'tax/avatax/request_settings_group/field_rule';
+    const AVATAX_REGION_FILTER_TAXABLE_COUNTRY  = 'tax/avatax/region_filter_group/taxable_country';
+    const AVATAX_REGION_FILTER_MODE             = 'tax/avatax/region_filter_group/region_filter_mode';
+    const AVATAX_REGION_FILTER_LIST             = 'tax/avatax/region_filter_group/region_filter_list';
     /**#@-*/
 
     /**
@@ -284,5 +288,48 @@ class Config extends AbstractHelper
     public function getFieldRule($store = null)
     {
         return (string)$this->getConfig(self::AVATAX_FIELD_RULE, $store);
+    }
+
+    /**
+     * Get Region Filter Taxable Countries
+     *
+     * @param Store|int $store
+     * @return string
+     */
+    public function getRegionFilterTaxableCountries($store = null)
+    {
+        return (string)$this->getConfig(self::AVATAX_REGION_FILTER_TAXABLE_COUNTRY, $store);
+    }
+
+    /**
+     * Get Address Validation Countries
+     *
+     * @return string
+     */
+    public function getAddressValidationCountries()
+    {
+        return (string)$this->getConfig(self::AVATAX_ADDRESS_VALIDATION_COUNTRIES);
+    }
+
+    /**
+     * Get region filter mode
+     *
+     * @param Store|int $store
+     * @return int
+     */
+    public function getRegionFilterMode($store = null)
+    {
+        return (int)$this->getConfig(self::AVATAX_REGION_FILTER_MODE, $store);
+    }
+
+    /**
+     * Get region filter fist
+     *
+     * @param Store|int $store
+     * @return string
+     */
+    public function getRegionFilterList($store = null)
+    {
+        return (string)$this->getConfig(self::AVATAX_REGION_FILTER_LIST, $store);
     }
 }

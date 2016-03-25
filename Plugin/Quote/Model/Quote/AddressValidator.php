@@ -22,6 +22,7 @@ use OnePica\AvaTax\Model\Tool\Validate;
 use OnePica\AvaTax\Model\Service\Request\Address as RequestAddress;
 use OnePica\AvaTax\Model\Service\Result\AddressValidationResult;
 use OnePica\AvaTax\Helper\Data as AvataxDataHelper;
+use OnePica\AvaTax\Helper\Address as AvataxAddressHelper;
 
 /**
  * Quote address validator
@@ -57,23 +58,33 @@ class AddressValidator
     protected $messageManager;
 
     /**
+     * Address helper
+     *
+     * @var AvataxAddressHelper
+     */
+    protected $addressHelper;
+
+    /**
      * ShippingInformationManagement constructor
      *
      * @param Config $config
      * @param ObjectManagerInterface $objectManager
      * @param StoreManagerInterface $storeManager
      * @param \Magento\Framework\Message\ManagerInterface $messageManager
+     * @param AvataxAddressHelper $addressHelper
      */
     public function __construct(
         Config $config,
         ObjectManagerInterface $objectManager,
         StoreManagerInterface $storeManager,
-        \Magento\Framework\Message\ManagerInterface $messageManager
+        \Magento\Framework\Message\ManagerInterface $messageManager,
+        AvataxAddressHelper $addressHelper
     ) {
         $this->config = $config;
         $this->objectManager = $objectManager;
         $this->storeManager = $storeManager;
         $this->messageManager = $messageManager;
+        $this->addressHelper = $addressHelper;
     }
 
     /**
@@ -116,7 +127,7 @@ class AddressValidator
         $this->normalizeAddress($address, $serviceResult);
         if ($address->getData('is_normalized') === true) {
             $message = $this->getOnepageNormalizeMessage();
-            $this->_addNotice($message);
+            $this->addNotice($message);
         }
         $result = $serviceResult->getErrors() ? $serviceResult->getErrors() : true;
         if ($result === true) {
@@ -139,7 +150,7 @@ class AddressValidator
         $returnErrors = [];
         foreach ($errors as $message) {
             if ($this->getValidateAddressMode() == AvataxDataHelper::SHIPPING_ADDRESS_VALIDATION_ALLOW) {
-                $this->_addNotice($message);
+                $this->addNotice($message);
             } elseif ($this->getValidateAddressMode() == AvataxDataHelper::SHIPPING_ADDRESS_VALIDATION_PREVENT) {
                 $returnErrors[] = $message;
             }
@@ -159,6 +170,12 @@ class AddressValidator
     {
         if ($this->getValidationMode() &&
             $address->getAddressType() == \Magento\Quote\Model\Quote\Address::ADDRESS_TYPE_SHIPPING
+            && $this->addressHelper->isAddressActionable(
+                $address,
+                $this->storeManager->getStore(),
+                AvataxDataHelper::REGION_FILTER_MODE_ALL,
+                true
+            )
         ) {
             return true;
         }
@@ -236,7 +253,7 @@ class AddressValidator
      * @param string $message
      * @return $this
      */
-    protected function _addNotice($message)
+    protected function addNotice($message)
     {
         // TODO: investigate of displays messages using meddage group
        // $this->messageManager->addNotice($message, AvataxDataHelper::MESSAGE_GROUP_CODE);

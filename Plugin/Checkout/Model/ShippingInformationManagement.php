@@ -68,7 +68,8 @@ class ShippingInformationManagement
         $this->validateAndNormalize($addressInformation);
         $paymentInformation = $proceed($cartId, $addressInformation);
         // set updated addresses for response
-        $paymentDetailsExtensionAttributes = $this->objectManager->get('\OnePica\AvaTax\Model\Payment\PaymentDetailsExtension');
+        $paymentDetailsExtensionAttributes = $this->objectManager
+            ->get('\OnePica\AvaTax\Model\Payment\PaymentDetailsExtension');
         $paymentDetailsExtensionAttributes->setValidatedAddress($addressInformation->getShippingAddress());
         $paymentInformation->setExtensionAttributes($paymentDetailsExtensionAttributes);
 

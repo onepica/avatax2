@@ -24,6 +24,27 @@
                     <label>Company Code</label>
                     <validate>required-entry</validate>
                 </field>
+                <group id="region_filter_group" translate="label" sortOrder="55" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Region Filter Options</label>
+                    <attribute type="expanded">1</attribute>
+                    <field id="taxable_country" translate="label comment" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Taxable Country</label>
+                        <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                        <comment>Address validation option works only for United States and Canada</comment>
+                    </field>
+                    <field id="region_filter_mode" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Filter Requests by Region</label>
+                        <source_model>OnePica\AvaTax\Model\Source\RegionFilter\Mode</source_model>
+                        <comment>Re-save settings if Taxable Country was changed to use this option.</comment>
+                    </field>
+                    <field id="region_filter_list" translate="label comment" type="multiselect" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <source_model>OnePica\AvaTax\Model\Source\RegionFilter\RegionList</source_model>
+                        <comment>Select regions to use AvaTax services.</comment>
+                        <depends>
+                            <field id="region_filter_mode" separator="|">1|2</field>
+                        </depends>
+                    </field>
+                </group>
                 <group id="address_validation_group" translate="label" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Shipping Address Options</label>
                     <attribute type="expanded">1</attribute>
