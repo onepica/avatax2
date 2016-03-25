@@ -116,7 +116,8 @@ class Processor
      */
     public function processQueues()
     {
-        $this->cleanCompleted();
+        $this->cleanCompleted()
+            ->cleanFailed();
         return $this;
     }
 
@@ -133,6 +134,37 @@ class Processor
                 ->setField(Queue::STATUS)
                 ->setValue(Queue::STATUS_COMPLETE)
                 ->create();
+        $filters[] = $this->filterBuilder
+            ->setConditionType('lt')
+            ->setField(Queue::CREATED_AT)
+            ->setValue($this->dateTime->gmDate('Y-m-d H:i:s', strtotime('-' . $days . ' days')))
+            ->create();
+        $this->searchCriteriaBuilder->addFilters($filters);
+        $items = $this->queueRepository->getList(
+            $this->searchCriteriaBuilder->create()
+        )->getItems();
+
+        // delete items
+        foreach ($items as $item) {
+            $this->queueRepository->delete($item);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Delete any queue items that have been failed
+     *
+     * @return $this
+     */
+    protected function cleanFailed()
+    {
+        $days = $this->config->getQueueFailedLifetime();
+        $filters[] = $this->filterBuilder
+            ->setConditionType('eq')
+            ->setField(Queue::STATUS)
+            ->setValue(Queue::STATUS_FAILED)
+            ->create();
         $filters[] = $this->filterBuilder
             ->setConditionType('lt')
             ->setField(Queue::CREATED_AT)
