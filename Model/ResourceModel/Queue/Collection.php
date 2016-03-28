@@ -21,7 +21,7 @@ use OnePica\AvaTax\Model\ResourceModel\Queue as QueueResource;
 /**
  * Class Collection
  *
- * @package OnePica\AvaTax\Model\ResourceModel\Log
+ * @package OnePica\AvaTax\Model\ResourceModel\Queue
  */
 class Collection extends AbstractCollection
 {
@@ -47,5 +47,19 @@ class Collection extends AbstractCollection
     protected function _construct()
     {
         $this->_init(QueueModel::class, QueueResource::class);
+    }
+
+    /**
+     * Get export data
+     *
+     * Return table data without loading collection.
+     *
+     * @return array
+     */
+    public function getExportData()
+    {
+        $select = $this->getConnection()->select()->from($this->getMainTable());
+
+        return $this->getConnection()->fetchAll($select);
     }
 }
