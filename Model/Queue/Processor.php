@@ -16,8 +16,10 @@ namespace OnePica\AvaTax\Model\Queue;
 
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Stdlib\DateTime;
 use OnePica\AvaTax\Api\QueueRepositoryInterface;
 use OnePica\AvaTax\Model\Queue;
+use OnePica\AvaTax\Helper\Config;
 
 /**
  * Class Processor
@@ -45,20 +47,40 @@ class Processor
     private $filterBuilder;
 
     /**
+     * Config helper
+     *
+     * @var \OnePica\AvaTax\Helper\Config
+     */
+    protected $config;
+
+    /**
+     * DateTime model
+     *
+     * @var \Magento\Framework\Stdlib\DateTime
+     */
+    protected $dateTime;
+
+    /**
      * Constructor.
      *
      * @param QueueRepositoryInterface $queueRepository
-     * @param SearchCriteriaBuilder $searchCriteriaBuilder,
-     * @param FilterBuilder $filterBuilder
+     * @param SearchCriteriaBuilder    $searchCriteriaBuilder,
+     * @param FilterBuilder            $filterBuilder
+     * @param Config                   $config
+     * @param DateTime                 $dateTime
      */
     public function __construct(
         QueueRepositoryInterface $queueRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
-        FilterBuilder $filterBuilder
+        FilterBuilder $filterBuilder,
+        Config $config,
+        DateTime $dateTime
     ) {
         $this->queueRepository = $queueRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->filterBuilder = $filterBuilder;
+        $this->config = $config;
+        $this->dateTime = $dateTime;
     }
 
     /**
@@ -83,6 +105,138 @@ class Processor
         foreach ($items as $item) {
             $this->queueRepository->delete($item);
         }
+
+        return $this;
+    }
+
+    /**
+     * Process queue
+     *
+     * @return $this
+     */
+    public function processQueue()
+    {
+        $this->cleanCompleted()
+            ->cleanFailed()
+            ->cleanUnbalanced()
+            ->processInvoices()
+            ->processCreditMemos();
+        return $this;
+    }
+
+    /**
+     * Delete any queue items that have been completed
+     *
+     * @return $this
+     */
+    protected function cleanCompleted()
+    {
+        $days = $this->config->getQueueSuccessLifetime();
+        $filters[] = $this->filterBuilder
+                ->setConditionType('eq')
+                ->setField(Queue::STATUS)
+                ->setValue(Queue::STATUS_COMPLETE)
+                ->create();
+        $filters[] = $this->filterBuilder
+            ->setConditionType('lt')
+            ->setField(Queue::CREATED_AT)
+            ->setValue($this->dateTime->gmDate('Y-m-d H:i:s', strtotime('-' . $days . ' days')))
+            ->create();
+        $this->searchCriteriaBuilder->addFilters($filters);
+        $items = $this->queueRepository->getList(
+            $this->searchCriteriaBuilder->create()
+        )->getItems();
+
+        // delete items
+        foreach ($items as $item) {
+            $this->queueRepository->delete($item);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Delete any queue items that have been failed
+     *
+     * @return $this
+     */
+    protected function cleanFailed()
+    {
+        $days = $this->config->getQueueFailedLifetime();
+        $filters[] = $this->filterBuilder
+            ->setConditionType('eq')
+            ->setField(Queue::STATUS)
+            ->setValue(Queue::STATUS_FAILED)
+            ->create();
+        $filters[] = $this->filterBuilder
+            ->setConditionType('lt')
+            ->setField(Queue::CREATED_AT)
+            ->setValue($this->dateTime->gmDate('Y-m-d H:i:s', strtotime('-' . $days . ' days')))
+            ->create();
+        $this->searchCriteriaBuilder->addFilters($filters);
+        $items = $this->queueRepository->getList(
+            $this->searchCriteriaBuilder->create()
+        )->getItems();
+
+        // delete items
+        foreach ($items as $item) {
+            $this->queueRepository->delete($item);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Delete any queue items that have been failed
+     *
+     * @return $this
+     */
+    protected function cleanUnbalanced()
+    {
+        $days = $this->config->getQueueFailedLifetime();
+        $filters[] = $this->filterBuilder
+            ->setConditionType('eq')
+            ->setField(Queue::STATUS)
+            ->setValue(Queue::STATUS_UNBALANCED)
+            ->create();
+        $filters[] = $this->filterBuilder
+            ->setConditionType('lt')
+            ->setField(Queue::CREATED_AT)
+            ->setValue($this->dateTime->gmDate('Y-m-d H:i:s', strtotime('-' . $days . ' days')))
+            ->create();
+        $this->searchCriteriaBuilder->addFilters($filters);
+        $items = $this->queueRepository->getList(
+            $this->searchCriteriaBuilder->create()
+        )->getItems();
+
+        // delete items
+        foreach ($items as $item) {
+            $this->queueRepository->delete($item);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Attempt to send any pending invoices to Avalara
+     *
+     * @return $this
+     */
+    protected function processInvoices()
+    {
+        // @todo: implement invoicess processing
+
+        return $this;
+    }
+
+    /**
+     * Attempt to send any pending credit memos to Avalara
+     *
+     * @return $this
+     */
+    protected function processCreditMemos()
+    {
+        // @todo: implement credit memos processing
 
         return $this;
     }

@@ -15,6 +15,8 @@
 namespace OnePica\AvaTax\Controller\Adminhtml\Queue;
 
 use OnePica\AvaTax\Controller\Adminhtml\AbstractQueueAction;
+use Magento\Backend\App\Action\Context;
+use OnePica\AvaTax\Model\Queue\Processor as QueueProcessor;
 
 /**
  * Class ProcessQueue
@@ -24,10 +26,40 @@ use OnePica\AvaTax\Controller\Adminhtml\AbstractQueueAction;
 class ProcessQueue extends AbstractQueueAction
 {
     /**
+     * Queue processor model
+     *
+     * @var QueueProcessor
+     */
+    protected $queueProcessor;
+
+    /**
+     * Constructor
+     *
+     * @param Context        $context
+     * @param QueueProcessor $queueProcessor
+     */
+    public function __construct(
+        Context $context,
+        QueueProcessor $queueProcessor)
+    {
+        parent::__construct($context);
+        $this->queueProcessor = $queueProcessor;
+    }
+
+    /**
      * Dispatch request
      */
     public function execute()
     {
-        exit('Process');
+        try {
+            $this->queueProcessor->processQueue();
+            $this->getMessageManager()->addSuccess(__('Queue was processed successfully'));
+        } catch (\Exception $e) {
+            $this->getMessageManager()->addError(__('Unable to process Queue'));
+        }
+
+        /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
+        $resultRedirect = $this->resultRedirectFactory->create();
+        return $resultRedirect->setPath('*/*/');
     }
 }

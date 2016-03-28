@@ -5,5 +5,8 @@
         <job name="avatax_scheduled_log_clean" instance="OnePica\AvaTax\Cron\ScheduledLogClean" method="execute">
             <schedule>0 0 * * *</schedule>
         </job>
+        <job name="avatax_scheduled_queue_processing" instance="OnePica\AvaTax\Cron\ScheduledQueueProcessing" method="execute">
+            <schedule>0 * * * *</schedule>
+        </job>
     </group>
 </config>
