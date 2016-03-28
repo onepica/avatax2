@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_model_service_quote_submit_before">
+        <observer name="avatax_quote_submit_before" instance="OnePica\AvaTax\Observer\QuoteSubmitBefore"/>
+    </event>
+    <event name="sales_quote_item_set_product">
+        <observer name="avatax_quote_item_set_data" instance="OnePica\AvaTax\Observer\QuoteItemSetProduct"/>
+    </event>
+</config>

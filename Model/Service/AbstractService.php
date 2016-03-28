@@ -17,6 +17,8 @@ namespace OnePica\AvaTax\Model\Service;
 use Magento\Framework\DataObject;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Quote\Api\Data\ShippingAssignmentInterface;
+use Magento\Quote\Model\Quote;
+use Magento\Quote\Model\Quote\Address\Total;
 use Magento\Sales\Model\Order\Creditmemo;
 use Magento\Sales\Model\Order\Invoice;
 use Magento\Store\Model\Store;
@@ -181,10 +183,12 @@ abstract class AbstractService implements ServiceInterface
     /**
      * Calculate
      *
+     * @param \Magento\Quote\Model\Quote                          $quote
      * @param \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignment
-     * @return ResultInterface
+     * @param \Magento\Quote\Model\Quote\Address\Total            $total
+     * @return \OnePica\AvaTax\Api\ResultInterface
      */
-    public function calculate(ShippingAssignmentInterface $shippingAssignment)
+    public function calculate(Quote $quote, ShippingAssignmentInterface $shippingAssignment, Total $total)
     {
         if (null === $this->calculationResource) {
             $this->calculationResource = $this->objectManager->create($this->getCalculationResourceClass());
@@ -193,7 +197,7 @@ abstract class AbstractService implements ServiceInterface
             }
         }
 
-        return $this->calculationResource->calculate($shippingAssignment);
+        return $this->calculationResource->calculate($quote, $shippingAssignment, $total);
     }
 
     /**

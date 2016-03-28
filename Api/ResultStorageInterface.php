@@ -1,7 +1,6 @@
 <?php
 /**
  * OnePica_AvaTax
- *
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
@@ -16,23 +15,26 @@
 namespace OnePica\AvaTax\Api;
 
 /**
- * Interface ConfigInterface
+ * Interface ResultStorageInterface
  *
  * @package OnePica\AvaTax\Api
  */
-interface ConfigInterface
+interface ResultStorageInterface
 {
     /**
-     * Get connection
+     * Get result by request
      *
-     * @return mixed
+     * @param mixed $request
+     * @return ResultInterface|null
      */
-    public function getConnection();
+    public function getResult($request);
 
     /**
-     * Get lib config
+     * Set result
      *
-     * @return mixed
+     * @param mixed           $request
+     * @param ResultInterface $result
+     * @return $this
      */
-    public function getLibConfig();
+    public function setResult($request, ResultInterface $result);
 }

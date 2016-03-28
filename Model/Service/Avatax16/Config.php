@@ -49,6 +49,13 @@ class Config implements ConfigInterface
     protected $config;
 
     /**
+     * Lib config
+     *
+     * @var LibConfig
+     */
+    protected $libConfig;
+
+    /**
      * Config constructor.
      *
      * @param \Magento\Store\Model\Store $store
@@ -68,13 +75,13 @@ class Config implements ConfigInterface
      */
     protected function init()
     {
-        $config = $this->getLibConfig();
+        $config = $this->createLibConfig();
         $config->setBaseUrl($this->config->getServiceUrl($this->store));
         $config->setAccountId($this->config->getServiceAccountNumber($this->store));
         $config->setCompanyCode($this->config->getServiceCompanyCode($this->store));
         $config->setAuthorizationHeader($this->config->getServiceLicenceKey($this->store));
         $config->setUserAgent($this->config->getUserAgent());
-
+        $this->libConfig = $config;
         $this->connection = $this->getLibTaxService($config);
 
         return $this;
@@ -91,11 +98,21 @@ class Config implements ConfigInterface
     }
 
     /**
-     * Get lib config class instance
+     * Get lib config
+     *
+     * @return \OnePica\AvaTax16\Config
+     */
+    public function getLibConfig()
+    {
+        return $this->libConfig;
+    }
+
+    /**
+     * Create lib config class instance
      *
      * @return LibConfig
      */
-    protected function getLibConfig()
+    protected function createLibConfig()
     {
         return new LibConfig();
     }

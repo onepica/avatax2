@@ -14,6 +14,16 @@
                     <queue_failed_lifetime>60</queue_failed_lifetime>
                     <allowed_log_types>Ping,Calculation,Transaction,Filter,Validate,Queue</allowed_log_types>
                 </avatax_log_group>
+                <avatax_data_mapping_group>
+                    <customer_code_format>1</customer_code_format>
+                    <shipping_sku>Shipping</shipping_sku>
+                    <gw_items_sku>GwItems</gw_items_sku>
+                    <gw_order_sku>GwOrder</gw_order_sku>
+                    <gw_printed_card_sku>GwPrintedCard</gw_printed_card_sku>
+                    <adjustment_positive_sku>Adjustment</adjustment_positive_sku>
+                    <adjustment_negative_sku>Adjustment</adjustment_negative_sku>
+                    <sales_person_code>Magento</sales_person_code>
+                </avatax_data_mapping_group>
                 <address_validation_group>
                     <validate_address>0</validate_address>
                     <normalize_address>0</normalize_address>

@@ -17,7 +17,9 @@ namespace OnePica\AvaTax\Helper;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\App\ProductMetadataInterface;
+use Magento\Framework\App\ScopeInterface as AppScopeInterface;
 use Magento\Framework\Module\ModuleListInterface;
+use Magento\Sales\Model\Order\Shipment;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\Store;
 
@@ -57,6 +59,24 @@ class Config extends AbstractHelper
     const AVATAX_REGION_FILTER_TAXABLE_COUNTRY  = 'tax/avatax/region_filter_group/taxable_country';
     const AVATAX_REGION_FILTER_MODE             = 'tax/avatax/region_filter_group/region_filter_mode';
     const AVATAX_REGION_FILTER_LIST             = 'tax/avatax/region_filter_group/region_filter_list';
+    /**#@-*/
+
+    /**#@+
+     * Data Mapping settings xml path
+     */
+    const AVATAX_SERVICE_CUSTOMER_CODE_FORMAT     = 'tax/avatax/avatax_data_mapping_group/customer_code_format';
+    const AVATAX_SERVICE_SHIPPING_SKU             = 'tax/avatax/avatax_data_mapping_group/shipping_sku';
+    const AVATAX_SERVICE_GW_ITEMS_SKU             = 'tax/avatax/avatax_data_mapping_group/gw_items_sku';
+    const AVATAX_SERVICE_GW_ORDER_SKU             = 'tax/avatax/avatax_data_mapping_group/gw_order_sku';
+    const AVATAX_SERVICE_GW_PRINTED_CARD_SKU      = 'tax/avatax/avatax_data_mapping_group/gw_printed_card_sku';
+    const AVATAX_SERVICE_ADJUSTMENTS_POSITIVE_SKU = 'tax/avatax/avatax_data_mapping_group/adjustment_positive_sku';
+    const AVATAX_SERVICE_ADJUSTMENTS_NEGATIVE_SKU = 'tax/avatax/avatax_data_mapping_group/adjustment_negative_sku';
+    const AVATAX_SERVICE_SALES_PERSON_CODE        = 'tax/avatax/avatax_data_mapping_group/sales_person_code';
+    const AVATAX_SERVICE_LOCATION_CODE            = 'tax/avatax/avatax_data_mapping_group/location_code';
+    const AVATAX_SERVICE_FIRST_REFERENCE_CODE     = 'tax/avatax/avatax_data_mapping_group/first_reference_code';
+    const AVATAX_SERVICE_SECOND_REFERENCE_CODE    = 'tax/avatax/avatax_data_mapping_group/second_reference_code';
+    const AVATAX_SERVICE_USE_UPC_CODE             = 'tax/avatax/avatax_data_mapping_group/use_upc_code';
+    const AVATAX_SERVICE_UPC_CODE                 = 'tax/avatax/avatax_data_mapping_group/upc_code';
     /**#@-*/
 
     /**
@@ -210,6 +230,225 @@ class Config extends AbstractHelper
     }
 
     /**
+     * Get customer code format
+     *
+     * @param null|string|AppScopeInterface $scopeCode
+     * @return int
+     */
+    public function getCustomerCodeFormat($scopeCode = null)
+    {
+        return (int)$this->getConfig(self::AVATAX_SERVICE_CUSTOMER_CODE_FORMAT, $scopeCode);
+    }
+
+    /**
+     * Get shipping sku
+     *
+     * @param null|string|AppScopeInterface $scopeCode
+     * @return string
+     */
+    public function getShippingSku($scopeCode = null)
+    {
+        return (string)$this->getConfig(self::AVATAX_SERVICE_SHIPPING_SKU, $scopeCode);
+    }
+
+    /**
+     * Get gw items sku
+     *
+     * @param null|string|AppScopeInterface $scopeCode
+     * @return string
+     */
+    public function getGwItemsSku($scopeCode = null)
+    {
+        return (string)$this->getConfig(self::AVATAX_SERVICE_GW_ITEMS_SKU, $scopeCode);
+    }
+
+    /**
+     * Get gw order sku
+     *
+     * @param null|string|AppScopeInterface $scopeCode
+     * @return string
+     */
+    public function getGwOrderSku($scopeCode = null)
+    {
+        return (string)$this->getConfig(self::AVATAX_SERVICE_GW_ORDER_SKU, $scopeCode);
+    }
+
+    /**
+     * Get gw printed card sku
+     *
+     * @param null|string|AppScopeInterface $scopeCode
+     * @return string
+     */
+    public function getGwPrintedCardSku($scopeCode = null)
+    {
+        return (string)$this->getConfig(self::AVATAX_SERVICE_GW_PRINTED_CARD_SKU, $scopeCode);
+    }
+
+    /**
+     * Get adjustments positive sku
+     *
+     * @param null|string|AppScopeInterface $scopeCode
+     * @return string
+     */
+    public function getAdjustmentsPositiveSku($scopeCode = null)
+    {
+        return (string)$this->getConfig(self::AVATAX_SERVICE_ADJUSTMENTS_POSITIVE_SKU, $scopeCode);
+    }
+
+    /**
+     * Get adjustments negative sku
+     *
+     * @param null|string|AppScopeInterface $scopeCode
+     * @return string
+     */
+    public function getAdjustmentsNegativeSku($scopeCode = null)
+    {
+        return (string)$this->getConfig(self::AVATAX_SERVICE_ADJUSTMENTS_NEGATIVE_SKU, $scopeCode);
+    }
+
+    /**
+     * Get sales person code
+     *
+     * @param null|string|AppScopeInterface $scopeCode
+     * @return string
+     */
+    public function getSalesPersonCode($scopeCode = null)
+    {
+        return (string)$this->getConfig(self::AVATAX_SERVICE_SALES_PERSON_CODE, $scopeCode);
+    }
+
+    /**
+     * Get location code
+     *
+     * @param null|string|AppScopeInterface $scopeCode
+     * @return string
+     */
+    public function getLocationCode($scopeCode = null)
+    {
+        return (string)$this->getConfig(self::AVATAX_SERVICE_LOCATION_CODE, $scopeCode);
+    }
+
+    /**
+     * Get First reference code
+     *
+     * @param null|string|AppScopeInterface $scopeCode
+     * @return string
+     */
+    public function getFirstReferenceCode($scopeCode = null)
+    {
+        return (string)$this->getConfig(self::AVATAX_SERVICE_FIRST_REFERENCE_CODE, $scopeCode);
+    }
+
+    /**
+     * Get second reference code
+     *
+     * @param null|string|AppScopeInterface $scopeCode
+     * @return string
+     */
+    public function getSecondReferenceCode($scopeCode = null)
+    {
+        return (string)$this->getConfig(self::AVATAX_SERVICE_SECOND_REFERENCE_CODE, $scopeCode);
+    }
+
+    /**
+     * Get use upc code
+     *
+     * @param null|string|AppScopeInterface $scopeCode
+     * @return bool
+     */
+    public function getUseUpcCode($scopeCode = null)
+    {
+        return (bool)$this->getConfig(self::AVATAX_SERVICE_USE_UPC_CODE, $scopeCode);
+    }
+
+    /**
+     * Get upc code
+     *
+     * @param null|string|AppScopeInterface $scopeCode
+     * @return string
+     */
+    public function getUpcCode($scopeCode = null)
+    {
+        return (string)$this->getConfig(self::AVATAX_SERVICE_UPC_CODE, $scopeCode);
+    }
+
+    /**
+     * Get origin first street line
+     *
+     * @param null|string|AppScopeInterface $scopeCode
+     * @return string
+     */
+    public function getOriginFirstStreetLine($scopeCode = null)
+    {
+        return (string)$this->getConfig(Shipment::XML_PATH_STORE_ADDRESS1, $scopeCode);
+    }
+
+    /**
+     * Get origin second street line
+     *
+     * @param null|string|AppScopeInterface $scopeCode
+     * @return string
+     */
+    public function getOriginSecondStreetLine($scopeCode = null)
+    {
+        return (string)$this->getConfig(Shipment::XML_PATH_STORE_ADDRESS2, $scopeCode);
+    }
+
+    /**
+     * Get origin city
+     *
+     * @param null|string|AppScopeInterface $scopeCode
+     * @return string
+     */
+    public function getOriginCity($scopeCode = null)
+    {
+        return (string)$this->getConfig(Shipment::XML_PATH_STORE_CITY, $scopeCode);
+    }
+
+    /**
+     * Get origin region id
+     *
+     * @param null|string|AppScopeInterface $scopeCode
+     * @return int
+     */
+    public function getOriginRegionId($scopeCode = null)
+    {
+        return (int)$this->getConfig(Shipment::XML_PATH_STORE_REGION_ID, $scopeCode);
+    }
+
+    /**
+     * Get origin country id
+     *
+     * @param null|string|AppScopeInterface $scopeCode
+     * @return string
+     */
+    public function getOriginCountryId($scopeCode = null)
+    {
+        return (string)$this->getConfig(Shipment::XML_PATH_STORE_COUNTRY_ID, $scopeCode);
+    }
+
+    /**
+     * Get origin zip
+     *
+     * @param null|string|AppScopeInterface $scopeCode
+     * @return string
+     */
+    public function getOriginZip($scopeCode = null)
+    {
+        return (string)$this->getConfig(Shipment::XML_PATH_STORE_ZIP, $scopeCode);
+    }
+
+    /**
+     * Get magento edition
+     *
+     * @return string
+     */
+    public function getMagentoEdition()
+    {
+        return $this->productMetadata->getEdition();
+    }
+
+    /**
      * Get user agent
      *
      * @return string
@@ -217,7 +456,7 @@ class Config extends AbstractHelper
     public function getUserAgent()
     {
         $userAgent = $this->productMetadata->getName() . ' ';
-        $userAgent .= $this->productMetadata->getEdition() . ' v';
+        $userAgent .= $this->getMagentoEdition() . ' v';
         $userAgent .= $this->productMetadata->getVersion() . ' ';
         $userAgent .= self::MODULE_NAME . ' v' . $this->getModuleVersion();
 

@@ -6,6 +6,21 @@
     <preference for="OnePica\AvaTax\Api\Service\CacheStorageInterface" type="OnePica\AvaTax\Model\Service\CacheStorage"/>
     <preference for="OnePica\AvaTax\Api\Service\LoggerInterface" type="OnePica\AvaTax\Model\Service\Logger"/>
     <preference for="OnePica\AvaTax\Api\LogRepositoryInterface" type="OnePica\AvaTax\Model\LogRepository"/>
+    <preference for="OnePica\AvaTax\Api\DataSourceInterface" type="OnePica\AvaTax\Model\Service\DataSource"/>
+    <virtualType name="OnePica\AvaTax\Model\Session\Storage" type="Magento\Framework\Session\Storage">
+        <arguments>
+            <argument name="namespace" xsi:type="string">onepica_avatax</argument>
+        </arguments>
+    </virtualType>
+    <type name="OnePica\AvaTax\Model\Session">
+        <arguments>
+            <argument name="storage" xsi:type="object">OnePica\AvaTax\Model\Session\Storage</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Quote\Model\Quote\Config">
+        <plugin name="magento-quote-model-quote-config-plugin"
+                type="OnePica\AvaTax\Plugin\Magento\Quote\Model\Quote\Config" sortOrder="10" />
+    </type>
     <preference for="OnePica\AvaTax\Api\QueueRepositoryInterface" type="OnePica\AvaTax\Model\QueueRepository"/>
     <preference for="OnePica\AvaTax\Api\Data\QueueSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
     <preference for="OnePica\AvaTax\Api\Data\QueueInterface" type="OnePica\AvaTax\Model\Queue"/>
