@@ -14,92 +14,35 @@
  */
 namespace OnePica\AvaTax\Model\Queue\Export;
 
-use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Filesystem;
 use Magento\ImportExport\Model\Export\Adapter\CsvFactory;
-use OnePica\AvaTax\Api\ExportInterface;
 use OnePica\AvaTax\Helper\Config;
 use OnePica\AvaTax\Model\ResourceModel\Queue\Collection;
+use OnePica\AvaTax\Model\Export\AbstractCsv;
 
 /**
  * Class Csv
  *
  * @package OnePica\AvaTax\Model\Queue\Export
  */
-class Csv implements ExportInterface
+class Csv extends AbstractCsv
 {
-    /**
-     * Export dir
-     */
-    const EXPORT_DIR = 'avatax_export/';
-
-    /**
-     * File system
-     *
-     * @var Filesystem
-     */
-    protected $filesystem;
-
-    /**
-     * Csv model factory
-     *
-     * @var CsvFactory
-     */
-    protected $outputCsvFactory;
-
-    /**
-     * Queue collection
-     *
-     * @var \OnePica\AvaTax\Model\ResourceModel\Queue\Collection
-     */
-    protected $collection;
-
-    /**
-     * Config helper
-     *
-     * @var \OnePica\AvaTax\Helper\Config
-     */
-    protected $config;
-
     /**
      * Csv constructor.
      *
      * @param Filesystem                    $filesystem
      * @param CsvFactory                    $outputCsvFactory
-     * @param Collection                    $collection
      * @param \OnePica\AvaTax\Helper\Config $config
+     * @param Collection                    $collection
      */
     public function __construct(
         Filesystem $filesystem,
         CsvFactory $outputCsvFactory,
-        Collection $collection,
-        Config $config
+        Config $config,
+        Collection $collection
     ) {
-        $this->filesystem = $filesystem;
-        $this->outputCsvFactory = $outputCsvFactory;
+        parent::__construct($filesystem, $outputCsvFactory, $config);
         $this->collection = $collection;
-        $this->config = $config;
-    }
-
-    /**
-     * Export
-     *
-     * @return string
-     * @throws \Magento\Framework\Exception\LocalizedException
-     */
-    public function export()
-    {
-        $filename = $this->getFileName();
-        $sourceCsv = $this->createCsvModel($filename);
-        $data = $this->collection->getExportData();
-
-        $sourceCsv->setHeaderCols($this->retrieveColumnHeaders($data));
-
-        foreach ($data as $item) {
-            $sourceCsv->writeRow($item);
-        }
-
-        return $filename;
     }
 
     /**
@@ -110,42 +53,5 @@ class Csv implements ExportInterface
     protected function getFileName()
     {
         return Config::MODULE_NAME . '-' . $this->config->getModuleVersion() . '-queue' . '.' . $this->getFileType();
-    }
-
-    /**
-     * Get file type
-     *
-     * @return string
-     */
-    protected function getFileType()
-    {
-        return 'csv';
-    }
-
-    /**
-     * Create csv model
-     *
-     * @param string $outputFileName
-     * @return \Magento\ImportExport\Model\Export\Adapter\Csv
-     */
-    protected function createCsvModel($outputFileName)
-    {
-        return $this->outputCsvFactory->create(
-            [
-                'destination'              => self::EXPORT_DIR . $outputFileName,
-                'destinationDirectoryCode' => DirectoryList::VAR_DIR,
-            ]
-        );
-    }
-
-    /**
-     * Retrieve column headers
-     *
-     * @param array $data
-     * @return array
-     */
-    protected function retrieveColumnHeaders(array $data)
-    {
-        return array_keys((array)reset($data));
     }
 }
