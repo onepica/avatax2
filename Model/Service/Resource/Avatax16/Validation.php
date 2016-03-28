@@ -28,6 +28,7 @@ use OnePica\AvaTax\Api\ConfigRepositoryInterface;
 use OnePica\AvaTax\Api\Service\LoggerInterface;
 use OnePica\AvaTax\Helper\Config as ConfigHelper;
 use OnePica\AvaTax\Model\Log;
+use OnePica\AvaTax\Api\DataSourceInterface;
 
 /**
  * Class Validation
@@ -58,17 +59,19 @@ class Validation extends AbstractResource implements ValidationResourceInterface
      * @param CacheStorageInterface $cacheStorage
      * @param ConfigHelper $config
      * @param LoggerInterface $logger
+     * @param \OnePica\AvaTax\Api\DataSourceInterface $dataSource
      */
     public function __construct(
         ConfigRepositoryInterface $configRepository,
         ObjectManagerInterface $objectManager,
         CacheStorageInterface $cacheStorage,
         ConfigHelper $config,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        DataSourceInterface $dataSource
     ) {
         $cacheStorage->setCacheId('AddressValidation');
         $this->cacheStorage = $cacheStorage;
-        parent::__construct($configRepository, $objectManager, $config, $logger);
+        parent::__construct($configRepository, $objectManager, $config, $logger, $dataSource);
     }
 
     /**
