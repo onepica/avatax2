@@ -109,6 +109,10 @@
                         <label>Export Logs</label>
                         <frontend_model>OnePica\AvaTax\Block\Adminhtml\System\Config\Form\Field\Log\Export</frontend_model>
                     </field>
+                    <field id="export_queue_button" type="button" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Export Queue</label>
+                        <frontend_model>OnePica\AvaTax\Block\Adminhtml\System\Config\Form\Field\Queue\Export</frontend_model>
+                    </field>
                 </group>
             </group>
         </section>
