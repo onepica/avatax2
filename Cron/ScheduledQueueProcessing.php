@@ -45,6 +45,6 @@ class ScheduledQueueProcessing
      */
     public function execute()
     {
-        $this->queueProcessor->processQueues();
+        $this->queueProcessor->processQueue();
     }
 }

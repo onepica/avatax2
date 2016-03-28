@@ -110,11 +110,11 @@ class Processor
     }
 
     /**
-     * Process queues
+     * Process queue
      *
      * @return $this
      */
-    public function processQueues()
+    public function processQueue()
     {
         $this->cleanCompleted()
             ->cleanFailed()
