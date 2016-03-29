@@ -22,6 +22,11 @@ namespace OnePica\AvaTax\Api\Data;
 interface QueueInterface
 {
     /**
+     * Can add to queue flag
+     */
+    const FLAG_CAN_ADD_TO_QUEUE = 'avatax_can_add_to_queue';
+
+    /**
      * Queue Type
      */
     const TYPE_INVOICE     = 'Invoice';

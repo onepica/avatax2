@@ -303,4 +303,19 @@ class Queue extends AbstractModel implements QueueInterface
             self::STATUS_UNBALANCED => __('Unbalanced')
         ];
     }
+
+    /**
+     * Set entity
+     *
+     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
+     * @return $this
+     */
+    public function setEntity($object)
+    {
+        $this->setEntityId($object->getId());
+        $this->setEntityIncrementId($object->getIncrementId());
+        $this->setStoreId($object->getStoreId());
+
+        return $this;
+    }
 }
