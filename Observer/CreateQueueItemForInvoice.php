@@ -20,6 +20,7 @@ use OnePica\AvaTax\Helper\Config;
 use OnePica\AvaTax\Model\Queue;
 use OnePica\AvaTax\Model\QueueFactory;
 use OnePica\AvaTax\Model\QueueRepository;
+use OnePica\AvaTax\Helper\Address as AddressHelper;
 
 /**
  * Class CreateQueueItemForInvoice
@@ -50,17 +51,30 @@ class CreateQueueItemForInvoice implements ObserverInterface
     protected $queueRepository;
 
     /**
+     * Address Helper
+     *
+     * @var AddressHelper
+     */
+    protected $addressHelper;
+
+    /**
      * Constructor
      *
      * @param Config          $config
      * @param QueueFactory    $queueFactory
      * @param QueueRepository $queueRepository
+     * @param AddressHelper   $addressHelper
      */
-    public function __construct(Config $config, QueueFactory $queueFactory, QueueRepository $queueRepository)
-    {
+    public function __construct(
+        Config $config,
+        QueueFactory $queueFactory,
+        QueueRepository $queueRepository,
+        AddressHelper $addressHelper
+    ) {
         $this->config = $config;
         $this->queueFactory = $queueFactory;
         $this->queueRepository = $queueRepository;
+        $this->addressHelper = $addressHelper;
     }
 
     /**
@@ -73,7 +87,9 @@ class CreateQueueItemForInvoice implements ObserverInterface
     {
         /** @var \Magento\Sales\Model\Order\Invoice $invoice */
         $invoice = $observer->getEvent()->getInvoice();
-        if ($invoice->getData(Queue::FLAG_CAN_ADD_TO_QUEUE)) {
+        if ($invoice->getData(Queue::FLAG_CAN_ADD_TO_QUEUE)
+            && $this->addressHelper->isObjectActionable($invoice)
+        ) {
             $queue = $this->queueFactory->create();
             $queue->setEntity($invoice);
             $queue->setType(Queue::TYPE_INVOICE);
