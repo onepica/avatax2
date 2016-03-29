@@ -269,12 +269,12 @@ class Calculation extends AbstractResource implements CalculationResourceInterfa
 
         /** @var \Magento\Quote\Model\Quote\Item $item */
         foreach ($items as $item) {
+            $this->addGwItemLine($store, $item);
             if ($this->isProductCalculated($item)) {
                 continue;
             }
 
             $this->addLine($this->prepareItemLine($store, $item), $item->getId());
-            $this->addGwItemLine($store, $item);
         }
 
         return $this;
@@ -320,6 +320,10 @@ class Calculation extends AbstractResource implements CalculationResourceInterfa
      */
     protected function addGwItemLine($store, $item)
     {
+        if (!(int)$item->getId()) {
+            return false;
+        }
+
         $line = $this->prepareGwItemLine($store, $item);
         if (!$line) {
             return $this;
