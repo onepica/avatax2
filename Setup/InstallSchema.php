@@ -234,6 +234,12 @@ class InstallSchema implements InstallSchemaInterface
                 [],
                 'Message'
             )->addColumn(
+                'request_data',
+                Table::TYPE_TEXT,
+                null,
+                [],
+                'Serialized request data to send to avalara'
+            )->addColumn(
                 'created_at',
                 Table::TYPE_TIMESTAMP,
                 null,

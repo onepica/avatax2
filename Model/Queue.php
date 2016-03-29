@@ -151,7 +151,7 @@ class Queue extends AbstractModel implements QueueInterface
      * Set type
      *
      * @param string $type
-     * @return string
+     * @return mixed
      */
     public function setType($type)
     {
@@ -174,7 +174,7 @@ class Queue extends AbstractModel implements QueueInterface
      * Set status
      *
      * @param string $status
-     * @return string
+     * @return mixed
      */
     public function setStatus($status)
     {
@@ -197,7 +197,7 @@ class Queue extends AbstractModel implements QueueInterface
      * Set attempt
      *
      * @param string $attempt
-     * @return string
+     * @return mixed
      */
     public function setAttempt($attempt)
     {
@@ -220,11 +220,34 @@ class Queue extends AbstractModel implements QueueInterface
      * Set Message
      *
      * @param string $message
-     * @return string
+     * @return mixed
      */
     public function setMessage($message)
     {
         $this->setData(self::MESSAGE, $message);
+
+        return $this;
+    }
+
+    /**
+     * Get request data
+     *
+     * @return string
+     */
+    public function getRequestData()
+    {
+        return $this->_getData(self::REQUEST_DATA);
+    }
+
+    /**
+     * Set request data
+     *
+     * @param string $data
+     * @return mixed
+     */
+    public function setRequestData($data)
+    {
+        $this->setData(self::REQUEST_DATA, $data);
 
         return $this;
     }
