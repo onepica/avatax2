@@ -14,11 +14,6 @@
  */
 namespace OnePica\AvaTax\Plugin\Magento\Quote\Model\Quote;
 
-/**
- * Class Config
- *
- * @package OnePica\AvaTax\Plugin\Magento\Quote\Model\Quote
- */
 use Magento\Store\Model\StoreManagerInterface;
 use OnePica\AvaTax\Helper\Config as ConfigHelper;
 
