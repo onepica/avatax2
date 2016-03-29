@@ -22,6 +22,7 @@ use Magento\Framework\Module\ModuleListInterface;
 use Magento\Sales\Model\Order\Shipment;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\Store;
+use OnePica\AvaTax\Model\Source\Avatax16\Action;
 
 /**
  * Class Config
@@ -115,6 +116,17 @@ class Config extends AbstractHelper
     public function getModuleVersion()
     {
         return $this->moduleList->getOne(self::MODULE_NAME)['setup_version'];
+    }
+
+    /**
+     * Is avatax enabled
+     *
+     * @param Store|int $store
+     * @return bool
+     */
+    public function isAvaTaxEnabled($store = null)
+    {
+        return $this->getServiceAction($store) !== Action::ACTION_DISABLE;
     }
 
     /**
