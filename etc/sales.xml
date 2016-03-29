@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Sales:etc/sales.xsd">
+    <section name="quote">
+        <group name="totals">
+            <item name="avatax_shipping" instance="OnePica\AvaTax\Model\Sales\Total\Quote\Shipping" sort_order="1100"/>
+            <item name="avatax_gift_wrapping" instance="OnePica\AvaTax\Model\Sales\Total\Quote\GiftWrapping" sort_order="1200"/>
+            <item name="avatax_quote_item" instance="OnePica\AvaTax\Model\Sales\Total\Quote\QuoteItems" sort_order="1300"/>
+            <item name="avatax_subtotal" instance="OnePica\AvaTax\Model\Sales\Total\Quote\Subtotal" sort_order="1400"/>
+        </group>
+    </section>
+</config>
