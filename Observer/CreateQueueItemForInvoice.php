@@ -16,6 +16,7 @@ namespace OnePica\AvaTax\Observer;
 
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Sales\Model\Order\Invoice;
 use OnePica\AvaTax\Helper\Config;
 use OnePica\AvaTax\Model\Queue;
 use OnePica\AvaTax\Model\QueueFactory;
@@ -94,7 +95,24 @@ class CreateQueueItemForInvoice implements ObserverInterface
             $queue->setEntity($invoice);
             $queue->setType(Queue::TYPE_INVOICE);
             $queue->setStatus(Queue::STATUS_PENDING);
+
+            // save request object with data to use during queue processing
+            $requestObjectSerialized = serialize($this->getRequestObject($invoice));
+            $queue->setRequestData($requestObjectSerialized);
+
             $this->queueRepository->save($queue);
         }
+    }
+
+    /**
+     * Get request object
+     *
+     * @param Invoice $invoice
+     * @return mixed
+     */
+    protected function getRequestObject(Invoice $invoice)
+    {
+        /** @todo: implement getting request object to save to queue */
+        return array();
     }
 }
