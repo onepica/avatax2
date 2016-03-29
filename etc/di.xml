@@ -20,6 +20,10 @@
         <plugin name="magento-quote-model-quote-config-plugin"
                 type="OnePica\AvaTax\Plugin\Magento\Quote\Model\Quote\Config" sortOrder="10" />
     </type>
+    <type name="Magento\Tax\Model\Calculation">
+        <plugin name="avatax_tax_calculation_plugin"
+                type="OnePica\AvaTax\Plugin\Magento\Tax\Model\Calculation" sortOrder="10" />
+    </type>
     <type name="OnePica\AvaTax\Model\Service\Resolver">
         <arguments>
             <argument name="data" xsi:type="array">
