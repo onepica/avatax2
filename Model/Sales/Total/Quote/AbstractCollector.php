@@ -72,6 +72,13 @@ abstract class AbstractCollector extends AbstractTotal
     protected $registry;
 
     /**
+     * Need collect tax flag
+     *
+     * @var bool
+     */
+    protected $needCollect = true;
+
+    /**
      * AbstractCollector constructor.
      *
      * @param \Magento\Framework\ObjectManagerInterface         $objectManager
@@ -92,6 +99,29 @@ abstract class AbstractCollector extends AbstractTotal
         $this->taxDataHelper = $taxDataHelper;
         $this->config = $config;
         $this->registry = $registry;
+    }
+
+    /**
+     * Collect
+     *
+     * @param \Magento\Quote\Model\Quote                          $quote
+     * @param \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignment
+     * @param \Magento\Quote\Model\Quote\Address\Total            $total
+     * @return $this
+     */
+    public function collect(
+        \Magento\Quote\Model\Quote $quote,
+        \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignment,
+        \Magento\Quote\Model\Quote\Address\Total $total
+    ) {
+        parent::collect($quote, $shippingAssignment, $total);
+        $result = $this->getCalculateTool($quote, $shippingAssignment, $total)->execute();
+        
+        if ($result !== null && $result->getHasError()) {
+            $quote->setData('avatax_error', true);
+        }
+
+        return $this;
     }
 
     /**

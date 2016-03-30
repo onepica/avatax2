@@ -19,6 +19,10 @@
                     <adjustment_negative_sku>Adjustment</adjustment_negative_sku>
                     <sales_person_code>Magento</sales_person_code>
                 </avatax_data_mapping_group>
+                <avatax_error_handling_group>
+                    <frontend_error_message>Unfortunately, we could not calculate tax for your order. Please try again with a different address or contact us to complete your order.</frontend_error_message>
+                    <action_on_error>0</action_on_error>
+                </avatax_error_handling_group>
             </avatax>
         </tax>
     </default>

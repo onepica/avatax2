@@ -67,6 +67,13 @@ class Config extends AbstractHelper
     const AVATAX_SERVICE_UPC_CODE                 = 'tax/avatax/avatax_data_mapping_group/upc_code';
     /**#@-*/
 
+    /**#@+
+     * Error handling setting xml path
+     */
+    const AVATAX_ACTION_ON_ERROR        = 'tax/avatax/avatax_error_handling_group/action_on_error';
+    const AVATAX_FRONTEND_ERROR_MESSAGE = 'tax/avatax/avatax_error_handling_group/frontend_error_message';
+    /**#@-*/
+
     /**
      * Product metadata
      *
@@ -413,6 +420,28 @@ class Config extends AbstractHelper
     public function getOriginZip($scopeCode = null)
     {
         return (string)$this->getConfig(Shipment::XML_PATH_STORE_ZIP, $scopeCode);
+    }
+
+    /**
+     * Get action on error
+     *
+     * @param null|string|AppScopeInterface $scopeCode
+     * @return int
+     */
+    public function getActionOnError($scopeCode = null)
+    {
+        return (int)$this->getConfig(self::AVATAX_ACTION_ON_ERROR, $scopeCode);
+    }
+
+    /**
+     * Get frontend error message
+     *
+     * @param null|string|AppScopeInterface $scopeCode
+     * @return string
+     */
+    public function getFrontendErrorMessage($scopeCode = null)
+    {
+        return (string)$this->getConfig(self::AVATAX_FRONTEND_ERROR_MESSAGE, $scopeCode);
     }
 
     /**

@@ -109,6 +109,18 @@
                         </depends>
                     </field>
                 </group>
+                <group id="avatax_error_handling_group" translate="label" sortOrder="80" showInDefault="1" showInStore="1" showInWebsite="1">
+                    <label>Error Handling</label>
+                    <attribute type="expanded">1</attribute>
+                    <field id="action_on_error" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Action on Error</label>
+                        <source_model>OnePica\AvaTax\Model\Source\Avatax16\Error</source_model>
+                    </field>
+                    <field id="frontend_error_message" translate="label" type="textarea" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Frontend Error Message</label>
+                        <validate>required-entry</validate>
+                    </field>
+                </group>
             </group>
         </section>
     </system>
