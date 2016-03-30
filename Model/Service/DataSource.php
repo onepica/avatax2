@@ -363,14 +363,14 @@ class DataSource implements DataSourceInterface
     }
 
     /**
-     * Get shipping tax class
+     * Returns AvaTax's hard-coded shipping tax class
      *
      * @param null|Store $store
      * @return string
      */
     public function getShippingTaxClass($store = null)
     {
-        return $this->getOpAvataxCode($this->taxDataHelper->getShippingTaxClass($store));
+        return 'FR020100';
     }
 
     /**
