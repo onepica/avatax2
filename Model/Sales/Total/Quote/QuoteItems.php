@@ -53,7 +53,7 @@ class QuoteItems extends AbstractCollector
         }
 
         $store = $quote->getStore();
-
+        $itemAppliedTax = [];
         /** @var \Magento\Quote\Model\Quote\Item|\Magento\Quote\Model\Quote\Address\Item $item */
         foreach ($shippingAssignment->getItems() as $item) {
             $baseTotalTax = $this->getItemTax($item, $result);
@@ -66,6 +66,8 @@ class QuoteItems extends AbstractCollector
 
             $item->setTaxAmount($totalTax);
             $item->setBaseTaxAmount($baseTotalTax);
+
+            $itemAppliedTax[$item->getId()] = $this->getItemAppliedTax($result, $item);
 
             $item->setTaxPercent($percent);
 
@@ -111,6 +113,79 @@ class QuoteItems extends AbstractCollector
                 }
             }
         }
+
+        $this->saveAppliedTax($result->getSummery(), $total);
+        $total->setItemsAppliedTaxes($itemAppliedTax);
+
+        return $this;
+    }
+
+    /**
+     * @param Calculation                                                             $result
+     * @param \Magento\Quote\Model\Quote\Item|\Magento\Quote\Model\Quote\Address\Item $item
+     * @return array
+     */
+    protected function getItemAppliedTax($result, $item)
+    {
+        if ($this->isProductCalculated($item)) {
+            return [];
+        }
+
+        $jurisdictionRates = (array)$result->getItemJurisdictionRates($item->getId());
+
+        $taxGroup = [];
+        foreach ($jurisdictionRates as $jurisdiction => $data) {
+            $taxGroup[] = [
+                'rates'       => [
+                    [
+                        'code'    => $jurisdiction,
+                        'title'   => $jurisdiction,
+                        'percent' => $data['rate']
+                    ]
+                ],
+                'percent'     => $data['rate'],
+                'id'          => $jurisdiction,
+                'item_id'     => $item->getId(),
+                'item_type'   => 'product',
+                'amount'      => $data['tax'],
+                'base_amount' => $data['tax'],
+                'associated_item_id' => null
+            ];
+        }
+
+        return $taxGroup;
+    }
+
+    /**
+     * Save applied tax
+     *
+     * @param array                                    $summary
+     * @param \Magento\Quote\Model\Quote\Address\Total $total
+     * @return $this
+     */
+    protected function saveAppliedTax($summary, $total)
+    {
+        $fullInfo = array();
+
+        foreach ($summary as $key => $row) {
+            $id = $row['name'];
+            $fullInfo[$id] = [
+                'rates'       => [
+                    [
+                        'code'     => $row['name'],
+                        'title'    => $row['name'],
+                        'percent'  => $row['rate'],
+                    ]
+                ],
+                'percent'     => $row['rate'],
+                'id'          => $id,
+                'process'     => 0,
+                'amount'      => $this->priceCurrency->convert($row['amt']),
+                'base_amount' => $row['amt']
+            ];
+        }
+
+        $total->setData('applied_taxes', $fullInfo);
 
         return $this;
     }

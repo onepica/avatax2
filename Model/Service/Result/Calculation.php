@@ -28,16 +28,18 @@ class Calculation extends BaseResult
     /**#@+
      * Item path
      */
-    const ITEM_RATE_PATH   = '%s/%s/rate';
-    const ITEM_AMOUNT_PATH = '%s/%s/amount';
+    const ITEM_RATE_PATH              = '%s/%s/rate';
+    const ITEM_JURISDICTION_DATA_PATH = 'items/%s/jurisdiction_data';
+    const ITEM_AMOUNT_PATH            = '%s/%s/amount';
     /**#@-*/
 
     /**#@+
      * Constants defined for keys of array
      */
-    const TIMESTAMP  = 'timestamp';
-    const ADDRESS_ID = 'address_id';
-    const SUMMERY    = 'summery';
+    const TIMESTAMP         = 'timestamp';
+    const ADDRESS_ID        = 'address_id';
+    const SUMMERY           = 'summery';
+    const JURISDICTION_DATA = 'jurisdiction_data';
     /**#@-*/
 
     /**
@@ -183,6 +185,31 @@ class Calculation extends BaseResult
     public function getItemRate($id, $type = 'items')
     {
         return (float)$this->getData(sprintf(self::ITEM_RATE_PATH, $type, $id));
+    }
+
+    /**
+     * Get item jurisdiction rates
+     *
+     * @param int $itemId
+     * @return array
+     */
+    public function getItemJurisdictionRates($itemId)
+    {
+        return $this->getData(sprintf(self::ITEM_JURISDICTION_DATA_PATH, $itemId));
+    }
+
+    /**
+     * Set item jurisdiction rates
+     *
+     * @param int   $itemId
+     * @param array $rates
+     * @return $this
+     */
+    public function setItemJurisdictionData($itemId, array $rates)
+    {
+        $this->_data['items'][$itemId][self::JURISDICTION_DATA] = $rates;
+
+        return $this;
     }
 
     /**

@@ -463,6 +463,7 @@ class Calculation extends AbstractResource implements CalculationResourceInterfa
             $result->setItemAmount($id, $line->getCalculatedTax()->getTax(), $type);
             $rate = $this->getLineRate($line);
             $result->setItemRate($id, $rate, $type);
+            $result->setItemJurisdictionData($id, $this->getItemJurisdictionData($line));
         }
 
         $result->setTimestamp((new DateTime())->getTimestamp());
@@ -558,6 +559,40 @@ class Calculation extends AbstractResource implements CalculationResourceInterfa
         }
 
         return array_merge($rates, $fixedRates);
+    }
+
+    /**
+     * Get item jurisdiction data
+     *
+     * @param Line $line
+     * @return array
+     */
+    protected function getItemJurisdictionData($line)
+    {
+        $rates = [];
+        if ($line->getCalculatedTax()->getTax()) {
+            /** @var \OnePica\AvaTax16\Document\Response\Line\CalculatedTax\Details $detail */
+            foreach ($line->getCalculatedTax()->getDetails() as $detail) {
+                $jurisdiction = $this->prepareJurisdictionName(
+                    $detail->getTaxType(),
+                    $detail->getJurisdictionName(),
+                    $detail->getJurisdictionType()
+                );
+                $rates[$jurisdiction] = [
+                    'rate' => $detail->getRate() * 100,
+                    'tax' => $detail->getTax()
+                ];
+
+                if ($rates[$jurisdiction] === 0 && $detail->getTax()) {
+                    $rates[$jurisdiction] = [
+                        'rate' => ($detail->getTax() / $line->getLineAmount()) * 100,
+                        'tax'  => $detail->getTax()
+                    ];
+                }
+            }
+        }
+
+        return $rates;
     }
 
     /**
