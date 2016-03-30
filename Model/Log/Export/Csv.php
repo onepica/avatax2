@@ -28,6 +28,13 @@ use OnePica\AvaTax\Model\Export\AbstractCsv;
 class Csv extends AbstractCsv
 {
     /**
+     * File name suffix
+     *
+     * @var string
+     */
+    protected $fileNameSuffix = 'Log';
+
+    /**
      * Csv constructor.
      *
      * @param Filesystem                    $filesystem
@@ -43,7 +50,5 @@ class Csv extends AbstractCsv
     ) {
         parent::__construct($filesystem, $outputCsvFactory, $config);
         $this->collection = $collection;
-        // set default file name suffix
-        $this->setFileNameSuffix('Log');
     }
 }
