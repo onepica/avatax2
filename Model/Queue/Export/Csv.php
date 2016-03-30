@@ -12,18 +12,18 @@
  * @copyright  Copyright (c) 2016 One Pica, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model\Log\Export;
+namespace OnePica\AvaTax\Model\Queue\Export;
 
 use Magento\Framework\Filesystem;
 use Magento\ImportExport\Model\Export\Adapter\CsvFactory;
 use OnePica\AvaTax\Helper\Config;
-use OnePica\AvaTax\Model\ResourceModel\Log\Collection;
+use OnePica\AvaTax\Model\ResourceModel\Queue\Collection;
 use OnePica\AvaTax\Model\Export\AbstractCsv;
 
 /**
  * Class Csv
  *
- * @package OnePica\AvaTax\Model\Log\Export
+ * @package OnePica\AvaTax\Model\Queue\Export
  */
 class Csv extends AbstractCsv
 {
@@ -32,7 +32,7 @@ class Csv extends AbstractCsv
      *
      * @var string
      */
-    protected $fileNameSuffix = 'Log';
+    protected $fileNameSuffix = 'Queue';
 
     /**
      * Csv constructor.
