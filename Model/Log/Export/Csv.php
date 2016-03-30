@@ -43,15 +43,7 @@ class Csv extends AbstractCsv
     ) {
         parent::__construct($filesystem, $outputCsvFactory, $config);
         $this->collection = $collection;
-    }
-
-    /**
-     * Get file name
-     *
-     * @return string
-     */
-    protected function getFileName()
-    {
-        return Config::MODULE_NAME . '-' . $this->config->getModuleVersion() . '-log' . '.' . $this->getFileType();
+        // set default file name suffix
+        $this->setFileNameSuffix('Log');
     }
 }
