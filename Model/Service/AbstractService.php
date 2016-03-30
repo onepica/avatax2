@@ -30,6 +30,7 @@ use OnePica\AvaTax\Api\Service\PingResourceInterface;
 use OnePica\AvaTax\Api\Service\ValidationResourceInterface;
 use OnePica\AvaTax\Api\ServiceInterface;
 use OnePica\AvaTax\Model\Service\Result\BaseResult;
+use OnePica\AvaTax\Model\Queue;
 
 /**
  * Class AbstractService
@@ -126,12 +127,12 @@ abstract class AbstractService implements ServiceInterface
     abstract public function getCalculationResourceClass();
 
     /**
-     * Invoice
+     * Get Invoice Service Request Object
      *
      * @param \Magento\Sales\Model\Order\Invoice $invoice
-     * @return ResultInterface
+     * @return mixed
      */
-    public function invoice(Invoice $invoice)
+    public function getInvoiceServiceRequestObject(Invoice $invoice)
     {
         if ($this->invoiceResource === null) {
             $this->invoiceResource = $this->objectManager->create($this->getInvoiceResourceClass());
@@ -140,7 +141,25 @@ abstract class AbstractService implements ServiceInterface
             }
         }
 
-        return $this->invoiceResource->invoice($invoice);
+        return $this->invoiceResource->getInvoiceServiceRequestObject($invoice);
+    }
+
+    /**
+     * Invoice
+     *
+     * @param Queue $queue
+     * @return ResultInterface
+     */
+    public function invoice(Queue $queue)
+    {
+        if ($this->invoiceResource === null) {
+            $this->invoiceResource = $this->objectManager->create($this->getInvoiceResourceClass());
+            if (!$this->invoiceResource instanceof InvoiceResourceInterface) {
+                throw new \LogicException('Resource must be instance of InvoiceResourceInterface.');
+            }
+        }
+
+        return $this->invoiceResource->invoice($queue);
     }
 
     /**

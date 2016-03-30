@@ -18,6 +18,7 @@ use OnePica\AvaTax\Api\ResultInterface;
 use OnePica\AvaTax\Api\Service\ResolverInterface;
 use OnePica\AvaTax\Model\ServiceFactory;
 use Magento\Sales\Model\Order\Invoice as OrderInvoice;
+use OnePica\AvaTax\Model\Queue;
 
 /**
  * Class Invoice
@@ -34,6 +35,13 @@ class Invoice extends AbstractTool
     protected $invoice;
 
     /**
+     * Queue
+     *
+     * @var \OnePica\AvaTax\Model\Queue
+     */
+    protected $queue;
+
+    /**
      * Invoice constructor.
      *
      * @param \OnePica\AvaTax\Api\Service\ResolverInterface $resolver
@@ -46,29 +54,53 @@ class Invoice extends AbstractTool
         OrderInvoice $invoice
     ) {
         parent::__construct($resolver, $serviceFactory);
-        $this->init($invoice);
+        $this->setInvoice($invoice);
     }
 
     /**
-     * Execute
+     * Set invoice
+     *
+     * @param \Magento\Sales\Model\Order\Invoice $invoice
+     * @return $this
+     */
+    public function setInvoice(OrderInvoice $invoice)
+    {
+        $this->invoice = $invoice;
+
+        return $this;
+    }
+
+    /**
+     * Set queue
+     *
+     * @param Queue $queue
+     * @return $this
+     */
+    public function setQueue(Queue $queue)
+    {
+        $this->queue = $queue;
+
+        return $this;
+    }
+
+    /**
+     * Get Invoice Service Request Object
+     *
+     * @return mixed
+     */
+    public function getInvoiceServiceRequestObject()
+    {
+        return $this->getService()->getInvoiceServiceRequestObject($this->invoice);
+    }
+
+    /**
+     * Execute.
+     * Process queue for invoice. Send request object to service
      *
      * @return ResultInterface
      */
     public function execute()
     {
-        return $this->getService()->invoice($this->invoice);
-    }
-
-    /**
-     * Init tool
-     *
-     * @param \Magento\Sales\Model\Order\Invoice $invoice
-     * @return $this
-     */
-    public function init(OrderInvoice $invoice)
-    {
-        $this->invoice = $invoice;
-
-        return $this;
+        return $this->getService()->invoice($this->queue);
     }
 }

@@ -17,11 +17,13 @@ namespace OnePica\AvaTax\Observer;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Sales\Model\Order\Invoice;
+use Magento\Framework\ObjectManagerInterface;
 use OnePica\AvaTax\Helper\Config;
 use OnePica\AvaTax\Model\Queue;
 use OnePica\AvaTax\Model\QueueFactory;
 use OnePica\AvaTax\Model\QueueRepository;
 use OnePica\AvaTax\Helper\Address as AddressHelper;
+use OnePica\AvaTax\Model\Tool\Invoice as InvoiceTool;
 
 /**
  * Class CreateQueueItemForInvoice
@@ -59,23 +61,33 @@ class CreateQueueItemForInvoice implements ObserverInterface
     protected $addressHelper;
 
     /**
+     * Object Manager
+     *
+     * @var ObjectManagerInterface
+     */
+    protected $objectManager;
+
+    /**
      * Constructor
      *
      * @param Config          $config
      * @param QueueFactory    $queueFactory
      * @param QueueRepository $queueRepository
      * @param AddressHelper   $addressHelper
+     * @param ObjectManagerInterface $objectManager
      */
     public function __construct(
         Config $config,
         QueueFactory $queueFactory,
         QueueRepository $queueRepository,
-        AddressHelper $addressHelper
+        AddressHelper $addressHelper,
+        ObjectManagerInterface $objectManager
     ) {
         $this->config = $config;
         $this->queueFactory = $queueFactory;
         $this->queueRepository = $queueRepository;
         $this->addressHelper = $addressHelper;
+        $this->objectManager = $objectManager;
     }
 
     /**
@@ -112,7 +124,7 @@ class CreateQueueItemForInvoice implements ObserverInterface
      */
     protected function getRequestObject(Invoice $invoice)
     {
-        /** @todo: implement getting request object to save to queue */
-        return array();
+        $invoiceService = $this->objectManager->get(InvoiceTool::class, ['invoice' => $invoice]);
+        return $invoiceService->getInvoiceServiceRequestObject();
     }
 }

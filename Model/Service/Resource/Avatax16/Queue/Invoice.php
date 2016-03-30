@@ -16,6 +16,7 @@ namespace OnePica\AvaTax\Model\Service\Resource\Avatax16\Queue;
 
 use OnePica\AvaTax\Api\ResultInterface;
 use OnePica\AvaTax\Api\Service\InvoiceResourceInterface;
+use OnePica\AvaTax\Model\Queue;
 
 /**
  * Class Invoice
@@ -25,13 +26,27 @@ use OnePica\AvaTax\Api\Service\InvoiceResourceInterface;
 class Invoice extends AbstractQueue implements InvoiceResourceInterface
 {
     /**
-     * Invoice
+     * Get Invoice Service Request Object
      *
      * @param \Magento\Sales\Model\Order\Invoice $invoice
+     * @return mixed
+     */
+    public function getInvoiceServiceRequestObject(\Magento\Sales\Model\Order\Invoice $invoice)
+    {
+        // TODO: Implement getInvoiceServiceRequestObject() method.
+        return array();
+    }
+
+    /**
+     * Execute.
+     * Process queue for invoice. Send request object to service
+     *
+     * @param Queue $queue
      * @return ResultInterface
      */
-    public function invoice(\Magento\Sales\Model\Order\Invoice $invoice)
+    public function invoice(Queue $queue)
     {
-        // TODO: Implement invoice() method.
+        // TODO: Implement processQueue() method.
+        return true;
     }
 }
