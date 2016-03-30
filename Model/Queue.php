@@ -151,7 +151,7 @@ class Queue extends AbstractModel implements QueueInterface
      * Set type
      *
      * @param string $type
-     * @return string
+     * @return mixed
      */
     public function setType($type)
     {
@@ -174,7 +174,7 @@ class Queue extends AbstractModel implements QueueInterface
      * Set status
      *
      * @param string $status
-     * @return string
+     * @return mixed
      */
     public function setStatus($status)
     {
@@ -197,7 +197,7 @@ class Queue extends AbstractModel implements QueueInterface
      * Set attempt
      *
      * @param string $attempt
-     * @return string
+     * @return mixed
      */
     public function setAttempt($attempt)
     {
@@ -220,11 +220,34 @@ class Queue extends AbstractModel implements QueueInterface
      * Set Message
      *
      * @param string $message
-     * @return string
+     * @return mixed
      */
     public function setMessage($message)
     {
         $this->setData(self::MESSAGE, $message);
+
+        return $this;
+    }
+
+    /**
+     * Get request data
+     *
+     * @return string
+     */
+    public function getRequestData()
+    {
+        return $this->_getData(self::REQUEST_DATA);
+    }
+
+    /**
+     * Set request data
+     *
+     * @param string $data
+     * @return mixed
+     */
+    public function setRequestData($data)
+    {
+        $this->setData(self::REQUEST_DATA, $data);
 
         return $this;
     }
@@ -302,5 +325,20 @@ class Queue extends AbstractModel implements QueueInterface
             self::STATUS_COMPLETE   => __('Complete'),
             self::STATUS_UNBALANCED => __('Unbalanced')
         ];
+    }
+
+    /**
+     * Set entity
+     *
+     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
+     * @return $this
+     */
+    public function setEntity($object)
+    {
+        $this->setEntityId($object->getId());
+        $this->setEntityIncrementId($object->getIncrementId());
+        $this->setStoreId($object->getStoreId());
+
+        return $this;
     }
 }

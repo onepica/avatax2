@@ -3,4 +3,10 @@
     <event name="admin_system_config_changed_section_tax">
         <observer name="changed_section_tax" instance="OnePica\AvaTax\Observer\ChangedSectionTax" />
     </event>
+    <event name="sales_order_invoice_pay">
+        <observer name="avatax_invoice_pay_set_flag" instance="OnePica\AvaTax\Observer\SetAvataxQueueFlagForInvoice" />
+    </event>
+    <event name="sales_order_invoice_save_after">
+        <observer name="avatax_create_invoice_queue_item" instance="OnePica\AvaTax\Observer\CreateQueueItemForInvoice"/>
+    </event>
 </config>
