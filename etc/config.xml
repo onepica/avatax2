@@ -13,6 +13,7 @@
                     <queue_success_lifetime>7</queue_success_lifetime>
                     <queue_failed_lifetime>60</queue_failed_lifetime>
                     <allowed_log_types>Ping,Calculation,Transaction,Filter,Validate,Queue</allowed_log_types>
+                    <queue_process_items_limit>100</queue_process_items_limit>
                 </avatax_log_group>
                 <avatax_data_mapping_group>
                     <customer_code_format>1</customer_code_format>
