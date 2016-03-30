@@ -115,8 +115,13 @@ abstract class AbstractCollector extends AbstractTotal
         \Magento\Quote\Model\Quote\Address\Total $total
     ) {
         parent::collect($quote, $shippingAssignment, $total);
-        $result = $this->getCalculateTool($quote, $shippingAssignment, $total)->execute();
         
+        if (!$shippingAssignment->getItems()) {
+            return $this;
+        }
+
+        $result = $this->getCalculateTool($quote, $shippingAssignment, $total)->execute();
+
         if ($result !== null && $result->getHasError()) {
             $quote->setData('avatax_error', true);
         }
