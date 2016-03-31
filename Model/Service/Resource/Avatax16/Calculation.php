@@ -198,7 +198,8 @@ class Calculation extends AbstractResource implements CalculationResourceInterfa
 
         if ($this->dataSource->applyTaxAfterDiscount($store) && $discountAmount) {
             $line->setDiscounted('true');
-            max(0, $shippingAmount -= $discountAmount);
+            $shippingAmount -= $discountAmount;
+            $shippingAmount = max(0, $shippingAmount);
         }
 
         $line->setLineAmount($shippingAmount);
