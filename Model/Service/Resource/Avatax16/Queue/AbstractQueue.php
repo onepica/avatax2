@@ -95,4 +95,31 @@ abstract class AbstractQueue extends AbstractResource
 
         return $line;
     }
+
+    /**
+     * Prepare gw order line
+     *
+     * @param \Magento\Store\Model\Store $store
+     * @param  mixed                     $object
+     * @param  bool                      $credit
+     * @return bool|false|\OnePica\AvaTax16\Document\Request\Line
+     */
+    protected function prepareGwOrderLine($store, $object, $credit = false)
+    {
+        $gwBasePrice = (float)$object->getData('gw_base_price');
+
+        if (!$gwBasePrice) {
+            return false;
+        }
+
+        $line = parent::prepareGwOrderLine($store, $object);
+        $line->setAvalaraGoodsAndServicesType(
+            $this->dataSource->getGwItemAvalaraGoodsAndServicesType($store)
+        );
+
+        $gwBasePrice = $credit ? (-1 * $gwBasePrice) : $gwBasePrice;
+        $line->setLineAmount($gwBasePrice);
+
+        return $line;
+    }
 }
