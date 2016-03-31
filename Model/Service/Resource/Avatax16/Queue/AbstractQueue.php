@@ -14,7 +14,14 @@
  */
 namespace OnePica\AvaTax\Model\Service\Resource\Avatax16\Queue;
 
+use Magento\Framework\ObjectManagerInterface;
+use Magento\Framework\Stdlib\DateTime\Timezone;
+use Magento\Store\Model\Store;
 use OnePica\AvaTax\Model\Service\Resource\AbstractResource;
+use OnePica\AvaTax\Api\ConfigRepositoryInterface;
+use OnePica\AvaTax\Helper\Config;
+use OnePica\AvaTax\Api\Service\LoggerInterface;
+use OnePica\AvaTax\Model\Service\DataSourceQueue;
 
 /**
  * Class AbstractQueue
@@ -23,4 +30,44 @@ use OnePica\AvaTax\Model\Service\Resource\AbstractResource;
  */
 abstract class AbstractQueue extends AbstractResource
 {
+    /**
+     * Timezone
+     *
+     * @var \Magento\Framework\Stdlib\DateTime\Timezone
+     */
+    protected $timezone;
+
+    /**
+     * AbstractResource constructor.
+     *
+     * @param \OnePica\AvaTax\Api\ConfigRepositoryInterface $configRepository
+     * @param \Magento\Framework\ObjectManagerInterface     $objectManager
+     * @param \OnePica\AvaTax\Helper\Config                 $config
+     * @param \OnePica\AvaTax\Api\Service\LoggerInterface   $logger
+     * @param \OnePica\AvaTax\Model\Service\DataSourceQueue       $dataSource
+     * @param Timezone $timezone
+     */
+    public function __construct(
+        ConfigRepositoryInterface $configRepository,
+        ObjectManagerInterface $objectManager,
+        Config $config,
+        LoggerInterface $logger,
+        DataSourceQueue $dataSource,
+        Timezone $timezone
+    ) {
+        parent::__construct($configRepository, $objectManager, $config, $logger, $dataSource);
+        $this->timezone = $timezone;
+    }
+
+    /**
+     * Retrieve converted date taking into account the current time zone and store.
+     *
+     * @param string  $gmt
+     * @param Store   $store
+     * @return string
+     */
+    protected function convertGmtDate($gmt, $store)
+    {
+        return $this->timezone->scopeDate($store, $gmt)->format('Y-m-d');
+    }
 }

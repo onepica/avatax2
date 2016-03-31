@@ -54,6 +54,13 @@ abstract class AbstractResource
     /**#@-*/
 
     /**
+     * Document code prefixes
+     */
+    const DOCUMENT_CODE_INVOICE_PREFIX = 'I';
+    const DOCUMENT_CODE_CREDITMEMO_PREFIX = 'C';
+    /**#@-*/
+
+    /**
      * Config repository
      *
      * @var \OnePica\AvaTax\Api\ConfigRepositoryInterface

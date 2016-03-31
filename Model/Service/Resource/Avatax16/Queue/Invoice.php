@@ -17,6 +17,7 @@ namespace OnePica\AvaTax\Model\Service\Resource\Avatax16\Queue;
 use OnePica\AvaTax\Api\ResultInterface;
 use OnePica\AvaTax\Api\Service\InvoiceResourceInterface;
 use OnePica\AvaTax\Model\Queue;
+use OnePica\AvaTax16\Document\Request;
 
 /**
  * Class Invoice
@@ -33,8 +34,56 @@ class Invoice extends AbstractQueue implements InvoiceResourceInterface
      */
     public function getInvoiceServiceRequestObject(\Magento\Sales\Model\Order\Invoice $invoice)
     {
-        // TODO: Implement getInvoiceServiceRequestObject() method.
-        return array();
+        $this->initRequest($invoice);
+        return $this->request;
+    }
+
+    /**
+     * Init request
+     *
+     * @param \Magento\Sales\Model\Order\Invoice $invoice
+     * @return $this
+     */
+    protected function initRequest($invoice)
+    {
+        $this->request = new Request();
+        $header = $this->prepareHeaderForInvoice($invoice);
+        $this->request->setHeader($header);
+
+        return $this;
+    }
+
+    /**
+     * Prepare header
+     *
+     * @param \Magento\Sales\Model\Order\Invoice $invoice
+     * @return \OnePica\AvaTax16\Document\Request\Header
+     */
+    protected function prepareHeaderForInvoice($invoice)
+    {
+        $store = $invoice->getStore();
+        $order = $invoice->getOrder();
+        $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
+        $invoiceDate = $this->convertGmtDate($invoice->getCreatedAt(), $store);
+        $orderDate = $this->convertGmtDate($order->getCreatedAt(), $store);
+
+        $header = parent::prepareHeader($store, $shippingAddress);
+        $header->setDocumentCode($this->getInvoiceDocumentCode($invoice));
+        $header->setTransactionDate($invoiceDate);
+        $header->setTaxCalculationDate($orderDate);
+
+        return $header;
+    }
+
+    /**
+     * Get document code for invoice
+     *
+     * @param \Magento\Sales\Model\Order\Invoice $invoice
+     * @return string
+     */
+    protected function getInvoiceDocumentCode($invoice)
+    {
+        return self::DOCUMENT_CODE_INVOICE_PREFIX . $invoice->getIncrementId();
     }
 
     /**
