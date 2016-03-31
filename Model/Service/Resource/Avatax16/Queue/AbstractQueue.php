@@ -122,4 +122,31 @@ abstract class AbstractQueue extends AbstractResource
 
         return $line;
     }
+
+    /**
+     * Prepare gw printed card line
+     *
+     * @param \Magento\Store\Model\Store $store
+     * @param  mixed                     $object
+     * @param  bool                      $credit
+     * @return false|\OnePica\AvaTax16\Document\Request\Line
+     */
+    protected function prepareGwPrintedCardLine($store, $object, $credit = false)
+    {
+        $basePrice = (float)$object->getData('gw_card_base_price');
+
+        if (!$basePrice) {
+            return false;
+        }
+
+        $line = parent::prepareGwPrintedCardLine($store, $object);
+        $line->setAvalaraGoodsAndServicesType(
+            $this->dataSource->getGwItemAvalaraGoodsAndServicesType($store)
+        );
+
+        $basePrice = $credit ? (-1 * $basePrice) : $basePrice;
+        $line->setLineAmount($basePrice);
+
+        return $line;
+    }
 }

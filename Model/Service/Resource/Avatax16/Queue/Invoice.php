@@ -90,6 +90,7 @@ class Invoice extends AbstractQueue implements InvoiceResourceInterface
         $store = $invoice->getStore();
         $this->addLine($this->prepareShippingLine($store, $invoice, false), $this->getShippingSku($store));
         $this->addLine($this->prepareGwOrderLine($store, $invoice, false), $this->getGwOrderSku($store));
+        $this->addLine($this->prepareGwPrintedCardLine($store, $invoice, false), $this->getGwPrintedCardSku($store));
 
         return $this;
     }
