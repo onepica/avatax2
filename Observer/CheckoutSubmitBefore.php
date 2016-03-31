@@ -57,7 +57,10 @@ class CheckoutSubmitBefore implements ObserverInterface
         $store = $quote->getStore();
         $quoteHasError = (bool)$quote->getData('avatax_error');
 
-        if ($quoteHasError && $this->config->getActionOnError($store) === Error::DISABLE_CHECKOUT) {
+        if ($this->config->isAvaTaxEnabled($store)
+            && $quoteHasError
+            && $this->config->getActionOnError($store) === Error::DISABLE_CHECKOUT
+        ) {
             throw new LocalizedException(__($this->config->getFrontendErrorMessage($store)));
         }
     }
