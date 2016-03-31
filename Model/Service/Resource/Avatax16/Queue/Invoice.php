@@ -50,6 +50,9 @@ class Invoice extends AbstractQueue implements InvoiceResourceInterface
         $header = $this->prepareHeaderForInvoice($invoice);
         $this->request->setHeader($header);
 
+        $this->prepareLines($invoice);
+        $this->request->setLines(array_values($this->lines));
+
         return $this;
     }
 
@@ -74,6 +77,22 @@ class Invoice extends AbstractQueue implements InvoiceResourceInterface
 
         return $header;
     }
+
+    /**
+     * Prepare lines
+     *
+     * @param \Magento\Sales\Model\Order\Invoice $invoice
+     * @return $this
+     */
+    protected function prepareLines($invoice)
+    {
+        $this->lines = [];
+        $store = $invoice->getStore();
+        $this->addLine($this->prepareShippingLine($store, $invoice, false), $this->getShippingSku($store));
+
+        return $this;
+    }
+
 
     /**
      * Get document code for invoice

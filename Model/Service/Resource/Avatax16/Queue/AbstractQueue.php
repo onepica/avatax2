@@ -70,4 +70,29 @@ abstract class AbstractQueue extends AbstractResource
     {
         return $this->timezone->scopeDate($store, $gmt)->format('Y-m-d');
     }
+
+    /**
+     * Prepare shipping line
+     *
+     * @param \Magento\Store\Model\Store $store
+     * @param  mixed                     $object
+     * @param  bool                      $credit
+     * @return \OnePica\AvaTax16\Document\Request\Line
+     */
+    protected function prepareShippingLine($store, $object, $credit = false)
+    {
+        $line = parent::prepareShippingLine($store, $object);
+        $shippingAmount = (float)$object->getData('base_shipping_amount');
+        $discountAmount = (float)$object->getData('base_shipping_discount_amount');
+
+        if ($this->dataSource->applyTaxAfterDiscount($store) && $discountAmount) {
+            $line->setDiscounted('true');
+            $shippingAmount = max(0, $shippingAmount -= $discountAmount);
+        }
+
+        $shippingAmount = $credit ? (-1 * $shippingAmount) : $shippingAmount;
+        $line->setLineAmount($shippingAmount);
+
+        return $line;
+    }
 }
