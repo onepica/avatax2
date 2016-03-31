@@ -144,10 +144,10 @@ class Config
     {
         if ($this->config->isAvaTaxEnabled($this->storeManager->getStore())) {
             if ($config->priceIncludesTax($this->storeManager->getStore())) {
-                \Magento\Tax\Model\Config::DISPLAY_TYPE_INCLUDING_TAX;
+                return \Magento\Tax\Model\Config::DISPLAY_TYPE_INCLUDING_TAX;
             }
 
-            \Magento\Tax\Model\Config::DISPLAY_TYPE_EXCLUDING_TAX;
+            return \Magento\Tax\Model\Config::DISPLAY_TYPE_EXCLUDING_TAX;
         }
 
         return $result;
@@ -165,10 +165,122 @@ class Config
     {
         if ($this->config->isAvaTaxEnabled($this->storeManager->getStore())) {
             if ($config->shippingPriceIncludesTax($this->storeManager->getStore())) {
-                \Magento\Tax\Model\Config::DISPLAY_TYPE_INCLUDING_TAX;
+                return \Magento\Tax\Model\Config::DISPLAY_TYPE_INCLUDING_TAX;
             }
 
-            \Magento\Tax\Model\Config::DISPLAY_TYPE_EXCLUDING_TAX;
+            return \Magento\Tax\Model\Config::DISPLAY_TYPE_EXCLUDING_TAX;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Display cart prices incl tax method plugin
+     *
+     * @param \Magento\Tax\Model\Config $config
+     * @param  bool                     $result
+     * @return bool
+     */
+    public function afterDisplayCartPricesInclTax(\Magento\Tax\Model\Config $config, $result)
+    {
+        if ($this->config->isAvaTaxEnabled($this->storeManager->getStore())) {
+            if ($config->priceIncludesTax($this->storeManager->getStore())) {
+                return true;
+            }
+
+            return false;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Display cart prices exl tax method plugin
+     *
+     * @param \Magento\Tax\Model\Config $config
+     * @param  bool                     $result
+     * @return bool
+     */
+    public function afterDisplayCartPricesExclTax(\Magento\Tax\Model\Config $config, $result)
+    {
+        if ($this->config->isAvaTaxEnabled($this->storeManager->getStore())) {
+            if (!$config->priceIncludesTax($this->storeManager->getStore())) {
+                return true;
+            }
+
+            return false;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Display cart prices both method plugin
+     *
+     * @param \Magento\Tax\Model\Config $config
+     * @param  bool                     $result
+     * @return bool
+     */
+    public function afterDisplayCartPricesBoth(\Magento\Tax\Model\Config $config, $result)
+    {
+        if ($this->config->isAvaTaxEnabled($this->storeManager->getStore())) {
+            return false;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Display cart subtotal include tax method plugin
+     *
+     * @param \Magento\Tax\Model\Config $config
+     * @param  bool                     $result
+     * @return bool
+     */
+    public function afterDisplayCartSubtotalInclTax(\Magento\Tax\Model\Config $config, $result)
+    {
+        if ($this->config->isAvaTaxEnabled($this->storeManager->getStore())) {
+            if ($config->priceIncludesTax($this->storeManager->getStore())) {
+                return true;
+            }
+
+            return false;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Display cart subtotal exclude tax method plugin
+     *
+     * @param \Magento\Tax\Model\Config $config
+     * @param  bool                     $result
+     * @return bool
+     */
+    public function afterDisplayCartSubtotalExclTax(\Magento\Tax\Model\Config $config, $result)
+    {
+        if ($this->config->isAvaTaxEnabled($this->storeManager->getStore())) {
+            if (!$config->priceIncludesTax($this->storeManager->getStore())) {
+                return true;
+            }
+
+            return false;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Display cart subtotal both method plugin
+     *
+     * @param \Magento\Tax\Model\Config $config
+     * @param  bool                     $result
+     * @return bool
+     */
+    public function afterDisplayCartSubtotalBoth(\Magento\Tax\Model\Config $config, $result)
+    {
+        if ($this->config->isAvaTaxEnabled($this->storeManager->getStore())) {
+            return false;
         }
 
         return $result;
