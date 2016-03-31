@@ -120,6 +120,10 @@
                         <label>Frontend Error Message</label>
                         <validate>required-entry</validate>
                     </field>
+                    <field id="backend_error_message" translate="label" type="textarea" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Backend Error Message</label>
+                        <validate>required-entry</validate>
+                    </field>
                 </group>
             </group>
         </section>

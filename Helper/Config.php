@@ -72,6 +72,7 @@ class Config extends AbstractHelper
      */
     const AVATAX_ACTION_ON_ERROR        = 'tax/avatax/avatax_error_handling_group/action_on_error';
     const AVATAX_FRONTEND_ERROR_MESSAGE = 'tax/avatax/avatax_error_handling_group/frontend_error_message';
+    const AVATAX_BACKEND_ERROR_MESSAGE  = 'tax/avatax/avatax_error_handling_group/backend_error_message';
     /**#@-*/
 
     /**
@@ -442,6 +443,17 @@ class Config extends AbstractHelper
     public function getFrontendErrorMessage($scopeCode = null)
     {
         return (string)$this->getConfig(self::AVATAX_FRONTEND_ERROR_MESSAGE, $scopeCode);
+    }
+
+    /**
+     * Get frontend error message
+     *
+     * @param null|string|AppScopeInterface $scopeCode
+     * @return string
+     */
+    public function getBackendErrorMessage($scopeCode = null)
+    {
+        return (string)$this->getConfig(self::AVATAX_BACKEND_ERROR_MESSAGE, $scopeCode);
     }
 
     /**

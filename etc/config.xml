@@ -21,6 +21,7 @@
                 </avatax_data_mapping_group>
                 <avatax_error_handling_group>
                     <frontend_error_message>Unfortunately, we could not calculate tax for your order. Please try again with a different address or contact us to complete your order.</frontend_error_message>
+                    <backend_error_message>Unfortunately, we could not calculate tax for your order. Please try again with a different address.</backend_error_message>
                     <action_on_error>0</action_on_error>
                 </avatax_error_handling_group>
             </avatax>
