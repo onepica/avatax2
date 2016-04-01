@@ -38,7 +38,7 @@ class Calculation extends BaseResult
      */
     const TIMESTAMP         = 'timestamp';
     const ADDRESS_ID        = 'address_id';
-    const SUMMERY           = 'summery';
+    const SUMMARY           = 'summary';
     const JURISDICTION_DATA = 'jurisdiction_data';
     /**#@-*/
 
@@ -93,20 +93,20 @@ class Calculation extends BaseResult
      *
      * @return array
      */
-    public function getSummery()
+    public function getSummary()
     {
-        return $this->getData(self::SUMMERY);
+        return $this->getData(self::SUMMARY);
     }
 
     /**
      * Set summery
      *
-     * @param array $summery
+     * @param array $summary
      * @return $this
      */
-    public function setSummery(array $summery)
+    public function setSummary(array $summary)
     {
-        $this->setData(self::SUMMERY, $summery);
+        $this->setData(self::SUMMARY, $summary);
 
         return $this;
     }

@@ -468,26 +468,26 @@ class Calculation extends AbstractResource implements CalculationResourceInterfa
         }
 
         $result->setTimestamp((new DateTime())->getTimestamp());
-        $result->setSummery($this->prepareSummery($result));
+        $result->setSummary($this->prepareSummary($result));
 
         return $this;
     }
 
     /**
-     * Prepare summery
+     * Prepare summary
      *
      * @param \OnePica\AvaTax\Model\Service\Result\Calculation $result
      * @return array
      */
-    protected function prepareSummery($result)
+    protected function prepareSummary($result)
     {
         $response = $result->getResponse();
         $rates = $this->getJurisdictionsRate($result);
-        $summery = [];
+        $summary = [];
 
         $calculatedSummary = $response->getCalculatedTaxSummary();
         if (null === $calculatedSummary) {
-            return $summery;
+            return $summary;
         }
 
         /** @var \OnePica\AvaTax16\Document\Response\CalculatedTaxSummary\TaxByType $value */
@@ -499,7 +499,7 @@ class Calculation extends AbstractResource implements CalculationResourceInterfa
                     $data->getJurisdictionName(),
                     $data->getJurisdictionType()
                 );
-                $summery[] = array(
+                $summary[] = array(
                     'name' => $jurisdiction,
                     'rate' => isset($rates[$jurisdiction]) ? $rates[$jurisdiction] : 0,
                     'amt'  => $data->getTax()
@@ -507,7 +507,7 @@ class Calculation extends AbstractResource implements CalculationResourceInterfa
             }
         }
 
-        return $summery;
+        return $summary;
     }
 
     /**

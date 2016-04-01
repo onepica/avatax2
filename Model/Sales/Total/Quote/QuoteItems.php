@@ -114,7 +114,7 @@ class QuoteItems extends AbstractCollector
             }
         }
 
-        $this->saveAppliedTax($result->getSummery(), $total);
+        $this->saveAppliedTax($result->getSummary(), $total);
         $total->setItemsAppliedTaxes($itemAppliedTax);
 
         return $this;
