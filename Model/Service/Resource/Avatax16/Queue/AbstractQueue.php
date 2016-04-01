@@ -22,6 +22,7 @@ use OnePica\AvaTax\Api\ConfigRepositoryInterface;
 use OnePica\AvaTax\Helper\Config;
 use OnePica\AvaTax\Api\Service\LoggerInterface;
 use OnePica\AvaTax\Model\Service\DataSourceQueue;
+use OnePica\AvaTax16\Document\Request\Line;
 
 /**
  * Class AbstractQueue
@@ -171,7 +172,6 @@ abstract class AbstractQueue extends AbstractResource
             }
 
             $this->addLine($this->prepareItemLine($store, $item), $item->getId(), $credit);
-            $this->addGwItemLine($store, $item, $credit);
         }
 
         return $this;
@@ -212,41 +212,29 @@ abstract class AbstractQueue extends AbstractResource
     }
 
     /**
-     * Add gw item line
-     *
-     * @param \Magento\Store\Model\Store                                                         $store
-     * @param \Magento\Sales\Model\Order\Invoice\Item|\Magento\Sales\Model\Order\Creditmemo\Item $item
-     * @param  bool                                                                              $credit
-     * @return $this
-     */
-    protected function addGwItemLine($store, $item, $credit = false)
-    {
-        $line = $this->prepareGwItemLine($store, $item, $credit);
-        if (!$line) {
-            return $this;
-        }
-
-        $this->addLine($line, $this->getGwItemsSku($store));
-
-        return $this;
-    }
-
-    /**
      * Prepare gw item line
      *
-     * @param \Magento\Store\Model\Store                                                         $store
-     * @param \Magento\Sales\Model\Order\Invoice\Item|\Magento\Sales\Model\Order\Creditmemo\Item $item
-     * @param  bool                                                                              $credit
+     * @param \Magento\Store\Model\Store                                               $store
+     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
+     * @param  bool                                                                    $credit
      * @return false|\OnePica\AvaTax16\Document\Request\Line
      */
-    protected function prepareGwItemLine($store, $item, $credit = false)
+    protected function prepareGwItemsLine($store, $object, $credit = false)
     {
-        if (!(int)$item->getData('gw_id')) {
+        if (!(int)$object->getData('gw_items_base_price')) {
             return false;
         }
 
-        $line = parent::prepareGwItemLine($store, $item);
-        $price = (float)$item->getData('gw_base_price') * (int)$item->getQty();
+        $line = new Line();
+        $line->setLineCode($this->getNewLineCode());
+        $line->setItemCode($this->getGwItemsSku($store));
+        $line->setItemDescription(self::DEFAULT_GW_ITEMS_DESCRIPTION);
+        $line->setAvalaraGoodsAndServicesType($this->dataSource->getGwItemAvalaraGoodsAndServicesType($store));
+        $line->setNumberOfItems(1);
+        $line->setDiscounted('false');
+        $line->setTaxIncluded($this->dataSource->taxIncluded($store) ? 'true' : 'false');
+
+        $price = (float)$object->getData('gw_items_base_price');
         $price = $credit ? (-1 * $price) : $price;
         $line->setLineAmount($price);
 
