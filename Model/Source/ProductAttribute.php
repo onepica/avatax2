@@ -62,7 +62,7 @@ class ProductAttribute implements OptionSourceInterface
 
         $this->data[] = [
             'value' => '',
-            'label' => ''
+            'label' => ' '
         ];
 
         $this->attributeCollection->addFieldToSelect(['attribute_code', 'frontend_label']);
