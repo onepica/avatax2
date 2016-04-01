@@ -21,7 +21,7 @@ use OnePica\AvaTax\Api\Service\ValidationResourceInterface;
 use OnePica\AvaTax\Model\Service\Resource\AbstractResource;
 use OnePica\AvaTax\Model\Service\Avatax16\Config;
 use OnePica\AvaTax16\Document\Part\Location\Address as AvaTax16LibAddress;
-use OnePica\AvaTax\Model\Service\Result\AddressValidationResult;
+use OnePica\AvaTax\Model\Service\Result\AddressValidation;
 use OnePica\AvaTax\Model\Service\Request\Address as RequestAddress;
 use OnePica\AvaTax\Api\Service\CacheStorageInterface;
 use OnePica\AvaTax\Api\ConfigRepositoryInterface;
@@ -54,10 +54,10 @@ class Validation extends AbstractResource implements ValidationResourceInterface
      * Constructor.
      *
      * @param ConfigRepositoryInterface $configRepository
-     * @param ObjectManagerInterface     $objectManager
-     * @param CacheStorageInterface $cacheStorage
-     * @param ConfigHelper $config
-     * @param LoggerInterface $logger
+     * @param ObjectManagerInterface    $objectManager
+     * @param CacheStorageInterface     $cacheStorage
+     * @param ConfigHelper              $config
+     * @param LoggerInterface           $logger
      */
     public function __construct(
         ConfigRepositoryInterface $configRepository,
@@ -133,17 +133,17 @@ class Validation extends AbstractResource implements ValidationResourceInterface
     /**
      * Get result object
      *
-     * @return AddressValidationResult
+     * @return AddressValidation
      */
     protected function getResultObject()
     {
-        return $this->objectManager->create(AddressValidationResult::class);
+        return $this->objectManager->create(AddressValidation::class);
     }
 
     /**
      * Get address in lib format
      *
-     * @param RequestAddress
+     * @param RequestAddress $address
      * @return AvaTax16LibAddress
      */
     protected function getLibAddress($address)
@@ -162,7 +162,7 @@ class Validation extends AbstractResource implements ValidationResourceInterface
      * Update address from service response
      *
      * @param RequestAddress $address
-     * @param $response
+     * @param                $response
      * @return $this
      */
     protected function updateAddressFromServiceResponse($address, $response)

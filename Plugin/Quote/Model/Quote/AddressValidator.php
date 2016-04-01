@@ -20,7 +20,7 @@ use Magento\Store\Model\StoreManagerInterface;
 use OnePica\AvaTax\Helper\Config;
 use OnePica\AvaTax\Model\Tool\Validate;
 use OnePica\AvaTax\Model\Service\Request\Address as RequestAddress;
-use OnePica\AvaTax\Model\Service\Result\AddressValidationResult;
+use OnePica\AvaTax\Model\Service\Result\AddressValidation;
 use OnePica\AvaTax\Helper\Data as AvataxDataHelper;
 use OnePica\AvaTax\Helper\Address as AvataxAddressHelper;
 
@@ -217,10 +217,10 @@ class AddressValidator
     /**
      * Normalize Address
      *
-     * @param AbstractAddress $address
-     * @param AddressValidationResult $serviceResult
+     * @param AbstractAddress   $address
+     * @param AddressValidation $serviceResult
      */
-    protected function normalizeAddress(AbstractAddress $address, AddressValidationResult $serviceResult)
+    protected function normalizeAddress(AbstractAddress $address, AddressValidation $serviceResult)
     {
         if ($this->isNormalizeAddressEnabled() && !$serviceResult->getHasError()) {
             $normalizedAddress = $serviceResult->getAddress();

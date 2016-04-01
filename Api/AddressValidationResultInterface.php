@@ -1,6 +1,7 @@
 <?php
 /**
  * OnePica_AvaTax
+ *
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
@@ -12,7 +13,7 @@
  * @copyright  Copyright (c) 2016 One Pica, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model\Service\Result;
+namespace OnePica\AvaTax\Api;
 
 use OnePica\AvaTax\Model\Service\Request\Address;
 
@@ -21,24 +22,14 @@ use OnePica\AvaTax\Model\Service\Request\Address;
  *
  * @package OnePica\AvaTax\Model\Service\Result
  */
-class AddressValidationResult extends BaseResult
+interface AddressValidationResultInterface
 {
-    /**#@+
-     * Constants defined for keys of array
-     */
-    const ADDRESS       = 'address';
-    const RESOLUTION    = 'resolution';
-    /**#@-*/
-
     /**
      * Get address
      *
      * @return Address
      */
-    public function getAddress()
-    {
-        return $this->_getData(self::ADDRESS);
-    }
+    public function getAddress();
 
     /**
      * Set address
@@ -46,22 +37,14 @@ class AddressValidationResult extends BaseResult
      * @param Address $address
      * @return $this
      */
-    public function setAddress($address)
-    {
-        $this->setData(self::ADDRESS, $address);
-
-        return $this;
-    }
+    public function setAddress($address);
 
     /**
      * Get resolution
      *
      * @return bool
      */
-    public function getResolution()
-    {
-        return $this->_getData(self::RESOLUTION);
-    }
+    public function getResolution();
 
     /**
      * Set resolution
@@ -69,10 +52,5 @@ class AddressValidationResult extends BaseResult
      * @param bool $resolution
      * @return $this
      */
-    public function setResolution($resolution)
-    {
-        $this->setData(self::RESOLUTION, $resolution);
-
-        return $this;
-    }
+    public function setResolution($resolution);
 }
