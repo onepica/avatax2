@@ -205,7 +205,7 @@ abstract class AbstractQueue extends AbstractResource
         $line->setAvalaraGoodsAndServicesType(
             $this->dataSource->getItemAvalaraGoodsAndServicesType($item, $store)
         );
-        $line->setNumberOfItems($item->getTotalQty());
+        $line->setNumberOfItems($item->getQty());
         $line->setMetadata($this->dataSource->getItemMetaData($item, $store));
 
         return $line;
