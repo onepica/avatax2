@@ -54,27 +54,33 @@ class Resolver implements ResolverInterface
      * Get service class
      *
      * @return string
+     * @throws \Exception
      */
     public function getServiceClass()
     {
         $serviceName = $this->config->getActiveService();
 
-        return isset($this->serviceData[$serviceName]['service'])
-            ? $this->serviceData[$serviceName]['service']
-            : '';
+        if (!$this->serviceData[$serviceName]['service']) {
+            throw new \Exception('Service not defined.');
+        }
+
+        return $this->serviceData[$serviceName]['service'];
     }
 
     /**
      * Get service config class
      *
      * @return string
+     * @throws \Exception
      */
     public function getServiceConfigClass()
     {
         $serviceName = $this->config->getActiveService();
 
-        return isset($this->serviceData[$serviceName]['service_config'])
-            ? $this->serviceData[$serviceName]['service_config']
-            : '';
+        if (!isset($this->serviceData[$serviceName]['service_config'])) {
+            throw new \Exception('Service config not defined.');
+        }
+
+        return $this->serviceData[$serviceName]['service_config'];
     }
 }
