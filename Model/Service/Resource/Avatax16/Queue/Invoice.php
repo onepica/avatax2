@@ -34,6 +34,10 @@ class Invoice extends AbstractQueue implements InvoiceResourceInterface
      */
     public function getInvoiceServiceRequestObject(\Magento\Sales\Model\Order\Invoice $invoice)
     {
+        $store = $invoice->getStore();
+        // Copy Avatax data from order items to invoice items, because only order items contains this data
+        $this->copyAvataxDataFromOrderItemsToObjectItems($invoice);
+        $this->dataSource->initAvataxData($invoice->getItems(), $store);
         $this->initRequest($invoice);
         return $this->request;
     }
@@ -91,10 +95,10 @@ class Invoice extends AbstractQueue implements InvoiceResourceInterface
         $this->addLine($this->prepareShippingLine($store, $invoice, false), $this->getShippingSku($store));
         $this->addLine($this->prepareGwOrderLine($store, $invoice, false), $this->getGwOrderSku($store));
         $this->addLine($this->prepareGwPrintedCardLine($store, $invoice, false), $this->getGwPrintedCardSku($store));
+        $this->addItemsLine($store, $invoice->getItems());
 
         return $this;
     }
-
 
     /**
      * Get document code for invoice

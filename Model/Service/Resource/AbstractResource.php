@@ -145,11 +145,13 @@ abstract class AbstractResource
      */
     public function isProductCalculated($item)
     {
-        if ($item->isChildrenCalculated() && !$item->getParentItem()) {
-            return true;
-        }
-        if (!$item->isChildrenCalculated() && $item->getParentItem()) {
-            return true;
+        if (method_exists($item, 'isChildrenCalculated') && method_exists($item, 'getParentItem')) {
+            if ($item->isChildrenCalculated() && !$item->getParentItem()) {
+                return true;
+            }
+            if (!$item->isChildrenCalculated() && $item->getParentItem()) {
+                return true;
+            }
         }
 
         return false;

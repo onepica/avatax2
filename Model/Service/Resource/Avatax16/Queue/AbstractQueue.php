@@ -62,8 +62,8 @@ abstract class AbstractQueue extends AbstractResource
     /**
      * Retrieve converted date taking into account the current time zone and store.
      *
-     * @param string  $gmt
-     * @param Store   $store
+     * @param string $gmt
+     * @param Store  $store
      * @return string
      */
     protected function convertGmtDate($gmt, $store)
@@ -74,9 +74,9 @@ abstract class AbstractQueue extends AbstractResource
     /**
      * Prepare shipping line
      *
-     * @param \Magento\Store\Model\Store $store
-     * @param  mixed                     $object
-     * @param  bool                      $credit
+     * @param \Magento\Store\Model\Store                                               $store
+     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
+     * @param  bool                                                                    $credit
      * @return \OnePica\AvaTax16\Document\Request\Line
      */
     protected function prepareShippingLine($store, $object, $credit = false)
@@ -99,9 +99,9 @@ abstract class AbstractQueue extends AbstractResource
     /**
      * Prepare gw order line
      *
-     * @param \Magento\Store\Model\Store $store
-     * @param  mixed                     $object
-     * @param  bool                      $credit
+     * @param \Magento\Store\Model\Store                                               $store
+     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
+     * @param  bool                                                                    $credit
      * @return bool|false|\OnePica\AvaTax16\Document\Request\Line
      */
     protected function prepareGwOrderLine($store, $object, $credit = false)
@@ -126,9 +126,9 @@ abstract class AbstractQueue extends AbstractResource
     /**
      * Prepare gw printed card line
      *
-     * @param \Magento\Store\Model\Store $store
-     * @param  mixed                     $object
-     * @param  bool                      $credit
+     * @param \Magento\Store\Model\Store                                               $store
+     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
+     * @param  bool                                                                    $credit
      * @return false|\OnePica\AvaTax16\Document\Request\Line
      */
     protected function prepareGwPrintedCardLine($store, $object, $credit = false)
@@ -148,5 +148,128 @@ abstract class AbstractQueue extends AbstractResource
         $line->setLineAmount($basePrice);
 
         return $line;
+    }
+
+    /**
+     * Add items line
+     *
+     * @param Store      $store
+     * @param array|null $items
+     * @param  bool      $credit
+     * @return $this
+     */
+    protected function addItemsLine($store, $items, $credit = false)
+    {
+        if (!is_array($items)) {
+            return $this;
+        }
+
+        /** @var \Magento\Sales\Model\Order\Invoice\Item|\Magento\Sales\Model\Order\Creditmemo\Item $item */
+        foreach ($items as $item) {
+            if ($this->isProductCalculated($item)) {
+                continue;
+            }
+
+            $this->addLine($this->prepareItemLine($store, $item), $item->getId(), $credit);
+            $this->addGwItemLine($store, $item, $credit);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Prepare item line
+     *
+     * @param \Magento\Store\Model\Store                                                         $store
+     * @param \Magento\Sales\Model\Order\Invoice\Item|\Magento\Sales\Model\Order\Creditmemo\Item $item
+     * @param  bool                                                                              $credit
+     * @return false|\OnePica\AvaTax16\Document\Request\Line
+     */
+    protected function prepareItemLine($store, $item, $credit = false)
+    {
+        if (!(int)$item->getId()) {
+            return false;
+        }
+
+        $basePrice = (float)$item->getBaseRowTotal();
+
+        if ($this->dataSource->applyTaxAfterDiscount($store)) {
+            $basePrice -= (float)$item->getBaseDiscountAmount();
+        }
+
+        $line = parent::prepareItemLine($store, $item);
+
+        $basePrice = $credit ? (-1 * $basePrice) : $basePrice;
+        $line->setLineAmount($basePrice);
+        $line->setItemCode($this->dataSource->getItemCode($item, $store));
+        $line->setAvalaraGoodsAndServicesType(
+            $this->dataSource->getItemAvalaraGoodsAndServicesType($item, $store)
+        );
+        $line->setNumberOfItems($item->getTotalQty());
+        $line->setMetadata($this->dataSource->getItemMetaData($item, $store));
+
+        return $line;
+    }
+
+    /**
+     * Add gw item line
+     *
+     * @param \Magento\Store\Model\Store                                                         $store
+     * @param \Magento\Sales\Model\Order\Invoice\Item|\Magento\Sales\Model\Order\Creditmemo\Item $item
+     * @param  bool                                                                              $credit
+     * @return $this
+     */
+    protected function addGwItemLine($store, $item, $credit = false)
+    {
+        $line = $this->prepareGwItemLine($store, $item, $credit);
+        if (!$line) {
+            return $this;
+        }
+
+        $this->addLine($line, $this->getGwItemsSku($store));
+
+        return $this;
+    }
+
+    /**
+     * Prepare gw item line
+     *
+     * @param \Magento\Store\Model\Store                                                         $store
+     * @param \Magento\Sales\Model\Order\Invoice\Item|\Magento\Sales\Model\Order\Creditmemo\Item $item
+     * @param  bool                                                                              $credit
+     * @return false|\OnePica\AvaTax16\Document\Request\Line
+     */
+    protected function prepareGwItemLine($store, $item, $credit = false)
+    {
+        if (!(int)$item->getData('gw_id')) {
+            return false;
+        }
+
+        $line = parent::prepareGwItemLine($store, $item);
+        $price = (float)$item->getData('gw_base_price') * (int)$item->getQty();
+        $price = $credit ? (-1 * $price) : $price;
+        $line->setLineAmount($price);
+
+        return $line;
+    }
+
+    /**
+     * Copy Avatax Data from Order Items To Object Items
+     *
+     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
+     * @return $this
+     */
+    protected function copyAvataxDataFromOrderItemsToObjectItems($object)
+    {
+        $orderItems = $object->getOrder()->getItems();
+        $objectItems = $object->getItems();
+        foreach ($orderItems as $orderItem) {
+            $avataxData = $orderItem->getData('avatax_data');
+            foreach ($objectItems as $item) {
+                if ($item->getOrderItemId() == $orderItem->getId()) {
+                    $item->setData('avatax_data', $avataxData);
+                }
+            }
+        }
     }
 }
