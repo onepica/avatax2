@@ -1,0 +1,29 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="tax">
+            <group id="calculation">
+                <field id="algorithm" showInDefault="1" showInWebsite="1" showInStore="0" />
+                <field id="based_on" showInDefault="1" showInWebsite="1" showInStore="0" />
+                <field id="shipping_includes_tax" showInDefault="1" showInWebsite="1" showInStore="0" />
+                <field id="apply_after_discount">
+                    <depends>
+                        <field id="price_includes_tax" separator=",">0,1</field>
+                    </depends>
+                </field>
+                <field id="discount_tax" showInDefault="1" showInWebsite="1" showInStore="0" />
+                <field id="apply_tax_on" showInDefault="1" showInWebsite="1" showInStore="0" />
+                <field id="cross_border_trade_enabled" showInDefault="1" showInWebsite="1" showInStore="0" />
+            </group>
+            <group id="display">
+                <field id="type" showInDefault="1" showInWebsite="1" showInStore="1" />
+                <field id="shipping" showInDefault="1" showInWebsite="1" showInStore="1"/>
+            </group>
+            <group id="classes">
+                <field id="shipping_tax_class" showInDefault="1" showInWebsite="1" showInStore="0" />
+                <field id="default_product_tax_class" showInDefault="1" showInWebsite="0" showInStore="0"/>
+                <field id="default_customer_tax_class" showInDefault="1" showInWebsite="0" showInStore="0"/>
+            </group>
+        </section>
+    </system>
+</config>

@@ -16,6 +16,8 @@ namespace OnePica\AvaTax\Api;
 
 use Magento\Framework\DataObject;
 use Magento\Quote\Api\Data\ShippingAssignmentInterface;
+use Magento\Quote\Model\Quote;
+use Magento\Quote\Model\Quote\Address\Total;
 use Magento\Sales\Model\Order\Creditmemo;
 use Magento\Sales\Model\Order\Invoice;
 use Magento\Store\Model\Store;
@@ -55,10 +57,12 @@ interface ServiceInterface
     /**
      * Creditmemo
      *
+     * @param \Magento\Quote\Model\Quote                          $quote
      * @param \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignment
-     * @return ResultInterface
+     * @param \Magento\Quote\Model\Quote\Address\Total            $total
+     * @return \OnePica\AvaTax\Api\ResultInterface
      */
-    public function calculate(ShippingAssignmentInterface $shippingAssignment);
+    public function calculate(Quote $quote, ShippingAssignmentInterface $shippingAssignment, Total $total);
 
     /**
      * Ping

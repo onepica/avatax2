@@ -22,7 +22,7 @@ use OnePica\AvaTax\Api\ResultInterface;
  *
  * @package OnePica\AvaTax\Model\Service\Result
  */
-class BaseResult extends DataObject implements ResultInterface
+class Base extends DataObject implements ResultInterface
 {
     /**#@+
      * Constants defined for keys of array
@@ -92,7 +92,7 @@ class BaseResult extends DataObject implements ResultInterface
     /**
      * Get response
      *
-     * @return array
+     * @return mixed
      */
     public function getResponse()
     {
@@ -102,10 +102,10 @@ class BaseResult extends DataObject implements ResultInterface
     /**
      * Set response
      *
-     * @param array $response
+     * @param mixed $response
      * @return $this
      */
-    public function setResponse(array $response)
+    public function setResponse($response)
     {
         $this->setData(self::RESPONSE, $response);
 

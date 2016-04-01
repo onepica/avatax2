@@ -16,7 +16,7 @@ namespace OnePica\AvaTax\Model\Tool;
 
 use Magento\Store\Model\Store;
 use OnePica\AvaTax\Api\Service\ResolverInterface;
-use OnePica\AvaTax\Model\Service\Result\BaseResult;
+use OnePica\AvaTax\Model\Service\Result\Base;
 use OnePica\AvaTax\Model\ServiceFactory;
 
 /**
@@ -52,7 +52,7 @@ class Ping extends AbstractTool
     /**
      * Execute
      *
-     * @return BaseResult
+     * @return Base
      */
     public function execute()
     {

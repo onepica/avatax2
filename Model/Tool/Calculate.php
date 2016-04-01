@@ -15,8 +15,10 @@
 namespace OnePica\AvaTax\Model\Tool;
 
 use Magento\Quote\Api\Data\ShippingAssignmentInterface;
-use OnePica\AvaTax\Api\ResultInterface;
+use Magento\Quote\Model\Quote;
+use Magento\Quote\Model\Quote\Address\Total;
 use OnePica\AvaTax\Api\Service\ResolverInterface;
+use OnePica\AvaTax\Model\Service\Result\Calculation;
 use OnePica\AvaTax\Model\ServiceFactory;
 
 /**
@@ -34,28 +36,48 @@ class Calculate extends AbstractTool
     protected $shippingAssignment;
 
     /**
+     * Total model
+     *
+     * @var \Magento\Quote\Model\Quote\Address\Total
+     */
+    protected $total;
+
+    /**
+     * Quote model
+     *
+     * @var \Magento\Quote\Model\Quote
+     */
+    protected $quote;
+
+    /**
      * Calculate constructor.
      *
      * @param \OnePica\AvaTax\Api\Service\ResolverInterface       $resolver
      * @param \OnePica\AvaTax\Model\ServiceFactory                $serviceFactory
      * @param \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignment
+     * @param \Magento\Quote\Model\Quote                          $quote
+     * @param \Magento\Quote\Model\Quote\Address\Total            $total
      */
     public function __construct(
         ResolverInterface $resolver,
         ServiceFactory $serviceFactory,
-        ShippingAssignmentInterface $shippingAssignment
+        ShippingAssignmentInterface $shippingAssignment,
+        Quote $quote,
+        Total $total
     ) {
         parent::__construct($resolver, $serviceFactory);
         $this->shippingAssignment = $shippingAssignment;
+        $this->total = $total;
+        $this->quote = $quote;
     }
 
     /**
      * Execute
      *
-     * @return ResultInterface
+     * @return Calculation
      */
     public function execute()
     {
-        return $this->getService()->calculate($this->shippingAssignment);
+        return $this->getService()->calculate($this->quote, $this->shippingAssignment, $this->total);
     }
 }

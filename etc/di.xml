@@ -6,9 +6,36 @@
     <preference for="OnePica\AvaTax\Api\Service\CacheStorageInterface" type="OnePica\AvaTax\Model\Service\CacheStorage"/>
     <preference for="OnePica\AvaTax\Api\Service\LoggerInterface" type="OnePica\AvaTax\Model\Service\Logger"/>
     <preference for="OnePica\AvaTax\Api\LogRepositoryInterface" type="OnePica\AvaTax\Model\LogRepository"/>
+    <preference for="OnePica\AvaTax\Api\DataSourceInterface" type="OnePica\AvaTax\Model\Service\DataSource"/>
     <preference for="OnePica\AvaTax\Api\QueueRepositoryInterface" type="OnePica\AvaTax\Model\QueueRepository"/>
     <preference for="OnePica\AvaTax\Api\Data\QueueSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
     <preference for="OnePica\AvaTax\Api\Data\QueueInterface" type="OnePica\AvaTax\Model\Queue"/>
+    <virtualType name="OnePica\AvaTax\Model\Session\Storage" type="Magento\Framework\Session\Storage">
+        <arguments>
+            <argument name="namespace" xsi:type="string">onepica_avatax</argument>
+        </arguments>
+    </virtualType>
+    <type name="OnePica\AvaTax\Model\Session">
+        <arguments>
+            <argument name="storage" xsi:type="object">OnePica\AvaTax\Model\Session\Storage</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Quote\Model\Quote\Config">
+        <plugin name="magento-quote-model-quote-config-plugin"
+                type="OnePica\AvaTax\Plugin\Magento\Quote\Model\Quote\Config" sortOrder="10" />
+    </type>
+    <type name="Magento\Tax\Model\Calculation">
+        <plugin name="avatax_tax_calculation_plugin"
+                type="OnePica\AvaTax\Plugin\Magento\Tax\Model\Calculation" sortOrder="10" />
+    </type>
+    <type name="Magento\Tax\Model\Config">
+        <plugin name="avatax_tax_config_plugin"
+                type="OnePica\AvaTax\Plugin\Magento\Tax\Model\Config" sortOrder="10" />
+    </type>
+    <type name="Magento\Tax\Helper\Data">
+        <plugin name="avatax_tax_data_helper_plugin"
+                type="OnePica\AvaTax\Plugin\Magento\Tax\Helper\Data" sortOrder="10" />
+    </type>
     <type name="OnePica\AvaTax\Model\Service\Resolver">
         <arguments>
             <argument name="data" xsi:type="array">

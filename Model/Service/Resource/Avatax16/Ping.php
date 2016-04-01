@@ -20,7 +20,6 @@ use OnePica\AvaTax\Api\Service\PingResourceInterface;
 use OnePica\AvaTax\Model\Log;
 use OnePica\AvaTax\Model\Service\Avatax16\Config;
 use OnePica\AvaTax\Model\Service\Resource\AbstractResource;
-use OnePica\AvaTax\Model\Service\Result\BaseResult;
 
 /**
  * Class Ping
@@ -38,7 +37,7 @@ class Ping extends AbstractResource implements PingResourceInterface
      */
     public function ping(Store $store)
     {
-        $result = $this->getResultObject();
+        $result = $this->createResultObject();
 
         /** @var Config $config */
         try {
@@ -60,15 +59,5 @@ class Ping extends AbstractResource implements PingResourceInterface
         $this->logger->log(Log::PING, 'Ping', $result, $store->getId(), $config->getConnection());
 
         return $result;
-    }
-
-    /**
-     * Get result object
-     *
-     * @return BaseResult
-     */
-    protected function getResultObject()
-    {
-        return $this->objectManager->create(BaseResult::class);
     }
 }
