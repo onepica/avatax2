@@ -143,7 +143,7 @@ class DataSource implements DataSourceInterface
      */
     public function initAvataxData($items, $store)
     {
-        if (!is_array($items) || empty($items)) {
+        if (empty($items)) {
             return $this;
         }
 

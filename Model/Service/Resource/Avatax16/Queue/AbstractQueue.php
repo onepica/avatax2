@@ -161,7 +161,7 @@ abstract class AbstractQueue extends AbstractResource
      */
     protected function addItemsLine($store, $items, $credit = false)
     {
-        if (!is_array($items)) {
+        if (empty($items)) {
             return $this;
         }
 
