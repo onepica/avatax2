@@ -14,16 +14,18 @@
  */
 namespace OnePica\AvaTax\Model\Service\Result;
 
+use OnePica\AvaTax\Api\CalculationResultInterface;
 use OnePica\AvaTax16\Document\Response;
 
 /**
  * Class Calculation
+ *
  * @method Response getResponse()
  * @method setResponse($response)
  *
  * @package OnePica\AvaTax\Model\Service\Result
  */
-class Calculation extends BaseResult
+class Calculation extends BaseResult implements CalculationResultInterface
 {
     /**#@+
      * Item path
