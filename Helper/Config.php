@@ -39,14 +39,27 @@ class Config extends AbstractHelper
     /**#@+
      * Config xml path
      */
-    const AVATAX_ACTIVE_SERVICE            = 'tax/avatax/active_service';
-    const AVATAX_SERVICE_ACTION            = 'tax/avatax/action';
-    const AVATAX_SERVICE_URL               = 'tax/avatax/url';
-    const AVATAX_SERVICE_ACCOUNT_NUMBER    = 'tax/avatax/account_number';
-    const AVATAX_SERVICE_LICENCE_KEY       = 'tax/avatax/license_key';
-    const AVATAX_SERVICE_COMPANY_CODE      = 'tax/avatax/company_code';
-    const AVATAX_SERVICE_ALLOWED_LOG_TYPES = 'tax/avatax/avatax_log_group/allowed_log_types';
-    const AVATAX_SERVICE_LOG_LIFETIME      = 'tax/avatax/avatax_log_group/log_lifetime';
+    const AVATAX_ACTIVE_SERVICE                 = 'tax/avatax/active_service';
+    const AVATAX_SERVICE_ACTION                 = 'tax/avatax/action';
+    const AVATAX_SERVICE_URL                    = 'tax/avatax/url';
+    const AVATAX_SERVICE_ACCOUNT_NUMBER         = 'tax/avatax/account_number';
+    const AVATAX_SERVICE_LICENCE_KEY            = 'tax/avatax/license_key';
+    const AVATAX_SERVICE_COMPANY_CODE           = 'tax/avatax/company_code';
+    const AVATAX_SERVICE_ALLOWED_LOG_TYPES      = 'tax/avatax/avatax_log_group/allowed_log_types';
+    const AVATAX_SERVICE_LOG_LIFETIME           = 'tax/avatax/avatax_log_group/log_lifetime';
+    const AVATAX_SERVICE_QUEUE_SUCCESS_LIFETIME = 'tax/avatax/avatax_log_group/queue_success_lifetime';
+    const AVATAX_SERVICE_QUEUE_FAILED_LIFETIME  = 'tax/avatax/avatax_log_group/queue_failed_lifetime';
+    const AVATAX_VALIDATE_ADDRESS               = 'tax/avatax/address_validation_group/validate_address';
+    const AVATAX_NORMALIZE_ADDRESS              = 'tax/avatax/address_validation_group/normalize_address';
+    const AVATAX_ONEPAGE_NORMALIZE_MESSAGE      = 'tax/avatax/address_validation_group/onepage_normalize_message';
+    const AVATAX_MULTIADDRESS_NORMALIZE_MESSAGE = 'tax/avatax/address_validation_group/multiaddress_normalize_message';
+    const AVATAX_VALIDATE_ADDRESS_MESSAGE       = 'tax/avatax/address_validation_group/validate_address_message';
+    const AVATAX_ADDRESS_VALIDATION_COUNTRIES   = 'tax/avatax/address_validation_group/address_validation_countries';
+    const AVATAX_FIELD_REQUIRED_LIST            = 'tax/avatax/request_settings_group/field_required_list';
+    const AVATAX_FIELD_RULE                     = 'tax/avatax/request_settings_group/field_rule';
+    const AVATAX_REGION_FILTER_TAXABLE_COUNTRY  = 'tax/avatax/region_filter_group/taxable_country';
+    const AVATAX_REGION_FILTER_MODE             = 'tax/avatax/region_filter_group/region_filter_mode';
+    const AVATAX_REGION_FILTER_LIST             = 'tax/avatax/region_filter_group/region_filter_list';
     /**#@-*/
 
     /**#@+
@@ -467,6 +480,28 @@ class Config extends AbstractHelper
     }
 
     /**
+     * Get Queue Failed Lifetime
+     *
+     * @param Store|int $store
+     * @return int
+     */
+    public function getQueueFailedLifetime($store = null)
+    {
+        return (int)$this->getConfig(self::AVATAX_SERVICE_QUEUE_FAILED_LIFETIME, $store);
+    }
+
+    /**
+     * Get Queue Success Lifetime
+     *
+     * @param Store|int $store
+     * @return int
+     */
+    public function getQueueSuccessLifetime($store = null)
+    {
+        return (int)$this->getConfig(self::AVATAX_SERVICE_QUEUE_SUCCESS_LIFETIME, $store);
+    }
+
+    /**
      * Get user agent
      *
      * @return string
@@ -492,5 +527,125 @@ class Config extends AbstractHelper
     protected function getConfig($path, $store = null, $scopeType = ScopeInterface::SCOPE_STORE)
     {
         return $this->scopeConfig->getValue($path, $scopeType, $store);
+    }
+
+    /**
+     * Get validate address
+     *
+     * @param Store|int $store
+     * @return int
+     */
+    public function getValidateAddress($store = null)
+    {
+        return (int)$this->getConfig(self::AVATAX_VALIDATE_ADDRESS, $store);
+    }
+
+    /**
+     * Get normalize address
+     *
+     * @param Store|int $store
+     * @return int
+     */
+    public function getNormalizeAddress($store = null)
+    {
+        return (int)$this->getConfig(self::AVATAX_NORMALIZE_ADDRESS, $store);
+    }
+
+    /**
+     * Get onepage normalize message
+     *
+     * @param Store|int $store
+     * @return string
+     */
+    public function getOnepageNormalizeMessage($store = null)
+    {
+        return (string)$this->getConfig(self::AVATAX_ONEPAGE_NORMALIZE_MESSAGE, $store);
+    }
+
+    /**
+     * Get multiaddress normalize message
+     *
+     * @param Store|int $store
+     * @return string
+     */
+    public function getMultiaddressNormalizeMessage($store = null)
+    {
+        return (string)$this->getConfig(self::AVATAX_MULTIADDRESS_NORMALIZE_MESSAGE, $store);
+    }
+
+    /**
+     * Get validate address message
+     *
+     * @param Store|int $store
+     * @return string
+     */
+    public function getValidateAddressMessage($store = null)
+    {
+        return (string)$this->getConfig(self::AVATAX_VALIDATE_ADDRESS_MESSAGE, $store);
+    }
+
+    /**
+     * Get field required list
+     *
+     * @param Store|int $store
+     * @return string
+     */
+    public function getFieldRequiredList($store = null)
+    {
+        return (string)$this->getConfig(self::AVATAX_FIELD_REQUIRED_LIST, $store);
+    }
+
+    /**
+     * Get field rule
+     *
+     * @param Store|int $store
+     * @return string
+     */
+    public function getFieldRule($store = null)
+    {
+        return (string)$this->getConfig(self::AVATAX_FIELD_RULE, $store);
+    }
+
+    /**
+     * Get Region Filter Taxable Countries
+     *
+     * @param Store|int $store
+     * @return string
+     */
+    public function getRegionFilterTaxableCountries($store = null)
+    {
+        return (string)$this->getConfig(self::AVATAX_REGION_FILTER_TAXABLE_COUNTRY, $store);
+    }
+
+    /**
+     * Get Address Validation Countries
+     *
+     * @return string
+     */
+    public function getAddressValidationCountries()
+    {
+        return (string)$this->getConfig(self::AVATAX_ADDRESS_VALIDATION_COUNTRIES);
+    }
+
+    /**
+     * Get region filter mode
+     *
+     * @param Store|int $store
+     * @return int
+     */
+    public function getRegionFilterMode($store = null)
+    {
+        return (int)$this->getConfig(self::AVATAX_REGION_FILTER_MODE, $store);
+    }
+
+    /**
+     * Get region filter fist
+     *
+     * @param Store|int $store
+     * @return string
+     */
+    public function getRegionFilterList($store = null)
+    {
+        return (string)$this->getConfig(self::AVATAX_REGION_FILTER_LIST, $store);
     }
 }

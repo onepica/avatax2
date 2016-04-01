@@ -2,7 +2,7 @@
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
         <section id="tax">
-            <group id="avatax" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="avatax" translate="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Avatax</label>
                 <field id="action" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Action</label>
@@ -24,7 +24,66 @@
                     <label>Company Code</label>
                     <validate>required-entry</validate>
                 </field>
-                <group id="avatax_log_group" translate="label" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                <group id="region_filter_group" translate="label" sortOrder="55" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Region Filter Options</label>
+                    <attribute type="expanded">1</attribute>
+                    <field id="taxable_country" translate="label comment" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Taxable Country</label>
+                        <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                        <comment>Address validation option works only for United States and Canada</comment>
+                    </field>
+                    <field id="region_filter_mode" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Filter Requests by Region</label>
+                        <source_model>OnePica\AvaTax\Model\Source\RegionFilter\Mode</source_model>
+                        <comment>Re-save settings if Taxable Country was changed to use this option.</comment>
+                    </field>
+                    <field id="region_filter_list" translate="label comment" type="multiselect" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <source_model>OnePica\AvaTax\Model\Source\RegionFilter\RegionList</source_model>
+                        <comment>Select regions to use AvaTax services.</comment>
+                        <depends>
+                            <field id="region_filter_mode" separator="|">1|2</field>
+                        </depends>
+                    </field>
+                </group>
+                <group id="address_validation_group" translate="label" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Shipping Address Options</label>
+                    <attribute type="expanded">1</attribute>
+                    <field id="validate_address" translate="label comment" type="select" sortOrder="310" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Address Validation</label>
+                        <source_model>OnePica\AvaTax\Model\Source\ValidateAddress</source_model>
+                        <comment>Require a validated address from AvaTax to checkout</comment>
+                    </field>
+                    <field id="normalize_address" translate="label comment" type="select" sortOrder="320" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Address Normalization</label>
+                        <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                        <comment>Replace address with well-formed one from AvaTax</comment>
+                    </field>
+                    <field id="onepage_normalize_message" translate="label comment" type="textarea" sortOrder="330" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Onepage Checkout Address Normalized Notice</label>
+                        <comment>Only applies if address normalization is enabled</comment>
+                    </field>
+                    <field id="multiaddress_normalize_message" translate="label comment" type="textarea" sortOrder="340" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Multi-Address Checkout Address Normalized Notice</label>
+                        <comment>Only applies if address normalization is enabled</comment>
+                    </field>
+                    <field id="validate_address_message" translate="label comment" type="textarea" sortOrder="350" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Multi-Address Address Validation Error</label>
+                        <comment>Only applies if address validation is enabled and shows ONLY for the multi-address checkout</comment>
+                    </field>
+                </group>
+                <group id="request_settings_group" translate="label" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Request Settings</label>
+                    <attribute type="expanded">1</attribute>
+                    <field id="field_required_list" translate="label comment" type="multiselect" sortOrder="370" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Required Fileds</label>
+                        <source_model>OnePica\AvaTax\Model\Source\AddressFieldList</source_model>
+                    </field>
+                    <field id="field_rule" translate="label" type="text" sortOrder="380" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Field Rule</label>
+                        <comment>Example: ' ,-,_'</comment>
+                    </field>
+                </group>
+                <group id="avatax_log_group" translate="label" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Log Settings</label>
                     <attribute type="expanded">1</attribute>
                     <field id="allowed_log_types" translate="label" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -32,11 +91,21 @@
                         <source_model>OnePica\AvaTax\Model\Source\Avatax16\LogType</source_model>
                         <can_be_empty>1</can_be_empty>
                     </field>
-                    <field id="log_lifetime" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="log_lifetime" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
                         <label>Log Entry Lifetime</label>
                         <validate>required-entry validate-digits validate-digits-range digits-range-1-</validate>
                     </field>
-                    <field id="export_log_button" type="button" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="queue_success_lifetime" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                        <label>Successful Queue Lifetime</label>
+                        <comment>Required. Days before entries are auto-purged.</comment>
+                        <validate>required-entry validate-digits validate-digits-range digits-range-1-</validate>
+                    </field>
+                    <field id="queue_failed_lifetime" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
+                        <label>Failed Queue Lifetime</label>
+                        <comment>Required. Days before entries are auto-purged.</comment>
+                        <validate>required-entry validate-digits validate-digits-range digits-range-1-</validate>
+                    </field>
+                    <field id="export_log_button" type="button" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Export Logs</label>
                         <frontend_model>OnePica\AvaTax\Block\Adminhtml\System\Config\Form\Field\Log\Export</frontend_model>
                     </field>

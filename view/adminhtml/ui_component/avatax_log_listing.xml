@@ -165,12 +165,12 @@
                 </item>
             </argument>
         </column>
-        <actionsColumn name="actions" class="OnePica\AvaTax\Ui\Component\Listing\Column\LogActions">
+        <actionsColumn name="actions" class="OnePica\AvaTax\Ui\Component\Listing\Column\Actions">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="resizeEnabled" xsi:type="boolean">false</item>
-                    <item name="resizeDefaultWidth" xsi:type="string">80</item>
-                    <item name="indexField" xsi:type="string">log_id</item>
+                    <item name="urlAction" xsi:type="string">avatax/log/edit</item>
+                    <item name="urlTitle" xsi:type="string">Edit</item>
+                    <item name="idField" xsi:type="string">log_id</item>
                 </item>
             </argument>
         </actionsColumn>
