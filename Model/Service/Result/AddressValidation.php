@@ -22,7 +22,7 @@ use OnePica\AvaTax\Model\Service\Request\Address;
  *
  * @package OnePica\AvaTax\Model\Service\Result
  */
-class AddressValidation extends BaseResult implements AddressValidationResultInterface
+class AddressValidation extends Base implements AddressValidationResultInterface
 {
     /**#@+
      * Constants defined for keys of array

@@ -16,6 +16,7 @@ namespace OnePica\AvaTax\Model\Service\Resource\Avatax16;
 
 use Magento\Framework\DataObject;
 use Magento\Framework\ObjectManagerInterface;
+use OnePica\AvaTax\Api\DataSourceInterface;
 use OnePica\AvaTax\Api\ResultInterface;
 use OnePica\AvaTax\Api\Service\ValidationResourceInterface;
 use OnePica\AvaTax\Model\Service\Resource\AbstractResource;
@@ -53,22 +54,24 @@ class Validation extends AbstractResource implements ValidationResourceInterface
     /**
      * Constructor.
      *
-     * @param ConfigRepositoryInterface $configRepository
-     * @param ObjectManagerInterface    $objectManager
-     * @param CacheStorageInterface     $cacheStorage
-     * @param ConfigHelper              $config
-     * @param LoggerInterface           $logger
+     * @param ConfigRepositoryInterface               $configRepository
+     * @param ObjectManagerInterface                  $objectManager
+     * @param CacheStorageInterface                   $cacheStorage
+     * @param ConfigHelper                            $config
+     * @param \OnePica\AvaTax\Api\DataSourceInterface $dataSource
+     * @param LoggerInterface                         $logger
      */
     public function __construct(
         ConfigRepositoryInterface $configRepository,
         ObjectManagerInterface $objectManager,
         CacheStorageInterface $cacheStorage,
         ConfigHelper $config,
+        DataSourceInterface $dataSource,
         LoggerInterface $logger
     ) {
         $cacheStorage->setCacheId('AddressValidation');
         $this->cacheStorage = $cacheStorage;
-        parent::__construct($configRepository, $objectManager, $config, $logger);
+        parent::__construct($configRepository, $objectManager, $config, $logger, $dataSource);
     }
 
     /**
