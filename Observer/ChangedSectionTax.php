@@ -82,7 +82,7 @@ class ChangedSectionTax implements ObserverInterface
      * Send ping
      *
      * @param \Magento\Store\Api\Data\StoreInterface $store
-     * @return \OnePica\AvaTax\Model\Service\Result\BaseResult
+     * @return \OnePica\AvaTax\Model\Service\Result\Base
      */
     protected function sendPing($store)
     {

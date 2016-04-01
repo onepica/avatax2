@@ -22,7 +22,7 @@ use OnePica\AvaTax\Api\ResultInterface;
  *
  * @package OnePica\AvaTax\Model\Service\Result
  */
-class BaseResult extends DataObject implements ResultInterface
+class Base extends DataObject implements ResultInterface
 {
     /**#@+
      * Constants defined for keys of array

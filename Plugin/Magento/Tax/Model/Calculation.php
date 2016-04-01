@@ -15,7 +15,6 @@
 namespace OnePica\AvaTax\Plugin\Magento\Tax\Model;
 
 use Magento\Store\Model\StoreManagerInterface;
-use OnePica\AvaTax\Helper\Config;
 
 /**
  * Class Calculation
@@ -41,10 +40,10 @@ class Calculation
     /**
      * Calculation constructor.
      *
-     * @param Config                                     $config
+     * @param \OnePica\AvaTax\Helper\Config              $config
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      */
-    public function __construct(Config $config, StoreManagerInterface $storeManager)
+    public function __construct(\OnePica\AvaTax\Helper\Config $config, StoreManagerInterface $storeManager)
     {
         $this->config = $config;
         $this->storeManager = $storeManager;

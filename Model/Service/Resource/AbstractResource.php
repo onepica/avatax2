@@ -27,7 +27,7 @@ use OnePica\AvaTax\Api\Service\LoggerInterface;
 use OnePica\AvaTax\Helper\Config;
 use OnePica\AvaTax\Model\Log;
 use OnePica\AvaTax\Model\Service\DataSource;
-use OnePica\AvaTax\Model\Service\Result\BaseResult;
+use OnePica\AvaTax\Model\Service\Result\Base;
 use OnePica\AvaTax16\Document\Request\Header;
 use OnePica\AvaTax16\Document\Request\Line;
 
@@ -187,7 +187,7 @@ abstract class AbstractResource
      */
     protected function createResultObject()
     {
-        return $this->objectManager->create(BaseResult::class);
+        return $this->objectManager->create(Base::class);
     }
 
     /**

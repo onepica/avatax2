@@ -29,7 +29,7 @@ use OnePica\AvaTax\Api\Service\InvoiceResourceInterface;
 use OnePica\AvaTax\Api\Service\PingResourceInterface;
 use OnePica\AvaTax\Api\Service\ValidationResourceInterface;
 use OnePica\AvaTax\Api\ServiceInterface;
-use OnePica\AvaTax\Model\Service\Result\BaseResult;
+use OnePica\AvaTax\Model\Service\Result\Base;
 
 /**
  * Class AbstractService
@@ -204,7 +204,7 @@ abstract class AbstractService implements ServiceInterface
      * Process ping
      *
      * @param \Magento\Store\Model\Store $store
-     * @return BaseResult
+     * @return Base
      */
     public function ping(Store $store)
     {

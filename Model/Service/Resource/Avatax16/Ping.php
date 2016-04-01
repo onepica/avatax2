@@ -20,7 +20,6 @@ use OnePica\AvaTax\Api\Service\PingResourceInterface;
 use OnePica\AvaTax\Model\Log;
 use OnePica\AvaTax\Model\Service\Avatax16\Config;
 use OnePica\AvaTax\Model\Service\Resource\AbstractResource;
-use OnePica\AvaTax\Model\Service\Result\BaseResult;
 
 /**
  * Class Ping

@@ -25,7 +25,7 @@ use OnePica\AvaTax16\Document\Response;
  *
  * @package OnePica\AvaTax\Model\Service\Result
  */
-class Calculation extends BaseResult implements CalculationResultInterface
+class Calculation extends Base implements CalculationResultInterface
 {
     /**#@+
      * Item path
