@@ -126,6 +126,29 @@
                     </field>
                 </group>
             </group>
+            <!--Hide some default settings-->
+            <group id="calculation">
+                <field id="algorithm" showInDefault="0" showInWebsite="0" showInStore="0" />
+                <field id="based_on" showInDefault="0" showInWebsite="0" showInStore="0" />
+                <field id="shipping_includes_tax" showInDefault="0" showInWebsite="0" showInStore="0" />
+                <field id="apply_after_discount">
+                    <depends>
+                        <field id="price_includes_tax" separator=",">1</field>
+                    </depends>
+                </field>
+                <field id="discount_tax" showInDefault="0" showInWebsite="0" showInStore="0" />
+                <field id="apply_tax_on" showInDefault="0" showInWebsite="0" showInStore="0" />
+                <field id="cross_border_trade_enabled" showInDefault="0" showInWebsite="0" showInStore="0" />
+            </group>
+            <group id="display">
+                <field id="type" showInDefault="0" showInWebsite="0" showInStore="0" />
+                <field id="shipping" showInDefault="0" showInWebsite="0" showInStore="0"/>
+            </group>
+            <group id="classes">
+                <field id="shipping_tax_class" showInDefault="0" showInWebsite="0" showInStore="0" />
+                <field id="default_product_tax_class" showInDefault="0" showInWebsite="0" showInStore="0"/>
+                <field id="default_customer_tax_class" showInDefault="0" showInWebsite="0" showInStore="0"/>
+            </group>
         </section>
     </system>
 </config>
