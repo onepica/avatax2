@@ -60,7 +60,7 @@ class Resolver implements ResolverInterface
     {
         $serviceName = $this->config->getActiveService();
 
-        if (!$this->serviceData[$serviceName]['service']) {
+        if (!isset($this->serviceData[$serviceName]['service'])) {
             throw new \Exception('Service not defined.');
         }
 
