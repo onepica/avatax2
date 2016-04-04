@@ -173,7 +173,7 @@ class Validation extends AbstractResource implements ValidationResourceInterface
     protected function updateAddressFromServiceResponse($address, $response)
     {
         $addressResult = $response->getAddress();
-        $address->setline1($addressResult->getLine1());
+        $address->setLine1($addressResult->getLine1());
         $address->setCity($addressResult->getCity());
         $address->setRegion($addressResult->getState());
         $address->setPostcode($addressResult->getZipcode());
