@@ -119,7 +119,7 @@ class Processor
         $this->cleanCompleted()
             ->cleanFailed()
             ->cleanUnbalanced()
-            ->processInvoicesAndCreditMemos();
+            ->processItems();
 
         return $this;
     }
@@ -222,7 +222,7 @@ class Processor
      *
      * @return $this
      */
-    protected function processInvoicesAndCreditMemos()
+    protected function processItems()
     {
         $queueItemsCount = $this->config->getQueueProcessItemsLimit();
         $filters[] = $this->filterBuilder
