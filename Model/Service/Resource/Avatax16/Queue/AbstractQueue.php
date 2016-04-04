@@ -46,7 +46,7 @@ abstract class AbstractQueue extends AbstractResource
      * @param \Magento\Framework\ObjectManagerInterface     $objectManager
      * @param \OnePica\AvaTax\Helper\Config                 $config
      * @param \OnePica\AvaTax\Api\Service\LoggerInterface   $logger
-     * @param \OnePica\AvaTax\Model\Service\DataSourceQueue       $dataSource
+     * @param \OnePica\AvaTax\Model\Service\DataSourceQueue $dataSource
      * @param Timezone $timezone
      */
     public function __construct(
@@ -280,7 +280,12 @@ abstract class AbstractQueue extends AbstractResource
             $result->setHasError($libResult->getHasError());
             $result->setErrors($libResult->getErrors());
 
-            if ($libResult->getHasError() && !$libResult->getErrors()) {
+            if (!$libResult->getHasError()) {
+                $totalTax = $libResult->getCalculatedTaxSummary()->getTotalTax();
+                $result->setTotalTax($totalTax);
+                $documentCode = $libResult->getHeader()->getDocumentCode();
+                $result->setDocumentCode($documentCode);
+            } elseif (!$libResult->getErrors()) {
                 $result->setErrors([__('The user or account could not be authenticated.')]);
             }
         } catch (\Exception $e) {
@@ -288,7 +293,7 @@ abstract class AbstractQueue extends AbstractResource
             $result->setErrors([$e->getMessage()]);
         }
 
-        $this->logger->log(Log::CALCULATION, $this->request->toArray(), $result, $store->getId(),
+        $this->logger->log(Log::TRANSACTION, $this->request->toArray(), $result, $store->getId(),
             $config->getConnection());
 
         return $result;

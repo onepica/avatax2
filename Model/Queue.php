@@ -38,6 +38,11 @@ class Queue extends AbstractModel implements QueueInterface
     protected $_eventPrefix = 'onepica_avatax_queue';
 
     /**
+     * Queue attempt max
+     */
+    const ATTEMPT_MAX = 5;
+
+    /**
      * Initialize resource model
      *
      * @return void
@@ -186,7 +191,7 @@ class Queue extends AbstractModel implements QueueInterface
     /**
      * Get attempt
      *
-     * @return string
+     * @return int
      */
     public function getAttempt()
     {
@@ -197,7 +202,7 @@ class Queue extends AbstractModel implements QueueInterface
      * Set attempt
      *
      * @param string $attempt
-     * @return mixed
+     * @return int
      */
     public function setAttempt($attempt)
     {

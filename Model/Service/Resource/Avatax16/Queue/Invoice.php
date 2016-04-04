@@ -14,10 +14,10 @@
  */
 namespace OnePica\AvaTax\Model\Service\Resource\Avatax16\Queue;
 
-use OnePica\AvaTax\Api\ResultInterface;
 use OnePica\AvaTax\Api\Service\InvoiceResourceInterface;
 use OnePica\AvaTax\Model\Queue;
 use OnePica\AvaTax16\Document\Request;
+use OnePica\AvaTax\Model\Service\Result\Invoice as InvoiceResult;
 
 /**
  * Class Invoice
@@ -117,7 +117,7 @@ class Invoice extends AbstractQueue implements InvoiceResourceInterface
      * Process queue for invoice. Send request object to service
      *
      * @param Queue $queue
-     * @return ResultInterface
+     * @return \OnePica\AvaTax\Model\Service\Result\Invoice
      */
     public function invoice(Queue $queue)
     {
@@ -126,5 +126,15 @@ class Invoice extends AbstractQueue implements InvoiceResourceInterface
         $store = $this->objectManager->get('Magento\Store\Model\StoreManagerInterface')->getStore($queue->getStoreId());
         $result = $this->send($store);
         return $result;
+    }
+
+    /**
+     * Get result object
+     *
+     * @return \OnePica\AvaTax\Model\Service\Result\Invoice
+     */
+    protected function createResultObject()
+    {
+        return $this->objectManager->create(InvoiceResult::class);
     }
 }

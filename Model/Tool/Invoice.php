@@ -98,9 +98,30 @@ class Invoice extends AbstractTool
      * Process queue for invoice. Send request object to service
      *
      * @return ResultInterface
+     * @throws \OnePica\AvaTax\Model\Service\Exception\Unbalanced
+     * @throws \OnePica\AvaTax\Model\Service\Exception\Commitfailure
      */
     public function execute()
     {
-        return $this->getService()->invoice($this->queue);
+        $invoiceResult =  $this->getService()->invoice($this->queue);
+
+        //if successful
+        if (!$invoiceResult->getHasError()) {
+            $message = __('Invoice #%s was saved to AvaTax', $invoiceResult->getDocumentCode());
+           // $this->_getHelper()->addStatusHistoryComment($order, $message);
+
+            $totalTax = $invoiceResult->getTotalTax();
+            if ($totalTax != $this->invoice->getBaseTaxAmount()) {
+                throw new \OnePica\AvaTax\Model\Service\Exception\Unbalanced(
+                    'Collected: ' . $this->invoice->getBaseTaxAmount() . ', Actual: ' . $totalTax
+                );
+            }
+            //if not successful
+        } else {
+            $messages = $invoiceResult->getErrors();
+            throw new \OnePica\AvaTax\Model\Service\Exception\Commitfailure(implode(' // ', $messages));
+        }
+
+        return $invoiceResult;
     }
 }
