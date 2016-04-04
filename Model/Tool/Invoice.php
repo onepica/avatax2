@@ -19,6 +19,7 @@ use OnePica\AvaTax\Api\Service\ResolverInterface;
 use OnePica\AvaTax\Model\ServiceFactory;
 use Magento\Sales\Model\Order\Invoice as OrderInvoice;
 use OnePica\AvaTax\Model\Queue;
+use OnePica\AvaTax\Helper\Data as DataHelper;
 
 /**
  * Class Invoice
@@ -42,19 +43,29 @@ class Invoice extends AbstractTool
     protected $queue;
 
     /**
+     * Data helper
+     *
+     * @var DataHelper
+     */
+    protected $dataHelper;
+
+    /**
      * Invoice constructor.
      *
      * @param \OnePica\AvaTax\Api\Service\ResolverInterface $resolver
      * @param \OnePica\AvaTax\Model\ServiceFactory          $serviceFactory
      * @param \Magento\Sales\Model\Order\Invoice            $invoice
+     * @param DataHelper                                    $dataHelper
      */
     public function __construct(
         ResolverInterface $resolver,
         ServiceFactory $serviceFactory,
-        OrderInvoice $invoice
+        OrderInvoice $invoice,
+        DataHelper $dataHelper
     ) {
         parent::__construct($resolver, $serviceFactory);
         $this->setInvoice($invoice);
+        $this->dataHelper = $dataHelper;
     }
 
     /**
@@ -107,8 +118,9 @@ class Invoice extends AbstractTool
 
         //if successful
         if (!$invoiceResult->getHasError()) {
-            $message = __('Invoice #%s was saved to AvaTax', $invoiceResult->getDocumentCode());
-           // $this->_getHelper()->addStatusHistoryComment($order, $message);
+            $message = __('Invoice #%1 was saved to AvaTax', $invoiceResult->getDocumentCode());
+            $order = $this->invoice->getOrder();
+            $this->dataHelper->addStatusHistoryCommentToOrder($order, $message);
 
             $totalTax = $invoiceResult->getTotalTax();
             if ($totalTax != $this->invoice->getBaseTaxAmount()) {
