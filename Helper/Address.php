@@ -24,7 +24,7 @@ use OnePica\AvaTax\Model\Source\Avatax16\Action as AvataxActionSource;
 use OnePica\AvaTax\Api\Service\CacheStorageInterface;
 use OnePica\AvaTax\Api\Service\LoggerInterface;
 use OnePica\AvaTax\Model\Log;
-use OnePica\AvaTax\Model\Service\Result\BaseResult;
+use OnePica\AvaTax\Model\Service\Result\Base;
 use OnePica\AvaTax\Api\ConfigRepositoryInterface;
 
 /**
@@ -204,7 +204,7 @@ class Address extends AbstractHelper
             $addressData = $address->debug();
             $this->cacheStorage->put($hash, $addressData);
             $config = $this->configRepository->getConfigByStore($store);
-            $result = $this->objectManager->create(BaseResult::Class);
+            $result = $this->objectManager->create(Base::class);
             $type = ($filterMode == AvataxDataHelper::REGION_FILTER_MODE_TAX)
                 ? 'tax_calc'
                 : 'tax_calc|address_opts';
