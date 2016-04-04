@@ -23,6 +23,7 @@ use OnePica\AvaTax\Helper\Config;
 use OnePica\AvaTax\Api\Service\LoggerInterface;
 use OnePica\AvaTax\Model\Service\DataSourceQueue;
 use OnePica\AvaTax16\Document\Request\Line;
+use OnePica\AvaTax\Model\Log;
 
 /**
  * Class AbstractQueue
@@ -259,5 +260,37 @@ abstract class AbstractQueue extends AbstractResource
                 }
             }
         }
+    }
+
+    /**
+     * Send request
+     *
+     * @param Store $store
+     * @return ResultInterface
+     */
+    protected function send($store)
+    {
+        $result = $this->createResultObject();
+
+        $config = $this->configRepository->getConfigByStore($store);
+        /** @var \OnePica\AvaTax\Model\Service\Avatax16\Config $config */
+        try {
+            $libResult = $config->getConnection()->createTransaction($this->request);
+            $result->setResponse($libResult);
+            $result->setHasError($libResult->getHasError());
+            $result->setErrors($libResult->getErrors());
+
+            if ($libResult->getHasError() && !$libResult->getErrors()) {
+                $result->setErrors([__('The user or account could not be authenticated.')]);
+            }
+        } catch (\Exception $e) {
+            $result->setHasError(true);
+            $result->setErrors([$e->getMessage()]);
+        }
+
+        $this->logger->log(Log::CALCULATION, $this->request->toArray(), $result, $store->getId(),
+            $config->getConnection());
+
+        return $result;
     }
 }

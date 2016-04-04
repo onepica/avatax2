@@ -121,7 +121,10 @@ class Invoice extends AbstractQueue implements InvoiceResourceInterface
      */
     public function invoice(Queue $queue)
     {
-        // TODO: Implement processQueue() method.
-        return true;
+        $requestObject = unserialize($queue->getData('request_data'));
+        $this->request = $requestObject;
+        $store = $this->objectManager->get('Magento\Store\Model\StoreManagerInterface')->getStore($queue->getStoreId());
+        $result = $this->send($store);
+        return $result;
     }
 }

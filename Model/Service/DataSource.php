@@ -274,13 +274,14 @@ class DataSource implements DataSourceInterface
      */
     protected function getDestinationAddress($address)
     {
+        $country = $address->getCountry() ?: $address->getCountryId();
         return $this->prepareNewAddressObject(
             $address->getStreetLine(1),
             $address->getStreetLine(2),
             $address->getCity(),
             $address->getRegion(),
             $address->getPostcode(),
-            $address->getCountry()
+            $country
         );
     }
 
