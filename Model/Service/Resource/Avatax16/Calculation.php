@@ -29,7 +29,7 @@ use OnePica\AvaTax\Api\Service\LoggerInterface;
 use OnePica\AvaTax\Helper\Config;
 use OnePica\AvaTax\Model\Service\DataSource;
 use OnePica\AvaTax\Model\Service\Resource\AbstractResource;
-use OnePica\AvaTax\Model\Service\Resource\Avatax16\Calculation\ResultStorage;
+use OnePica\AvaTax\Model\Service\Result\Storage\Calculation as CalculationResultStorage;
 use OnePica\AvaTax16\Document\Request;
 use OnePica\AvaTax16\Document\Response\Line;
 
@@ -58,7 +58,7 @@ class Calculation extends AbstractResource implements CalculationResourceInterfa
     /**
      * Calculation result storage
      *
-     * @var \OnePica\AvaTax\Model\Service\Resource\Avatax16\Calculation\ResultStorage
+     * @var CalculationResultStorage
      */
     protected $resultStorage;
 
@@ -78,7 +78,7 @@ class Calculation extends AbstractResource implements CalculationResourceInterfa
      * @param \OnePica\AvaTax\Api\Service\LoggerInterface                               $logger
      * @param \OnePica\AvaTax\Api\DataSourceInterface                                   $dataSource
      * @param \Magento\Framework\Stdlib\DateTime\Timezone                               $timezone
-     * @param \OnePica\AvaTax\Model\Service\Resource\Avatax16\Calculation\ResultStorage $resultStorage
+     * @param CalculationResultStorage                                                  $resultStorage
      */
     public function __construct(
         ConfigRepositoryInterface $configRepository,
@@ -87,7 +87,7 @@ class Calculation extends AbstractResource implements CalculationResourceInterfa
         LoggerInterface $logger,
         DataSourceInterface $dataSource,
         Timezone $timezone,
-        ResultStorage $resultStorage
+        CalculationResultStorage $resultStorage
     ) {
         parent::__construct($configRepository, $objectManager, $config, $logger, $dataSource);
         $this->timezone = $timezone;
@@ -99,7 +99,7 @@ class Calculation extends AbstractResource implements CalculationResourceInterfa
      *
      * @param \Magento\Quote\Model\Quote                          $quote
      * @param \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignment
-     * @param  Total                                              $total
+     * @param  Total $total
      * @return null|\OnePica\AvaTax\Api\ResultInterface
      */
     public function calculate(
