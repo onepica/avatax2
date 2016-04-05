@@ -18,6 +18,7 @@ use OnePica\AvaTax\Api\ResultInterface;
 use OnePica\AvaTax\Api\Service\ResolverInterface;
 use OnePica\AvaTax\Model\ServiceFactory;
 use Magento\Sales\Model\Order\Creditmemo as OrderCreditmemo;
+use OnePica\AvaTax\Model\Queue;
 
 /**
  * Class Creditmemo
@@ -32,6 +33,13 @@ class Creditmemo extends AbstractTool
      * @var \Magento\Sales\Model\Order\Creditmemo
      */
     protected $creditmemo;
+
+    /**
+     * Queue
+     *
+     * @var \OnePica\AvaTax\Model\Queue
+     */
+    protected $queue;
 
     /**
      * Creditmemo constructor.
@@ -50,13 +58,49 @@ class Creditmemo extends AbstractTool
     }
 
     /**
+     * Set creditmemo
+     *
+     * @param OrderCreditmemo $creditmemo
+     * @return $this
+     */
+    public function setCreditmemo(OrderCreditmemo $creditmemo)
+    {
+        $this->creditmemo = $creditmemo;
+
+        return $this;
+    }
+
+    /**
+     * Set queue
+     *
+     * @param Queue $queue
+     * @return $this
+     */
+    public function setQueue(Queue $queue)
+    {
+        $this->queue = $queue;
+
+        return $this;
+    }
+
+    /**
+     * Get Creditmemo Service Request Object
+     *
+     * @return mixed
+     */
+    public function getCreditmemoServiceRequestObject()
+    {
+        return $this->getService()->getCreditmemoServiceRequestObject($this->creditmemo);
+    }
+
+    /**
      * Execute
      *
      * @return ResultInterface
      */
     public function execute()
     {
-        return $this->getService()->creditmemo($this->creditmemo);
+        return $this->getService()->creditmemo($this->queue);
     }
 
     /**
