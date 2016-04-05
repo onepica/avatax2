@@ -126,6 +126,6 @@ class CreateQueueItemForCreditmemo implements ObserverInterface
     {
         $creditmemoService = $this->objectManager->get(CreditmemoTool::class);
         $creditmemoService->setCreditmemo($creditmemo);
-        return $creditmemoService->getInvoiceServiceRequestObject();
+        return $creditmemoService->getCreditmemoServiceRequestObject();
     }
 }

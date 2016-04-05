@@ -76,7 +76,7 @@ class DataSourceQueue extends DataSource
      */
     public function getTaxBuyerCode($store, $address)
     {
-        return (string)$address->getVatId();
+        return (string)$address->getVatId() ?: (string)$address->getOrder()->getBillingAddress()->getVatId();
     }
 
     /**
