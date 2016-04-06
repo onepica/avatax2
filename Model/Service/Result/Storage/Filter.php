@@ -23,24 +23,24 @@ namespace OnePica\AvaTax\Model\Service\Result\Storage;
 class Filter extends AbstractStorage
 {
     /**
-     * Get results
+     * Get data
      *
      * @return array
      */
-    protected function getResults()
+    protected function getData()
     {
         return $this->session->getFilterResults();
     }
 
     /**
-     * Set results
+     * Set data
      *
-     * @param array $results
+     * @param array $data
      * @return $this
      */
-    protected function setResults($results)
+    protected function setData($data)
     {
-        $this->session->setFilterResults($results);
+        $this->session->setFilterResults($data);
 
         return $this;
     }

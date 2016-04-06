@@ -22,24 +22,24 @@ namespace OnePica\AvaTax\Model\Service\Result\Storage;
 class Calculation extends AbstractStorage
 {
     /**
-     * Get results
+     * Get data
      *
      * @return array
      */
-    protected function getResults()
+    protected function getData()
     {
         return $this->session->getCalculationResults();
     }
 
     /**
-     * Set results
+     * Set data
      *
-     * @param array $results
+     * @param array $data
      * @return $this
      */
-    protected function setResults($results)
+    protected function setData($data)
     {
-        $this->session->setCalculationResults($results);
+        $this->session->setCalculationResults($data);
 
         return $this;
     }

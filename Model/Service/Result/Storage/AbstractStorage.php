@@ -65,7 +65,7 @@ abstract class AbstractStorage implements ResultStorageInterface
      */
     protected function init()
     {
-        $results = $this->getResults();
+        $results = $this->getData();
         $this->resultStorage = $results ?: [];
 
         foreach ($this->resultStorage as $key => $result) {
@@ -140,7 +140,7 @@ abstract class AbstractStorage implements ResultStorageInterface
      */
     public function save()
     {
-        $this->setResults($this->resultStorage);
+        $this->setData($this->resultStorage);
 
         return $this;
     }
@@ -156,17 +156,17 @@ abstract class AbstractStorage implements ResultStorageInterface
     }
 
     /**
-     * Get results
+     * Get data
      *
      * @return array
      */
-    abstract protected function getResults();
+    abstract protected function getData();
 
     /**
-     * Set results
+     * Set data
      *
-     * @param array $results
+     * @param array $data
      * @return $this
      */
-    abstract protected function setResults($results);
+    abstract protected function setData($data);
 }

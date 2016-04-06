@@ -46,18 +46,18 @@ class Validation extends AbstractResource implements ValidationResourceInterface
     protected $successResolutionQuality = array('Rooftop');
 
     /**
-     * Cache Storage
+     * Result Storage
      *
      * @var ValidationResultStorage
      */
-    protected $cacheStorage;
+    protected $resultStorage;
 
     /**
      * Constructor.
      *
      * @param ConfigRepositoryInterface               $configRepository
      * @param ObjectManagerInterface                  $objectManager
-     * @param ValidationResultStorage                 $cacheStorage
+     * @param ValidationResultStorage                 $resultStorage
      * @param ConfigHelper                            $config
      * @param \OnePica\AvaTax\Api\DataSourceInterface $dataSource
      * @param LoggerInterface                         $logger
@@ -65,12 +65,12 @@ class Validation extends AbstractResource implements ValidationResourceInterface
     public function __construct(
         ConfigRepositoryInterface $configRepository,
         ObjectManagerInterface $objectManager,
-        ValidationResultStorage $cacheStorage,
+        ValidationResultStorage $resultStorage,
         ConfigHelper $config,
         DataSourceInterface $dataSource,
         LoggerInterface $logger
     ) {
-        $this->cacheStorage = $cacheStorage;
+        $this->resultStorage = $resultStorage;
         parent::__construct($configRepository, $objectManager, $config, $logger, $dataSource);
     }
 
@@ -84,7 +84,7 @@ class Validation extends AbstractResource implements ValidationResourceInterface
     {
         $store = $address->getStore();
         $libAddress = $this->getLibAddress($address);
-        $result = $this->cacheStorage->getResult($libAddress);
+        $result = $this->resultStorage->getResult($libAddress);
 
         if ($result) {
             return $result;
@@ -130,7 +130,7 @@ class Validation extends AbstractResource implements ValidationResourceInterface
 
         $result->setTimestamp((new DateTime())->getTimestamp());
 
-        $this->cacheStorage->setResult($libAddress, $result);
+        $this->resultStorage->setResult($libAddress, $result);
 
         return $result;
     }

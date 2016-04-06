@@ -47,11 +47,11 @@ class Address extends AbstractHelper
     protected $config;
 
     /**
-     * Cache Storage
+     * Result Storage
      *
      * @var Filter
      */
-    protected $cacheStorage;
+    protected $resultStorage;
 
     /**
      * Service logger
@@ -71,7 +71,7 @@ class Address extends AbstractHelper
      * @param Context $context
      * @param Config $config
      * @param ObjectManagerInterface $objectManager
-     * @param Filter $cacheStorage
+     * @param Filter $resultStorage
      * @param LoggerInterface $logger
      * @param ConfigRepositoryInterface $configRepository
      */
@@ -79,14 +79,14 @@ class Address extends AbstractHelper
         Context $context,
         ObjectManagerInterface $objectManager,
         Config $config,
-        Filter $cacheStorage,
+        Filter $resultStorage,
         LoggerInterface $logger,
         ConfigRepositoryInterface $configRepository
     ) {
         parent::__construct($context);
         $this->config = $config;
         $this->objectManager = $objectManager;
-        $this->cacheStorage = $cacheStorage;
+        $this->resultStorage = $resultStorage;
         $this->logger = $logger;
         $this->configRepository = $configRepository;
     }
@@ -199,7 +199,7 @@ class Address extends AbstractHelper
         $filter,
         $filterMode
     ) {
-        if ($this->cacheStorage->getResult($address->format('text'))) {
+        if ($this->resultStorage->getResult($address->format('text'))) {
             return $this;
         }
 
@@ -214,7 +214,7 @@ class Address extends AbstractHelper
         $resultStr = 'filter: ' . $filter . ', type: ' . $type;
         $result->setResponse(['result' => $resultStr]);
 
-        $this->cacheStorage->setResult($address->format('text'), $result);
+        $this->resultStorage->setResult($address->format('text'), $result);
 
         $this->logger->log(
             Log::FILTER,
