@@ -215,9 +215,9 @@ abstract class AbstractQueue extends AbstractResource
             $price -= (float)$item->getBaseDiscountAmount();
         }
 
-        $line = parent::prepareItemLine($store, $item);
-
         $price = $credit ? (-1 * $price) : $price;
+
+        $line = parent::prepareItemLine($store, $item);
         $line->setLineAmount($price);
         $line->setItemCode($this->dataSource->getItemCode($item, $store));
         $line->setAvalaraGoodsAndServicesType(
