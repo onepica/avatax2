@@ -24,6 +24,7 @@ use OnePica\AvaTax\Api\Service\LoggerInterface;
 use OnePica\AvaTax\Model\Service\DataSourceQueue;
 use OnePica\AvaTax16\Document\Request\Line;
 use OnePica\AvaTax\Model\Log;
+use OnePica\AvaTax\Api\ResultInterface;
 
 /**
  * Class AbstractQueue
@@ -172,7 +173,7 @@ abstract class AbstractQueue extends AbstractResource
                 continue;
             }
 
-            $this->addLine($this->prepareItemLine($store, $item), $item->getId(), $credit);
+            $this->addLine($this->prepareItemLine($store, $item, $credit), $item->getId());
         }
 
         return $this;
@@ -192,16 +193,20 @@ abstract class AbstractQueue extends AbstractResource
             return false;
         }
 
-        $basePrice = (float)$item->getBaseRowTotal();
+        $price = (float)$item->getBaseRowTotal();
+
+        if ($this->dataSource->taxIncluded($store)) {
+            $price = (float)$item->getBaseRowTotalInclTax();
+        }
 
         if ($this->dataSource->applyTaxAfterDiscount($store)) {
-            $basePrice -= (float)$item->getBaseDiscountAmount();
+            $price -= (float)$item->getBaseDiscountAmount();
         }
 
         $line = parent::prepareItemLine($store, $item);
 
-        $basePrice = $credit ? (-1 * $basePrice) : $basePrice;
-        $line->setLineAmount($basePrice);
+        $price = $credit ? (-1 * $price) : $price;
+        $line->setLineAmount($price);
         $line->setItemCode($this->dataSource->getItemCode($item, $store));
         $line->setAvalaraGoodsAndServicesType(
             $this->dataSource->getItemAvalaraGoodsAndServicesType($item, $store)
@@ -293,8 +298,13 @@ abstract class AbstractQueue extends AbstractResource
             $result->setErrors([$e->getMessage()]);
         }
 
-        $this->logger->log(Log::TRANSACTION, $this->request->toArray(), $result, $store->getId(),
-            $config->getConnection());
+        $this->logger->log(
+            Log::TRANSACTION,
+            $this->request->toArray(),
+            $result,
+            $store->getId(),
+            $config->getConnection()
+        );
 
         return $result;
     }

@@ -54,8 +54,8 @@ class Creditmemo extends AbstractQueue implements CreditmemoResourceInterface
         $header = $this->prepareHeaderForCreditmemo($creditmemo);
         $this->request->setHeader($header);
 
-/*        $this->prepareLines($creditmemo);
-        $this->request->setLines(array_values($this->lines));*/
+        $this->prepareLines($creditmemo);
+        $this->request->setLines(array_values($this->lines));
 
         return $this;
     }
@@ -91,6 +91,25 @@ class Creditmemo extends AbstractQueue implements CreditmemoResourceInterface
     protected function getCreditmemoDocumentCode($creditmemo)
     {
         return self::DOCUMENT_CODE_CREDITMEMO_PREFIX . $creditmemo->getIncrementId();
+    }
+
+    /**
+     * Prepare lines
+     *
+     * @param \Magento\Sales\Model\Order\Invoice $invoice
+     * @return $this
+     */
+    protected function prepareLines($invoice)
+    {
+        $this->lines = [];
+        $store = $invoice->getStore();
+        $this->addLine($this->prepareShippingLine($store, $invoice, true), $this->getShippingSku($store));
+        $this->addLine($this->prepareGwOrderLine($store, $invoice, true), $this->getGwOrderSku($store));
+        $this->addLine($this->prepareGwPrintedCardLine($store, $invoice, true), $this->getGwPrintedCardSku($store));
+        $this->addLine($this->prepareGwItemsLine($store, $invoice, true), $this->getGwItemsSku($store));
+        $this->addItemsLine($store, $invoice->getItems(), true);
+
+        return $this;
     }
 
     /**
