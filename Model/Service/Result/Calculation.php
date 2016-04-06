@@ -33,6 +33,7 @@ class Calculation extends Base implements CalculationResultInterface
     const ITEM_RATE_PATH              = '%s/%s/rate';
     const ITEM_JURISDICTION_DATA_PATH = 'items/%s/jurisdiction_data';
     const ITEM_AMOUNT_PATH            = '%s/%s/amount';
+    const ITEM_FPT_PATH               = 'items/%s/fpt';
     /**#@-*/
 
     /**#@+
@@ -141,6 +142,32 @@ class Calculation extends Base implements CalculationResultInterface
         $this->_data[$type][$id]['amount'] = $amount;
 
         return $this;
+    }
+
+    /**
+     * Set item fixed product tax
+     *
+     * @param string|int $id
+     * @param float      $fpt
+     * @param string     $type
+     * @return $this
+     */
+    public function setItemFptData($id, $fpt, $type = 'items')
+    {
+        $this->_data[$type][$id]['fpt'] = $fpt;
+
+        return $this;
+    }
+
+    /**
+     * Get item fpt
+     *
+     * @param int $id
+     * @return float
+     */
+    public function getItemFptData($id)
+    {
+        return $this->getData(sprintf(self::ITEM_FPT_PATH, $id));
     }
 
     /**

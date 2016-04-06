@@ -92,6 +92,24 @@ interface CalculationResultInterface extends ResultInterface
     public function setItemAmount($id, $amount, $type = 'items');
 
     /**
+     * Set item fixed product tax
+     *
+     * @param string|int $id
+     * @param float      $fpt
+     * @param string     $type
+     * @return $this
+     */
+    public function setItemFptData($id, $fpt, $type = 'items');
+
+    /**
+     * Get item fpt
+     *
+     * @param int $id
+     * @return float
+     */
+    public function getItemFptData($id);
+
+    /**
      * Get gw item amount
      *
      * @param string|int $id

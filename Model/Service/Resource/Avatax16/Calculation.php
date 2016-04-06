@@ -423,6 +423,44 @@ class Calculation extends AbstractResource implements CalculationResourceInterfa
     }
 
     /**
+     * Get line fixed product tax
+     *
+     * @param Line $line
+     * @return float
+     */
+    protected function getLineFptData($line)
+    {
+        $fpt = [
+            'total_ftp_tax' => 0,
+            'tax_details'   => []
+        ];
+
+        if (!$line->getCalculatedTax()->getTax()) {
+            return $fpt;
+        }
+
+        /** @var \OnePica\AvaTax16\Document\Response\Line\CalculatedTax\Details $detail */
+        foreach ($line->getCalculatedTax()->getDetails() as $detail) {
+            if ((float)$detail->getRate()) {
+                continue;
+            }
+
+            $fpt['tax_details'][] = [
+                'tax'               => (float)$detail->getTax(),
+                'jurisdiction_name' => $this->prepareJurisdictionName(
+                    $detail->getTaxType(),
+                    $detail->getJurisdictionName(),
+                    $detail->getJurisdictionType()
+                )
+            ];
+
+            $fpt['total_ftp_tax'] += (float)$detail->getTax();
+        }
+
+        return $fpt;
+    }
+
+    /**
      * Can send request
      *
      * @param \OnePica\AvaTax\Model\Service\Result\Calculation $result
@@ -461,8 +499,15 @@ class Calculation extends AbstractResource implements CalculationResourceInterfa
         foreach ($lines as $line) {
             $id = $this->getItemIdByLine($line);
             $type = $this->getItemTypeByLine($line);
-            $result->setItemAmount($id, $line->getCalculatedTax()->getTax(), $type);
             $rate = $this->getLineRate($line);
+            $fptData = $this->getLineFptData($line);
+
+            $amount = $fptData['total_ftp_tax']
+                ? $line->getCalculatedTax()->getTax() - $fptData['total_ftp_tax']
+                : $line->getCalculatedTax()->getTax();
+
+            $result->setItemAmount($id, $amount, $type);
+            $result->setItemFptData($id, $fptData, $type);
             $result->setItemRate($id, $rate, $type);
             $result->setItemJurisdictionData($id, $this->getItemJurisdictionData($line));
         }
@@ -499,9 +544,14 @@ class Calculation extends AbstractResource implements CalculationResourceInterfa
                     $data->getJurisdictionName(),
                     $data->getJurisdictionType()
                 );
+
+                if (!isset($rates[$jurisdiction])) {
+                    continue;
+                }
+
                 $summary[] = array(
                     'name' => $jurisdiction,
-                    'rate' => isset($rates[$jurisdiction]) ? $rates[$jurisdiction] : 0,
+                    'rate' => $rates[$jurisdiction],
                     'amt'  => $data->getTax()
                 );
             }
@@ -520,7 +570,6 @@ class Calculation extends AbstractResource implements CalculationResourceInterfa
     {
         $response = $result->getResponse();
         $rates = [];
-        $fixedRatesData = [];
 
         /** @var \OnePica\AvaTax16\Document\Response\Line $line */
         foreach ($response->getLines() as $line) {
@@ -539,27 +588,10 @@ class Calculation extends AbstractResource implements CalculationResourceInterfa
                 if (!isset($rates[$jurisdiction]) && $detail->getRate()) {
                     $rates[$jurisdiction] = $detail->getRate() * 100;
                 }
-
-                if (!$detail->getRate() && $detail->getTax()) {
-                    if (!isset($fixedRatesData[$jurisdiction]['fixedTax'])) {
-                        $fixedRatesData[$jurisdiction]['fixedTax'] = 0;
-                    }
-                    if (!isset($fixedRatesData[$jurisdiction]['lineAmount'])) {
-                        $fixedRatesData[$jurisdiction]['lineAmount'] = 0;
-                    }
-
-                    $fixedRatesData[$jurisdiction]['fixedTax'] += $detail->getTax();
-                    $fixedRatesData[$jurisdiction]['lineAmount'] += $line->getLineAmount();
-                }
             }
         }
 
-        $fixedRates = [];
-        foreach ($fixedRatesData as $jurisdiction => $values) {
-            $fixedRates[$jurisdiction] = ($values['fixedTax'] / $values['lineAmount']) * 100;
-        }
-
-        return array_merge($rates, $fixedRates);
+        return $rates;
     }
 
     /**
@@ -583,13 +615,6 @@ class Calculation extends AbstractResource implements CalculationResourceInterfa
                     'rate' => $detail->getRate() * 100,
                     'tax' => $detail->getTax()
                 ];
-
-                if ($rates[$jurisdiction] === 0 && $detail->getTax()) {
-                    $rates[$jurisdiction] = [
-                        'rate' => ($detail->getTax() / $line->getLineAmount()) * 100,
-                        'tax'  => $detail->getTax()
-                    ];
-                }
             }
         }
 
