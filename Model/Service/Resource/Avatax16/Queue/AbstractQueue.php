@@ -144,9 +144,9 @@ abstract class AbstractQueue extends AbstractResource
      */
     protected function prepareGwPrintedCardLine($store, $object, $credit = false)
     {
-        $basePrice = (float)$object->getData('gw_card_base_price');
+        $amount = (float)$object->getData('gw_card_base_price');
 
-        if (!$basePrice) {
+        if (!$amount) {
             return false;
         }
 
@@ -155,8 +155,12 @@ abstract class AbstractQueue extends AbstractResource
             $this->dataSource->getGwItemAvalaraGoodsAndServicesType($store)
         );
 
-        $basePrice = $credit ? (-1 * $basePrice) : $basePrice;
-        $line->setLineAmount($basePrice);
+        if ($this->dataSource->taxIncluded($store)) {
+            $amount += $object->getGwCardBaseTaxAmount();
+        }
+
+        $amount = $credit ? (-1 * $amount) : $amount;
+        $line->setLineAmount($amount);
 
         return $line;
     }
