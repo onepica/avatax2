@@ -85,8 +85,12 @@ abstract class AbstractQueue extends AbstractResource
     protected function prepareShippingLine($store, $object, $credit = false)
     {
         $line = parent::prepareShippingLine($store, $object);
-        $shippingAmount = (float)$object->getData('base_shipping_amount');
-        $discountAmount = (float)$object->getData('base_shipping_discount_amount');
+        $shippingAmount = (float)$object->getBaseShippingAmount();
+        $discountAmount = (float)$object->getOrder()->getBaseShippingDiscountAmount();
+
+        if ($this->dataSource->taxIncluded($store)) {
+            $shippingAmount = (float)$object->getBaseShippingInclTax();
+        }
 
         if ($this->dataSource->applyTaxAfterDiscount($store) && $discountAmount) {
             $line->setDiscounted('true');
@@ -109,9 +113,9 @@ abstract class AbstractQueue extends AbstractResource
      */
     protected function prepareGwOrderLine($store, $object, $credit = false)
     {
-        $gwBasePrice = (float)$object->getData('gw_base_price');
+        $amount = (float)$object->getData('gw_base_price');
 
-        if (!$gwBasePrice) {
+        if (!$amount) {
             return false;
         }
 
@@ -120,8 +124,12 @@ abstract class AbstractQueue extends AbstractResource
             $this->dataSource->getGwItemAvalaraGoodsAndServicesType($store)
         );
 
-        $gwBasePrice = $credit ? (-1 * $gwBasePrice) : $gwBasePrice;
-        $line->setLineAmount($gwBasePrice);
+        if ($this->dataSource->taxIncluded($store)) {
+            $amount += $object->getGwBaseTaxAmount();
+        }
+
+        $amount = $credit ? (-1 * $amount) : $amount;
+        $line->setLineAmount($amount);
 
         return $line;
     }
