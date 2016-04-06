@@ -252,9 +252,12 @@ abstract class AbstractQueue extends AbstractResource
         $line->setDiscounted('false');
         $line->setTaxIncluded($this->dataSource->taxIncluded($store) ? 'true' : 'false');
 
-        $price = (float)$object->getData('gw_items_base_price');
-        $price = $credit ? (-1 * $price) : $price;
-        $line->setLineAmount($price);
+        $amount = (float)$object->getData('gw_items_base_price');
+        if ($this->dataSource->taxIncluded($store)) {
+            $amount += $object->getGwItemsBaseTaxAmount();
+        }
+        $amount = $credit ? (-1 * $amount) : $amount;
+        $line->setLineAmount($amount);
 
         return $line;
     }
