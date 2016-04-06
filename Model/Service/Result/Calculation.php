@@ -38,34 +38,10 @@ class Calculation extends Base implements CalculationResultInterface
     /**#@+
      * Constants defined for keys of array
      */
-    const TIMESTAMP         = 'timestamp';
     const ADDRESS_ID        = 'address_id';
     const SUMMARY           = 'summary';
     const JURISDICTION_DATA = 'jurisdiction_data';
     /**#@-*/
-
-    /**
-     * Get result timestamp
-     *
-     * @return string
-     */
-    public function getTimestamp()
-    {
-        return $this->getData(self::TIMESTAMP);
-    }
-
-    /**
-     * Set timestamp
-     *
-     * @param string $timestamp
-     * @return $this
-     */
-    public function setTimestamp($timestamp)
-    {
-        $this->setData(self::TIMESTAMP, $timestamp);
-
-        return $this;
-    }
 
     /**
      * Get address id

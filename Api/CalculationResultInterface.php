@@ -27,21 +27,6 @@ use OnePica\AvaTax16\Document\Response;
 interface CalculationResultInterface extends ResultInterface
 {
     /**
-     * Get result timestamp
-     *
-     * @return string
-     */
-    public function getTimestamp();
-
-    /**
-     * Set timestamp
-     *
-     * @param string $timestamp
-     * @return $this
-     */
-    public function setTimestamp($timestamp);
-
-    /**
      * Get address id
      *
      * @return int

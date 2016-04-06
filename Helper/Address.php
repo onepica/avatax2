@@ -20,8 +20,8 @@ use Magento\Customer\Model\Address\AbstractAddress;
 use Magento\Store\Model\Store;
 use Magento\Framework\App\Helper\Context;
 use OnePica\AvaTax\Helper\Data as AvataxDataHelper;
+use OnePica\AvaTax\Model\Service\Result\Storage\Filter;
 use OnePica\AvaTax\Model\Source\Avatax16\Action as AvataxActionSource;
-use OnePica\AvaTax\Api\Service\CacheStorageInterface;
 use OnePica\AvaTax\Api\Service\LoggerInterface;
 use OnePica\AvaTax\Model\Log;
 use OnePica\AvaTax\Model\Service\Result\Base;
@@ -47,11 +47,11 @@ class Address extends AbstractHelper
     protected $config;
 
     /**
-     * Cache Storage
+     * Result Storage
      *
-     * @var CacheStorageInterface
+     * @var Filter
      */
-    protected $cacheStorage;
+    protected $resultStorage;
 
     /**
      * Service logger
@@ -71,7 +71,7 @@ class Address extends AbstractHelper
      * @param Context $context
      * @param Config $config
      * @param ObjectManagerInterface $objectManager
-     * @param CacheStorageInterface $cacheStorage
+     * @param Filter $resultStorage
      * @param LoggerInterface $logger
      * @param ConfigRepositoryInterface $configRepository
      */
@@ -79,15 +79,14 @@ class Address extends AbstractHelper
         Context $context,
         ObjectManagerInterface $objectManager,
         Config $config,
-        CacheStorageInterface $cacheStorage,
+        Filter $resultStorage,
         LoggerInterface $logger,
         ConfigRepositoryInterface $configRepository
     ) {
         parent::__construct($context);
         $this->config = $config;
         $this->objectManager = $objectManager;
-        $cacheStorage->setCacheId('AddressFilter');
-        $this->cacheStorage = $cacheStorage;
+        $this->resultStorage = $resultStorage;
         $this->logger = $logger;
         $this->configRepository = $configRepository;
     }
@@ -192,6 +191,7 @@ class Address extends AbstractHelper
      * @param Store $store
      * @param string $filter
      * @param string $filterMode
+     * @return $this
      */
     protected function logFilter(
         AbstractAddress $address,
@@ -199,25 +199,32 @@ class Address extends AbstractHelper
         $filter,
         $filterMode
     ) {
-        $hash = $this->cacheStorage->generateHashKeyForData($address->format('text'));
-        if (!$this->cacheStorage->get($hash)) {
-            $addressData = $address->debug();
-            $this->cacheStorage->put($hash, $addressData);
-            $config = $this->configRepository->getConfigByStore($store);
-            $result = $this->objectManager->create(Base::class);
-            $type = ($filterMode == AvataxDataHelper::REGION_FILTER_MODE_TAX)
-                ? 'tax_calc'
-                : 'tax_calc|address_opts';
-            $resultStr = 'filter: ' . $filter . ', type: ' . $type;
-            $result->setResponse(['result' => $resultStr]);
-            $this->logger->log(
-                Log::FILTER,
-                $addressData,
-                $result,
-                $store->getId(),
-                $config->getConnection()
-            );
+        if ($this->resultStorage->getResult($address->format('text'))) {
+            return $this;
         }
+
+        $addressData = $address->debug();
+
+        $config = $this->configRepository->getConfigByStore($store);
+        /** @var Base $result */
+        $result = $this->objectManager->create(Base::class);
+        $type = ($filterMode == AvataxDataHelper::REGION_FILTER_MODE_TAX)
+            ? 'tax_calc'
+            : 'tax_calc|address_opts';
+        $resultStr = 'filter: ' . $filter . ', type: ' . $type;
+        $result->setResponse(['result' => $resultStr]);
+
+        $this->resultStorage->setResult($address->format('text'), $result);
+
+        $this->logger->log(
+            Log::FILTER,
+            $addressData,
+            $result,
+            $store->getId(),
+            $config->getConnection()
+        );
+
+        return $this;
     }
 
     /**
