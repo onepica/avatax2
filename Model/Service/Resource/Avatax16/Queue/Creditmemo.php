@@ -18,6 +18,7 @@ use OnePica\AvaTax\Api\ResultInterface;
 use OnePica\AvaTax\Api\Service\CreditmemoResourceInterface;
 use OnePica\AvaTax\Model\Queue;
 use OnePica\AvaTax16\Document\Request;
+use OnePica\AvaTax16\Document\Request\Line;
 
 /**
  * Class Creditmemo
@@ -96,20 +97,92 @@ class Creditmemo extends AbstractQueue implements CreditmemoResourceInterface
     /**
      * Prepare lines
      *
-     * @param \Magento\Sales\Model\Order\Invoice $invoice
+     * @param \Magento\Sales\Model\Order\Creditmemo $creditmemo
      * @return $this
      */
-    protected function prepareLines($invoice)
+    protected function prepareLines($creditmemo)
     {
         $this->lines = [];
-        $store = $invoice->getStore();
-        $this->addLine($this->prepareShippingLine($store, $invoice, true), $this->getShippingSku($store));
-        $this->addLine($this->prepareGwOrderLine($store, $invoice, true), $this->getGwOrderSku($store));
-        $this->addLine($this->prepareGwPrintedCardLine($store, $invoice, true), $this->getGwPrintedCardSku($store));
-        $this->addLine($this->prepareGwItemsLine($store, $invoice, true), $this->getGwItemsSku($store));
-        $this->addItemsLine($store, $invoice->getItems(), true);
+        $store = $creditmemo->getStore();
+        $this->addLine($this->prepareShippingLine($store, $creditmemo, true), $this->getShippingSku($store));
+        $this->addLine($this->prepareGwOrderLine($store, $creditmemo, true), $this->getGwOrderSku($store));
+        $this->addLine($this->prepareGwPrintedCardLine($store, $creditmemo, true), $this->getGwPrintedCardSku($store));
+        $this->addLine($this->prepareGwItemsLine($store, $creditmemo, true), $this->getGwItemsSku($store));
+        $this->addItemsLine($store, $creditmemo->getItems(), true);
+        $this->addAdjustmentsLines($creditmemo);
 
         return $this;
+    }
+
+    /**
+     * Add Adjustments lines
+     *
+     * @param  \Magento\Sales\Model\Order\Creditmemo $creditmemo
+     * @return $this
+     */
+    protected function addAdjustmentsLines($creditmemo)
+    {
+        $store = $creditmemo->getStore();
+        $this->addLine(
+            $this->prepareAdjustmentPositiveLine($store, $creditmemo->getBaseAdjustmentPositive()),
+            $this->getAdjustmentsPositiveSku($store)
+        );
+        $this->addLine(
+            $this->prepareAdjustmentNegativeLine($store, $creditmemo->getBaseAdjustmentNegative()),
+            $this->getAdjustmentsNegativeSku($store)
+        );
+
+        return $this;
+    }
+
+    /**
+     * Prepare Adjustment Positive Line
+     *
+     * @param \Magento\Store\Model\Store                     $store
+     * @param  float                                         $adjustmentPositive
+     * @return false|\OnePica\AvaTax16\Document\Request\Line
+     */
+    protected function prepareAdjustmentPositiveLine($store, $adjustmentPositive)
+    {
+        $line = false;
+        if ($adjustmentPositive != 0) {
+            $price = $adjustmentPositive * (-1);
+            $line = new Line();
+            $line->setLineCode($this->getNewLineCode());
+            $line->setItemCode($this->getAdjustmentsPositiveSku($store));
+            $line->setItemDescription(self::DEFAULT_ADJUSTMENT_POSITIVE_DESCRIPTION);
+            $line->setAvalaraGoodsAndServicesType($this->getAdjustmentsPositiveSku($store));
+            $line->setNumberOfItems(1);
+            $line->setDiscounted('false');
+            $line->setLineAmount($price);
+        }
+
+        return $line;
+    }
+
+    /**
+     * Prepare Adjustment Negative Line
+     *
+     * @param \Magento\Store\Model\Store                     $store
+     * @param  float                                         $adjustmentNegative
+     * @return false|\OnePica\AvaTax16\Document\Request\Line
+     */
+    protected function prepareAdjustmentNegativeLine($store, $adjustmentNegative)
+    {
+        $line = false;
+        if ($adjustmentNegative != 0) {
+            $price = $adjustmentNegative;
+            $line = new Line();
+            $line->setLineCode($this->getNewLineCode());
+            $line->setItemCode($this->getAdjustmentsNegativeSku($store));
+            $line->setItemDescription(self::DEFAULT_ADJUSTMENT_NEGATIVE_DESCRIPTION);
+            $line->setAvalaraGoodsAndServicesType($this->getAdjustmentsNegativeSku($store));
+            $line->setNumberOfItems(1);
+            $line->setDiscounted('false');
+            $line->setLineAmount($price);
+        }
+
+        return $line;
     }
 
     /**
