@@ -119,8 +119,8 @@ class Processor
         $this->cleanCompleted()
             ->cleanFailed()
             ->cleanUnbalanced()
-            ->processInvoices()
-            ->processCreditMemos();
+            ->processItems();
+
         return $this;
     }
 
@@ -218,25 +218,37 @@ class Processor
     }
 
     /**
-     * Attempt to send any pending invoices to Avalara
+     * Attempt to send any pending invoices and credit memos to Avalara
      *
      * @return $this
      */
-    protected function processInvoices()
+    protected function processItems()
     {
-        // @todo: implement invoicess processing
+        $queueItemsCount = $this->config->getQueueProcessItemsLimit();
+        $filters[] = $this->filterBuilder
+            ->setConditionType('in')
+            ->setField(Queue::STATUS)
+            ->setValue([Queue::STATUS_PENDING, Queue::STATUS_RETRY])
+            ->create();
 
-        return $this;
-    }
+        $this->searchCriteriaBuilder->addFilters($filters);
+        $items = $this->queueRepository->getList(
+            $this->searchCriteriaBuilder
+                ->create()
+                ->setPageSize($queueItemsCount)
+        )->getItems();
 
-    /**
-     * Attempt to send any pending credit memos to Avalara
-     *
-     * @return $this
-     */
-    protected function processCreditMemos()
-    {
-        // @todo: implement credit memos processing
+        // process items
+        foreach ($items as $item) {
+            switch ($item->getType()) {
+                case Queue::TYPE_INVOICE:
+                    // @todo: implement invoice processing
+                    break;
+                case Queue::TYPE_CREDITMEMO:
+                    // @todo: implement credit memo processing
+                    break;
+            }
+        }
 
         return $this;
     }
