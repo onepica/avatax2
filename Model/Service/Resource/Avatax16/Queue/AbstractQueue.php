@@ -296,7 +296,7 @@ abstract class AbstractQueue extends AbstractResource
         /** @var \OnePica\AvaTax\Model\Service\Avatax16\Config $config */
         try {
             $libResult = $config->getConnection()->createTransaction($this->request);
-            $result->setResponse($libResult);
+            $result->setResponse($libResult->toArray());
             $result->setHasError($libResult->getHasError());
             $result->setErrors($libResult->getErrors());
 
