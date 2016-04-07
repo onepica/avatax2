@@ -19,6 +19,7 @@ use OnePica\AvaTax\Api\Service\CreditmemoResourceInterface;
 use OnePica\AvaTax\Model\Queue;
 use OnePica\AvaTax16\Document\Request;
 use OnePica\AvaTax16\Document\Request\Line;
+use OnePica\AvaTax\Model\Service\Result\Creditmemo as CreditmemoResult;
 
 /**
  * Class Creditmemo
@@ -193,6 +194,20 @@ class Creditmemo extends AbstractQueue implements CreditmemoResourceInterface
      */
     public function creditmemo(Queue $queue)
     {
-        // TODO: Implement creditmemo() method.
+        $requestObject = unserialize($queue->getData('request_data'));
+        $this->request = $requestObject;
+        $store = $this->objectManager->get('Magento\Store\Model\StoreManagerInterface')->getStore($queue->getStoreId());
+        $result = $this->send($store);
+        return $result;
+    }
+
+    /**
+     * Get result object
+     *
+     * @return \OnePica\AvaTax\Model\Service\Result\Creditmemo
+     */
+    protected function createResultObject()
+    {
+        return $this->objectManager->create(CreditmemoResult::class);
     }
 }
