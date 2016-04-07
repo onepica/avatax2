@@ -29,6 +29,8 @@ class Session extends SessionManager
      * Constants defined for keys of array
      */
     const CALCULATION_RESULTS = 'calculation_results';
+    const VALIDATION_RESULTS  = 'validation_results';
+    const FILTER_RESULTS      = 'filter_results';
     /**#@-*/
 
     /**
@@ -52,5 +54,48 @@ class Session extends SessionManager
     public function getCalculationResults()
     {
         return $this->storage->getData(self::CALCULATION_RESULTS);
+    }
+
+    /**
+     * Get validation results
+     *
+     * @return array
+     */
+    public function getValidationResults()
+    {
+        return $this->storage->getData(self::VALIDATION_RESULTS);
+    }
+
+    /**
+     * Set validation results
+     *
+     * @param array $results
+     * @return $this
+     */
+    public function setValidationResults(array $results)
+    {
+        $this->storage->setData(self::VALIDATION_RESULTS, $results);
+
+        return $this;
+    }
+
+    /**
+     * Get filter results
+     *
+     * @return array
+     */
+    public function getFilterResults()
+    {
+        return $this->storage->getData(self::FILTER_RESULTS);
+    }
+
+    /**
+     * Set filter results
+     *
+     * @param array $results
+     */
+    public function setFilterResults(array $results)
+    {
+        $this->storage->setData(self::FILTER_RESULTS, $results);
     }
 }

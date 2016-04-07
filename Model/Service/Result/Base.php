@@ -27,11 +27,35 @@ class Base extends DataObject implements ResultInterface
     /**#@+
      * Constants defined for keys of array
      */
+    const TIMESTAMP = 'timestamp';
     const HAS_ERROR = 'has_error';
     const ERRORS    = 'errors';
     const REQUEST   = 'request';
     const RESPONSE  = 'response';
     /**#@-*/
+
+    /**
+     * Get result timestamp
+     *
+     * @return string
+     */
+    public function getTimestamp()
+    {
+        return $this->getData(self::TIMESTAMP);
+    }
+
+    /**
+     * Set timestamp
+     *
+     * @param string $timestamp
+     * @return $this
+     */
+    public function setTimestamp($timestamp)
+    {
+        $this->setData(self::TIMESTAMP, $timestamp);
+
+        return $this;
+    }
 
     /**
      * Get has error

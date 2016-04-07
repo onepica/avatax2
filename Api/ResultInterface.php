@@ -22,6 +22,21 @@ namespace OnePica\AvaTax\Api;
 interface ResultInterface
 {
     /**
+     * Get result timestamp
+     *
+     * @return string
+     */
+    public function getTimestamp();
+
+    /**
+     * Set timestamp
+     *
+     * @param string $timestamp
+     * @return $this
+     */
+    public function setTimestamp($timestamp);
+
+    /**
      * Get has error
      *
      * @return bool

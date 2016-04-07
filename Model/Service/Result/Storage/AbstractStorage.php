@@ -12,27 +12,27 @@
  * @copyright  Copyright (c) 2016 One Pica, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model\Service\Resource\Avatax16\Calculation;
+namespace OnePica\AvaTax\Model\Service\Result\Storage;
 
 use DateTime;
 use OnePica\AvaTax\Api\ResultInterface;
 use OnePica\AvaTax\Api\ResultStorageInterface;
-use OnePica\AvaTax\Model\Service\Result\Calculation;
+use OnePica\AvaTax\Model\Service\Result\Base;
 use OnePica\AvaTax\Model\Session;
 
 /**
- * Class ResultStorage
+ * Class AbstractStorage
  *
- * @package OnePica\AvaTax\Model\Service\Resource\Avatax16\Calculation
+ * @package OnePica\AvaTax\Model\Service\Result\Storage
  */
-class ResultStorage implements ResultStorageInterface
+abstract class AbstractStorage implements ResultStorageInterface
 {
     /**
      * Length of time in minutes for cached rates
      *
      * @var int
      */
-    const CACHE_TTL = 120;
+    const DEFAULT_CACHE_TTL = 120;
 
     /**
      * Result storage
@@ -42,21 +42,20 @@ class ResultStorage implements ResultStorageInterface
     protected $resultStorage = [];
 
     /**
-     * Avatax session
+     * AvaTax  session object
      *
      * @var Session
      */
     protected $session;
 
     /**
-     * ResultStorage constructor.
-     *
+     * AbstractStorage constructor.
      * @param Session $session
      */
     public function __construct(Session $session)
     {
         $this->session = $session;
-        $this->initCalculationRates();
+        $this->init();
     }
 
     /**
@@ -64,9 +63,9 @@ class ResultStorage implements ResultStorageInterface
      *
      * @return $this
      */
-    protected function initCalculationRates()
+    protected function init()
     {
-        $results = $this->session->getCalculationResults();
+        $results = $this->getData();
         $this->resultStorage = $results ?: [];
 
         foreach ($this->resultStorage as $key => $result) {
@@ -81,20 +80,21 @@ class ResultStorage implements ResultStorageInterface
     /**
      * Is expired result
      *
-     * @param Calculation $result
+     * @param Base $result
      * @return bool
      */
     protected function isExpired($result)
     {
-        return
-            $result->getTimestamp() < (new DateTime())->modify(sprintf('-%s minutes', self::CACHE_TTL))->getTimestamp();
+        return $result->getTimestamp() < (new DateTime())->modify(
+            sprintf('-%s minutes', $this->getCacheTtl())
+        )->getTimestamp();
     }
 
     /**
      * Get result by request
      *
-     * @param $request
-     * @return Calculation|null
+     * @param mixed $request
+     * @return Base
      */
     public function getResult($request)
     {
@@ -121,8 +121,8 @@ class ResultStorage implements ResultStorageInterface
     /**
      * Set result
      *
-     * @param mixed                                           $request
-     * @param \OnePica\AvaTax\Api\ResultInterface|Calculation $result
+     * @param mixed $request
+     * @param \OnePica\AvaTax\Api\ResultInterface $result
      * @return $this
      */
     public function setResult($request, ResultInterface $result)
@@ -140,8 +140,33 @@ class ResultStorage implements ResultStorageInterface
      */
     public function save()
     {
-        $this->session->setCalculationResults($this->resultStorage);
+        $this->setData($this->resultStorage);
 
         return $this;
     }
+
+    /**
+     * Get cache ttl
+     *
+     * @return int
+     */
+    protected function getCacheTtl()
+    {
+        return self::DEFAULT_CACHE_TTL;
+    }
+
+    /**
+     * Get data
+     *
+     * @return array
+     */
+    abstract protected function getData();
+
+    /**
+     * Set data
+     *
+     * @param array $data
+     * @return $this
+     */
+    abstract protected function setData($data);
 }

@@ -1,7 +1,6 @@
 <?php
 /**
  * OnePica_AvaTax
- *
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
@@ -13,29 +12,36 @@
  * @copyright  Copyright (c) 2016 One Pica, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Api\Service;
+
+namespace OnePica\AvaTax\Model\Service\Result\Storage;
 
 /**
- * Interface CacheStorageInterface
- *
- * @package OnePica\AvaTax\Api
+ * Class Filter
+ * 
+ * @package OnePica\AvaTax\Model\Service\Result\Storage
  */
-interface CacheStorageInterface
+class Filter extends AbstractStorage
 {
     /**
-     * Get data item by key
+     * Get data
      *
-     * @param string $key
-     * @return null|mixed
+     * @return array
      */
-    public function get($key);
+    protected function getData()
+    {
+        return $this->session->getFilterResults();
+    }
 
     /**
-     * Put data item to cache storage
+     * Set data
      *
-     * @param string $key
-     * @param mixed $value
+     * @param array $data
      * @return $this
      */
-    public function put($key, $value);
+    protected function setData($data)
+    {
+        $this->session->setFilterResults($data);
+
+        return $this;
+    }
 }
