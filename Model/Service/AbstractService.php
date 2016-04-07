@@ -162,13 +162,14 @@ abstract class AbstractService implements ServiceInterface
         return $this->invoiceResource->invoice($queue);
     }
 
+
     /**
-     * Creditmemo
+     * Get Creditmemo Service Request Object
      *
      * @param \Magento\Sales\Model\Order\Creditmemo $creditmemo
-     * @return ResultInterface
+     * @return mixed
      */
-    public function creditmemo(Creditmemo $creditmemo)
+    public function getCreditmemoServiceRequestObject(Creditmemo $creditmemo)
     {
         if (null === $this->creditmemoResource) {
             $this->creditmemoResource = $this->objectManager->create($this->getCreditmemoResourceClass());
@@ -177,7 +178,25 @@ abstract class AbstractService implements ServiceInterface
             }
         }
 
-        return $this->creditmemoResource->creditmemo($creditmemo);
+        return $this->creditmemoResource->getCreditmemoServiceRequestObject($creditmemo);
+    }
+
+    /**
+     * Creditmemo
+     *
+     * @param Queue $queue
+     * @return ResultInterface
+     */
+    public function creditmemo(Queue $queue)
+    {
+        if (null === $this->creditmemoResource) {
+            $this->creditmemoResource = $this->objectManager->create($this->getCreditmemoResourceClass());
+            if (!$this->creditmemoResource instanceof CreditmemoResourceInterface) {
+                throw new \LogicException('Resource must be instance of CreditmemoResourceInterface.');
+            }
+        }
+
+        return $this->creditmemoResource->creditmemo($queue);
     }
 
     /**

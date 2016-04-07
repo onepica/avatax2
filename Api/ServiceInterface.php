@@ -41,10 +41,10 @@ interface ServiceInterface
     /**
      * Creditmemo
      *
-     * @param \Magento\Sales\Model\Order\Creditmemo $creditmemo
+     * @param Queue $queue
      * @return ResultInterface
      */
-    public function creditmemo(Creditmemo $creditmemo);
+    public function creditmemo(Queue $queue);
 
     /**
      * Validate
