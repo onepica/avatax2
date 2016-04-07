@@ -9,4 +9,10 @@
     <event name="sales_order_invoice_save_commit_after">
         <observer name="avatax_create_invoice_queue_item" instance="OnePica\AvaTax\Observer\CreateQueueItemForInvoice"/>
     </event>
+    <event name="sales_order_creditmemo_refund">
+        <observer name="avatax_creditmemo_refund_set_flag" instance="OnePica\AvaTax\Observer\SetAvataxQueueFlagForCreditmemo" />
+    </event>
+    <event name="sales_order_creditmemo_save_commit_after">
+        <observer name="avatax_create_creditmemo_queue_item" instance="OnePica\AvaTax\Observer\CreateQueueItemForCreditmemo"/>
+    </event>
 </config>
