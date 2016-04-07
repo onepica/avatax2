@@ -124,7 +124,8 @@ class CreateQueueItemForCreditmemo implements ObserverInterface
      */
     protected function getRequestObject(Creditmemo $creditmemo)
     {
-        // @todo: implement this method
-        return array();
+        $creditmemoService = $this->objectManager->get(CreditmemoTool::class);
+        $creditmemoService->setCreditmemo($creditmemo);
+        return $creditmemoService->getCreditmemoServiceRequestObject();
     }
 }

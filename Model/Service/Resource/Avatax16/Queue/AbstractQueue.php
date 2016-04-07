@@ -24,6 +24,7 @@ use OnePica\AvaTax\Api\Service\LoggerInterface;
 use OnePica\AvaTax\Model\Service\DataSourceQueue;
 use OnePica\AvaTax16\Document\Request\Line;
 use OnePica\AvaTax\Model\Log;
+use OnePica\AvaTax\Api\ResultInterface;
 
 /**
  * Class AbstractQueue
@@ -84,8 +85,12 @@ abstract class AbstractQueue extends AbstractResource
     protected function prepareShippingLine($store, $object, $credit = false)
     {
         $line = parent::prepareShippingLine($store, $object);
-        $shippingAmount = (float)$object->getData('base_shipping_amount');
-        $discountAmount = (float)$object->getData('base_shipping_discount_amount');
+        $shippingAmount = (float)$object->getBaseShippingAmount();
+        $discountAmount = (float)$object->getOrder()->getBaseShippingDiscountAmount();
+
+        if ($this->dataSource->taxIncluded($store)) {
+            $shippingAmount = (float)$object->getBaseShippingInclTax();
+        }
 
         if ($this->dataSource->applyTaxAfterDiscount($store) && $discountAmount) {
             $line->setDiscounted('true');
@@ -108,9 +113,9 @@ abstract class AbstractQueue extends AbstractResource
      */
     protected function prepareGwOrderLine($store, $object, $credit = false)
     {
-        $gwBasePrice = (float)$object->getData('gw_base_price');
+        $amount = (float)$object->getData('gw_base_price');
 
-        if (!$gwBasePrice) {
+        if (!$amount) {
             return false;
         }
 
@@ -119,8 +124,12 @@ abstract class AbstractQueue extends AbstractResource
             $this->dataSource->getGwItemAvalaraGoodsAndServicesType($store)
         );
 
-        $gwBasePrice = $credit ? (-1 * $gwBasePrice) : $gwBasePrice;
-        $line->setLineAmount($gwBasePrice);
+        if ($this->dataSource->taxIncluded($store)) {
+            $amount += $object->getGwBaseTaxAmount();
+        }
+
+        $amount = $credit ? (-1 * $amount) : $amount;
+        $line->setLineAmount($amount);
 
         return $line;
     }
@@ -135,9 +144,9 @@ abstract class AbstractQueue extends AbstractResource
      */
     protected function prepareGwPrintedCardLine($store, $object, $credit = false)
     {
-        $basePrice = (float)$object->getData('gw_card_base_price');
+        $amount = (float)$object->getData('gw_card_base_price');
 
-        if (!$basePrice) {
+        if (!$amount) {
             return false;
         }
 
@@ -146,8 +155,12 @@ abstract class AbstractQueue extends AbstractResource
             $this->dataSource->getGwItemAvalaraGoodsAndServicesType($store)
         );
 
-        $basePrice = $credit ? (-1 * $basePrice) : $basePrice;
-        $line->setLineAmount($basePrice);
+        if ($this->dataSource->taxIncluded($store)) {
+            $amount += $object->getGwCardBaseTaxAmount();
+        }
+
+        $amount = $credit ? (-1 * $amount) : $amount;
+        $line->setLineAmount($amount);
 
         return $line;
     }
@@ -172,7 +185,7 @@ abstract class AbstractQueue extends AbstractResource
                 continue;
             }
 
-            $this->addLine($this->prepareItemLine($store, $item), $item->getId(), $credit);
+            $this->addLine($this->prepareItemLine($store, $item, $credit), $item->getId());
         }
 
         return $this;
@@ -192,16 +205,20 @@ abstract class AbstractQueue extends AbstractResource
             return false;
         }
 
-        $basePrice = (float)$item->getBaseRowTotal();
+        $price = (float)$item->getBaseRowTotal();
 
-        if ($this->dataSource->applyTaxAfterDiscount($store)) {
-            $basePrice -= (float)$item->getBaseDiscountAmount();
+        if ($this->dataSource->taxIncluded($store)) {
+            $price = (float)$item->getBaseRowTotalInclTax();
         }
 
-        $line = parent::prepareItemLine($store, $item);
+        if ($this->dataSource->applyTaxAfterDiscount($store)) {
+            $price -= (float)$item->getBaseDiscountAmount();
+        }
 
-        $basePrice = $credit ? (-1 * $basePrice) : $basePrice;
-        $line->setLineAmount($basePrice);
+        $price = $credit ? (-1 * $price) : $price;
+
+        $line = parent::prepareItemLine($store, $item);
+        $line->setLineAmount($price);
         $line->setItemCode($this->dataSource->getItemCode($item, $store));
         $line->setAvalaraGoodsAndServicesType(
             $this->dataSource->getItemAvalaraGoodsAndServicesType($item, $store)
@@ -235,9 +252,12 @@ abstract class AbstractQueue extends AbstractResource
         $line->setDiscounted('false');
         $line->setTaxIncluded($this->dataSource->taxIncluded($store) ? 'true' : 'false');
 
-        $price = (float)$object->getData('gw_items_base_price');
-        $price = $credit ? (-1 * $price) : $price;
-        $line->setLineAmount($price);
+        $amount = (float)$object->getData('gw_items_base_price');
+        if ($this->dataSource->taxIncluded($store)) {
+            $amount += $object->getGwItemsBaseTaxAmount();
+        }
+        $amount = $credit ? (-1 * $amount) : $amount;
+        $line->setLineAmount($amount);
 
         return $line;
     }
@@ -276,7 +296,7 @@ abstract class AbstractQueue extends AbstractResource
         /** @var \OnePica\AvaTax\Model\Service\Avatax16\Config $config */
         try {
             $libResult = $config->getConnection()->createTransaction($this->request);
-            $result->setResponse($libResult);
+            $result->setResponse($libResult->toArray());
             $result->setHasError($libResult->getHasError());
             $result->setErrors($libResult->getErrors());
 
@@ -293,8 +313,13 @@ abstract class AbstractQueue extends AbstractResource
             $result->setErrors([$e->getMessage()]);
         }
 
-        $this->logger->log(Log::TRANSACTION, $this->request->toArray(), $result, $store->getId(),
-            $config->getConnection());
+        $this->logger->log(
+            Log::TRANSACTION,
+            $this->request->toArray(),
+            $result,
+            $store->getId(),
+            $config->getConnection()
+        );
 
         return $result;
     }

@@ -114,7 +114,7 @@ class Invoice extends AbstractTool
      */
     public function execute()
     {
-        $invoiceResult =  $this->getService()->invoice($this->queue);
+        $invoiceResult = $this->getService()->invoice($this->queue);
 
         //if successful
         if (!$invoiceResult->getHasError()) {
