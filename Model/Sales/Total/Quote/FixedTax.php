@@ -82,6 +82,10 @@ class FixedTax extends AbstractCollector
             return $this;
         }
 
+        if ($result->getHasError()) {
+            return $this;
+        }
+
         $store = $quote->getStore();
 
         /** @var \Magento\Quote\Model\Quote\Item|\Magento\Quote\Model\Quote\Address\Item $item */
@@ -125,6 +129,17 @@ class FixedTax extends AbstractCollector
             $item->setBaseWeeeTaxAppliedRowAmnt($totalFpt);
             $item->setWeeeTaxAppliedAmount($itemFtp);
             $item->setBaseWeeeTaxAppliedAmount($baseItemFtp);
+
+            if ($this->weeeHelper->includeInSubtotal($store)) {
+                $total->addTotalAmount('subtotal', $totalFpt);
+                $total->addBaseTotalAmount('subtotal', $totalBaseFpt);
+            } else {
+                $total->addTotalAmount('weee', $totalFpt);
+                $total->addBaseTotalAmount('weee', $totalBaseFpt);
+            }
+
+            $total->setData('subtotal_incl_tax',$total->getData('subtotal_incl_tax') + $totalFpt);
+            $total->setData('base_subtotal_incl_tax', $total->getData('base_subtotal_incl_tax') + $totalBaseFpt);
 
             if (!$this->taxDataHelper->priceIncludesTax($store)) {
                 $total->setData('grand_total', $total->getData('grand_total') + $totalFpt);
