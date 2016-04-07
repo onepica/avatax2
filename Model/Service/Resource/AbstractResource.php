@@ -54,6 +54,13 @@ abstract class AbstractResource
     /**#@-*/
 
     /**
+     * Document code prefixes
+     */
+    const DOCUMENT_CODE_INVOICE_PREFIX = 'I';
+    const DOCUMENT_CODE_CREDITMEMO_PREFIX = 'C';
+    /**#@-*/
+
+    /**
      * Config repository
      *
      * @var \OnePica\AvaTax\Api\ConfigRepositoryInterface
@@ -138,11 +145,13 @@ abstract class AbstractResource
      */
     public function isProductCalculated($item)
     {
-        if ($item->isChildrenCalculated() && !$item->getParentItem()) {
-            return true;
-        }
-        if (!$item->isChildrenCalculated() && $item->getParentItem()) {
-            return true;
+        if (method_exists($item, 'isChildrenCalculated') && method_exists($item, 'getParentItem')) {
+            if ($item->isChildrenCalculated() && !$item->getParentItem()) {
+                return true;
+            }
+            if (!$item->isChildrenCalculated() && $item->getParentItem()) {
+                return true;
+            }
         }
 
         return false;

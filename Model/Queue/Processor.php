@@ -17,9 +17,11 @@ namespace OnePica\AvaTax\Model\Queue;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Stdlib\DateTime;
+use Magento\Framework\ObjectManagerInterface;
 use OnePica\AvaTax\Api\QueueRepositoryInterface;
 use OnePica\AvaTax\Model\Queue;
 use OnePica\AvaTax\Helper\Config;
+use OnePica\AvaTax\Model\Tool\Invoice as InvoiceServiceTool;
 
 /**
  * Class Processor
@@ -61,6 +63,16 @@ class Processor
     protected $dateTime;
 
     /**
+     * @var \Magento\Framework\ObjectManagerInterface
+     */
+    protected $objectManager;
+
+    /**
+     * @var InvoiceServiceTool
+     */
+    protected $invoiceServiceTool;
+
+    /**
      * Constructor.
      *
      * @param QueueRepositoryInterface $queueRepository
@@ -68,19 +80,25 @@ class Processor
      * @param FilterBuilder            $filterBuilder
      * @param Config                   $config
      * @param DateTime                 $dateTime
+     * @param ObjectManagerInterface   $objectManager
+     * @param InvoiceServiceTool       $invoiceServiceTool
      */
     public function __construct(
         QueueRepositoryInterface $queueRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         FilterBuilder $filterBuilder,
         Config $config,
-        DateTime $dateTime
+        DateTime $dateTime,
+        ObjectManagerInterface $objectManager,
+        InvoiceServiceTool $invoiceServiceTool
     ) {
         $this->queueRepository = $queueRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->filterBuilder = $filterBuilder;
         $this->config = $config;
         $this->dateTime = $dateTime;
+        $this->objectManager = $objectManager;
+        $this->invoiceServiceTool = $invoiceServiceTool;
     }
 
     /**
@@ -242,12 +260,46 @@ class Processor
         foreach ($items as $item) {
             switch ($item->getType()) {
                 case Queue::TYPE_INVOICE:
-                    // @todo: implement invoice processing
+                    $this->processQueueInvoiceItem($item);
                     break;
                 case Queue::TYPE_CREDITMEMO:
                     // @todo: implement credit memo processing
                     break;
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Attempt to send any pending invoices to Avalara
+     *
+     * @param Queue $queue
+     * @return $this
+     */
+    protected function processQueueInvoiceItem(Queue $queue)
+    {
+        $newAttemptValue = $queue->getAttempt() + 1;
+        $queue->setAttempt($newAttemptValue);
+        try {
+            $invoice = $this->objectManager->get('Magento\Sales\Model\Order\Invoice')->load($queue->getEntityId());
+            $this->invoiceServiceTool->setInvoice($invoice);
+            $this->invoiceServiceTool->setQueue($queue);
+            if ($invoice->getId()) {
+                $this->invoiceServiceTool->execute();
+            }
+            $queue->setStatus(Queue::STATUS_COMPLETE)->setMessage(null)->save();
+        } catch (\OnePica\AvaTax\Model\Service\Exception\Unbalanced $e) {
+            $queue->setStatus(Queue::STATUS_UNBALANCED)
+                ->setMessage($e->getMessage())
+                ->save();
+        } catch (\Exception $e) {
+            $status = ($queue->getAttempt() >= Queue::ATTEMPT_MAX)
+                ? Queue::STATUS_FAILED
+                : Queue::STATUS_RETRY;
+            $queue->setStatus($status)
+                ->setMessage($e->getMessage())
+                ->save();
         }
 
         return $this;

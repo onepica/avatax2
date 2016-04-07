@@ -14,8 +14,10 @@
  */
 namespace OnePica\AvaTax\Model\Service\Resource\Avatax16\Queue;
 
-use OnePica\AvaTax\Api\ResultInterface;
 use OnePica\AvaTax\Api\Service\InvoiceResourceInterface;
+use OnePica\AvaTax\Model\Queue;
+use OnePica\AvaTax16\Document\Request;
+use OnePica\AvaTax\Model\Service\Result\Invoice as InvoiceResult;
 
 /**
  * Class Invoice
@@ -25,13 +27,114 @@ use OnePica\AvaTax\Api\Service\InvoiceResourceInterface;
 class Invoice extends AbstractQueue implements InvoiceResourceInterface
 {
     /**
-     * Invoice
+     * Get Invoice Service Request Object
      *
      * @param \Magento\Sales\Model\Order\Invoice $invoice
-     * @return ResultInterface
+     * @return mixed
      */
-    public function invoice(\Magento\Sales\Model\Order\Invoice $invoice)
+    public function getInvoiceServiceRequestObject(\Magento\Sales\Model\Order\Invoice $invoice)
     {
-        // TODO: Implement invoice() method.
+        $store = $invoice->getStore();
+        // Copy Avatax data from order items to invoice items, because only order items contains this data
+        $this->copyAvataxDataFromOrderItemsToObjectItems($invoice);
+        $this->dataSource->initAvataxData($invoice->getItems(), $store);
+        $this->initRequest($invoice);
+        return $this->request;
+    }
+
+    /**
+     * Init request
+     *
+     * @param \Magento\Sales\Model\Order\Invoice $invoice
+     * @return $this
+     */
+    protected function initRequest($invoice)
+    {
+        $this->request = new Request();
+        $header = $this->prepareHeaderForInvoice($invoice);
+        $this->request->setHeader($header);
+
+        $this->prepareLines($invoice);
+        $this->request->setLines(array_values($this->lines));
+
+        return $this;
+    }
+
+    /**
+     * Prepare header
+     *
+     * @param \Magento\Sales\Model\Order\Invoice $invoice
+     * @return \OnePica\AvaTax16\Document\Request\Header
+     */
+    protected function prepareHeaderForInvoice($invoice)
+    {
+        $store = $invoice->getStore();
+        $order = $invoice->getOrder();
+        $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
+        $invoiceDate = $this->convertGmtDate($invoice->getCreatedAt(), $store);
+        $orderDate = $this->convertGmtDate($order->getCreatedAt(), $store);
+
+        $header = parent::prepareHeader($store, $shippingAddress);
+        $header->setDocumentCode($this->getInvoiceDocumentCode($invoice));
+        $header->setTransactionDate($invoiceDate);
+        $header->setTaxCalculationDate($orderDate);
+
+        return $header;
+    }
+
+    /**
+     * Prepare lines
+     *
+     * @param \Magento\Sales\Model\Order\Invoice $invoice
+     * @return $this
+     */
+    protected function prepareLines($invoice)
+    {
+        $this->lines = [];
+        $store = $invoice->getStore();
+        $this->addLine($this->prepareShippingLine($store, $invoice, false), $this->getShippingSku($store));
+        $this->addLine($this->prepareGwOrderLine($store, $invoice, false), $this->getGwOrderSku($store));
+        $this->addLine($this->prepareGwPrintedCardLine($store, $invoice, false), $this->getGwPrintedCardSku($store));
+        $this->addLine($this->prepareGwItemsLine($store, $invoice, false), $this->getGwItemsSku($store));
+        $this->addItemsLine($store, $invoice->getItems());
+
+        return $this;
+    }
+
+    /**
+     * Get document code for invoice
+     *
+     * @param \Magento\Sales\Model\Order\Invoice $invoice
+     * @return string
+     */
+    protected function getInvoiceDocumentCode($invoice)
+    {
+        return self::DOCUMENT_CODE_INVOICE_PREFIX . $invoice->getIncrementId();
+    }
+
+    /**
+     * Execute.
+     * Process queue for invoice. Send request object to service
+     *
+     * @param Queue $queue
+     * @return \OnePica\AvaTax\Model\Service\Result\Invoice
+     */
+    public function invoice(Queue $queue)
+    {
+        $requestObject = unserialize($queue->getData('request_data'));
+        $this->request = $requestObject;
+        $store = $this->objectManager->get('Magento\Store\Model\StoreManagerInterface')->getStore($queue->getStoreId());
+        $result = $this->send($store);
+        return $result;
+    }
+
+    /**
+     * Get result object
+     *
+     * @return \OnePica\AvaTax\Model\Service\Result\Invoice
+     */
+    protected function createResultObject()
+    {
+        return $this->objectManager->create(InvoiceResult::class);
     }
 }

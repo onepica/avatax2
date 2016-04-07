@@ -143,7 +143,7 @@ class DataSource implements DataSourceInterface
      */
     public function initAvataxData($items, $store)
     {
-        if (!is_array($items) || empty($items)) {
+        if (empty($items)) {
             return $this;
         }
 
@@ -274,13 +274,14 @@ class DataSource implements DataSourceInterface
      */
     protected function getDestinationAddress($address)
     {
+        $country = $address->getCountry() ?: $address->getCountryId();
         return $this->prepareNewAddressObject(
             $address->getStreetLine(1),
             $address->getStreetLine(2),
             $address->getCity(),
             $address->getRegion(),
             $address->getPostcode(),
-            $address->getCountry()
+            $country
         );
     }
 
