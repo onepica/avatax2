@@ -45,74 +45,14 @@ class Creditmemo extends AbstractQueue implements CreditmemoResourceInterface
     }
 
     /**
-     * Init request
+     * Add custom lines
      *
      * @param \Magento\Sales\Model\Order\Creditmemo $creditmemo
      * @return $this
      */
-    protected function initRequest($creditmemo)
+    protected function addCustomLines($creditmemo)
     {
-        $this->request = new Request();
-        $header = $this->prepareHeaderForCreditmemo($creditmemo);
-        $this->request->setHeader($header);
-
-        $this->prepareLines($creditmemo);
-        $this->request->setLines(array_values($this->lines));
-
-        return $this;
-    }
-
-    /**
-     * Prepare header
-     *
-     * @param \Magento\Sales\Model\Order\Creditmemo $creditmemo
-     * @return \OnePica\AvaTax16\Document\Request\Header
-     */
-    protected function prepareHeaderForCreditmemo($creditmemo)
-    {
-        $store = $creditmemo->getStore();
-        $order = $creditmemo->getOrder();
-        $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
-        $creditmemoDate = $this->convertGmtDate($creditmemo->getCreatedAt(), $store);
-        $orderDate = $this->convertGmtDate($creditmemo->getCreatedAt(), $store);
-
-        $header = parent::prepareHeader($store, $shippingAddress);
-        $header->setDocumentCode($this->getCreditmemoDocumentCode($creditmemo));
-        $header->setTransactionDate($creditmemoDate);
-        $header->setTaxCalculationDate($orderDate);
-
-        return $header;
-    }
-
-    /**
-     * Get document code for creditmemo
-     *
-     * @param \Magento\Sales\Model\Order\Creditmemo $creditmemo
-     * @return string
-     */
-    protected function getCreditmemoDocumentCode($creditmemo)
-    {
-        return self::DOCUMENT_CODE_CREDITMEMO_PREFIX . $creditmemo->getIncrementId();
-    }
-
-    /**
-     * Prepare lines
-     *
-     * @param \Magento\Sales\Model\Order\Creditmemo $creditmemo
-     * @return $this
-     */
-    protected function prepareLines($creditmemo)
-    {
-        $this->lines = [];
-        $store = $creditmemo->getStore();
-        $this->addLine($this->prepareShippingLine($store, $creditmemo, true), $this->getShippingSku($store));
-        $this->addLine($this->prepareGwOrderLine($store, $creditmemo, true), $this->getGwOrderSku($store));
-        $this->addLine($this->prepareGwPrintedCardLine($store, $creditmemo, true), $this->getGwPrintedCardSku($store));
-        $this->addLine($this->prepareGwItemsLine($store, $creditmemo, true), $this->getGwItemsSku($store));
-        $this->addItemsLine($store, $creditmemo->getItems(), true);
-        $this->addAdjustmentsLines($creditmemo);
-
-        return $this;
+        return $this->addAdjustmentsLines($creditmemo);
     }
 
     /**

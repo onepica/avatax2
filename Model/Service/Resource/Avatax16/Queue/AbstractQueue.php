@@ -17,6 +17,8 @@ namespace OnePica\AvaTax\Model\Service\Resource\Avatax16\Queue;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Framework\Stdlib\DateTime\Timezone;
 use Magento\Store\Model\Store;
+use Magento\Sales\Model\Order\Creditmemo as OrderCreditmemo;
+use Magento\Sales\Model\Order\Invoice as OrderInvoice;
 use OnePica\AvaTax\Model\Service\Resource\AbstractResource;
 use OnePica\AvaTax\Api\ConfigRepositoryInterface;
 use OnePica\AvaTax\Helper\Config;
@@ -25,6 +27,7 @@ use OnePica\AvaTax\Model\Service\DataSourceQueue;
 use OnePica\AvaTax16\Document\Request\Line;
 use OnePica\AvaTax\Model\Log;
 use OnePica\AvaTax\Api\ResultInterface;
+use OnePica\AvaTax16\Document\Request;
 
 /**
  * Class AbstractQueue
@@ -322,5 +325,95 @@ abstract class AbstractQueue extends AbstractResource
         );
 
         return $result;
+    }
+
+    /**
+     * Prepare lines
+     *
+     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
+     * @return $this
+     */
+    protected function prepareLines($object)
+    {
+        $this->lines = [];
+        $store = $object->getStore();
+        $credit = $object instanceof OrderCreditmemo ? true : false;
+        $this->addLine($this->prepareShippingLine($store, $object, $credit), $this->getShippingSku($store));
+        $this->addLine($this->prepareGwOrderLine($store, $object, $credit), $this->getGwOrderSku($store));
+        $this->addLine($this->prepareGwPrintedCardLine($store, $object, $credit), $this->getGwPrintedCardSku($store));
+        $this->addLine($this->prepareGwItemsLine($store, $object, $credit), $this->getGwItemsSku($store));
+        $this->addItemsLine($store, $object->getItems(), $credit);
+        $this->addCustomLines($object);
+
+        return $this;
+    }
+
+    /**
+     * Add custom lines
+     *
+     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
+     * @return $this
+     */
+    protected function addCustomLines($object)
+    {
+        return $this;
+    }
+
+    /**
+     * Get document code for object
+     *
+     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
+     * @return string
+     */
+    protected function getDocumentCodeForObject($object)
+    {
+        $prefix = '';
+        if ($object instanceof OrderCreditmemo) {
+            $prefix = self::DOCUMENT_CODE_CREDITMEMO_PREFIX;
+        } elseif ($object instanceof OrderInvoice) {
+            $prefix = self::DOCUMENT_CODE_INVOICE_PREFIX;
+        }
+
+        return $prefix . $object->getIncrementId();
+    }
+
+    /**
+     * Prepare header
+     *
+     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
+     * @return \OnePica\AvaTax16\Document\Request\Header
+     */
+    protected function prepareHeaderForObject($object)
+    {
+        $store = $object->getStore();
+        $order = $object->getOrder();
+        $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
+        $objectDate = $this->convertGmtDate($object->getCreatedAt(), $store);
+        $orderDate = $this->convertGmtDate($order->getCreatedAt(), $store);
+
+        $header = parent::prepareHeader($store, $shippingAddress);
+        $header->setDocumentCode($this->getDocumentCodeForObject($object));
+        $header->setTransactionDate($objectDate);
+        $header->setTaxCalculationDate($orderDate);
+
+        return $header;
+    }
+
+    /**
+     * Init request
+     *
+     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
+     * @return $this
+     */
+    protected function initRequest($object)
+    {
+        $this->request = new Request();
+        $header = $this->prepareHeaderForObject($object);
+        $this->request->setHeader($header);
+
+        $this->prepareLines($object);
+        $this->request->setLines(array_values($this->lines));
+
+        return $this;
     }
 }
