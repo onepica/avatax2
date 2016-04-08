@@ -28,6 +28,7 @@ use OnePica\AvaTax16\Document\Request\Line;
 use OnePica\AvaTax\Model\Log;
 use OnePica\AvaTax\Api\ResultInterface;
 use OnePica\AvaTax16\Document\Request;
+use OnePica\AvaTax\Model\Queue;
 
 /**
  * Class AbstractQueue
@@ -415,5 +416,21 @@ abstract class AbstractQueue extends AbstractResource
         $this->request->setLines(array_values($this->lines));
 
         return $this;
+    }
+
+    /**
+     * Queue submit
+     * Send request object to service
+     *
+     * @param Queue $queue
+     * @return ResultInterface
+     */
+    public function submit(Queue $queue)
+    {
+        $requestObject = unserialize($queue->getData('request_data'));
+        $this->request = $requestObject;
+        $store = $this->objectManager->get('Magento\Store\Model\StoreManagerInterface')->getStore($queue->getStoreId());
+        $result = $this->send($store);
+        return $result;
     }
 }

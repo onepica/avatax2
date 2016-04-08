@@ -43,33 +43,6 @@ class Invoice extends AbstractQueue implements InvoiceResourceInterface
     }
 
     /**
-     * Get document code for invoice
-     *
-     * @param \Magento\Sales\Model\Order\Invoice $invoice
-     * @return string
-     */
-    protected function getInvoiceDocumentCode($invoice)
-    {
-        return self::DOCUMENT_CODE_INVOICE_PREFIX . $invoice->getIncrementId();
-    }
-
-    /**
-     * Execute.
-     * Process queue for invoice. Send request object to service
-     *
-     * @param Queue $queue
-     * @return \OnePica\AvaTax\Model\Service\Result\Invoice
-     */
-    public function invoice(Queue $queue)
-    {
-        $requestObject = unserialize($queue->getData('request_data'));
-        $this->request = $requestObject;
-        $store = $this->objectManager->get('Magento\Store\Model\StoreManagerInterface')->getStore($queue->getStoreId());
-        $result = $this->send($store);
-        return $result;
-    }
-
-    /**
      * Get result object
      *
      * @return \OnePica\AvaTax\Model\Service\Result\Invoice

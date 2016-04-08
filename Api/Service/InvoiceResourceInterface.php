@@ -34,11 +34,11 @@ interface InvoiceResourceInterface
     public function getInvoiceServiceRequestObject(\Magento\Sales\Model\Order\Invoice $invoice);
 
     /**
-     * Execute.
-     * Process queue for invoice. Send request object to service
+     * Queue submit
+     * Send request object to service
      *
      * @param Queue $queue
      * @return ResultInterface
      */
-    public function invoice(Queue $queue);
+    public function submit(Queue $queue);
 }

@@ -127,21 +127,6 @@ class Creditmemo extends AbstractQueue implements CreditmemoResourceInterface
     }
 
     /**
-     * Creditmemo
-     *
-     * @param Queue $queue
-     * @return ResultInterface
-     */
-    public function creditmemo(Queue $queue)
-    {
-        $requestObject = unserialize($queue->getData('request_data'));
-        $this->request = $requestObject;
-        $store = $this->objectManager->get('Magento\Store\Model\StoreManagerInterface')->getStore($queue->getStoreId());
-        $result = $this->send($store);
-        return $result;
-    }
-
-    /**
      * Get result object
      *
      * @return \OnePica\AvaTax\Model\Service\Result\Creditmemo

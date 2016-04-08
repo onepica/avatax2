@@ -159,7 +159,7 @@ abstract class AbstractService implements ServiceInterface
             }
         }
 
-        return $this->invoiceResource->invoice($queue);
+        return $this->invoiceResource->submit($queue);
     }
 
 
@@ -196,7 +196,7 @@ abstract class AbstractService implements ServiceInterface
             }
         }
 
-        return $this->creditmemoResource->creditmemo($queue);
+        return $this->creditmemoResource->submit($queue);
     }
 
     /**

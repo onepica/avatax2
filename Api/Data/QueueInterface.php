@@ -224,4 +224,12 @@ interface QueueInterface
      * @return mixed
      */
     public function setUpdatedAt($updatedAt);
+
+    /**
+     * Set entity
+     *
+     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
+     * @return $this
+     */
+    public function setEntity($object);
 }

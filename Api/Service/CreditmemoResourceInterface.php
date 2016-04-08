@@ -34,10 +34,11 @@ interface CreditmemoResourceInterface
     public function getCreditmemoServiceRequestObject(\Magento\Sales\Model\Order\Creditmemo $creditmemo);
 
     /**
-     * Creditmemo
+     * Queue submit
+     * Send request object to service
      *
      * @param Queue $queue
      * @return ResultInterface
      */
-    public function creditmemo(Queue $queue);
+    public function submit(Queue $queue);
 }
