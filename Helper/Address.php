@@ -278,4 +278,44 @@ class Address extends AbstractHelper
     {
         return explode(',', $this->config->getAddressValidationCountries());
     }
+
+    /**
+     * Determines if the object (invoice, credit memo) should use AvaTax services
+     *
+     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
+     * @return bool
+     */
+    public function isObjectActionable($object)
+    {
+        $store = $object->getStore();
+
+        $action = $object->getOrder() ? AvataxActionSource::ACTION_CALC_SUBMIT : AvataxActionSource::ACTION_CALC;
+        if ($this->config->getServiceAction($store) < $action) {
+            return false;
+        }
+
+        $shippingAddress = $object->getShippingAddress()
+                         ? $object->getShippingAddress()
+                         : $object->getBillingAddress();
+
+        $address = $this->convertOrderAddressToCustomerAddress($shippingAddress);
+
+        return $this->isAddressActionable($address, $store, AvataxDataHelper::REGION_FILTER_MODE_TAX);
+    }
+
+    /**
+     * Convert Order Address to Customer Address
+     *
+     * @param \Magento\Sales\Model\Order\Address $address
+     * @return \Magento\Customer\Model\Address
+     */
+    protected function convertOrderAddressToCustomerAddress(
+        \Magento\Sales\Model\Order\Address $address
+    ) {
+        $addressData = $address->toArray();
+        $customerAddress = $this->objectManager->create('\Magento\Customer\Model\Address');
+        $customerAddress->setData($addressData);
+
+        return $customerAddress;
+    }
 }

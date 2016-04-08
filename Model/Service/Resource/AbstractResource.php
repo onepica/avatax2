@@ -42,15 +42,26 @@ abstract class AbstractResource
     /**#@+
      * Default values
      */
-    const TRANSACTION_TYPE_SALE               = 'Sale';
-    const DEFAULT_SHIPPING_ITEMS_DESCRIPTION  = 'Shipping costs';
-    const DEFAULT_SHIPPING_ITEMS_SKU          = 'Shipping';
-    const DEFAULT_GW_ORDER_DESCRIPTION        = 'Gift Wrap Order Amount';
-    const DEFAULT_GW_ORDER_SKU                = 'GwOrderAmount';
-    const DEFAULT_GW_PRINTED_CARD_SKU         = 'GwPrintedCardAmount';
-    const DEFAULT_GW_PRINTED_CARD_DESCRIPTION = 'Gift Wrap Printed Card Amount';
-    const DEFAULT_GW_ITEMS_SKU                = 'GwItemsAmount';
-    const DEFAULT_GW_ITEMS_DESCRIPTION        = 'Gift Wrap Items Amount';
+    const TRANSACTION_TYPE_SALE                   = 'Sale';
+    const DEFAULT_SHIPPING_ITEMS_DESCRIPTION      = 'Shipping costs';
+    const DEFAULT_SHIPPING_ITEMS_SKU              = 'Shipping';
+    const DEFAULT_GW_ORDER_DESCRIPTION            = 'Gift Wrap Order Amount';
+    const DEFAULT_GW_ORDER_SKU                    = 'GwOrderAmount';
+    const DEFAULT_GW_PRINTED_CARD_SKU             = 'GwPrintedCardAmount';
+    const DEFAULT_GW_PRINTED_CARD_DESCRIPTION     = 'Gift Wrap Printed Card Amount';
+    const DEFAULT_GW_ITEMS_SKU                    = 'GwItemsAmount';
+    const DEFAULT_GW_ITEMS_DESCRIPTION            = 'Gift Wrap Items Amount';
+    const DEFAULT_ADJUSTMENT_POSITIVE_SKU         = 'positive-adjustment';
+    const DEFAULT_ADJUSTMENT_POSITIVE_DESCRIPTION = 'Adjustment refund';
+    const DEFAULT_ADJUSTMENT_NEGATIVE_SKU         = 'negative-adjustment';
+    const DEFAULT_ADJUSTMENT_NEGATIVE_DESCRIPTION = 'Adjustment fee';
+    /**#@-*/
+
+    /**
+     * Document code prefixes
+     */
+    const DOCUMENT_CODE_INVOICE_PREFIX = 'I';
+    const DOCUMENT_CODE_CREDITMEMO_PREFIX = 'C';
     /**#@-*/
 
     /**
@@ -138,11 +149,13 @@ abstract class AbstractResource
      */
     public function isProductCalculated($item)
     {
-        if ($item->isChildrenCalculated() && !$item->getParentItem()) {
-            return true;
-        }
-        if (!$item->isChildrenCalculated() && $item->getParentItem()) {
-            return true;
+        if (method_exists($item, 'isChildrenCalculated') && method_exists($item, 'getParentItem')) {
+            if ($item->isChildrenCalculated() && !$item->getParentItem()) {
+                return true;
+            }
+            if (!$item->isChildrenCalculated() && $item->getParentItem()) {
+                return true;
+            }
         }
 
         return false;
@@ -406,5 +419,27 @@ abstract class AbstractResource
         }
 
         return $this;
+    }
+
+    /**
+     * get Adjustments Positive Sku
+     *
+     * @param Store $store
+     * @return string
+     */
+    protected function getAdjustmentsPositiveSku($store)
+    {
+        return $this->config->getAdjustmentsPositiveSku($store) ?: self::DEFAULT_ADJUSTMENT_POSITIVE_SKU;
+    }
+
+    /**
+     * get Adjustments Negative Sku
+     *
+     * @param Store $store
+     * @return string
+     */
+    protected function getAdjustmentsNegativeSku($store)
+    {
+        return $this->config->getAdjustmentsNegativeSku($store) ?: self::DEFAULT_ADJUSTMENT_NEGATIVE_SKU;
     }
 }

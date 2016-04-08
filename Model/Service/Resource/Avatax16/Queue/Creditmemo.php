@@ -16,6 +16,10 @@ namespace OnePica\AvaTax\Model\Service\Resource\Avatax16\Queue;
 
 use OnePica\AvaTax\Api\ResultInterface;
 use OnePica\AvaTax\Api\Service\CreditmemoResourceInterface;
+use OnePica\AvaTax\Model\Queue;
+use OnePica\AvaTax16\Document\Request;
+use OnePica\AvaTax16\Document\Request\Line;
+use OnePica\AvaTax\Model\Service\Result\Creditmemo as CreditmemoResult;
 
 /**
  * Class Creditmemo
@@ -25,13 +29,115 @@ use OnePica\AvaTax\Api\Service\CreditmemoResourceInterface;
 class Creditmemo extends AbstractQueue implements CreditmemoResourceInterface
 {
     /**
-     * Creditmemo
+     * Add custom lines
      *
      * @param \Magento\Sales\Model\Order\Creditmemo $creditmemo
-     * @return ResultInterface
+     * @return $this
      */
-    public function creditmemo(\Magento\Sales\Model\Order\Creditmemo $creditmemo)
+    protected function addCustomLines($creditmemo)
     {
-        // TODO: Implement creditmemo() method.
+        return $this->addAdjustmentsLines($creditmemo);
+    }
+
+    /**
+     * Add Adjustments lines
+     *
+     * @param  \Magento\Sales\Model\Order\Creditmemo $creditmemo
+     * @return $this
+     */
+    protected function addAdjustmentsLines($creditmemo)
+    {
+        $store = $creditmemo->getStore();
+        $this->addLine(
+            $this->prepareAdjustmentPositiveLine($store, $creditmemo->getBaseAdjustmentPositive()),
+            $this->getAdjustmentsPositiveSku($store)
+        );
+        $this->addLine(
+            $this->prepareAdjustmentNegativeLine($store, $creditmemo->getBaseAdjustmentNegative()),
+            $this->getAdjustmentsNegativeSku($store)
+        );
+
+        return $this;
+    }
+
+    /**
+     * Prepare Adjustment Positive Line
+     *
+     * @param \Magento\Store\Model\Store                     $store
+     * @param  float                                         $adjustmentPositive
+     * @return false|\OnePica\AvaTax16\Document\Request\Line
+     */
+    protected function prepareAdjustmentPositiveLine($store, $adjustmentPositive)
+    {
+        $line = false;
+        if ($adjustmentPositive != 0) {
+            $price = $adjustmentPositive * (-1);
+            $line = new Line();
+            $line->setLineCode($this->getNewLineCode());
+            $line->setItemCode($this->getAdjustmentsPositiveSku($store));
+            $line->setItemDescription(self::DEFAULT_ADJUSTMENT_POSITIVE_DESCRIPTION);
+            $line->setAvalaraGoodsAndServicesType($this->getAdjustmentsPositiveSku($store));
+            $line->setNumberOfItems(1);
+            $line->setDiscounted('false');
+            $line->setLineAmount($price);
+        }
+
+        return $line;
+    }
+
+    /**
+     * Prepare Adjustment Negative Line
+     *
+     * @param \Magento\Store\Model\Store                     $store
+     * @param  float                                         $adjustmentNegative
+     * @return false|\OnePica\AvaTax16\Document\Request\Line
+     */
+    protected function prepareAdjustmentNegativeLine($store, $adjustmentNegative)
+    {
+        $line = false;
+        if ($adjustmentNegative != 0) {
+            $price = $adjustmentNegative;
+            $line = new Line();
+            $line->setLineCode($this->getNewLineCode());
+            $line->setItemCode($this->getAdjustmentsNegativeSku($store));
+            $line->setItemDescription(self::DEFAULT_ADJUSTMENT_NEGATIVE_DESCRIPTION);
+            $line->setAvalaraGoodsAndServicesType($this->getAdjustmentsNegativeSku($store));
+            $line->setNumberOfItems(1);
+            $line->setDiscounted('false');
+            $line->setLineAmount($price);
+        }
+
+        return $line;
+    }
+
+    /**
+     * Get result object
+     *
+     * @return \OnePica\AvaTax\Model\Service\Result\Creditmemo
+     */
+    protected function createResultObject()
+    {
+        return $this->objectManager->create(CreditmemoResult::class);
+    }
+
+    /**
+     * Get document code for object
+     *
+     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
+     * @return string
+     */
+    protected function getDocumentCodeForObject($object)
+    {
+        return self::DOCUMENT_CODE_CREDITMEMO_PREFIX . $object->getIncrementId();
+    }
+
+    /**
+     * Get if items is for credit
+     *
+     * @return bool
+     */
+    protected function isCredit()
+    {
+        return true;
     }
 }

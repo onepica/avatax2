@@ -30,6 +30,7 @@ use OnePica\AvaTax\Api\Service\PingResourceInterface;
 use OnePica\AvaTax\Api\Service\ValidationResourceInterface;
 use OnePica\AvaTax\Api\ServiceInterface;
 use OnePica\AvaTax\Model\Service\Result\Base;
+use OnePica\AvaTax\Model\Queue;
 
 /**
  * Class AbstractService
@@ -126,12 +127,12 @@ abstract class AbstractService implements ServiceInterface
     abstract public function getCalculationResourceClass();
 
     /**
-     * Invoice
+     * Get Invoice Service Request Object
      *
      * @param \Magento\Sales\Model\Order\Invoice $invoice
-     * @return ResultInterface
+     * @return mixed
      */
-    public function invoice(Invoice $invoice)
+    public function getInvoiceServiceRequestObject(Invoice $invoice)
     {
         if ($this->invoiceResource === null) {
             $this->invoiceResource = $this->objectManager->create($this->getInvoiceResourceClass());
@@ -140,16 +141,35 @@ abstract class AbstractService implements ServiceInterface
             }
         }
 
-        return $this->invoiceResource->invoice($invoice);
+        return $this->invoiceResource->getServiceRequestObject($invoice);
     }
 
     /**
-     * Creditmemo
+     * Invoice
      *
-     * @param \Magento\Sales\Model\Order\Creditmemo $creditmemo
+     * @param Queue $queue
      * @return ResultInterface
      */
-    public function creditmemo(Creditmemo $creditmemo)
+    public function invoice(Queue $queue)
+    {
+        if ($this->invoiceResource === null) {
+            $this->invoiceResource = $this->objectManager->create($this->getInvoiceResourceClass());
+            if (!$this->invoiceResource instanceof InvoiceResourceInterface) {
+                throw new \LogicException('Resource must be instance of InvoiceResourceInterface.');
+            }
+        }
+
+        return $this->invoiceResource->submit($queue);
+    }
+
+
+    /**
+     * Get Creditmemo Service Request Object
+     *
+     * @param \Magento\Sales\Model\Order\Creditmemo $creditmemo
+     * @return mixed
+     */
+    public function getCreditmemoServiceRequestObject(Creditmemo $creditmemo)
     {
         if (null === $this->creditmemoResource) {
             $this->creditmemoResource = $this->objectManager->create($this->getCreditmemoResourceClass());
@@ -158,7 +178,25 @@ abstract class AbstractService implements ServiceInterface
             }
         }
 
-        return $this->creditmemoResource->creditmemo($creditmemo);
+        return $this->creditmemoResource->getServiceRequestObject($creditmemo);
+    }
+
+    /**
+     * Creditmemo
+     *
+     * @param Queue $queue
+     * @return ResultInterface
+     */
+    public function creditmemo(Queue $queue)
+    {
+        if (null === $this->creditmemoResource) {
+            $this->creditmemoResource = $this->objectManager->create($this->getCreditmemoResourceClass());
+            if (!$this->creditmemoResource instanceof CreditmemoResourceInterface) {
+                throw new \LogicException('Resource must be instance of CreditmemoResourceInterface.');
+            }
+        }
+
+        return $this->creditmemoResource->submit($queue);
     }
 
     /**

@@ -41,7 +41,7 @@ class QuoteItems extends AbstractCollector
     ) {
         parent::collect($quote, $shippingAssignment, $total);
 
-        if (!$shippingAssignment->getItems()) {
+        if ($this->isFiltered($quote, $shippingAssignment)) {
             return $this;
         }
 

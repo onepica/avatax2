@@ -143,7 +143,7 @@ class DataSource implements DataSourceInterface
      */
     public function initAvataxData($items, $store)
     {
-        if (!is_array($items) || empty($items)) {
+        if (empty($items)) {
             return $this;
         }
 
@@ -173,7 +173,7 @@ class DataSource implements DataSourceInterface
      */
     public function getCustomerCode($store, $address)
     {
-        $customerId = (int)$address->getCustomerId();
+        $customerId = $this->getCustomerIdFromAddress($address);
         $customer = null;
 
         if ($customerId) {
@@ -207,7 +207,18 @@ class DataSource implements DataSourceInterface
      */
     public function getTaxBuyerCode($store, $address)
     {
-        return (string)$address->getVatId() ?: (string)$address->getQuote()->getBillingAddress()->getVatId();
+        return (string)$address->getVatId() ?: (string)$this->getBillingAddressFromAddress($address)->getVatId();
+    }
+
+    /**
+     * Get Billing Address From Address
+     *
+     * @param Address $address
+     * @return Address
+     */
+    protected function getBillingAddressFromAddress($address)
+    {
+        return $address->getQuote()->getBillingAddress();
     }
 
     /**
@@ -219,8 +230,19 @@ class DataSource implements DataSourceInterface
     public function getDefaultBuyerType($address)
     {
         return $this->getOpAvataxCode(
-            $address->getQuote()->getCustomerTaxClassId()
+            $this->getCustomerTaxClassIdFromAddress($address)
         );
+    }
+
+    /**
+     * Get Customer Tax Class Id from Address
+     *
+     * @param Address $address
+     * @return string
+     */
+    protected function getCustomerTaxClassIdFromAddress($address)
+    {
+        return $address->getQuote()->getCustomerTaxClassId();
     }
 
     /**
@@ -274,13 +296,14 @@ class DataSource implements DataSourceInterface
      */
     protected function getDestinationAddress($address)
     {
+        $country = $address->getCountry() ?: $address->getCountryId();
         return $this->prepareNewAddressObject(
             $address->getStreetLine(1),
             $address->getStreetLine(2),
             $address->getCity(),
             $address->getRegion(),
             $address->getPostcode(),
-            $address->getCountry()
+            $country
         );
     }
 
@@ -317,10 +340,23 @@ class DataSource implements DataSourceInterface
      */
     protected function prepareCustomerId($address)
     {
-        $customerId = (int)$address->getCustomerId();
+        $customerId = $this->getCustomerIdFromAddress($address);
         if (!$customerId) {
             $customerId = 'guest-' . $address->getId();
         }
+
+        return $customerId;
+    }
+
+    /**
+     * Get customer id from Address
+     *
+     * @param AddressInterface $address
+     * @return int
+     */
+    protected function getCustomerIdFromAddress($address)
+    {
+        $customerId = (int)$address->getCustomerId();
 
         return $customerId;
     }

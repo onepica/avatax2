@@ -22,6 +22,11 @@ namespace OnePica\AvaTax\Api\Data;
 interface QueueInterface
 {
     /**
+     * Can add to queue flag
+     */
+    const FLAG_CAN_ADD_TO_QUEUE = 'avatax_can_add_to_queue';
+
+    /**
      * Queue Type
      */
     const TYPE_INVOICE     = 'Invoice';
@@ -49,6 +54,7 @@ interface QueueInterface
     const STATUS              = 'status';
     const ATTEMPT             = 'attempt';
     const MESSAGE             = 'message';
+    const REQUEST_DATA        = 'request_data';
     const CREATED_AT          = 'created_at';
     const UPDATED_AT          = 'updated_at';
     /**#@-*/
@@ -125,7 +131,7 @@ interface QueueInterface
      * Set type
      *
      * @param string $type
-     * @return string
+     * @return mixed
      */
     public function setType($type);
 
@@ -140,7 +146,7 @@ interface QueueInterface
      * Set status
      *
      * @param string $status
-     * @return string
+     * @return mixed
      */
     public function setStatus($status);
 
@@ -155,7 +161,7 @@ interface QueueInterface
      * Set attempt
      *
      * @param string $attempt
-     * @return string
+     * @return mixed
      */
     public function setAttempt($attempt);
 
@@ -170,9 +176,24 @@ interface QueueInterface
      * Set Message
      *
      * @param string $message
-     * @return string
+     * @return mixed
      */
     public function setMessage($message);
+
+    /**
+     * Get request data
+     *
+     * @return string
+     */
+    public function getRequestData();
+
+    /**
+     * Set request data
+     *
+     * @param string $data
+     * @return mixed
+     */
+    public function setRequestData($data);
 
     /**
      * Get created at
@@ -185,7 +206,7 @@ interface QueueInterface
      * Set created at
      *
      * @param string $createdAt
-     * @return string
+     * @return mixed
      */
     public function setCreatedAt($createdAt);
 
@@ -200,7 +221,15 @@ interface QueueInterface
      * Set created at
      *
      * @param string $updatedAt
-     * @return string
+     * @return mixed
      */
     public function setUpdatedAt($updatedAt);
+
+    /**
+     * Set entity
+     *
+     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
+     * @return $this
+     */
+    public function setEntity($object);
 }

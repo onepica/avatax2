@@ -43,7 +43,7 @@ class GiftWrapping extends AbstractCollector
     ) {
         parent::collect($quote, $shippingAssignment, $total);
 
-        if ($shippingAssignment->getShipping()->getAddress()->getAddressType() != Address::TYPE_SHIPPING) {
+        if ($this->isFiltered($quote, $shippingAssignment)) {
             return $this;
         }
 
