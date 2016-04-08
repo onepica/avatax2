@@ -128,7 +128,7 @@ abstract class AbstractCollector extends AbstractTotal
     ) {
         parent::collect($quote, $shippingAssignment, $total);
 
-        if ($this->isProcessingSkipped($quote, $shippingAssignment)) {
+        if ($this->isFiltered($quote, $shippingAssignment)) {
             return $this;
         }
 
@@ -173,13 +173,13 @@ abstract class AbstractCollector extends AbstractTotal
     }
 
     /**
-     * Is processing skipped
+     * Is filtered
      *
      * @param Quote $quote
      * @param ShippingAssignmentInterface $shippingAssignment
      * @return bool
      */
-    protected function isProcessingSkipped(
+    protected function isFiltered(
         \Magento\Quote\Model\Quote $quote,
         \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignment
     ) {
