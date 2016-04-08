@@ -29,22 +29,6 @@ use OnePica\AvaTax\Model\Service\Result\Creditmemo as CreditmemoResult;
 class Creditmemo extends AbstractQueue implements CreditmemoResourceInterface
 {
     /**
-     * Get Creditmemo Service Request Object
-     *
-     * @param \Magento\Sales\Model\Order\Creditmemo $creditmemo
-     * @return mixed
-     */
-    public function getCreditmemoServiceRequestObject(\Magento\Sales\Model\Order\Creditmemo $creditmemo)
-    {
-        $store = $creditmemo->getStore();
-        // Copy Avatax data from order items to creditmemo items, because only order items contains this data
-        $this->copyAvataxDataFromOrderItemsToObjectItems($creditmemo);
-        $this->dataSource->initAvataxData($creditmemo->getItems(), $store);
-        $this->initRequest($creditmemo);
-        return $this->request;
-    }
-
-    /**
      * Add custom lines
      *
      * @param \Magento\Sales\Model\Order\Creditmemo $creditmemo

@@ -141,7 +141,7 @@ abstract class AbstractService implements ServiceInterface
             }
         }
 
-        return $this->invoiceResource->getInvoiceServiceRequestObject($invoice);
+        return $this->invoiceResource->getServiceRequestObject($invoice);
     }
 
     /**
@@ -178,7 +178,7 @@ abstract class AbstractService implements ServiceInterface
             }
         }
 
-        return $this->creditmemoResource->getCreditmemoServiceRequestObject($creditmemo);
+        return $this->creditmemoResource->getServiceRequestObject($creditmemo);
     }
 
     /**

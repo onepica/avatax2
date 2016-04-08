@@ -195,14 +195,6 @@ abstract class AbstractQueue extends AbstractResource
     }
 
     /**
-     * Get document code for object
-     *
-     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
-     * @return string
-     */
-    abstract protected function getDocumentCodeForObject($object);
-
-    /**
      * Prepare lines
      *
      * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
@@ -222,13 +214,6 @@ abstract class AbstractQueue extends AbstractResource
 
         return $this;
     }
-
-    /**
-     * Get if items is for credit
-     *
-     * @return bool
-     */
-    abstract protected function isCredit();
 
     /**
      * Prepare shipping line
@@ -428,4 +413,35 @@ abstract class AbstractQueue extends AbstractResource
     {
         return $this;
     }
+
+    /**
+     * Get Service Request Object
+     *
+     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
+     * @return mixed
+     */
+    public function getServiceRequestObject($object)
+    {
+        $store = $object->getStore();
+        // Copy Avatax data from order items to object items, because only order items contains this data
+        $this->copyAvataxDataFromOrderItemsToObjectItems($object);
+        $this->dataSource->initAvataxData($object->getItems(), $store);
+        $this->initRequest($object);
+        return $this->request;
+    }
+
+    /**
+     * Get if items is for credit
+     *
+     * @return bool
+     */
+    abstract protected function isCredit();
+
+    /**
+     * Get document code for object
+     *
+     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
+     * @return string
+     */
+    abstract protected function getDocumentCodeForObject($object);
 }

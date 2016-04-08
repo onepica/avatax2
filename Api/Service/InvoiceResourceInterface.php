@@ -26,12 +26,12 @@ use OnePica\AvaTax\Model\Queue;
 interface InvoiceResourceInterface
 {
     /**
-     * Get Invoice Service Request Object
+     * Get Service Request Object
      *
-     * @param \Magento\Sales\Model\Order\Invoice $invoice
+     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
      * @return mixed
      */
-    public function getInvoiceServiceRequestObject(\Magento\Sales\Model\Order\Invoice $invoice);
+    public function getServiceRequestObject($object);
 
     /**
      * Queue submit
