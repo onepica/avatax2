@@ -207,7 +207,18 @@ class DataSource implements DataSourceInterface
      */
     public function getTaxBuyerCode($store, $address)
     {
-        return (string)$address->getVatId() ?: (string)$address->getQuote()->getBillingAddress()->getVatId();
+        return (string)$address->getVatId() ?: (string)$this->getBillingAddressFromAddress($address)->getVatId();
+    }
+
+    /**
+     * Get Billing Address From Address
+     *
+     * @param Address $address
+     * @return Address
+     */
+    protected function getBillingAddressFromAddress($address)
+    {
+        return $address->getQuote()->getBillingAddress();
     }
 
     /**

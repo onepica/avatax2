@@ -68,15 +68,14 @@ class DataSourceQueue extends DataSource
     }
 
     /**
-     * Get vat Id
+     * Get Billing Address From Address
      *
-     * @param Store   $store
      * @param Address $address
-     * @return string
+     * @return Address
      */
-    public function getTaxBuyerCode($store, $address)
+    protected function getBillingAddressFromAddress($address)
     {
-        return (string)$address->getVatId() ?: (string)$address->getOrder()->getBillingAddress()->getVatId();
+        return $address->getOrder()->getBillingAddress();
     }
 
     /**
