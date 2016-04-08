@@ -219,8 +219,19 @@ class DataSource implements DataSourceInterface
     public function getDefaultBuyerType($address)
     {
         return $this->getOpAvataxCode(
-            $address->getQuote()->getCustomerTaxClassId()
+            $this->getCustomerTaxClassIdFromAddress($address)
         );
+    }
+
+    /**
+     * Get Customer Tax Class Id from Address
+     *
+     * @param Address $address
+     * @return string
+     */
+    protected function getCustomerTaxClassIdFromAddress($address)
+    {
+        return $address->getQuote()->getCustomerTaxClassId();
     }
 
     /**

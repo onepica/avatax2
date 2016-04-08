@@ -80,19 +80,7 @@ class DataSourceQueue extends DataSource
     }
 
     /**
-     * Get default buyer type
-     *
-     * @param Address $address
-     * @return string
-     */
-    public function getDefaultBuyerType($address)
-    {
-        $groupTaxClassId = $this->groupRepository->getById($address->getOrder()->getCustomerGroupId())->getTaxClassId();
-        return $this->getOpAvataxCode($groupTaxClassId);
-    }
-
-    /**
-     * Prepare customer id
+     * Get customer id from Address
      *
      * @param Address $address
      * @return int|string
@@ -102,5 +90,16 @@ class DataSourceQueue extends DataSource
         $customerId = (int)$address->getOrder()->getCustomerId();
 
         return $customerId;
+    }
+
+    /**
+     * Get Customer Tax Class Id from Address
+     *
+     * @param Address $address
+     * @return string
+     */
+    protected function getCustomerTaxClassIdFromAddress($address)
+    {
+        return $this->groupRepository->getById($address->getOrder()->getCustomerGroupId())->getTaxClassId();
     }
 }
