@@ -67,6 +67,124 @@ abstract class AbstractQueue extends AbstractResource
     }
 
     /**
+     * Queue submit
+     * Send request object to service
+     *
+     * @param Queue $queue
+     * @return ResultInterface
+     */
+    public function submit(Queue $queue)
+    {
+        $requestObject = unserialize($queue->getData('request_data'));
+        $this->request = $requestObject;
+        $store = $this->objectManager->get('Magento\Store\Model\StoreManagerInterface')->getStore($queue->getStoreId());
+        $result = $this->send($store);
+        return $result;
+    }
+
+    /**
+     * Send request
+     *
+     * @param Store $store
+     * @return ResultInterface
+     */
+    protected function send($store)
+    {
+        $result = $this->createResultObject();
+
+        $config = $this->configRepository->getConfigByStore($store);
+        /** @var \OnePica\AvaTax\Model\Service\Avatax16\Config $config */
+        try {
+            $libResult = $config->getConnection()->createTransaction($this->request);
+            $result->setResponse($libResult->toArray());
+            $result->setHasError($libResult->getHasError());
+            $result->setErrors($libResult->getErrors());
+
+            if (!$libResult->getHasError()) {
+                $totalTax = $libResult->getCalculatedTaxSummary()->getTotalTax();
+                $result->setTotalTax($totalTax);
+                $documentCode = $libResult->getHeader()->getDocumentCode();
+                $result->setDocumentCode($documentCode);
+            } elseif (!$libResult->getErrors()) {
+                $result->setErrors([__('The user or account could not be authenticated.')]);
+            }
+        } catch (\Exception $e) {
+            $result->setHasError(true);
+            $result->setErrors([$e->getMessage()]);
+        }
+
+        $this->logger->log(
+            Log::TRANSACTION,
+            $this->request->toArray(),
+            $result,
+            $store->getId(),
+            $config->getConnection()
+        );
+
+        return $result;
+    }
+
+    /**
+     * Copy Avatax Data from Order Items To Object Items
+     *
+     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
+     * @return $this
+     */
+    protected function copyAvataxDataFromOrderItemsToObjectItems($object)
+    {
+        $orderItems = $object->getOrder()->getItems();
+        $objectItems = $object->getItems();
+        foreach ($orderItems as $orderItem) {
+            $avataxData = $orderItem->getData('avatax_data');
+            foreach ($objectItems as $item) {
+                if ($item->getOrderItemId() == $orderItem->getId()) {
+                    $item->setData('avatax_data', $avataxData);
+                }
+            }
+        }
+    }
+
+    /**
+     * Init request
+     *
+     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
+     * @return $this
+     */
+    protected function initRequest($object)
+    {
+        $this->request = new Request();
+        $header = $this->prepareHeaderForObject($object);
+        $this->request->setHeader($header);
+
+        $this->prepareLines($object);
+        $this->request->setLines(array_values($this->lines));
+
+        return $this;
+    }
+
+    /**
+     * Prepare header
+     *
+     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
+     * @return \OnePica\AvaTax16\Document\Request\Header
+     */
+    protected function prepareHeaderForObject($object)
+    {
+        $store = $object->getStore();
+        $order = $object->getOrder();
+        $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
+        $objectDate = $this->convertGmtDate($object->getCreatedAt(), $store);
+        $orderDate = $this->convertGmtDate($order->getCreatedAt(), $store);
+
+        $header = parent::prepareHeader($store, $shippingAddress);
+        $header->setDocumentCode($this->getDocumentCodeForObject($object));
+        $header->setTransactionDate($objectDate);
+        $header->setTaxCalculationDate($orderDate);
+
+        return $header;
+    }
+
+    /**
      * Retrieve converted date taking into account the current time zone and store.
      *
      * @param string $gmt
@@ -76,6 +194,45 @@ abstract class AbstractQueue extends AbstractResource
     protected function convertGmtDate($gmt, $store)
     {
         return $this->timezone->scopeDate($store, $gmt)->format('Y-m-d');
+    }
+
+    /**
+     * Get document code for object
+     *
+     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
+     * @return string
+     */
+    protected function getDocumentCodeForObject($object)
+    {
+        $prefix = '';
+        if ($object instanceof OrderCreditmemo) {
+            $prefix = self::DOCUMENT_CODE_CREDITMEMO_PREFIX;
+        } elseif ($object instanceof OrderInvoice) {
+            $prefix = self::DOCUMENT_CODE_INVOICE_PREFIX;
+        }
+
+        return $prefix . $object->getIncrementId();
+    }
+
+    /**
+     * Prepare lines
+     *
+     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
+     * @return $this
+     */
+    protected function prepareLines($object)
+    {
+        $this->lines = [];
+        $store = $object->getStore();
+        $credit = $object instanceof OrderCreditmemo ? true : false;
+        $this->addLine($this->prepareShippingLine($store, $object, $credit), $this->getShippingSku($store));
+        $this->addLine($this->prepareGwOrderLine($store, $object, $credit), $this->getGwOrderSku($store));
+        $this->addLine($this->prepareGwPrintedCardLine($store, $object, $credit), $this->getGwPrintedCardSku($store));
+        $this->addLine($this->prepareGwItemsLine($store, $object, $credit), $this->getGwItemsSku($store));
+        $this->addItemsLine($store, $object->getItems(), $credit);
+        $this->addCustomLines($object);
+
+        return $this;
     }
 
     /**
@@ -170,6 +327,39 @@ abstract class AbstractQueue extends AbstractResource
     }
 
     /**
+     * Prepare gw item line
+     *
+     * @param \Magento\Store\Model\Store                                               $store
+     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
+     * @param  bool                                                                    $credit
+     * @return false|\OnePica\AvaTax16\Document\Request\Line
+     */
+    protected function prepareGwItemsLine($store, $object, $credit = false)
+    {
+        if (!(int)$object->getData('gw_items_base_price')) {
+            return false;
+        }
+
+        $line = new Line();
+        $line->setLineCode($this->getNewLineCode());
+        $line->setItemCode($this->getGwItemsSku($store));
+        $line->setItemDescription(self::DEFAULT_GW_ITEMS_DESCRIPTION);
+        $line->setAvalaraGoodsAndServicesType($this->dataSource->getGwItemAvalaraGoodsAndServicesType($store));
+        $line->setNumberOfItems(1);
+        $line->setDiscounted('false');
+        $line->setTaxIncluded($this->dataSource->taxIncluded($store) ? 'true' : 'false');
+
+        $amount = (float)$object->getData('gw_items_base_price');
+        if ($this->dataSource->taxIncluded($store)) {
+            $amount += $object->getGwItemsBaseTaxAmount();
+        }
+        $amount = $credit ? (-1 * $amount) : $amount;
+        $line->setLineAmount($amount);
+
+        return $line;
+    }
+
+    /**
      * Add items line
      *
      * @param Store      $store
@@ -234,122 +424,6 @@ abstract class AbstractQueue extends AbstractResource
     }
 
     /**
-     * Prepare gw item line
-     *
-     * @param \Magento\Store\Model\Store                                               $store
-     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
-     * @param  bool                                                                    $credit
-     * @return false|\OnePica\AvaTax16\Document\Request\Line
-     */
-    protected function prepareGwItemsLine($store, $object, $credit = false)
-    {
-        if (!(int)$object->getData('gw_items_base_price')) {
-            return false;
-        }
-
-        $line = new Line();
-        $line->setLineCode($this->getNewLineCode());
-        $line->setItemCode($this->getGwItemsSku($store));
-        $line->setItemDescription(self::DEFAULT_GW_ITEMS_DESCRIPTION);
-        $line->setAvalaraGoodsAndServicesType($this->dataSource->getGwItemAvalaraGoodsAndServicesType($store));
-        $line->setNumberOfItems(1);
-        $line->setDiscounted('false');
-        $line->setTaxIncluded($this->dataSource->taxIncluded($store) ? 'true' : 'false');
-
-        $amount = (float)$object->getData('gw_items_base_price');
-        if ($this->dataSource->taxIncluded($store)) {
-            $amount += $object->getGwItemsBaseTaxAmount();
-        }
-        $amount = $credit ? (-1 * $amount) : $amount;
-        $line->setLineAmount($amount);
-
-        return $line;
-    }
-
-    /**
-     * Copy Avatax Data from Order Items To Object Items
-     *
-     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
-     * @return $this
-     */
-    protected function copyAvataxDataFromOrderItemsToObjectItems($object)
-    {
-        $orderItems = $object->getOrder()->getItems();
-        $objectItems = $object->getItems();
-        foreach ($orderItems as $orderItem) {
-            $avataxData = $orderItem->getData('avatax_data');
-            foreach ($objectItems as $item) {
-                if ($item->getOrderItemId() == $orderItem->getId()) {
-                    $item->setData('avatax_data', $avataxData);
-                }
-            }
-        }
-    }
-
-    /**
-     * Send request
-     *
-     * @param Store $store
-     * @return ResultInterface
-     */
-    protected function send($store)
-    {
-        $result = $this->createResultObject();
-
-        $config = $this->configRepository->getConfigByStore($store);
-        /** @var \OnePica\AvaTax\Model\Service\Avatax16\Config $config */
-        try {
-            $libResult = $config->getConnection()->createTransaction($this->request);
-            $result->setResponse($libResult->toArray());
-            $result->setHasError($libResult->getHasError());
-            $result->setErrors($libResult->getErrors());
-
-            if (!$libResult->getHasError()) {
-                $totalTax = $libResult->getCalculatedTaxSummary()->getTotalTax();
-                $result->setTotalTax($totalTax);
-                $documentCode = $libResult->getHeader()->getDocumentCode();
-                $result->setDocumentCode($documentCode);
-            } elseif (!$libResult->getErrors()) {
-                $result->setErrors([__('The user or account could not be authenticated.')]);
-            }
-        } catch (\Exception $e) {
-            $result->setHasError(true);
-            $result->setErrors([$e->getMessage()]);
-        }
-
-        $this->logger->log(
-            Log::TRANSACTION,
-            $this->request->toArray(),
-            $result,
-            $store->getId(),
-            $config->getConnection()
-        );
-
-        return $result;
-    }
-
-    /**
-     * Prepare lines
-     *
-     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
-     * @return $this
-     */
-    protected function prepareLines($object)
-    {
-        $this->lines = [];
-        $store = $object->getStore();
-        $credit = $object instanceof OrderCreditmemo ? true : false;
-        $this->addLine($this->prepareShippingLine($store, $object, $credit), $this->getShippingSku($store));
-        $this->addLine($this->prepareGwOrderLine($store, $object, $credit), $this->getGwOrderSku($store));
-        $this->addLine($this->prepareGwPrintedCardLine($store, $object, $credit), $this->getGwPrintedCardSku($store));
-        $this->addLine($this->prepareGwItemsLine($store, $object, $credit), $this->getGwItemsSku($store));
-        $this->addItemsLine($store, $object->getItems(), $credit);
-        $this->addCustomLines($object);
-
-        return $this;
-    }
-
-    /**
      * Add custom lines
      *
      * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
@@ -358,79 +432,5 @@ abstract class AbstractQueue extends AbstractResource
     protected function addCustomLines($object)
     {
         return $this;
-    }
-
-    /**
-     * Get document code for object
-     *
-     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
-     * @return string
-     */
-    protected function getDocumentCodeForObject($object)
-    {
-        $prefix = '';
-        if ($object instanceof OrderCreditmemo) {
-            $prefix = self::DOCUMENT_CODE_CREDITMEMO_PREFIX;
-        } elseif ($object instanceof OrderInvoice) {
-            $prefix = self::DOCUMENT_CODE_INVOICE_PREFIX;
-        }
-
-        return $prefix . $object->getIncrementId();
-    }
-
-    /**
-     * Prepare header
-     *
-     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
-     * @return \OnePica\AvaTax16\Document\Request\Header
-     */
-    protected function prepareHeaderForObject($object)
-    {
-        $store = $object->getStore();
-        $order = $object->getOrder();
-        $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
-        $objectDate = $this->convertGmtDate($object->getCreatedAt(), $store);
-        $orderDate = $this->convertGmtDate($order->getCreatedAt(), $store);
-
-        $header = parent::prepareHeader($store, $shippingAddress);
-        $header->setDocumentCode($this->getDocumentCodeForObject($object));
-        $header->setTransactionDate($objectDate);
-        $header->setTaxCalculationDate($orderDate);
-
-        return $header;
-    }
-
-    /**
-     * Init request
-     *
-     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
-     * @return $this
-     */
-    protected function initRequest($object)
-    {
-        $this->request = new Request();
-        $header = $this->prepareHeaderForObject($object);
-        $this->request->setHeader($header);
-
-        $this->prepareLines($object);
-        $this->request->setLines(array_values($this->lines));
-
-        return $this;
-    }
-
-    /**
-     * Queue submit
-     * Send request object to service
-     *
-     * @param Queue $queue
-     * @return ResultInterface
-     */
-    public function submit(Queue $queue)
-    {
-        $requestObject = unserialize($queue->getData('request_data'));
-        $this->request = $requestObject;
-        $store = $this->objectManager->get('Magento\Store\Model\StoreManagerInterface')->getStore($queue->getStoreId());
-        $result = $this->send($store);
-        return $result;
     }
 }
