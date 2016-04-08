@@ -40,9 +40,7 @@ class Subtotal extends AbstractCollector
     ) {
         parent::collect($quote, $shippingAssignment, $total);
 
-        $items = $shippingAssignment->getItems();
-
-        if (!$items) {
+        if ($this->isFiltered($quote, $shippingAssignment)) {
             return $this;
         }
 
@@ -54,6 +52,7 @@ class Subtotal extends AbstractCollector
         }
         $baseTotalTax = 0;
 
+        $items = $shippingAssignment->getItems();
         /** @var \Magento\Quote\Model\Quote\Item|\Magento\Quote\Model\Quote\Address\Item $item */
         foreach ($items as $item) {
             $baseTotalTax += $result->getItemAmount($item->getId());
