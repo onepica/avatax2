@@ -57,4 +57,19 @@ class Data extends AbstractHelper
      * Message group code
      */
     const MESSAGE_GROUP_CODE = 'avatax';
+
+    /**
+     * Adds a comment to order history.
+     *
+     * @param \Magento\Sales\Model\Order $order
+     * @param string                     $comment
+     * @return $this
+     */
+    public function addStatusHistoryCommentToOrder($order, $comment)
+    {
+        $order->addStatusHistoryComment($comment, $order->getStatus())
+            ->save();
+
+        return $this;
+    }
 }

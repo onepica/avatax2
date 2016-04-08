@@ -14,8 +14,10 @@
  */
 namespace OnePica\AvaTax\Model\Service\Resource\Avatax16\Queue;
 
-use OnePica\AvaTax\Api\ResultInterface;
 use OnePica\AvaTax\Api\Service\InvoiceResourceInterface;
+use OnePica\AvaTax\Model\Queue;
+use OnePica\AvaTax16\Document\Request;
+use OnePica\AvaTax\Model\Service\Result\Invoice as InvoiceResult;
 
 /**
  * Class Invoice
@@ -25,13 +27,33 @@ use OnePica\AvaTax\Api\Service\InvoiceResourceInterface;
 class Invoice extends AbstractQueue implements InvoiceResourceInterface
 {
     /**
-     * Invoice
+     * Get result object
      *
-     * @param \Magento\Sales\Model\Order\Invoice $invoice
-     * @return ResultInterface
+     * @return \OnePica\AvaTax\Model\Service\Result\Invoice
      */
-    public function invoice(\Magento\Sales\Model\Order\Invoice $invoice)
+    protected function createResultObject()
     {
-        // TODO: Implement invoice() method.
+        return $this->objectManager->create(InvoiceResult::class);
+    }
+
+    /**
+     * Get document code for object
+     *
+     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
+     * @return string
+     */
+    protected function getDocumentCodeForObject($object)
+    {
+        return self::DOCUMENT_CODE_INVOICE_PREFIX . $object->getIncrementId();
+    }
+
+    /**
+     * Get if items is for credit
+     *
+     * @return bool
+     */
+    protected function isCredit()
+    {
+        return false;
     }
 }

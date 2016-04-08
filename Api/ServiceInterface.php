@@ -21,6 +21,7 @@ use Magento\Quote\Model\Quote\Address\Total;
 use Magento\Sales\Model\Order\Creditmemo;
 use Magento\Sales\Model\Order\Invoice;
 use Magento\Store\Model\Store;
+use OnePica\AvaTax\Model\Queue;
 
 /**
  * Interface ServiceInterface
@@ -32,18 +33,18 @@ interface ServiceInterface
     /**
      * Invoice
      *
-     * @param \Magento\Sales\Model\Order\Invoice $invoice
+     * @param Queue $queue
      * @return ResultInterface
      */
-    public function invoice(Invoice $invoice);
+    public function invoice(Queue $queue);
 
     /**
      * Creditmemo
      *
-     * @param \Magento\Sales\Model\Order\Creditmemo $creditmemo
+     * @param Queue $queue
      * @return ResultInterface
      */
-    public function creditmemo(Creditmemo $creditmemo);
+    public function creditmemo(Queue $queue);
 
     /**
      * Validate

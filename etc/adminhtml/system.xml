@@ -84,7 +84,7 @@
                     </field>
                 </group>
                 <group id="avatax_log_group" translate="label" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Log Settings</label>
+                    <label>Log and Queue Settings</label>
                     <attribute type="expanded">1</attribute>
                     <field id="allowed_log_types" translate="label" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Allowed Log Types</label>
@@ -105,9 +105,18 @@
                         <comment>Required. Days before entries are auto-purged.</comment>
                         <validate>required-entry validate-digits validate-digits-range digits-range-1-</validate>
                     </field>
+                    <field id="queue_process_items_limit" translate="label" type="text" sortOrder="45" showInDefault="1" showInWebsite="0" showInStore="0">
+                        <label>Queue process items limit</label>
+                        <comment>Required. Limit of processed queue items</comment>
+                        <validate>required-entry validate-digits validate-digits-range digits-range-1-</validate>
+                    </field>
                     <field id="export_log_button" type="button" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Export Logs</label>
                         <frontend_model>OnePica\AvaTax\Block\Adminhtml\System\Config\Form\Field\Log\Export</frontend_model>
+                    </field>
+                    <field id="export_queue_button" type="button" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Export Queue</label>
+                        <frontend_model>OnePica\AvaTax\Block\Adminhtml\System\Config\Form\Field\Queue\Export</frontend_model>
                     </field>
                 </group>
                 <group id="avatax_data_mapping_group" translate="label" sortOrder="70" showInDefault="1" showInStore="1" showInWebsite="1">

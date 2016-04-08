@@ -16,6 +16,7 @@ namespace OnePica\AvaTax\Api\Service;
 
 use Magento\Sales\Model\Order\Creditmemo;
 use OnePica\AvaTax\Api\ResultInterface;
+use OnePica\AvaTax\Model\Queue;
 
 /**
  * Class CreditmemoResourceInterface
@@ -25,10 +26,19 @@ use OnePica\AvaTax\Api\ResultInterface;
 interface CreditmemoResourceInterface
 {
     /**
-     * Creditmemo
+     * Get Service Request Object
      *
-     * @param \Magento\Sales\Model\Order\Creditmemo $creditmemo
+     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
+     * @return mixed
+     */
+    public function getServiceRequestObject($object);
+
+    /**
+     * Queue submit
+     * Send request object to service
+     *
+     * @param Queue $queue
      * @return ResultInterface
      */
-    public function creditmemo(Creditmemo $creditmemo);
+    public function submit(Queue $queue);
 }

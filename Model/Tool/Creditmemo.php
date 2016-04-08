@@ -18,6 +18,8 @@ use OnePica\AvaTax\Api\ResultInterface;
 use OnePica\AvaTax\Api\Service\ResolverInterface;
 use OnePica\AvaTax\Model\ServiceFactory;
 use Magento\Sales\Model\Order\Creditmemo as OrderCreditmemo;
+use OnePica\AvaTax\Model\Queue;
+use OnePica\AvaTax\Helper\Data as DataHelper;
 
 /**
  * Class Creditmemo
@@ -34,41 +36,103 @@ class Creditmemo extends AbstractTool
     protected $creditmemo;
 
     /**
+     * Queue
+     *
+     * @var \OnePica\AvaTax\Model\Queue
+     */
+    protected $queue;
+    /**
+     * Data helper
+     *
+     * @var DataHelper
+     */
+    protected $dataHelper;
+
+    /**
      * Creditmemo constructor.
      *
      * @param \OnePica\AvaTax\Api\Service\ResolverInterface $resolver
      * @param \OnePica\AvaTax\Model\ServiceFactory          $serviceFactory
      * @param \Magento\Sales\Model\Order\Creditmemo         $creditmemo
+     * @param DataHelper                                    $dataHelper
      */
     public function __construct(
         ResolverInterface $resolver,
         ServiceFactory $serviceFactory,
-        OrderCreditmemo $creditmemo
+        OrderCreditmemo $creditmemo,
+        DataHelper $dataHelper
     ) {
         parent::__construct($resolver, $serviceFactory);
-        $this->init($creditmemo);
+        $this->setCreditmemo($creditmemo);
+        $this->dataHelper = $dataHelper;
     }
 
     /**
-     * Execute
+     * Set creditmemo
      *
-     * @return ResultInterface
-     */
-    public function execute()
-    {
-        return $this->getService()->creditmemo($this->creditmemo);
-    }
-
-    /**
-     * Init tool
-     *
-     * @param \Magento\Sales\Model\Order\Creditmemo $creditmemo
+     * @param OrderCreditmemo $creditmemo
      * @return $this
      */
-    protected function init(OrderCreditmemo $creditmemo)
+    public function setCreditmemo(OrderCreditmemo $creditmemo)
     {
         $this->creditmemo = $creditmemo;
 
         return $this;
+    }
+
+    /**
+     * Set queue
+     *
+     * @param Queue $queue
+     * @return $this
+     */
+    public function setQueue(Queue $queue)
+    {
+        $this->queue = $queue;
+
+        return $this;
+    }
+
+    /**
+     * Get Creditmemo Service Request Object
+     *
+     * @return mixed
+     */
+    public function getCreditmemoServiceRequestObject()
+    {
+        return $this->getService()->getCreditmemoServiceRequestObject($this->creditmemo);
+    }
+
+    /**
+     * Execute.
+     * Process queue for creditmemo. Send request object to service
+     *
+     * @return ResultInterface
+     * @throws \OnePica\AvaTax\Model\Service\Exception\Unbalanced
+     * @throws \OnePica\AvaTax\Model\Service\Exception\Commitfailure
+     */
+    public function execute()
+    {
+        $creditmemoResult = $this->getService()->creditmemo($this->queue);
+
+        //if successful
+        if (!$creditmemoResult->getHasError()) {
+            $message = __('Creditmemo #%1 was saved to AvaTax', $creditmemoResult->getDocumentCode());
+            $order = $this->creditmemo->getOrder();
+            $this->dataHelper->addStatusHistoryCommentToOrder($order, $message);
+
+            $totalTax = $creditmemoResult->getTotalTax();
+            if ($totalTax != ($this->creditmemo->getBaseTaxAmount() * -1)) {
+                throw new \OnePica\AvaTax\Model\Service\Exception\Unbalanced(
+                    'Collected: ' . $this->creditmemo->getTaxAmount() . ', Actual: ' . $totalTax
+                );
+            }
+            //if not successful
+        } else {
+            $messages = $creditmemoResult->getErrors();
+            throw new \OnePica\AvaTax\Model\Service\Exception\Commitfailure(implode(' // ', $messages));
+        }
+
+        return $creditmemoResult;
     }
 }
