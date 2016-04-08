@@ -240,6 +240,12 @@ class InstallSchema implements InstallSchemaInterface
                 [],
                 'Serialized request data to send to avalara'
             )->addColumn(
+                'total_tax_amount',
+                Table::TYPE_FLOAT,
+                null,
+                [],
+                'Total tax amount. Also include FPT.'
+            )->addColumn(
                 'created_at',
                 Table::TYPE_TIMESTAMP,
                 null,

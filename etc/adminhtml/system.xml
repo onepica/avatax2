@@ -227,6 +227,12 @@
                 <field id="default_product_tax_class" showInDefault="0" showInWebsite="0" showInStore="0"/>
                 <field id="default_customer_tax_class" showInDefault="0" showInWebsite="0" showInStore="0"/>
             </group>
+            <group id="weee">
+                <field id="enable" showInDefault="0" showInWebsite="0" showInStore="0" />
+                <field id="display_list" showInDefault="0" showInWebsite="0" showInStore="0" />
+                <field id="display" showInDefault="0" showInWebsite="0" showInStore="0" />
+                <field id="apply_vat" showInDefault="0" showInWebsite="0" showInStore="0" />
+            </group>
         </section>
     </system>
 </config>

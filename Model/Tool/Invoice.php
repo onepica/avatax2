@@ -123,9 +123,9 @@ class Invoice extends AbstractTool
             $this->dataHelper->addStatusHistoryCommentToOrder($order, $message);
 
             $totalTax = $invoiceResult->getTotalTax();
-            if ($totalTax != $this->invoice->getBaseTaxAmount()) {
+            if ($totalTax != $this->queue->getTotalTaxAmount()) {
                 throw new \OnePica\AvaTax\Model\Service\Exception\Unbalanced(
-                    'Collected: ' . $this->invoice->getBaseTaxAmount() . ', Actual: ' . $totalTax
+                    'Collected: ' . $this->queue->getTotalTaxAmount() . ', Actual: ' . $totalTax
                 );
             }
             //if not successful

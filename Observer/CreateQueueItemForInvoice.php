@@ -100,6 +100,8 @@ class CreateQueueItemForInvoice implements ObserverInterface
     {
         /** @var \Magento\Sales\Model\Order\Invoice $invoice */
         $invoice = $observer->getEvent()->getInvoice();
+        $totalTax = $this->getTotalTax($invoice);
+
         if ($invoice->getData(Queue::FLAG_CAN_ADD_TO_QUEUE)
             && $this->addressHelper->isObjectActionable($invoice)
         ) {
@@ -107,6 +109,7 @@ class CreateQueueItemForInvoice implements ObserverInterface
             $queue->setEntity($invoice);
             $queue->setType(Queue::TYPE_INVOICE);
             $queue->setStatus(Queue::STATUS_PENDING);
+            $queue->setTotalTaxAmount($totalTax);
 
             // save request object with data to use during queue processing
             $requestObjectSerialized = serialize($this->getRequestObject($invoice));
@@ -114,6 +117,23 @@ class CreateQueueItemForInvoice implements ObserverInterface
 
             $this->queueRepository->save($queue);
         }
+    }
+
+    /**
+     * Get total tax
+     *
+     * @param \Magento\Sales\Model\Order\Invoice $object
+     * @return float
+     */
+    protected function getTotalTax($object)
+    {
+        $tax = (float)$object->getData('base_tax_amount');
+
+        foreach ($object->getItems() as $item) {
+            $tax += $item->getData('base_weee_tax_applied_row_amnt');
+        }
+
+        return $tax;
     }
 
     /**

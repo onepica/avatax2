@@ -39,6 +39,10 @@
         <plugin name="avatax_tax_data_helper_plugin"
                 type="OnePica\AvaTax\Plugin\Magento\Tax\Helper\Data" sortOrder="10" />
     </type>
+    <type name="Magento\Weee\Model\Config">
+        <plugin name="avatax_weee_model_config_plugin"
+                type="OnePica\AvaTax\Plugin\Magento\Weee\Model\Config" sortOrder="10" />
+    </type>
     <type name="OnePica\AvaTax\Model\Service\Resolver">
         <arguments>
             <argument name="data" xsi:type="array">

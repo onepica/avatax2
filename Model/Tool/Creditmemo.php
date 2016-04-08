@@ -122,9 +122,9 @@ class Creditmemo extends AbstractTool
             $this->dataHelper->addStatusHistoryCommentToOrder($order, $message);
 
             $totalTax = $creditmemoResult->getTotalTax();
-            if ($totalTax != ($this->creditmemo->getBaseTaxAmount() * -1)) {
+            if ($totalTax != ($this->queue->getTotalTaxAmount() * -1)) {
                 throw new \OnePica\AvaTax\Model\Service\Exception\Unbalanced(
-                    'Collected: ' . $this->creditmemo->getTaxAmount() . ', Actual: ' . $totalTax
+                    'Collected: ' . $this->queue->getTotalTaxAmount() . ', Actual: ' . $totalTax
                 );
             }
             //if not successful

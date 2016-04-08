@@ -100,6 +100,8 @@ class CreateQueueItemForCreditmemo implements ObserverInterface
     {
         /** @var \Magento\Sales\Model\Order\Creditmemo $creditmemo */
         $creditmemo = $observer->getEvent()->getCreditmemo();
+        $totalTax = $this->getTotalTax($creditmemo);
+
         if ($creditmemo->getData(Queue::FLAG_CAN_ADD_TO_QUEUE)
             && $this->addressHelper->isObjectActionable($creditmemo)
         ) {
@@ -107,6 +109,7 @@ class CreateQueueItemForCreditmemo implements ObserverInterface
             $queue->setEntity($creditmemo);
             $queue->setType(Queue::TYPE_CREDITMEMO);
             $queue->setStatus(Queue::STATUS_PENDING);
+            $queue->setTotalTaxAmount($totalTax);
 
             // save request object with data to use during queue processing
             $requestObjectSerialized = serialize($this->getRequestObject($creditmemo));
@@ -114,6 +117,23 @@ class CreateQueueItemForCreditmemo implements ObserverInterface
 
             $this->queueRepository->save($queue);
         }
+    }
+
+    /**
+     * Get total tax
+     *
+     * @param \Magento\Sales\Model\Order\Creditmemo $object
+     * @return float
+     */
+    protected function getTotalTax($object)
+    {
+        $tax = (float)$object->getData('base_tax_amount');
+
+        foreach ($object->getItems() as $item) {
+            $tax += $item->getData('base_weee_tax_applied_row_amnt');
+        }
+
+        return $tax;
     }
 
     /**
