@@ -55,6 +55,7 @@ interface QueueInterface
     const ATTEMPT             = 'attempt';
     const MESSAGE             = 'message';
     const REQUEST_DATA        = 'request_data';
+    const TOTAL_TAX_AMOUNT    = 'total_tax_amount';
     const CREATED_AT          = 'created_at';
     const UPDATED_AT          = 'updated_at';
     /**#@-*/
@@ -232,4 +233,19 @@ interface QueueInterface
      * @return $this
      */
     public function setEntity($object);
+
+    /**
+     * Total tax amount
+     *
+     * @return float
+     */
+    public function getTotalTaxAmount();
+
+    /**
+     * Set total tax amount
+     *
+     * @param float $totalTaxAmount
+     * @return $this
+     */
+    public function setTotalTaxAmount($totalTaxAmount);
 }

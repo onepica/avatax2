@@ -21,18 +21,22 @@ use Magento\Quote\Api\Data\ShippingAssignmentInterface;
 use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\Quote\Address\Total;
 use Magento\Tax\Helper\Data as TaxDataHelper;
+use OnePica\AvaTax\Helper\Address;
 use OnePica\AvaTax\Helper\Config;
 
 /**
  * Class FixedTax
+ *
  * @package OnePica\AvaTax\Model\Sales\Total\Quote
  */
 class FixedTax extends AbstractCollector
 {
     /**
+     * Weee data helper
+     *
      * @var \Magento\Weee\Helper\Data
      */
-    private $weeeHelper;
+    protected $weeeHelper;
 
     /**
      * FixedTax constructor.
@@ -42,6 +46,7 @@ class FixedTax extends AbstractCollector
      * @param PriceCurrencyInterface $priceCurrency
      * @param TaxDataHelper $taxDataHelper
      * @param Config $config
+     * @param Address $addressHelper
      * @param \Magento\Weee\Helper\Data $weeeHelper
      */
     public function __construct(
@@ -50,9 +55,10 @@ class FixedTax extends AbstractCollector
         PriceCurrencyInterface $priceCurrency,
         TaxDataHelper $taxDataHelper,
         Config $config,
+        Address $addressHelper,
         \Magento\Weee\Helper\Data $weeeHelper
     ) {
-        parent::__construct($objectManager, $registry, $priceCurrency, $taxDataHelper, $config);
+        parent::__construct($objectManager, $registry, $priceCurrency, $taxDataHelper, $config, $addressHelper);
         $this->weeeHelper = $weeeHelper;
     }
 
@@ -71,7 +77,7 @@ class FixedTax extends AbstractCollector
     ) {
         parent::collect($quote, $shippingAssignment, $total);
 
-        if (!$shippingAssignment->getItems()) {
+        if ($this->isFiltered($quote, $shippingAssignment)) {
             return $this;
         }
 

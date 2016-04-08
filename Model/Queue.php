@@ -346,4 +346,27 @@ class Queue extends AbstractModel implements QueueInterface
 
         return $this;
     }
+
+    /**
+     * Total tax amount
+     *
+     * @return float
+     */
+    public function getTotalTaxAmount()
+    {
+        return $this->getData(self::TOTAL_TAX_AMOUNT);
+    }
+
+    /**
+     * Set total tax amount
+     *
+     * @param float $totalTaxAmount
+     * @return $this
+     */
+    public function setTotalTaxAmount($totalTaxAmount)
+    {
+        $this->setData(self::TOTAL_TAX_AMOUNT, $totalTaxAmount);
+
+        return $this;
+    }
 }

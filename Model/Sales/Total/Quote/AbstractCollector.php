@@ -185,8 +185,10 @@ abstract class AbstractCollector extends AbstractTotal
     ) {
         $address = $shippingAssignment->getShipping()->getAddress();
 
-        if (!$this->addressHelper->isAddressActionable($address, $quote->getStore())
+        if (!$address->getPostcode()
             || !$shippingAssignment->getItems()
+            || !$this->addressHelper->isAddressActionable($address, $quote->getStore())
+
         ) {
             return true;
         }
