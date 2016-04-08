@@ -51,4 +51,25 @@ class Invoice extends AbstractQueue implements InvoiceResourceInterface
     {
         return $this->objectManager->create(InvoiceResult::class);
     }
+
+    /**
+     * Get document code for object
+     *
+     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
+     * @return string
+     */
+    protected function getDocumentCodeForObject($object)
+    {
+        return self::DOCUMENT_CODE_INVOICE_PREFIX . $object->getIncrementId();
+    }
+
+    /**
+     * Get if items is for credit
+     *
+     * @return bool
+     */
+    protected function isCredit()
+    {
+        return false;
+    }
 }

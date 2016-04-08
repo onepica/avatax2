@@ -135,4 +135,25 @@ class Creditmemo extends AbstractQueue implements CreditmemoResourceInterface
     {
         return $this->objectManager->create(CreditmemoResult::class);
     }
+
+    /**
+     * Get document code for object
+     *
+     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
+     * @return string
+     */
+    protected function getDocumentCodeForObject($object)
+    {
+        return self::DOCUMENT_CODE_CREDITMEMO_PREFIX . $object->getIncrementId();
+    }
+
+    /**
+     * Get if items is for credit
+     *
+     * @return bool
+     */
+    protected function isCredit()
+    {
+        return true;
+    }
 }

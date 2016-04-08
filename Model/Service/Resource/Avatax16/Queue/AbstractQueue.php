@@ -17,8 +17,6 @@ namespace OnePica\AvaTax\Model\Service\Resource\Avatax16\Queue;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Framework\Stdlib\DateTime\Timezone;
 use Magento\Store\Model\Store;
-use Magento\Sales\Model\Order\Creditmemo as OrderCreditmemo;
-use Magento\Sales\Model\Order\Invoice as OrderInvoice;
 use OnePica\AvaTax\Model\Service\Resource\AbstractResource;
 use OnePica\AvaTax\Api\ConfigRepositoryInterface;
 use OnePica\AvaTax\Helper\Config;
@@ -202,17 +200,7 @@ abstract class AbstractQueue extends AbstractResource
      * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
      * @return string
      */
-    protected function getDocumentCodeForObject($object)
-    {
-        $prefix = '';
-        if ($object instanceof OrderCreditmemo) {
-            $prefix = self::DOCUMENT_CODE_CREDITMEMO_PREFIX;
-        } elseif ($object instanceof OrderInvoice) {
-            $prefix = self::DOCUMENT_CODE_INVOICE_PREFIX;
-        }
-
-        return $prefix . $object->getIncrementId();
-    }
+    abstract protected function getDocumentCodeForObject($object);
 
     /**
      * Prepare lines
@@ -224,7 +212,7 @@ abstract class AbstractQueue extends AbstractResource
     {
         $this->lines = [];
         $store = $object->getStore();
-        $credit = $object instanceof OrderCreditmemo ? true : false;
+        $credit = $this->isCredit();
         $this->addLine($this->prepareShippingLine($store, $object, $credit), $this->getShippingSku($store));
         $this->addLine($this->prepareGwOrderLine($store, $object, $credit), $this->getGwOrderSku($store));
         $this->addLine($this->prepareGwPrintedCardLine($store, $object, $credit), $this->getGwPrintedCardSku($store));
@@ -234,6 +222,13 @@ abstract class AbstractQueue extends AbstractResource
 
         return $this;
     }
+
+    /**
+     * Get if items is for credit
+     *
+     * @return bool
+     */
+    abstract protected function isCredit();
 
     /**
      * Prepare shipping line
