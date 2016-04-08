@@ -92,51 +92,14 @@ class DataSourceQueue extends DataSource
     }
 
     /**
-     * Get customer code
-     *
-     * @param Store   $store
-     * @param Address $address
-     * @return string
-     */
-    public function getCustomerCode($store, $address)
-    {
-        $customerId = (int)$address->getOrder()->getCustomerId();
-        $customer = null;
-
-        if ($customerId) {
-            try {
-                $customer = $this->customerRegistry->retrieve($customerId);
-            } catch (NoSuchEntityException $e) {
-                $customer = null;
-            }
-        }
-
-        $customerCode = '';
-        switch ($this->config->getCustomerCodeFormat($store)) {
-            case CustomerCodeFormat::CUSTOMER_ID:
-                $customerCode = $this->prepareCustomerId($address);
-                break;
-            case CustomerCodeFormat::CUSTOMER_EMAIL:
-                $customerCode = $this->prepareCustomerEmail($address, $customer)
-                    ?: $this->prepareCustomerId($address);
-                break;
-        }
-
-        return $customerCode;
-    }
-
-    /**
      * Prepare customer id
      *
      * @param Address $address
      * @return int|string
      */
-    protected function prepareCustomerId($address)
+    protected function getCustomerIdFromAddress($address)
     {
         $customerId = (int)$address->getOrder()->getCustomerId();
-        if (!$customerId) {
-            $customerId = 'guest-' . $address->getId();
-        }
 
         return $customerId;
     }

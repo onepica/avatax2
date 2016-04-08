@@ -173,7 +173,7 @@ class DataSource implements DataSourceInterface
      */
     public function getCustomerCode($store, $address)
     {
-        $customerId = (int)$address->getCustomerId();
+        $customerId = $this->getCustomerIdFromAddress($address);
         $customer = null;
 
         if ($customerId) {
@@ -318,10 +318,23 @@ class DataSource implements DataSourceInterface
      */
     protected function prepareCustomerId($address)
     {
-        $customerId = (int)$address->getCustomerId();
+        $customerId = $this->getCustomerIdFromAddress($address);
         if (!$customerId) {
             $customerId = 'guest-' . $address->getId();
         }
+
+        return $customerId;
+    }
+
+    /**
+     * Get customer id from Address
+     *
+     * @param AddressInterface $address
+     * @return int
+     */
+    protected function getCustomerIdFromAddress($address)
+    {
+        $customerId = (int)$address->getCustomerId();
 
         return $customerId;
     }
