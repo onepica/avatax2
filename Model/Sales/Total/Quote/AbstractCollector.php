@@ -18,6 +18,7 @@ use Magento\Framework\ObjectManagerInterface;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Quote\Model\Quote\Address\Total\AbstractTotal;
 use Magento\Tax\Helper\Data as TaxDataHelper;
+use OnePica\AvaTax\Helper\Address;
 use OnePica\AvaTax\Helper\Config;
 use Magento\Quote\Api\Data\ShippingAssignmentInterface;
 use Magento\Quote\Model\Quote;
@@ -79,6 +80,14 @@ abstract class AbstractCollector extends AbstractTotal
     protected $needCollect = true;
 
     /**
+     * Address helper
+     *
+     *
+     * @var Address
+     */
+    protected $addressHelper;
+
+    /**
      * AbstractCollector constructor.
      *
      * @param \Magento\Framework\ObjectManagerInterface         $objectManager
@@ -86,19 +95,22 @@ abstract class AbstractCollector extends AbstractTotal
      * @param \Magento\Framework\Pricing\PriceCurrencyInterface $priceCurrency
      * @param \Magento\Tax\Helper\Data                          $taxDataHelper
      * @param \OnePica\AvaTax\Helper\Config                     $config
+     * @param Address                                           $addressHelper
      */
     public function __construct(
         ObjectManagerInterface $objectManager,
         \Magento\Framework\Registry $registry,
         PriceCurrencyInterface $priceCurrency,
         TaxDataHelper $taxDataHelper,
-        Config $config
+        Config $config,
+        Address $addressHelper
     ) {
         $this->objectManager = $objectManager;
         $this->priceCurrency = $priceCurrency;
         $this->taxDataHelper = $taxDataHelper;
         $this->config = $config;
         $this->registry = $registry;
+        $this->addressHelper = $addressHelper;
     }
 
     /**
@@ -115,8 +127,8 @@ abstract class AbstractCollector extends AbstractTotal
         \Magento\Quote\Model\Quote\Address\Total $total
     ) {
         parent::collect($quote, $shippingAssignment, $total);
-        
-        if (!$shippingAssignment->getItems()) {
+
+        if ($this->isProcessingSkipped($quote, $shippingAssignment)) {
             return $this;
         }
 
@@ -158,5 +170,27 @@ abstract class AbstractCollector extends AbstractTotal
         }
 
         return $tool;
+    }
+
+    /**
+     * Is processing skipped
+     *
+     * @param Quote $quote
+     * @param ShippingAssignmentInterface $shippingAssignment
+     * @return bool
+     */
+    protected function isProcessingSkipped(
+        \Magento\Quote\Model\Quote $quote,
+        \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignment
+    ) {
+        $address = $shippingAssignment->getShipping()->getAddress();
+
+        if (!$this->addressHelper->isAddressActionable($address, $quote->getStore())
+            || !$shippingAssignment->getItems()
+        ) {
+            return true;
+        }
+
+        return false;
     }
 }
