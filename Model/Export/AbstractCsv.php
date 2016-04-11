@@ -60,6 +60,20 @@ abstract class AbstractCsv implements ExportInterface
     protected $config;
 
     /**
+     * File name
+     *
+     * @var string
+     */
+    protected $fileName;
+
+    /**
+     * File name suffix
+     *
+     * @var string
+     */
+    protected $fileNameSuffix = '';
+
+    /**
      * Csv constructor.
      *
      * @param Filesystem                    $filesystem
@@ -104,7 +118,32 @@ abstract class AbstractCsv implements ExportInterface
      */
     protected function getFileName()
     {
-        return Config::MODULE_NAME . '-' . $this->config->getModuleVersion() . '.' . $this->getFileType();
+        $filename = $this->fileName;
+
+        if (!$filename) {
+            $filename = Config::MODULE_NAME
+                      . '-'
+                      . $this->config->getModuleVersion()
+                      . '-'
+                      . $this->getFileNameSuffix()
+                      . '.'
+                      . $this->getFileType();
+        }
+
+        return $filename;
+    }
+
+    /**
+     * Set file name
+     *
+     * @param string $fileName
+     * @return $this
+     */
+    public function setFileName($fileName)
+    {
+        $this->fileName = $fileName;
+
+        return $this;
     }
 
     /**
@@ -115,6 +154,29 @@ abstract class AbstractCsv implements ExportInterface
     protected function getFileType()
     {
         return 'csv';
+    }
+
+    /**
+     * Get file name suffix
+     *
+     * @return string
+     */
+    public function getFileNameSuffix()
+    {
+        return $this->fileNameSuffix;
+    }
+
+    /**
+     * Set file name suffix
+     *
+     * @param string $fileNameSuffix
+     * @return $this
+     */
+    public function setFileNameSuffix($fileNameSuffix)
+    {
+        $this->fileNameSuffix = $fileNameSuffix;
+
+        return $this;
     }
 
     /**

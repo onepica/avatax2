@@ -28,6 +28,13 @@ use OnePica\AvaTax\Model\Export\AbstractCsv;
 class Csv extends AbstractCsv
 {
     /**
+     * File name suffix
+     *
+     * @var string
+     */
+    protected $fileNameSuffix = 'Queue';
+
+    /**
      * Csv constructor.
      *
      * @param Filesystem                    $filesystem
@@ -43,15 +50,5 @@ class Csv extends AbstractCsv
     ) {
         parent::__construct($filesystem, $outputCsvFactory, $config);
         $this->collection = $collection;
-    }
-
-    /**
-     * Get file name
-     *
-     * @return string
-     */
-    protected function getFileName()
-    {
-        return Config::MODULE_NAME . '-' . $this->config->getModuleVersion() . '-queue' . '.' . $this->getFileType();
     }
 }
