@@ -21,7 +21,7 @@ use OnePica\AvaTax\Model\Service\Resource\AbstractResource;
 use OnePica\AvaTax\Api\ConfigRepositoryInterface;
 use OnePica\AvaTax\Helper\Config;
 use OnePica\AvaTax\Api\Service\LoggerInterface;
-use OnePica\AvaTax\Model\Service\DataSourceQueue;
+use OnePica\AvaTax\Model\Service\DataSource\Queue as QueueDataSource;
 use OnePica\AvaTax16\Document\Request\Line;
 use OnePica\AvaTax\Model\Log;
 use OnePica\AvaTax\Api\ResultInterface;
@@ -49,7 +49,7 @@ abstract class AbstractQueue extends AbstractResource
      * @param \Magento\Framework\ObjectManagerInterface     $objectManager
      * @param \OnePica\AvaTax\Helper\Config                 $config
      * @param \OnePica\AvaTax\Api\Service\LoggerInterface   $logger
-     * @param \OnePica\AvaTax\Model\Service\DataSourceQueue $dataSource
+     * @param \OnePica\AvaTax\Model\Service\DataSource\Queue $dataSource
      * @param Timezone $timezone
      */
     public function __construct(
@@ -57,7 +57,7 @@ abstract class AbstractQueue extends AbstractResource
         ObjectManagerInterface $objectManager,
         Config $config,
         LoggerInterface $logger,
-        DataSourceQueue $dataSource,
+        QueueDataSource $dataSource,
         Timezone $timezone
     ) {
         parent::__construct($configRepository, $objectManager, $config, $logger, $dataSource);

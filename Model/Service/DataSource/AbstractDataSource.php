@@ -12,7 +12,7 @@
  * @copyright  Copyright (c) 2016 One Pica, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model\Service;
+namespace OnePica\AvaTax\Model\Service\DataSource;
 
 use Magento\Customer\Model\Customer;
 use Magento\Customer\Model\CustomerRegistry;
@@ -35,12 +35,7 @@ use OnePica\AvaTax\Model\Source\Avatax16\CustomerCodeFormat;
 use OnePica\AvaTax16\Document\Part\Location;
 use OnePica\AvaTax16\Document\Part\Location\Address as AvataxAddress;
 
-/**
- * Class DataSource
- *
- * @package OnePica\AvaTax\Model\Service
- */
-class DataSource implements DataSourceInterface
+abstract class AbstractDataSource implements DataSourceInterface
 {
     /**#@+
      * Tax location purpose
@@ -216,10 +211,7 @@ class DataSource implements DataSourceInterface
      * @param Address $address
      * @return Address
      */
-    protected function getBillingAddressFromAddress($address)
-    {
-        return $address->getQuote()->getBillingAddress();
-    }
+    abstract protected function getBillingAddressFromAddress($address);
 
     /**
      * Get default buyer type
@@ -240,10 +232,7 @@ class DataSource implements DataSourceInterface
      * @param Address $address
      * @return string
      */
-    protected function getCustomerTaxClassIdFromAddress($address)
-    {
-        return $address->getQuote()->getCustomerTaxClassId();
-    }
+    abstract protected function getCustomerTaxClassIdFromAddress($address);
 
     /**
      * Get default location
@@ -354,12 +343,7 @@ class DataSource implements DataSourceInterface
      * @param AddressInterface $address
      * @return int
      */
-    protected function getCustomerIdFromAddress($address)
-    {
-        $customerId = (int)$address->getCustomerId();
-
-        return $customerId;
-    }
+    abstract protected function getCustomerIdFromAddress($address);
 
     /**
      * Prepare customer email

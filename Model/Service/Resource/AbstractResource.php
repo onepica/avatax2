@@ -26,7 +26,7 @@ use OnePica\AvaTax\Api\ResultInterface;
 use OnePica\AvaTax\Api\Service\LoggerInterface;
 use OnePica\AvaTax\Helper\Config;
 use OnePica\AvaTax\Model\Log;
-use OnePica\AvaTax\Model\Service\DataSource;
+use OnePica\AvaTax\Model\Service\DataSource\Calculation;
 use OnePica\AvaTax\Model\Service\Result\Base;
 use OnePica\AvaTax16\Document\Request\Header;
 use OnePica\AvaTax16\Document\Request\Line;
@@ -95,7 +95,7 @@ abstract class AbstractResource
     /**
      * Data source
      *
-     * @var \OnePica\AvaTax\Api\DataSourceInterface|DataSource
+     * @var \OnePica\AvaTax\Api\DataSourceInterface|\OnePica\AvaTax\Model\Service\DataSource\Calculation
      */
     protected $dataSource;
 

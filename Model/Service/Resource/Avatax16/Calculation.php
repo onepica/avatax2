@@ -23,11 +23,10 @@ use Magento\Quote\Model\Quote\Address;
 use Magento\Quote\Model\Quote\Address\Total;
 use Magento\Store\Model\Store;
 use OnePica\AvaTax\Api\ConfigRepositoryInterface;
-use OnePica\AvaTax\Api\DataSourceInterface;
 use OnePica\AvaTax\Api\Service\CalculationResourceInterface;
 use OnePica\AvaTax\Api\Service\LoggerInterface;
 use OnePica\AvaTax\Helper\Config;
-use OnePica\AvaTax\Model\Service\DataSource;
+use OnePica\AvaTax\Model\Service\DataSource\Calculation as CalculationDataSource;
 use OnePica\AvaTax\Model\Service\Resource\AbstractResource;
 use OnePica\AvaTax\Model\Service\Result\Storage\Calculation as CalculationResultStorage;
 use OnePica\AvaTax16\Document\Request;
@@ -76,7 +75,7 @@ class Calculation extends AbstractResource implements CalculationResourceInterfa
      * @param \Magento\Framework\ObjectManagerInterface                                 $objectManager
      * @param \OnePica\AvaTax\Helper\Config                                             $config
      * @param \OnePica\AvaTax\Api\Service\LoggerInterface                               $logger
-     * @param \OnePica\AvaTax\Api\DataSourceInterface                                   $dataSource
+     * @param CalculationDataSource                                                     $dataSource
      * @param \Magento\Framework\Stdlib\DateTime\Timezone                               $timezone
      * @param CalculationResultStorage                                                  $resultStorage
      */
@@ -85,7 +84,7 @@ class Calculation extends AbstractResource implements CalculationResourceInterfa
         ObjectManagerInterface $objectManager,
         Config $config,
         LoggerInterface $logger,
-        DataSourceInterface $dataSource,
+        CalculationDataSource $dataSource,
         Timezone $timezone,
         CalculationResultStorage $resultStorage
     ) {
@@ -362,7 +361,7 @@ class Calculation extends AbstractResource implements CalculationResourceInterfa
     protected function hasDestinationAddress()
     {
         $defaultLocations = $this->request->getHeader()->getDefaultLocations();
-        if ($defaultLocations && isset($defaultLocations[DataSource::TAX_LOCATION_PURPOSE_SHIP_TO])) {
+        if ($defaultLocations && isset($defaultLocations[CalculationDataSource::TAX_LOCATION_PURPOSE_SHIP_TO])) {
             return true;
         }
 

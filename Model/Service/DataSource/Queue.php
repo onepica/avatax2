@@ -12,7 +12,7 @@
  * @copyright  Copyright (c) 2016 One Pica, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model\Service;
+namespace OnePica\AvaTax\Model\Service\DataSource;
 
 use Magento\Customer\Model\CustomerRegistry;
 use Magento\Directory\Model\RegionFactory;
@@ -33,7 +33,7 @@ use OnePica\AvaTax\Model\Source\Avatax16\CustomerCodeFormat;
  *
  * @package OnePica\AvaTax\Model\Service
  */
-class DataSourceQueue extends DataSource
+class Queue extends AbstractDataSource
 {
     /**
      * @var GroupRepositoryInterface
