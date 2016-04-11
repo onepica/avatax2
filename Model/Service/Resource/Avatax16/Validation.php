@@ -123,6 +123,12 @@ class Validation extends AbstractResource implements ValidationResourceInterface
             $resolution = (in_array($resolutionQuality, $this->successResolutionQuality)) ? true : false;
             $result->setResolution($resolution);
 
+            // if we have bad resolution we should set error with message
+            if (!$resolution) {
+                $errors[] = $this->config->getAvatax16AddressValidationMessage($store);
+                $result->setErrors($errors);
+            }
+
         } catch (\Exception $e) {
             $result->setHasError(true);
             $result->setErrors([$e->getMessage()]);
