@@ -53,6 +53,7 @@ class Config extends AbstractHelper
     const AVATAX_VALIDATE_ADDRESS                   = 'tax/avatax/address_validation_group/validate_address';
     const AVATAX_NORMALIZE_ADDRESS                  = 'tax/avatax/address_validation_group/normalize_address';
     const AVATAX_ONEPAGE_NORMALIZE_MESSAGE          = 'tax/avatax/address_validation_group/onepage_normalize_message';
+    const AVATAX16_ADDRESS_VALIDATION_MESSAGE       = 'tax/avatax/address_validation_group/avatax16_onepage_validate_address_message';
     const AVATAX_MULTIADDRESS_NORMALIZE_MESSAGE     = 'tax/avatax/address_validation_group/multiaddress_normalize_message';
     const AVATAX_VALIDATE_ADDRESS_MESSAGE           = 'tax/avatax/address_validation_group/validate_address_message';
     const AVATAX_ADDRESS_VALIDATION_COUNTRIES       = 'tax/avatax/address_validation_group/address_validation_countries';
@@ -659,5 +660,16 @@ class Config extends AbstractHelper
     public function getRegionFilterList($store = null)
     {
         return (string)$this->getConfig(self::AVATAX_REGION_FILTER_LIST, $store);
+    }
+
+    /**
+     * Get avatax16 address validation message
+     *
+     * @param Store|int $store
+     * @return string
+     */
+    public function getAvatax16AddressValidationMessage($store = null)
+    {
+        return (string)$this->getConfig(self::AVATAX16_ADDRESS_VALIDATION_MESSAGE, $store);
     }
 }
