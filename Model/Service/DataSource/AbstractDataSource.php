@@ -390,7 +390,13 @@ abstract class AbstractDataSource implements DataSourceInterface
      */
     public function getShippingTaxClass($store = null)
     {
-        return 'FR020100';
+        $shippingTaxClass = $this->getOpAvataxCode($this->taxDataHelper->getShippingTaxClass($store));
+
+        if ($shippingTaxClass === '') {
+            $shippingTaxClass = 'FR020100';
+        }
+
+        return $shippingTaxClass;
     }
 
     /**

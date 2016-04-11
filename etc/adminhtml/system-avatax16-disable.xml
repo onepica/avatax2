@@ -20,7 +20,9 @@
                 <field id="shipping" showInDefault="1" showInWebsite="1" showInStore="1"/>
             </group>
             <group id="classes">
-                <field id="shipping_tax_class" showInDefault="1" showInWebsite="1" showInStore="0" />
+                <field id="shipping_tax_class">
+                    <comment></comment>
+                </field>
                 <field id="default_product_tax_class" showInDefault="1" showInWebsite="0" showInStore="0"/>
                 <field id="default_customer_tax_class" showInDefault="1" showInWebsite="0" showInStore="0"/>
             </group>
