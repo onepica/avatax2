@@ -34,15 +34,15 @@ class ValidateAddress implements OptionSourceInterface
         return [
             [
                 'value' => AvataxDataHelper::SHIPPING_ADDRESS_VALIDATION_DISABLE,
-                'label' => __('Disabled')
+                'label' => __('Disable')
             ],
             [
                 'value' => AvataxDataHelper::SHIPPING_ADDRESS_VALIDATION_PREVENT,
-                'label' => __('Enabled + Prevent Order')
+                'label' => __('Enable + Prevent Order')
             ],
             [
                 'value' => AvataxDataHelper::SHIPPING_ADDRESS_VALIDATION_ALLOW,
-                'label' => __('Enabled + Allow Order')
+                'label' => __('Enable + Allow Order')
             ],
         ];
     }
