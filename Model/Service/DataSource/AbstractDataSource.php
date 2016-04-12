@@ -37,6 +37,11 @@ use OnePica\AvaTax16\Document\Part\Location\Address as AvataxAddress;
 
 abstract class AbstractDataSource implements DataSourceInterface
 {
+    /**
+     * Default shipping tax class
+     */
+    const DEFAULT_SHIPPING_TAX_CLASS = 'FR020100';
+
     /**#@+
      * Tax location purpose
      */
@@ -390,7 +395,13 @@ abstract class AbstractDataSource implements DataSourceInterface
      */
     public function getShippingTaxClass($store = null)
     {
-        return 'FR020100';
+        $shippingTaxClass = $this->getOpAvataxCode($this->taxDataHelper->getShippingTaxClass($store));
+
+        if ($shippingTaxClass === '') {
+            $shippingTaxClass = self::DEFAULT_SHIPPING_TAX_CLASS;
+        }
+
+        return $shippingTaxClass;
     }
 
     /**

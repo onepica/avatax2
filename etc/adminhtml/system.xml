@@ -227,7 +227,9 @@
                 <field id="shipping" showInDefault="0" showInWebsite="0" showInStore="0"/>
             </group>
             <group id="classes">
-                <field id="shipping_tax_class" showInDefault="0" showInWebsite="0" showInStore="0" />
+                <field id="shipping_tax_class">
+                    <comment>If shipping class is set to None or has no Avatax Code, default code FR020100 will be send.</comment>
+                </field>
                 <field id="default_product_tax_class" showInDefault="0" showInWebsite="0" showInStore="0"/>
                 <field id="default_customer_tax_class" showInDefault="0" showInWebsite="0" showInStore="0"/>
             </group>
