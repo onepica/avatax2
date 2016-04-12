@@ -101,15 +101,18 @@ class FixedTax extends AbstractCollector
             }
 
             $fptData = $result->getItemFptData($item->getId());
+
+            if (null === $fptData) {
+                continue;
+            }
+
             $totalBaseFpt = $fptData['total_ftp_tax'];
             $totalFpt = $this->priceCurrency->convert($totalBaseFpt);
 
             $itemFtp = $totalFpt / $item->getTotalQty();
             $baseItemFtp = $totalBaseFpt / $item->getTotalQty();
 
-            $weeeTaxAppliedData = $this->setAppliedTax($fptData, $item);
-
-            $this->weeeHelper->setApplied($item, $weeeTaxAppliedData);
+            $this->setAppliedTax($fptData, $item);
 
             $item->setWeeeTaxAppliedRowAmount($totalFpt);
             $item->setBaseWeeeTaxAppliedRowAmnt($totalFpt);
@@ -163,6 +166,11 @@ class FixedTax extends AbstractCollector
      */
     protected function setAppliedTax(array $fptData, $item)
     {
+
+        if (!isset($fptData['tax_details'])) {
+            return $this;
+        }
+
         $weeeTaxAppliedData = [];
 
         foreach ($fptData['tax_details'] as $detail) {
@@ -185,6 +193,8 @@ class FixedTax extends AbstractCollector
             ];
         }
 
-        return $weeeTaxAppliedData;
+        $this->weeeHelper->setApplied($item, $weeeTaxAppliedData);
+
+        return $this;
     }
 }
