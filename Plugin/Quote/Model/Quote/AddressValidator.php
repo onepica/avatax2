@@ -168,8 +168,9 @@ class AddressValidator
      */
     protected function isValidationRequired(AbstractAddress $address)
     {
-        if ($this->getValidationMode() &&
-            $address->getAddressType() == \Magento\Quote\Model\Quote\Address::ADDRESS_TYPE_SHIPPING
+        $isShippingAddress = $address->getAddressType() == \Magento\Quote\Model\Quote\Address::ADDRESS_TYPE_SHIPPING;
+        if ($this->getValidationMode()
+            && ($isShippingAddress || $address->getQuote()->isVirtual())
             && $this->addressHelper->isAddressActionable(
                 $address,
                 $this->storeManager->getStore(),
