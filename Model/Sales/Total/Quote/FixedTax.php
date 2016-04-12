@@ -101,35 +101,18 @@ class FixedTax extends AbstractCollector
             }
 
             $fptData = $result->getItemFptData($item->getId());
+
+            if (null === $fptData) {
+                continue;
+            }
+
             $totalBaseFpt = $fptData['total_ftp_tax'];
             $totalFpt = $this->priceCurrency->convert($totalBaseFpt);
 
             $itemFtp = $totalFpt / $item->getTotalQty();
             $baseItemFtp = $totalBaseFpt / $item->getTotalQty();
 
-            $weeeTaxAppliedData = [];
-
-            foreach ($fptData['tax_details'] as $detail) {
-                $detailBaseTotalTax = $detail['tax'];
-                $detailTotalTax = $this->priceCurrency->convert($detail['tax']);
-
-                $detailBaseTax = $detailBaseTotalTax / $item->getTotalQty();
-                $detailTax = $detailTotalTax / $item->getTotalQty();
-
-                $weeeTaxAppliedData[] = [
-                    'title'                    => $detail['jurisdiction_name'],
-                    'base_amount'              => $detailBaseTax,
-                    'amount'                   => $detailTax,
-                    'row_amount'               => $detailTotalTax,
-                    'base_row_amount'          => $detailBaseTotalTax,
-                    'base_amount_incl_tax'     => $detailBaseTax,
-                    'amount_incl_tax'          => $detailTax,
-                    'row_amount_incl_tax'      => $detailTotalTax,
-                    'base_row_amount_incl_tax' => $detailBaseTotalTax,
-                ];
-            }
-
-            $this->weeeHelper->setApplied($item, $weeeTaxAppliedData);
+            $this->setAppliedTax($fptData, $item);
 
             $item->setWeeeTaxAppliedRowAmount($totalFpt);
             $item->setBaseWeeeTaxAppliedRowAmnt($totalFpt);
@@ -172,5 +155,46 @@ class FixedTax extends AbstractCollector
         }
 
         return false;
+    }
+
+    /**
+     * Set applied tax
+     *
+     * @param array $fptData
+     * @param \Magento\Quote\Model\Quote\Item|\Magento\Quote\Model\Quote\Address\Item $item
+     * @return array
+     */
+    protected function setAppliedTax(array $fptData, $item)
+    {
+
+        if (!isset($fptData['tax_details'])) {
+            return $this;
+        }
+
+        $weeeTaxAppliedData = [];
+
+        foreach ($fptData['tax_details'] as $detail) {
+            $detailBaseTotalTax = $detail['tax'];
+            $detailTotalTax = $this->priceCurrency->convert($detail['tax']);
+
+            $detailBaseTax = $detailBaseTotalTax / $item->getTotalQty();
+            $detailTax = $detailTotalTax / $item->getTotalQty();
+
+            $weeeTaxAppliedData[] = [
+                'title'                    => $detail['jurisdiction_name'],
+                'base_amount'              => $detailBaseTax,
+                'amount'                   => $detailTax,
+                'row_amount'               => $detailTotalTax,
+                'base_row_amount'          => $detailBaseTotalTax,
+                'base_amount_incl_tax'     => $detailBaseTax,
+                'amount_incl_tax'          => $detailTax,
+                'row_amount_incl_tax'      => $detailTotalTax,
+                'base_row_amount_incl_tax' => $detailBaseTotalTax,
+            ];
+        }
+
+        $this->weeeHelper->setApplied($item, $weeeTaxAppliedData);
+
+        return $this;
     }
 }

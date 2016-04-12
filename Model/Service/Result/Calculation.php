@@ -139,7 +139,7 @@ class Calculation extends Base implements CalculationResultInterface
      * Get item fpt
      *
      * @param int $id
-     * @return float
+     * @return array
      */
     public function getItemFptData($id)
     {
