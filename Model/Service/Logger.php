@@ -83,6 +83,9 @@ class Logger implements LoggerInterface
 
         $level = $result->getHasError() ? Log::LOG_LEVEL_ERROR : Log::LOG_LEVEL_SUCCESS;
 
+        $additional = var_export($additional, true);
+        $additional = str_replace($this->config->getServiceLicenceKey($store), '[LICENSE KEY]', $additional);
+
         $logModel
             ->setStoreId((int)$store)
             ->setLogType($type)
