@@ -223,18 +223,47 @@ class AddressValidator
      */
     protected function normalizeAddress(AbstractAddress $address, AddressValidation $serviceResult)
     {
-        if ($this->isNormalizeAddressEnabled() && !$serviceResult->getHasError()) {
+        if ($this->isNormalizeAddressEnabled()
+            && !$serviceResult->getHasError()
+            && $serviceResult->getResolution()
+        ) {
+            $addressWasChanged = false;
             $normalizedAddress = $serviceResult->getAddress();
             $street[] = $normalizedAddress->getLine1();
             if ($normalizedAddress->getLine2()) {
                 $street[] = $normalizedAddress->getLine2();
             }
-            $address->setStreet($street);
-            $address->setCity($normalizedAddress->getCity());
-            $address->setRegion($normalizedAddress->getRegion());
-            $address->setPostcode($normalizedAddress->getPostcode());
-            $address->setCountry($normalizedAddress->getCountry());
-            $address->setData('is_normalized', true);
+
+            if (!empty(array_diff($street, $address->getStreet()))) {
+                $address->setStreet($street);
+                $addressWasChanged = true;
+            }
+
+            if ($address->getCity() != $normalizedAddress->getCity()) {
+                $address->setCity($normalizedAddress->getCity());
+                $addressWasChanged = true;
+            }
+
+            $region = $this->addressHelper->getRegion($normalizedAddress->getRegion(), $address->getCountry());
+            if ($region && $address->getRegion() != $region->getName()) {
+                $address->setRegion($region->getName());
+                $address->setRegionId($region->getRegionId());
+                $addressWasChanged = true;
+            }
+
+            if ($address->getPostcode() != $normalizedAddress->getPostcode()) {
+                $address->setPostcode($normalizedAddress->getPostcode());
+                $addressWasChanged = true;
+            }
+
+            if ($address->getCountry() != $normalizedAddress->getCountry()) {
+                $address->setCountry($normalizedAddress->getCountry());
+                $addressWasChanged = true;
+            }
+
+            if ($addressWasChanged) {
+                $address->setData('is_normalized', true);
+            }
         }
     }
 
