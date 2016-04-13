@@ -9,6 +9,7 @@
                     <taxable_country>CA,US</taxable_country>
                 </region_filter_group>
                 <avatax_log_group>
+                    <log_mode>1</log_mode>
                     <log_lifetime>3</log_lifetime>
                     <queue_success_lifetime>7</queue_success_lifetime>
                     <queue_failed_lifetime>60</queue_failed_lifetime>

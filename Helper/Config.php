@@ -45,6 +45,7 @@ class Config extends AbstractHelper
     const AVATAX_SERVICE_ACCOUNT_NUMBER             = 'tax/avatax/account_number';
     const AVATAX_SERVICE_LICENCE_KEY                = 'tax/avatax/license_key';
     const AVATAX_SERVICE_COMPANY_CODE               = 'tax/avatax/company_code';
+    const AVATAX_SERVICE_LOG_MODE                   = 'tax/avatax/avatax_log_group/log_mode';
     const AVATAX_SERVICE_ALLOWED_LOG_TYPES          = 'tax/avatax/avatax_log_group/allowed_log_types';
     const AVATAX_SERVICE_LOG_LIFETIME               = 'tax/avatax/avatax_log_group/log_lifetime';
     const AVATAX_SERVICE_QUEUE_SUCCESS_LIFETIME     = 'tax/avatax/avatax_log_group/queue_success_lifetime';
@@ -205,6 +206,17 @@ class Config extends AbstractHelper
     public function getServiceCompanyCode($store = null)
     {
         return (string)$this->getConfig(self::AVATAX_SERVICE_COMPANY_CODE, $store);
+    }
+
+    /**
+     * Get log mode
+     *
+     * @param null $store
+     * @return int
+     */
+    public function getLogMode($store = null)
+    {
+        return (int)$this->getConfig(self::AVATAX_SERVICE_LOG_MODE, $store);
     }
 
     /**
