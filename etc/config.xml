@@ -26,7 +26,7 @@
                     <sales_person_code>Magento</sales_person_code>
                 </avatax_data_mapping_group>
                 <address_validation_group>
-                    <validate_address>0</validate_address>
+                    <validate_address>1</validate_address>
                     <normalize_address>0</normalize_address>
                     <address_validation_countries>CA,US</address_validation_countries>
                     <avatax16_onepage_validate_address_message>Unable to validate address.</avatax16_onepage_validate_address_message>
