@@ -19,6 +19,7 @@ use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Customer\Model\Address\AbstractAddress;
 use Magento\Store\Model\Store;
 use Magento\Framework\App\Helper\Context;
+use Magento\Directory\Model\RegionFactory;
 use OnePica\AvaTax\Helper\Data as AvataxDataHelper;
 use OnePica\AvaTax\Model\Service\Result\Storage\Filter;
 use OnePica\AvaTax\Model\Source\Avatax16\Action as AvataxActionSource;
@@ -68,12 +69,20 @@ class Address extends AbstractHelper
     protected $configRepository;
 
     /**
+     * Region Factory
+     *
+     * @var \Magento\Directory\Model\RegionFactory
+     */
+    protected $regionFactory;
+
+    /**
      * @param Context $context
      * @param Config $config
      * @param ObjectManagerInterface $objectManager
      * @param Filter $resultStorage
      * @param LoggerInterface $logger
      * @param ConfigRepositoryInterface $configRepository
+     * @param RegionFactory $regionFactory
      */
     public function __construct(
         Context $context,
@@ -81,7 +90,8 @@ class Address extends AbstractHelper
         Config $config,
         Filter $resultStorage,
         LoggerInterface $logger,
-        ConfigRepositoryInterface $configRepository
+        ConfigRepositoryInterface $configRepository,
+        RegionFactory $regionFactory
     ) {
         parent::__construct($context);
         $this->config = $config;
@@ -89,6 +99,7 @@ class Address extends AbstractHelper
         $this->resultStorage = $resultStorage;
         $this->logger = $logger;
         $this->configRepository = $configRepository;
+        $this->regionFactory = $regionFactory;
     }
 
     /**
@@ -317,5 +328,23 @@ class Address extends AbstractHelper
         $customerAddress->setData($addressData);
 
         return $customerAddress;
+    }
+
+    /**
+     * Get region
+     *
+     * @param string $region
+     * @param string $country
+     * @return \Magento\Directory\Model\Region|null
+     */
+    public function getRegion($region, $country)
+    {
+        $regionObj = $this->regionFactory->create();
+        $regionObj->loadByCode($region, $country);
+        if (!$regionObj->getId()) {
+            $regionObj->loadByName($region, $country);
+        }
+
+        return $regionObj->getId() ? $regionObj : null;
     }
 }
