@@ -90,6 +90,10 @@
                 <group id="avatax_log_group" translate="label" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Log and Queue Settings</label>
                     <attribute type="expanded">1</attribute>
+                    <field id="log_mode" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Log Mode</label>
+                        <source_model>OnePica\AvaTax\Model\Source\Avatax16\LogMode</source_model>
+                    </field>
                     <field id="allowed_log_types" translate="label" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Allowed Log Types</label>
                         <source_model>OnePica\AvaTax\Model\Source\Avatax16\LogType</source_model>

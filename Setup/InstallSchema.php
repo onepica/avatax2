@@ -136,10 +136,26 @@ class InstallSchema implements InstallSchemaInterface
             )->addIndex(
                 $setup->getIdxName(
                     $setup->getTable('avatax_log'),
-                    ['log_level', 'log_type', 'created_at'],
+                    ['log_level'],
                     AdapterInterface::INDEX_TYPE_INDEX
                 ),
-                ['log_level', 'log_type', 'created_at'],
+                ['log_level'],
+                AdapterInterface::INDEX_TYPE_INDEX
+            )->addIndex(
+                $setup->getIdxName(
+                    $setup->getTable('avatax_log'),
+                    ['log_type'],
+                    AdapterInterface::INDEX_TYPE_INDEX
+                ),
+                ['log_type'],
+                AdapterInterface::INDEX_TYPE_INDEX
+            )->addIndex(
+                $setup->getIdxName(
+                    $setup->getTable('avatax_log'),
+                    ['created_at'],
+                    AdapterInterface::INDEX_TYPE_INDEX
+                ),
+                ['created_at'],
                 AdapterInterface::INDEX_TYPE_INDEX
             );
 

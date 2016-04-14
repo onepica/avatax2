@@ -20,6 +20,7 @@ use OnePica\AvaTax\Api\Service\LoggerInterface;
 use OnePica\AvaTax\Helper\Config;
 use OnePica\AvaTax\Model\Log;
 use OnePica\AvaTax\Model\LogFactory;
+use OnePica\AvaTax\Model\Source\Avatax16\LogMode;
 
 /**
  * Class Logger
@@ -76,6 +77,10 @@ class Logger implements LoggerInterface
     public function log($type, $request, ResultInterface $result, $store = null, $additional = null)
     {
         if (!in_array($type, $this->config->getAllowedLogTypes($store))) {
+            return $this;
+        }
+
+        if ($this->config->getLogMode($store) === LogMode::ERRORS && !$result->getHasError()) {
             return $this;
         }
 
