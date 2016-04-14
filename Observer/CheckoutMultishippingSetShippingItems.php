@@ -19,7 +19,7 @@ use Magento\Framework\Event\ObserverInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\Exception\LocalizedException;
-use \Magento\Framework\Phrase;
+use Magento\Framework\App\RequestInterface;
 use OnePica\AvaTax\Helper\Config;
 
 /**
@@ -49,20 +49,30 @@ class CheckoutMultishippingSetShippingItems implements ObserverInterface
     protected $messageManager;
 
     /**
+     * Request object
+     *
+     * @var \Magento\Framework\App\RequestInterface
+     */
+    protected $request;
+
+    /**
      * CheckoutMultishippingSetShippingItems constructor
      *
      * @param Config $config
      * @param StoreManagerInterface $storeManager
      * @param \Magento\Framework\Message\ManagerInterface $messageManager
+     * @param \Magento\Framework\App\RequestInterface $request
      */
     public function __construct(
         Config $config,
         StoreManagerInterface $storeManager,
-        ManagerInterface $messageManager
+        ManagerInterface $messageManager,
+        RequestInterface $request
     ) {
         $this->config = $config;
         $this->storeManager = $storeManager;
         $this->messageManager = $messageManager;
+        $this->request = $request;
     }
 
     /**
@@ -75,6 +85,10 @@ class CheckoutMultishippingSetShippingItems implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
+        if (!$this->canValidateAddresses()) {
+            return $this;
+        }
+
         $quote = $observer->getData('quote');
         $shippingAddresses = $quote->getAllShippingAddresses();
         $errors = array();
@@ -94,6 +108,21 @@ class CheckoutMultishippingSetShippingItems implements ObserverInterface
     }
 
     /**
+     * Can validate addresses
+     *
+     * @return bool
+     */
+    protected function canValidateAddresses()
+    {
+        // enable validation if going to next step of multishipping checkout
+        if ($this->request->getParam('continue')) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Handle Errors
      *
      * @param array $errors
@@ -103,7 +132,7 @@ class CheckoutMultishippingSetShippingItems implements ObserverInterface
     {
         $errorsStr = implode('<br />', $errors);
         // stop go to next step of checkout
-        throw new LocalizedException(new Phrase($errorsStr));
+        throw new LocalizedException(__($errorsStr));
     }
 
     /**
