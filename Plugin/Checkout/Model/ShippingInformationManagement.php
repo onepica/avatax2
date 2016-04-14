@@ -35,20 +35,37 @@ class ShippingInformationManagement
     protected $objectManager;
 
     /**
+     * Quote repository
+     *
+     * @var CartRepositoryInterface
+     */
+    protected $quoteRepository;
+
+    /**
+     *  Address repository
+     * 
+     * @var \Magento\Customer\Api\AddressRepositoryInterface
+     */
+    protected $addressRepository;
+
+    /**
      * ShippingInformationManagement constructor
      *
      * @param Config $config
      * @param CartRepositoryInterface $quoteRepository
      * @param ObjectManagerInterface $objectManager
+     * @param \Magento\Customer\Api\AddressRepositoryInterface $addressRepository
      */
     public function __construct(
         Config $config,
         CartRepositoryInterface $quoteRepository,
-        ObjectManagerInterface $objectManager
+        ObjectManagerInterface $objectManager,
+        \Magento\Customer\Api\AddressRepositoryInterface $addressRepository
     ) {
         $this->config = $config;
         $this->quoteRepository = $quoteRepository;
         $this->objectManager = $objectManager;
+        $this->addressRepository = $addressRepository;
     }
 
     /**
@@ -65,6 +82,14 @@ class ShippingInformationManagement
         $cartId,
         \Magento\Checkout\Api\Data\ShippingInformationInterface $addressInformation
     ) {
+        $customerAddressId = $addressInformation->getShippingAddress()->getCustomerAddressId();
+
+        if ($customerAddressId) {
+            $addressData = $this->addressRepository->getById($customerAddressId);
+            $quote = $this->quoteRepository->getActive($cartId);
+            $quote->getShippingAddress()->importCustomerAddressData($addressData);
+        }
+
         $this->validateAndNormalize($addressInformation);
         $paymentInformation = $proceed($cartId, $addressInformation);
         // set updated addresses for response
