@@ -23,6 +23,7 @@ use OnePica\AvaTax\Helper\Config;
 use Magento\Quote\Api\Data\ShippingAssignmentInterface;
 use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\Quote\Address\Total as AddressTotal;
+use OnePica\AvaTax\Model\Service\Result\Calculation;
 use OnePica\AvaTax\Model\Tool\Calculate;
 
 /**
@@ -35,7 +36,7 @@ abstract class AbstractCollector extends AbstractTotal
     /**
      * Calculate tool registry key
      */
-    const CALCULATE_TOOL_KEY = 'avatax_calculate_tool';
+    const CALCULATE_RESULT_KEY = 'avatax_calculate_result';
 
     /**
      * Object manager
@@ -132,9 +133,9 @@ abstract class AbstractCollector extends AbstractTotal
             return $this;
         }
 
-        $result = $this->getCalculateTool($quote, $shippingAssignment, $total)->execute();
+        $result = $this->getCalculationResult($quote, $shippingAssignment, $total);
 
-        if ($result !== null && $result->getHasError()) {
+        if ($result !== null && $result->getHasError() && !$quote->getData('avatax_error')) {
             $quote->setData('avatax_error', true);
         }
 
@@ -147,29 +148,29 @@ abstract class AbstractCollector extends AbstractTotal
      * @param Quote                       $quote
      * @param ShippingAssignmentInterface $shippingAssignment
      * @param AddressTotal                $total
-     * @return Calculate
+     * @return Calculation
      */
-    protected function getCalculateTool(
+    protected function getCalculationResult(
         Quote $quote,
         ShippingAssignmentInterface $shippingAssignment,
         AddressTotal $total
     ) {
-        $tool = $this->registry->registry(self::CALCULATE_TOOL_KEY);
+        $result = $this->registry->registry(self::CALCULATE_RESULT_KEY);
 
-        if ($tool === null) {
-            $tool = $this->objectManager->create(
+        if ($result === null) {
+            $result = $this->objectManager->create(
                 Calculate::class,
                 [
                     'shippingAssignment' => $shippingAssignment,
                     'quote'              => $quote,
                     'total'              => $total
                 ]
-            );
+            )->execute();
 
-            $this->registry->register(self::CALCULATE_TOOL_KEY, $tool);
+            $this->registry->register(self::CALCULATE_RESULT_KEY, $result);
         }
 
-        return $tool;
+        return $result;
     }
 
     /**
