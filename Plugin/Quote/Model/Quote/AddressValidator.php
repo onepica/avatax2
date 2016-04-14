@@ -220,6 +220,7 @@ class AddressValidator
      *
      * @param AbstractAddress   $address
      * @param AddressValidation $serviceResult
+     * @return $this
      */
     protected function normalizeAddress(AbstractAddress $address, AddressValidation $serviceResult)
     {
@@ -265,6 +266,8 @@ class AddressValidator
                 $address->setData('is_normalized', true);
             }
         }
+
+        return $this;
     }
 
     /**
