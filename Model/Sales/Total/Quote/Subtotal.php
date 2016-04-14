@@ -44,8 +44,7 @@ class Subtotal extends AbstractCollector
             return $this;
         }
 
-        $calculate = $this->getCalculateTool($quote, $shippingAssignment, $total);
-        $result = $calculate->execute();
+        $result = $this->getCalculationResult($quote, $shippingAssignment, $total);
 
         if ($result === null) {
             return $this;

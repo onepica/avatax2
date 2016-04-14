@@ -81,13 +81,11 @@ class FixedTax extends AbstractCollector
             return $this;
         }
 
-        $calculate = $this->getCalculateTool($quote, $shippingAssignment, $total);
-        $result = $calculate->execute();
+        $result = $this->getCalculationResult($quote, $shippingAssignment, $total);
 
         if (null === $result) {
             return $this;
         }
-
         if ($result->getHasError()) {
             return $this;
         }
