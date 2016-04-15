@@ -34,9 +34,9 @@ use OnePica\AvaTax\Model\Tool\Calculate;
 abstract class AbstractCollector extends AbstractTotal
 {
     /**
-     * Calculate tool registry key
+     * Calculate tool registry key pattern
      */
-    const CALCULATE_RESULT_KEY = 'avatax_calculate_result';
+    const CALCULATE_RESULT_KEY_PATTERN = 'avatax_calculate_result_%s';
 
     /**
      * Object manager
@@ -155,8 +155,7 @@ abstract class AbstractCollector extends AbstractTotal
         ShippingAssignmentInterface $shippingAssignment,
         AddressTotal $total
     ) {
-        $result = $this->registry->registry(self::CALCULATE_RESULT_KEY);
-
+        $result = $this->registry->registry($this->getRegistryKey($shippingAssignment));
         if ($result === null) {
             $result = $this->objectManager->create(
                 Calculate::class,
@@ -167,7 +166,7 @@ abstract class AbstractCollector extends AbstractTotal
                 ]
             )->execute();
 
-            $this->registry->register(self::CALCULATE_RESULT_KEY, $result);
+            $this->registry->register($this->getRegistryKey($shippingAssignment), $result);
         }
 
         return $result;
@@ -189,11 +188,25 @@ abstract class AbstractCollector extends AbstractTotal
         if (!$address->getPostcode()
             || !$shippingAssignment->getItems()
             || !$this->addressHelper->isAddressActionable($address, $quote->getStore())
+            || !$shippingAssignment->getShipping()->getAddress()->getId()
 
         ) {
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * Get registry key
+     *
+     * @param ShippingAssignmentInterface $shippingAssignment
+     * @return string
+     */
+    protected function getRegistryKey(ShippingAssignmentInterface $shippingAssignment)
+    {
+        $addressId = $shippingAssignment->getShipping()->getAddress()->getId();
+
+        return sprintf(self::CALCULATE_RESULT_KEY_PATTERN, $addressId);
     }
 }
