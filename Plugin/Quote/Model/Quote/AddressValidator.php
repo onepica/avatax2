@@ -18,6 +18,7 @@ use Magento\Customer\Model\Address\AbstractAddress;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\Message\MessageInterface;
+use Magento\Store\Model\Store;
 use OnePica\AvaTax\Helper\Config;
 use OnePica\AvaTax\Model\Tool\Validate;
 use OnePica\AvaTax\Model\Service\Request\Address as RequestAddress;
@@ -66,6 +67,13 @@ class AddressValidator
     protected $addressHelper;
 
     /**
+     * Store
+     *
+     * @var \Magento\Store\Model\Store
+     */
+    protected $store;
+
+    /**
      * ShippingInformationManagement constructor
      *
      * @param Config $config
@@ -86,6 +94,23 @@ class AddressValidator
         $this->storeManager = $storeManager;
         $this->messageManager = $messageManager;
         $this->addressHelper = $addressHelper;
+    }
+
+    /**
+     * Init Store
+     *
+     * @param AbstractAddress $address
+     * @return $this
+     */
+    protected function initStore(AbstractAddress $address)
+    {
+        $storeId = $address->getQuote()
+                 ? $address->getQuote()->getStore()->getId()
+                 : null;
+
+        $this->store = $this->storeManager->getStore($storeId);
+
+        return $this;
     }
 
     /**
@@ -111,6 +136,8 @@ class AddressValidator
      */
     public function validate(AbstractAddress $address)
     {
+        $this->initStore($address);
+
         if (!$this->isValidationRequired($address)) {
             return true;
         }
@@ -174,7 +201,7 @@ class AddressValidator
             && ($isShippingAddress || $address->getQuote()->isVirtual())
             && $this->addressHelper->isAddressActionable(
                 $address,
-                $this->storeManager->getStore(),
+                $this->store,
                 AvataxDataHelper::REGION_FILTER_MODE_ALL,
                 true
             )
@@ -192,7 +219,7 @@ class AddressValidator
      */
     protected function getValidationMode()
     {
-        return $this->config->getValidateAddress($this->storeManager->getStore());
+        return $this->config->getValidateAddress($this->store);
     }
 
     /**
@@ -204,8 +231,7 @@ class AddressValidator
     protected function convertAddressToRequestAddress(AbstractAddress $address)
     {
         $requestAddress = $this->objectManager->create('OnePica\AvaTax\Model\Service\Request\Address');
-        $store = $this->storeManager->getStore();
-        $requestAddress->setStore($store);
+        $requestAddress->setStore($this->store);
         $requestAddress->setLine1($address->getStreetLine(1));
         $requestAddress->setLine2($address->getStreetLine(2));
         $requestAddress->setCity($address->getCity());
@@ -278,7 +304,7 @@ class AddressValidator
      */
     protected function isNormalizeAddressEnabled()
     {
-        return $this->config->getNormalizeAddress($this->storeManager->getStore());
+        return $this->config->getNormalizeAddress($this->store);
     }
 
     /**
@@ -306,7 +332,7 @@ class AddressValidator
      */
     protected function getValidateAddressMode()
     {
-        return $this->config->getValidateAddress($this->storeManager->getStore());
+        return $this->config->getValidateAddress($this->store);
     }
 
     /**
@@ -316,7 +342,7 @@ class AddressValidator
      */
     protected function getOnepageNormalizeMessage()
     {
-        return $this->config->getOnepageNormalizeMessage($this->storeManager->getStore());
+        return $this->config->getOnepageNormalizeMessage($this->store);
     }
 
     /**
@@ -327,9 +353,8 @@ class AddressValidator
      */
     protected function checkAddressFields(AbstractAddress $address)
     {
-        $store = $this->storeManager->getStore();
-        $requiredFields = explode(",", $this->config->getFieldRequiredList($store));
-        $fieldRules = explode(",", $this->config->getFieldRule($store));
+        $requiredFields = explode(",", $this->config->getFieldRequiredList($this->store));
+        $fieldRules = explode(",", $this->config->getFieldRule($this->store));
         $errors = null;
         $countryFactory = $this->objectManager->get('\Magento\Directory\Model\CountryFactory');
 
