@@ -17,6 +17,7 @@ namespace OnePica\AvaTax\Helper;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Customer\Model\Address\AbstractAddress;
+use Magento\Framework\Message\MessageInterface;
 use Magento\Store\Model\Store;
 use Magento\Framework\App\Helper\Context;
 use Magento\Directory\Model\RegionFactory;
@@ -76,6 +77,13 @@ class Address extends AbstractHelper
     protected $regionFactory;
 
     /**
+     * Message manager object
+     *
+     * @var \Magento\Framework\Message\ManagerInterface
+     */
+    protected $messageManager;
+
+    /**
      * @param Context $context
      * @param Config $config
      * @param ObjectManagerInterface $objectManager
@@ -83,6 +91,7 @@ class Address extends AbstractHelper
      * @param LoggerInterface $logger
      * @param ConfigRepositoryInterface $configRepository
      * @param RegionFactory $regionFactory
+     * @param \Magento\Framework\Message\ManagerInterface $messageManager
      */
     public function __construct(
         Context $context,
@@ -91,7 +100,8 @@ class Address extends AbstractHelper
         Filter $resultStorage,
         LoggerInterface $logger,
         ConfigRepositoryInterface $configRepository,
-        RegionFactory $regionFactory
+        RegionFactory $regionFactory,
+        \Magento\Framework\Message\ManagerInterface $messageManager
     ) {
         parent::__construct($context);
         $this->config = $config;
@@ -100,6 +110,7 @@ class Address extends AbstractHelper
         $this->logger = $logger;
         $this->configRepository = $configRepository;
         $this->regionFactory = $regionFactory;
+        $this->messageManager = $messageManager;
     }
 
     /**
@@ -346,5 +357,23 @@ class Address extends AbstractHelper
         }
 
         return $regionObj->getId() ? $regionObj : null;
+    }
+
+    /**
+     * Add validation notice
+     *
+     * @param string $message
+     * @return $this
+     */
+    public function addValidationNotice($message)
+    {
+        $messageObject = $this->messageManager->createMessage(
+            MessageInterface::TYPE_NOTICE,
+            AvataxDataHelper::MESSAGE_GROUP_CODE
+        );
+        $messageObject->setText($message);
+        $this->messageManager->addMessage($messageObject);
+
+        return $this;
     }
 }

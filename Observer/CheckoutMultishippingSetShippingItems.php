@@ -21,6 +21,7 @@ use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\App\RequestInterface;
 use OnePica\AvaTax\Helper\Config;
+use OnePica\AvaTax\Helper\Address as AvataxAddressHelper;
 
 /**
  * Class CheckoutMultishippingSetShippingItems
@@ -56,23 +57,33 @@ class CheckoutMultishippingSetShippingItems implements ObserverInterface
     protected $request;
 
     /**
+     * Address helper
+     *
+     * @var AvataxAddressHelper
+     */
+    protected $addressHelper;
+
+    /**
      * CheckoutMultishippingSetShippingItems constructor
      *
      * @param Config $config
      * @param StoreManagerInterface $storeManager
      * @param \Magento\Framework\Message\ManagerInterface $messageManager
      * @param \Magento\Framework\App\RequestInterface $request
+     * @param AvataxAddressHelper $addressHelper
      */
     public function __construct(
         Config $config,
         StoreManagerInterface $storeManager,
         ManagerInterface $messageManager,
-        RequestInterface $request
+        RequestInterface $request,
+        AvataxAddressHelper $addressHelper
     ) {
         $this->config = $config;
         $this->storeManager = $storeManager;
         $this->messageManager = $messageManager;
         $this->request = $request;
+        $this->addressHelper = $addressHelper;
     }
 
     /**
@@ -92,11 +103,16 @@ class CheckoutMultishippingSetShippingItems implements ObserverInterface
         $quote = $observer->getData('quote');
         $shippingAddresses = $quote->getAllShippingAddresses();
         $errors = array();
+        $normalized = false;
         foreach ($shippingAddresses as $address) {
             $itemResult = $address->validate();
             if (is_array($itemResult)) {
                 // @todo refactor deprecated method
                 $errors[] = sprintf($this->getValidateAddressMessage(), $address->format('oneline'));
+            }
+
+            if ($address->getData('is_normalized')) {
+                $normalized = true;
             }
         }
         if (!empty($errors)) {
@@ -104,6 +120,11 @@ class CheckoutMultishippingSetShippingItems implements ObserverInterface
         } else {
             // save normalized data
             $quote->save();
+            if ($normalized) {
+                // add normalize message
+                $message = $this->getMultiaddressNormalizeMessage();
+                $this->addressHelper->addValidationNotice($message);
+            }
         }
     }
 
@@ -143,5 +164,15 @@ class CheckoutMultishippingSetShippingItems implements ObserverInterface
     protected function getValidateAddressMessage()
     {
         return $this->config->getValidateAddressMessage($this->storeManager->getStore());
+    }
+
+    /**
+     * Get Multiaddress Normalize Message
+     *
+     * @return int
+     */
+    protected function getMultiaddressNormalizeMessage()
+    {
+        return $this->config->getMultiaddressNormalizeMessage($this->storeManager->getStore());
     }
 }

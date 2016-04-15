@@ -17,7 +17,6 @@ namespace OnePica\AvaTax\Plugin\Quote\Model\Quote;
 use Magento\Customer\Model\Address\AbstractAddress;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Store\Model\StoreManagerInterface;
-use Magento\Framework\Message\MessageInterface;
 use OnePica\AvaTax\Helper\Config;
 use OnePica\AvaTax\Model\Tool\Validate;
 use OnePica\AvaTax\Model\Service\Request\Address as RequestAddress;
@@ -52,13 +51,6 @@ class AddressValidator
     protected $storeManager;
 
     /**
-     * Message manager object
-     *
-     * @var \Magento\Framework\Message\ManagerInterface
-     */
-    protected $messageManager;
-
-    /**
      * Address helper
      *
      * @var AvataxAddressHelper
@@ -71,20 +63,17 @@ class AddressValidator
      * @param Config $config
      * @param ObjectManagerInterface $objectManager
      * @param StoreManagerInterface $storeManager
-     * @param \Magento\Framework\Message\ManagerInterface $messageManager
      * @param AvataxAddressHelper $addressHelper
      */
     public function __construct(
         Config $config,
         ObjectManagerInterface $objectManager,
         StoreManagerInterface $storeManager,
-        \Magento\Framework\Message\ManagerInterface $messageManager,
         AvataxAddressHelper $addressHelper
     ) {
         $this->config = $config;
         $this->objectManager = $objectManager;
         $this->storeManager = $storeManager;
-        $this->messageManager = $messageManager;
         $this->addressHelper = $addressHelper;
     }
 
@@ -126,10 +115,7 @@ class AddressValidator
         $validator = $this->objectManager->create(Validate::class, ['object' => $requestAddress]);
         $serviceResult = $validator->execute();
         $this->normalizeAddress($address, $serviceResult);
-        if ($address->getData('is_normalized') === true) {
-            $message = $this->getOnepageNormalizeMessage();
-            $this->addNotice($message);
-        }
+
         $result = $serviceResult->getErrors() ? $serviceResult->getErrors() : true;
         if ($result === true) {
             return true;
@@ -289,12 +275,7 @@ class AddressValidator
      */
     protected function addNotice($message)
     {
-        $messageObject =$this->messageManager->createMessage(
-            MessageInterface::TYPE_NOTICE,
-            AvataxDataHelper::MESSAGE_GROUP_CODE
-        );
-        $messageObject->setText($message);
-        $this->messageManager->addMessage($messageObject);
+        $this->addressHelper->addValidationNotice($message);
 
         return $this;
     }
