@@ -17,6 +17,7 @@ namespace OnePica\AvaTax\Plugin\Quote\Model\Quote;
 use Magento\Customer\Model\Address\AbstractAddress;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\Framework\Message\MessageInterface;
 use OnePica\AvaTax\Helper\Config;
 use OnePica\AvaTax\Model\Tool\Validate;
 use OnePica\AvaTax\Model\Service\Request\Address as RequestAddress;
@@ -288,9 +289,13 @@ class AddressValidator
      */
     protected function addNotice($message)
     {
-        // TODO: investigate of displays messages using meddage group
-       // $this->messageManager->addNotice($message, AvataxDataHelper::MESSAGE_GROUP_CODE);
-        $this->messageManager->addNotice($message);
+        $messageObject =$this->messageManager->createMessage(
+            MessageInterface::TYPE_NOTICE,
+            AvataxDataHelper::MESSAGE_GROUP_CODE
+        );
+        $messageObject->setText($message);
+        $this->messageManager->addMessage($messageObject);
+
         return $this;
     }
 

@@ -3,4 +3,7 @@
     <event name="checkout_type_multishipping_set_shipping_items">
         <observer name="checkout_multishipping_set_shipping_items" instance="OnePica\AvaTax\Observer\CheckoutMultishippingSetShippingItems" />
     </event>
+    <event name="checkout_submit_all_after">
+        <observer name="avatax_delete_validation_messages" instance="OnePica\AvaTax\Observer\DeleteValidationMessages"/>
+    </event>
 </config>
