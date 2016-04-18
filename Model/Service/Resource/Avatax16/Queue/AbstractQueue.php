@@ -132,8 +132,12 @@ abstract class AbstractQueue extends AbstractResource
     {
         $orderItems = $object->getOrder()->getItems();
         $objectItems = $object->getItems();
+        /** @var \Magento\Sales\Model\Order\Item $orderItem */
         foreach ($orderItems as $orderItem) {
             $avataxData = $orderItem->getData('avatax_data');
+            if ($orderItem->getChildrenItems() && !$this->isProductCalculated($orderItem)) {
+                $avataxData = $orderItem->getChildrenItems()[0]->getData('avatax_data');
+            }
             foreach ($objectItems as $item) {
                 if ($item->getOrderItemId() == $orderItem->getId()) {
                     $item->setData('avatax_data', $avataxData);
@@ -355,7 +359,7 @@ abstract class AbstractQueue extends AbstractResource
 
         /** @var \Magento\Sales\Model\Order\Invoice\Item|\Magento\Sales\Model\Order\Creditmemo\Item $item */
         foreach ($items as $item) {
-            if ($this->isProductCalculated($item)) {
+            if ($this->isProductCalculated($item->getOrderItem())) {
                 continue;
             }
 
