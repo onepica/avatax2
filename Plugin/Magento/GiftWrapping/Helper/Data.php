@@ -21,7 +21,7 @@ use Magento\Tax\Model\Config;
 /**
  * Class Data
  *
- * @package OnePica\AvaTax\Plugin\Magento\Tax\Helper
+ * @package OnePica\AvaTax\Plugin\Magento\GiftWrapping\Helper
  */
 class Data
 {
