@@ -240,6 +240,8 @@
             <group id="cart_display">
                 <field id="price" showInDefault="0" showInWebsite="0" showInStore="0"/>
                 <field id="subtotal" showInDefault="0" showInWebsite="0" showInStore="0"/>
+                <field id="gift_wrapping" showInDefault="0" showInWebsite="0" showInStore="0"/>
+                <field id="printed_card" showInDefault="0" showInWebsite="0" showInStore="0"/>
             </group>
             <group id="weee">
                 <field id="enable" showInDefault="0" showInWebsite="0" showInStore="0" />

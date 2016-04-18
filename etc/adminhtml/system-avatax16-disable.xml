@@ -29,6 +29,8 @@
             <group id="cart_display">
                 <field id="price" showInDefault="1" showInWebsite="1" showInStore="1"/>
                 <field id="subtotal" showInDefault="1" showInWebsite="1" showInStore="1"/>
+                <field id="gift_wrapping" showInDefault="1" showInWebsite="1" showInStore="1"/>
+                <field id="printed_card" showInDefault="1" showInWebsite="1" showInStore="1"/>
             </group>
             <group id="weee">
                 <field id="enable" showInDefault="1" showInWebsite="1" showInStore="0"/>
