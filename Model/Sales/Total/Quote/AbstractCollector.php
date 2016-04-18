@@ -20,6 +20,7 @@ use Magento\Quote\Model\Quote\Address\Total\AbstractTotal;
 use Magento\Tax\Helper\Data as TaxDataHelper;
 use OnePica\AvaTax\Helper\Address;
 use OnePica\AvaTax\Helper\Config;
+use OnePica\AvaTax\Helper\Data as AvataxDataHelper;
 use Magento\Quote\Api\Data\ShippingAssignmentInterface;
 use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\Quote\Address\Total as AddressTotal;
@@ -187,7 +188,11 @@ abstract class AbstractCollector extends AbstractTotal
 
         if (!$address->getPostcode()
             || !$shippingAssignment->getItems()
-            || !$this->addressHelper->isAddressActionable($address, $quote->getStore())
+            || !$this->addressHelper->isAddressActionable(
+                $address,
+                $quote->getStore(),
+                AvataxDataHelper::REGION_FILTER_MODE_TAX
+            )
             || !$shippingAssignment->getShipping()->getAddress()->getId()
 
         ) {
