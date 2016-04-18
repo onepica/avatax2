@@ -64,4 +64,22 @@ class Calculation extends AbstractDataSource
     {
         return $address->getQuote()->getCustomerTaxClassId();
     }
+
+    /**
+     * Get item avalara goods and services type
+     * Tax class.
+     *
+     * @param QuoteItem|\Magento\Quote\Model\Quote\Address\Item $item
+     * @param Store                                             $store
+     *
+     * @return string|null
+     */
+    public function getItemAvalaraGoodsAndServicesType($item, $store)
+    {
+        if ($item->getChildren()) {
+            $item = $item->getChildren()[0];
+        }
+
+        return parent::getItemAvalaraGoodsAndServicesType($item, $store);
+    }
 }
