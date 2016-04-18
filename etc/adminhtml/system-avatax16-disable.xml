@@ -26,6 +26,10 @@
                 <field id="default_product_tax_class" showInDefault="1" showInWebsite="0" showInStore="0"/>
                 <field id="default_customer_tax_class" showInDefault="1" showInWebsite="0" showInStore="0"/>
             </group>
+            <group id="cart_display">
+                <field id="price" showInDefault="1" showInWebsite="1" showInStore="1"/>
+                <field id="subtotal" showInDefault="1" showInWebsite="1" showInStore="1"/>
+            </group>
             <group id="weee">
                 <field id="enable" showInDefault="1" showInWebsite="1" showInStore="0"/>
                 <field id="display_list" showInDefault="1" showInWebsite="1" showInStore="0"/>
