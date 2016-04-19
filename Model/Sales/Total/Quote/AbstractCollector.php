@@ -34,6 +34,11 @@ use OnePica\AvaTax\Model\Tool\Calculate;
 abstract class AbstractCollector extends AbstractTotal
 {
     /**
+     * Avatax error quote key
+     */
+    const AVATAX_ERROR = 'avatax_error';
+
+    /**
      * Calculate tool registry key pattern
      */
     const CALCULATE_RESULT_KEY_PATTERN = 'avatax_calculate_result_%s';
@@ -135,8 +140,8 @@ abstract class AbstractCollector extends AbstractTotal
 
         $result = $this->getCalculationResult($quote, $shippingAssignment, $total);
 
-        if ($result !== null && $result->getHasError() && !$quote->getData('avatax_error')) {
-            $quote->setData('avatax_error', true);
+        if ($result !== null && $result->getHasError() && !$quote->getData(self::AVATAX_ERROR)) {
+            $quote->setData(self::AVATAX_ERROR, true);
         }
 
         return $this;
