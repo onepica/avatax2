@@ -17,6 +17,7 @@ namespace OnePica\AvaTax\Model\Service\Resource\Avatax16\Queue;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Framework\Stdlib\DateTime\Timezone;
 use Magento\Store\Model\Store;
+use Magento\Store\Model\StoreFactory;
 use OnePica\AvaTax\Model\Service\Resource\AbstractResource;
 use OnePica\AvaTax\Api\ConfigRepositoryInterface;
 use OnePica\AvaTax\Helper\Config;
@@ -43,6 +44,13 @@ abstract class AbstractQueue extends AbstractResource
     protected $timezone;
 
     /**
+     * Store factory
+     *
+     * @var \Magento\Store\Model\StoreFactory
+     */
+    protected $storeFactory;
+
+    /**
      * AbstractResource constructor.
      *
      * @param \OnePica\AvaTax\Api\ConfigRepositoryInterface $configRepository
@@ -51,6 +59,7 @@ abstract class AbstractQueue extends AbstractResource
      * @param \OnePica\AvaTax\Api\Service\LoggerInterface   $logger
      * @param \OnePica\AvaTax\Model\Service\DataSource\Queue $dataSource
      * @param Timezone $timezone
+     * @param StoreFactory $storeFactory
      */
     public function __construct(
         ConfigRepositoryInterface $configRepository,
@@ -58,10 +67,12 @@ abstract class AbstractQueue extends AbstractResource
         Config $config,
         LoggerInterface $logger,
         QueueDataSource $dataSource,
-        Timezone $timezone
+        Timezone $timezone,
+        StoreFactory $storeFactory
     ) {
         parent::__construct($configRepository, $objectManager, $config, $logger, $dataSource);
         $this->timezone = $timezone;
+        $this->storeFactory = $storeFactory;
     }
 
     /**
@@ -74,8 +85,10 @@ abstract class AbstractQueue extends AbstractResource
     public function submit(Queue $queue)
     {
         $requestObject = unserialize($queue->getData('request_data'));
+        $store = $this->storeFactory->create()->load($queue->getStoreId());
+        $header = $requestObject->getHeader();
+        $this->setCredentialsForHeader($header, $store);
         $this->request = $requestObject;
-        $store = $this->objectManager->get('Magento\Store\Model\StoreManagerInterface')->getStore($queue->getStoreId());
         $result = $this->send($store);
         return $result;
     }
@@ -132,8 +145,12 @@ abstract class AbstractQueue extends AbstractResource
     {
         $orderItems = $object->getOrder()->getItems();
         $objectItems = $object->getItems();
+        /** @var \Magento\Sales\Model\Order\Item $orderItem */
         foreach ($orderItems as $orderItem) {
             $avataxData = $orderItem->getData('avatax_data');
+            if ($orderItem->getChildrenItems() && !$this->isProductCalculated($orderItem)) {
+                $avataxData = $orderItem->getChildrenItems()[0]->getData('avatax_data');
+            }
             foreach ($objectItems as $item) {
                 if ($item->getOrderItemId() == $orderItem->getId()) {
                     $item->setData('avatax_data', $avataxData);
@@ -355,7 +372,7 @@ abstract class AbstractQueue extends AbstractResource
 
         /** @var \Magento\Sales\Model\Order\Invoice\Item|\Magento\Sales\Model\Order\Creditmemo\Item $item */
         foreach ($items as $item) {
-            if ($this->isProductCalculated($item)) {
+            if ($this->isProductCalculated($item->getOrderItem())) {
                 continue;
             }
 

@@ -212,11 +212,8 @@ abstract class AbstractResource
      */
     protected function prepareHeader($store, $address)
     {
-        $libConfig = $this->getConfigByStore($store)->getLibConfig();
-
         $header = $this->createHeader();
-        $header->setAccountId($libConfig->getAccountId());
-        $header->setCompanyCode($libConfig->getCompanyCode());
+        $this->setCredentialsForHeader($header, $store);
         $header->setTransactionType(self::TRANSACTION_TYPE_SALE);
         $header->setMetadata(['salesPersonCode' => $this->config->getSalesPersonCode($store)]);
         $header->setCustomerCode($this->dataSource->getCustomerCode($store, $address));
@@ -226,6 +223,22 @@ abstract class AbstractResource
         $header->setDefaultLocations($this->dataSource->getDefaultLocations($store, $address));
 
         return $header;
+    }
+
+    /**
+     * Set Credentials For Header
+     *
+     * @param Store                                     $store
+     * @param \OnePica\AvaTax16\Document\Request\Header $header
+     * @return $this
+     */
+    protected function setCredentialsForHeader($header, $store)
+    {
+        $libConfig = $this->getConfigByStore($store)->getLibConfig();
+        $header->setAccountId($libConfig->getAccountId());
+        $header->setCompanyCode($libConfig->getCompanyCode());
+
+        return $this;
     }
 
     /**
