@@ -15,7 +15,8 @@
 var config = {
     "map": {
         "*": {
-            "Magento_Checkout/js/model/shipping-save-processor/default": "OnePica_AvaTax/js/model/shipping-save-processor/default"
+            "Magento_Checkout/js/model/shipping-save-processor/default": "OnePica_AvaTax/js/model/shipping-save-processor/default",
+            "Magento_Checkout/js/model/cart/totals-processor/default": "OnePica_AvaTax/js/model/cart/totals-processor/default"
         }
     }
 };
