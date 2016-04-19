@@ -1,0 +1,242 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="tax">
+            <group id="avatax" translate="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Avatax</label>
+                <field id="action" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Action</label>
+                    <source_model>OnePica\AvaTax\Model\Source\Avatax16\Action</source_model>
+                </field>
+                <field id="url" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>URL</label>
+                    <source_model>OnePica\AvaTax\Model\Source\Avatax16\Url</source_model>
+                </field>
+                <field id="account_number" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Account Number</label>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="license_key" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Licence Key</label>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="company_code" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Company Code</label>
+                    <validate>required-entry</validate>
+                </field>
+                <group id="region_filter_group" translate="label" sortOrder="55" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Region Filter Options</label>
+                    <attribute type="expanded">1</attribute>
+                    <field id="taxable_country" translate="label comment" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Taxable Country</label>
+                        <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                        <comment>Address validation option works only for United States and Canada</comment>
+                    </field>
+                    <field id="region_filter_mode" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Filter Requests by Region</label>
+                        <source_model>OnePica\AvaTax\Model\Source\RegionFilter\Mode</source_model>
+                        <comment>Re-save settings if Taxable Country was changed to use this option.</comment>
+                    </field>
+                    <field id="region_filter_list" translate="label comment" type="multiselect" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <source_model>OnePica\AvaTax\Model\Source\RegionFilter\RegionList</source_model>
+                        <comment>Select regions to use AvaTax services.</comment>
+                        <depends>
+                            <field id="region_filter_mode" separator="|">1|2</field>
+                        </depends>
+                    </field>
+                </group>
+                <group id="address_validation_group" translate="label" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Shipping Address Options</label>
+                    <attribute type="expanded">1</attribute>
+                    <field id="validate_address" translate="label comment" type="select" sortOrder="310" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Address Validation</label>
+                        <source_model>OnePica\AvaTax\Model\Source\ValidateAddress</source_model>
+                        <comment>Require a validated address from AvaTax to checkout</comment>
+                    </field>
+                    <field id="normalize_address" translate="label comment" type="select" sortOrder="320" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Address Normalization</label>
+                        <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                        <comment>Replace address with well-formed one from AvaTax</comment>
+                    </field>
+                    <field id="avatax16_onepage_validate_address_message" translate="label comment" type="textarea" sortOrder="325" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Address Validation Error</label>
+                        <comment>Only applies if address validation is enabled</comment>
+                    </field>
+                    <field id="onepage_normalize_message" translate="label comment" type="textarea" sortOrder="330" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Onepage Checkout Address Normalized Notice</label>
+                        <comment>Only applies if address normalization is enabled</comment>
+                    </field>
+                    <field id="multiaddress_normalize_message" translate="label comment" type="textarea" sortOrder="340" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Multi-Address Checkout Address Normalized Notice</label>
+                        <comment>Only applies if address normalization is enabled</comment>
+                    </field>
+                    <field id="validate_address_message" translate="label comment" type="textarea" sortOrder="350" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Multi-Address Address Validation Error</label>
+                        <comment>Only applies if address validation is enabled and shows ONLY for the multi-address checkout</comment>
+                    </field>
+                </group>
+                <group id="request_settings_group" translate="label" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Request Settings</label>
+                    <attribute type="expanded">1</attribute>
+                    <field id="field_required_list" translate="label comment" type="multiselect" sortOrder="370" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Required Fileds</label>
+                        <source_model>OnePica\AvaTax\Model\Source\AddressFieldList</source_model>
+                    </field>
+                    <field id="field_rule" translate="label" type="text" sortOrder="380" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Field Rule</label>
+                        <comment>Example: ' ,-,_'</comment>
+                    </field>
+                </group>
+                <group id="avatax_log_group" translate="label" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Log and Queue Settings</label>
+                    <attribute type="expanded">1</attribute>
+                    <field id="allowed_log_types" translate="label" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Allowed Log Types</label>
+                        <source_model>OnePica\AvaTax\Model\Source\Avatax16\LogType</source_model>
+                        <can_be_empty>1</can_be_empty>
+                    </field>
+                    <field id="log_lifetime" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                        <label>Log Entry Lifetime</label>
+                        <validate>required-entry validate-digits validate-digits-range digits-range-1-</validate>
+                    </field>
+                    <field id="queue_success_lifetime" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                        <label>Successful Queue Lifetime</label>
+                        <comment>Required. Days before entries are auto-purged.</comment>
+                        <validate>required-entry validate-digits validate-digits-range digits-range-1-</validate>
+                    </field>
+                    <field id="queue_failed_lifetime" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
+                        <label>Failed Queue Lifetime</label>
+                        <comment>Required. Days before entries are auto-purged.</comment>
+                        <validate>required-entry validate-digits validate-digits-range digits-range-1-</validate>
+                    </field>
+                    <field id="queue_process_items_limit" translate="label" type="text" sortOrder="45" showInDefault="1" showInWebsite="0" showInStore="0">
+                        <label>Queue process items limit</label>
+                        <comment>Required. Limit of processed queue items</comment>
+                        <validate>required-entry validate-digits validate-digits-range digits-range-1-</validate>
+                    </field>
+                    <field id="export_log_button" type="button" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Export Logs</label>
+                        <frontend_model>OnePica\AvaTax\Block\Adminhtml\System\Config\Form\Field\Log\Export</frontend_model>
+                    </field>
+                    <field id="export_queue_button" type="button" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Export Queue</label>
+                        <frontend_model>OnePica\AvaTax\Block\Adminhtml\System\Config\Form\Field\Queue\Export</frontend_model>
+                    </field>
+                </group>
+                <group id="avatax_data_mapping_group" translate="label" sortOrder="70" showInDefault="1" showInStore="1" showInWebsite="1">
+                    <label>Data Mapping Settings</label>
+                    <attribute type="expanded">1</attribute>
+                    <field id="customer_code_format" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Customer Code Format</label>
+                        <source_model>OnePica\AvaTax\Model\Source\Avatax16\CustomerCodeFormat</source_model>
+                        <comment><![CDATA[Recommended: <code>customer_id</code>]]></comment>
+                    </field>
+                    <field id="shipping_sku" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Shipping SKU</label>
+                        <validate>required-entry</validate>
+                        <comment>Required. The sku sent to denote shipping costs.</comment>
+                    </field>
+                    <field id="gw_items_sku" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Gift Wrap Items Sku</label>
+                        <comment>Required. The sku sent to denote gift wrap items costs.</comment>
+                        <validate>required-entry</validate>
+                    </field>
+                    <field id="gw_order_sku" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Gift Wrap Order Sku</label>
+                        <validate>required-entry</validate>
+                        <comment>Required. The sku sent to denote gift wrap order costs.</comment>
+                    </field>
+                    <field id="gw_printed_card_sku" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Gift Wrap Printed Card Sku</label>
+                        <comment>Required. The sku sent to denote gift wrap printed card costs.</comment>
+                        <validate>required-entry</validate>
+                    </field>
+                    <field id="adjustment_positive_sku" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Adjustment Refund Sku</label>
+                        <comment>Required. The sku sent to denote positive adjustments.</comment>
+                        <validate>required-entry</validate>
+                    </field>
+                    <field id="adjustment_negative_sku" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Adjustment Fee Sku</label>
+                        <comment>Required. The sku sent to denote negative adjustments.</comment>
+                        <validate>required-entry</validate>
+                    </field>
+                    <field id="sales_person_code" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Sales Person Code</label>
+                        <comment>Optional. The sales person code for orders.</comment>
+                    </field>
+                    <field id="location_code" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Location Code</label>
+                        <comment>Optional. The location code for orders.</comment>
+                    </field>
+                    <field id="first_reference_code" translate="label" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>First Reference Code</label>
+                        <source_model>OnePica\AvaTax\Model\Source\ProductAttribute</source_model>
+                        <comment>Optional. An attribute code to pass with each product.</comment>
+                    </field>
+                    <field id="second_reference_code" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Second Reference Code</label>
+                        <source_model>OnePica\AvaTax\Model\Source\ProductAttribute</source_model>
+                        <comment>Optional. An attribute code to pass with each product.</comment>
+                    </field>
+                    <field id="use_upc_code" translate="label" type="select" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Use UPC Code</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="upc_code" translate="label" type="select" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>UPC Code</label>
+                        <source_model>OnePica\AvaTax\Model\Source\ProductAttribute</source_model>
+                        <depends>
+                            <field id="use_upc_code">1</field>
+                        </depends>
+                    </field>
+                </group>
+                <group id="avatax_error_handling_group" translate="label" sortOrder="80" showInDefault="1" showInStore="1" showInWebsite="1">
+                    <label>Error Handling</label>
+                    <attribute type="expanded">1</attribute>
+                    <field id="action_on_error" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Action on Error</label>
+                        <source_model>OnePica\AvaTax\Model\Source\Avatax16\Error</source_model>
+                    </field>
+                    <field id="frontend_error_message" translate="label" type="textarea" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Frontend Error Message</label>
+                        <validate>required-entry</validate>
+                    </field>
+                    <field id="backend_error_message" translate="label" type="textarea" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Backend Error Message</label>
+                        <validate>required-entry</validate>
+                    </field>
+                </group>
+            </group>
+            <!--Hide some default settings-->
+            <group id="calculation">
+                <field id="algorithm" showInDefault="0" showInWebsite="0" showInStore="0" />
+                <field id="based_on" showInDefault="0" showInWebsite="0" showInStore="0" />
+                <field id="shipping_includes_tax" showInDefault="0" showInWebsite="0" showInStore="0" />
+                <field id="apply_after_discount">
+                    <depends>
+                        <field id="price_includes_tax" separator=",">1</field>
+                    </depends>
+                </field>
+                <field id="discount_tax" showInDefault="0" showInWebsite="0" showInStore="0" />
+                <field id="apply_tax_on" showInDefault="0" showInWebsite="0" showInStore="0" />
+                <field id="cross_border_trade_enabled" showInDefault="0" showInWebsite="0" showInStore="0" />
+            </group>
+            <group id="display">
+                <field id="type" showInDefault="0" showInWebsite="0" showInStore="0" />
+                <field id="shipping" showInDefault="0" showInWebsite="0" showInStore="0"/>
+            </group>
+            <group id="classes">
+                <field id="shipping_tax_class" showInDefault="0" showInWebsite="0" showInStore="0" />
+                <field id="default_product_tax_class" showInDefault="0" showInWebsite="0" showInStore="0"/>
+                <field id="default_customer_tax_class" showInDefault="0" showInWebsite="0" showInStore="0"/>
+            </group>
+            <group id="weee">
+                <field id="enable" showInDefault="0" showInWebsite="0" showInStore="0" />
+                <field id="display_list" showInDefault="0" showInWebsite="0" showInStore="0" />
+                <field id="display" showInDefault="0" showInWebsite="0" showInStore="0" />
+                <field id="apply_vat" showInDefault="0" showInWebsite="0" showInStore="0" />
+            </group>
+        </section>
+    </system>
+</config>
