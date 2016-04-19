@@ -55,6 +55,10 @@
     <type name="Magento\Checkout\Model\ShippingInformationManagement">
         <plugin name="onepica_avatax_onepage_address_validation" type="OnePica\AvaTax\Plugin\Checkout\Model\ShippingInformationManagement" />
     </type>
+    <type name="Magento\Checkout\Model\TotalsInformationManagement">
+        <plugin name="onepica_avatax_checkout_cart_totals_information"
+                type="OnePica\AvaTax\Plugin\Checkout\Model\TotalsInformationManagement" />
+    </type>
     <type name="Magento\Quote\Model\Quote\Address">
         <plugin name="quote_model_quote_address_validator" type="OnePica\AvaTax\Plugin\Quote\Model\Quote\AddressValidator" />
     </type>
