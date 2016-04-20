@@ -86,6 +86,14 @@ class QuoteItems extends AbstractCollector
                 $item->setBasePrice($item->getBasePrice() - $itemTax);
                 $item->setPrice($item->getPrice() - $itemTax);
 
+               /**
+                * Fix for order items
+                * quote item calculation_price => order item price
+                * quote item base_calculation_price => order item base_price
+                */
+                $item->setCalculationPrice($item->getPrice());
+                $item->setBaseCalculationPrice($item->getBasePrice());
+
                 $baseRowTotalInclTax = $item->getBaseRowTotal();
                 $rowTotalInclTax = $item->getRowTotal();
 

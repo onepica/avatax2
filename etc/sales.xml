@@ -6,7 +6,7 @@
             <item name="avatax_gift_wrapping" instance="OnePica\AvaTax\Model\Sales\Total\Quote\GiftWrapping" sort_order="1200"/>
             <item name="avatax_quote_item" instance="OnePica\AvaTax\Model\Sales\Total\Quote\QuoteItems" sort_order="1300"/>
             <item name="avatax_subtotal" instance="OnePica\AvaTax\Model\Sales\Total\Quote\Subtotal" sort_order="1400"/>
-            <item name="avatax_subtotal" instance="OnePica\AvaTax\Model\Sales\Total\Quote\FixedTax" sort_order="1500"/>
+            <item name="avatax_fixed_tax" instance="OnePica\AvaTax\Model\Sales\Total\Quote\FixedTax" sort_order="1500"/>
         </group>
     </section>
 </config>
