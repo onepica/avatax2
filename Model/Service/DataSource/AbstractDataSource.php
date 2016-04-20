@@ -207,7 +207,7 @@ abstract class AbstractDataSource implements DataSourceInterface
      */
     public function getTaxBuyerCode($store, $address)
     {
-        return (string)$address->getVatId() ?: (string)$this->getBillingAddressFromAddress($address)->getVatId();
+        return (string)$address->getVatId();
     }
 
     /**
