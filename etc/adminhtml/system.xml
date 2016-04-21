@@ -4,26 +4,30 @@
         <section id="tax">
             <group id="avatax" translate="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Avatax</label>
-                <field id="action" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Action</label>
-                    <source_model>OnePica\AvaTax\Model\Source\Avatax16\Action</source_model>
-                </field>
-                <field id="url" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>URL</label>
-                    <source_model>OnePica\AvaTax\Model\Source\Avatax16\Url</source_model>
-                </field>
-                <field id="account_number" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Account Number</label>
-                    <validate>required-entry</validate>
-                </field>
-                <field id="license_key" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Licence Key</label>
-                    <validate>required-entry</validate>
-                </field>
-                <field id="company_code" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Company Code</label>
-                    <validate>required-entry</validate>
-                </field>
+                <group id="general_group" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>General</label>
+                    <attribute type="expanded">1</attribute>
+                    <field id="action" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Action</label>
+                        <source_model>OnePica\AvaTax\Model\Source\Avatax16\Action</source_model>
+                    </field>
+                    <field id="url" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>URL</label>
+                        <source_model>OnePica\AvaTax\Model\Source\Avatax16\Url</source_model>
+                    </field>
+                    <field id="account_number" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Account Number</label>
+                        <validate>required-entry</validate>
+                    </field>
+                    <field id="license_key" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Licence Key</label>
+                        <validate>required-entry</validate>
+                    </field>
+                    <field id="company_code" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Company Code</label>
+                        <validate>required-entry</validate>
+                    </field>
+                </group>
                 <group id="region_filter_group" translate="label" sortOrder="55" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Region Filter Options</label>
                     <attribute type="expanded">1</attribute>

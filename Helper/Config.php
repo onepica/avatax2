@@ -40,11 +40,6 @@ class Config extends AbstractHelper
      * Config xml path
      */
     const AVATAX_ACTIVE_SERVICE                     = 'tax/avatax/active_service';
-    const AVATAX_SERVICE_ACTION                     = 'tax/avatax/action';
-    const AVATAX_SERVICE_URL                        = 'tax/avatax/url';
-    const AVATAX_SERVICE_ACCOUNT_NUMBER             = 'tax/avatax/account_number';
-    const AVATAX_SERVICE_LICENCE_KEY                = 'tax/avatax/license_key';
-    const AVATAX_SERVICE_COMPANY_CODE               = 'tax/avatax/company_code';
     const AVATAX_SERVICE_LOG_MODE                   = 'tax/avatax/avatax_log_group/log_mode';
     const AVATAX_SERVICE_ALLOWED_LOG_TYPES          = 'tax/avatax/avatax_log_group/allowed_log_types';
     const AVATAX_SERVICE_LOG_LIFETIME               = 'tax/avatax/avatax_log_group/log_lifetime';
@@ -63,6 +58,16 @@ class Config extends AbstractHelper
     const AVATAX_REGION_FILTER_TAXABLE_COUNTRY      = 'tax/avatax/region_filter_group/taxable_country';
     const AVATAX_REGION_FILTER_MODE                 = 'tax/avatax/region_filter_group/region_filter_mode';
     const AVATAX_REGION_FILTER_LIST                 = 'tax/avatax/region_filter_group/region_filter_list';
+    /**#@-*/
+
+    /**#@+
+     * General settings xml paths
+     */
+    const AVATAX_SERVICE_ACTION                     = 'tax/avatax/general_group/action';
+    const AVATAX_SERVICE_URL                        = 'tax/avatax/general_group/url';
+    const AVATAX_SERVICE_ACCOUNT_NUMBER             = 'tax/avatax/general_group/account_number';
+    const AVATAX_SERVICE_LICENCE_KEY                = 'tax/avatax/general_group/license_key';
+    const AVATAX_SERVICE_COMPANY_CODE               = 'tax/avatax/general_group/company_code';
     /**#@-*/
 
     /**#@+
