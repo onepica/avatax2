@@ -32,7 +32,7 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="submit_url" xsi:type="url" path="avatax/customertaxclasses/save"/>
-                    <item name="validate_url" xsi:type="url" path=""/>
+                    <item name="validate_url" xsi:type="url" path="avatax/taxclass/validate"/>
                     <item name="model" xsi:type="string">Magento\Tax\Model\ClassModel</item>
                     <item name="fieldset" xsi:type="string">tax_class</item>
                     <item name="ui_component_xml_name" xsi:type="string">avatax_ctc_edit_form</item>
