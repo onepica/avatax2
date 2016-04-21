@@ -292,7 +292,7 @@ class Processor
         $queue->setAttempt($newAttemptValue);
         try {
             $invoice = $this->objectManager->get('Magento\Sales\Model\Order\Invoice')->load($queue->getEntityId());
-            $this->invoiceServiceTool->setInvoice($invoice);
+            $this->invoiceServiceTool->setQueueObject($invoice);
             $this->invoiceServiceTool->setQueue($queue);
             if ($invoice->getId()) {
                 $this->invoiceServiceTool->execute();
@@ -326,7 +326,7 @@ class Processor
         $queue->setAttempt($newAttemptValue);
         try {
             $creditmemo = $this->objectManager->get('Magento\Sales\Model\Order\Creditmemo')->load($queue->getEntityId());
-            $this->creditmemoServiceTool->setCreditmemo($creditmemo);
+            $this->creditmemoServiceTool->setQueueObject($creditmemo);
             $this->creditmemoServiceTool->setQueue($queue);
             if ($creditmemo->getId()) {
                 $this->creditmemoServiceTool->execute();
