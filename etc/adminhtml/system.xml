@@ -81,7 +81,7 @@
                     <label>Request Settings</label>
                     <attribute type="expanded">1</attribute>
                     <field id="field_required_list" translate="label comment" type="multiselect" sortOrder="370" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Required Fileds</label>
+                        <label>Required Fields</label>
                         <source_model>OnePica\AvaTax\Model\Source\AddressFieldList</source_model>
                         <can_be_empty>1</can_be_empty>
                     </field>
