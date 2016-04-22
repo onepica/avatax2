@@ -16,6 +16,8 @@ namespace OnePica\AvaTax\Model\Queue;
 
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Api\SortOrder;
+use Magento\Framework\Api\SortOrderBuilder;
 use Magento\Framework\Stdlib\DateTime;
 use Magento\Framework\ObjectManagerInterface;
 use OnePica\AvaTax\Api\QueueRepositoryInterface;
@@ -43,6 +45,11 @@ class Processor
     * @var SearchCriteriaBuilder
     */
     private $searchCriteriaBuilder;
+
+    /**
+     * @var SortOrderBuilder
+     */
+    private $sortOrderBuilder;
 
     /**
      * @var FilterBuilder
@@ -89,6 +96,7 @@ class Processor
      * @param ObjectManagerInterface   $objectManager
      * @param InvoiceServiceTool       $invoiceServiceTool
      * @param CreditmemoServiceTool    $creditmemoServiceTool
+     * @param SortOrderBuilder         $sortOrderBuilder
      */
     public function __construct(
         QueueRepositoryInterface $queueRepository,
@@ -98,7 +106,8 @@ class Processor
         DateTime $dateTime,
         ObjectManagerInterface $objectManager,
         InvoiceServiceTool $invoiceServiceTool,
-        CreditmemoServiceTool $creditmemoServiceTool
+        CreditmemoServiceTool $creditmemoServiceTool,
+        SortOrderBuilder $sortOrderBuilder
     ) {
         $this->queueRepository = $queueRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -108,6 +117,7 @@ class Processor
         $this->objectManager = $objectManager;
         $this->invoiceServiceTool = $invoiceServiceTool;
         $this->creditmemoServiceTool = $creditmemoServiceTool;
+        $this->sortOrderBuilder = $sortOrderBuilder;
     }
 
     /**
@@ -259,10 +269,16 @@ class Processor
             ->create();
 
         $this->searchCriteriaBuilder->addFilters($filters);
+        $sortOrder = $this->sortOrderBuilder
+                   ->create()
+                   ->setField(Queue::CREATED_AT)
+                   ->setDirection(SortOrder::SORT_ASC);
+
         $items = $this->queueRepository->getList(
             $this->searchCriteriaBuilder
                 ->create()
                 ->setPageSize($queueItemsCount)
+                ->setSortOrders([$sortOrder])
         )->getItems();
 
         // process items
