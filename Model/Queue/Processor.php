@@ -17,9 +17,10 @@ namespace OnePica\AvaTax\Model\Queue;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Stdlib\DateTime;
-use Magento\Framework\ObjectManagerInterface;
 use Magento\Sales\Model\Order\Creditmemo;
+use Magento\Sales\Model\Order\CreditmemoRepository;
 use Magento\Sales\Model\Order\Invoice;
+use Magento\Sales\Model\Order\InvoiceRepository;
 use OnePica\AvaTax\Api\QueueRepositoryInterface;
 use OnePica\AvaTax\Model\Queue;
 use OnePica\AvaTax\Helper\Config;
@@ -66,11 +67,6 @@ class Processor
     protected $dateTime;
 
     /**
-     * @var \Magento\Framework\ObjectManagerInterface
-     */
-    protected $objectManager;
-
-    /**
      * @var InvoiceServiceTool
      */
     protected $invoiceServiceTool;
@@ -81,16 +77,31 @@ class Processor
     protected $creditmemoServiceTool;
 
     /**
+     * Creditmemo repository
+     *
+     * @var CreditmemoRepository
+     */
+    protected $creditmemoRepository;
+
+    /**
+     * Invoice repository
+     *
+     * @var InvoiceRepository
+     */
+    protected $invoiceRepository;
+
+    /**
      * Constructor.
      *
      * @param QueueRepositoryInterface $queueRepository
-     * @param SearchCriteriaBuilder    $searchCriteriaBuilder,
+     * @param SearchCriteriaBuilder    $searchCriteriaBuilder ,
      * @param FilterBuilder            $filterBuilder
      * @param Config                   $config
      * @param DateTime                 $dateTime
-     * @param ObjectManagerInterface   $objectManager
      * @param InvoiceServiceTool       $invoiceServiceTool
      * @param CreditmemoServiceTool    $creditmemoServiceTool
+     * @param CreditmemoRepository     $creditmemoRepository
+     * @param InvoiceRepository        $invoiceRepository
      */
     public function __construct(
         QueueRepositoryInterface $queueRepository,
@@ -98,18 +109,20 @@ class Processor
         FilterBuilder $filterBuilder,
         Config $config,
         DateTime $dateTime,
-        ObjectManagerInterface $objectManager,
         InvoiceServiceTool $invoiceServiceTool,
-        CreditmemoServiceTool $creditmemoServiceTool
+        CreditmemoServiceTool $creditmemoServiceTool,
+        CreditmemoRepository $creditmemoRepository,
+        InvoiceRepository $invoiceRepository
     ) {
         $this->queueRepository = $queueRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->filterBuilder = $filterBuilder;
         $this->config = $config;
         $this->dateTime = $dateTime;
-        $this->objectManager = $objectManager;
         $this->invoiceServiceTool = $invoiceServiceTool;
         $this->creditmemoServiceTool = $creditmemoServiceTool;
+        $this->creditmemoRepository = $creditmemoRepository;
+        $this->invoiceRepository = $invoiceRepository;
     }
 
     /**
@@ -317,10 +330,10 @@ class Processor
     protected function getQueueObject(Queue $queueItem)
     {
         if ($queueItem->getType() === Queue::TYPE_INVOICE) {
-            return $this->objectManager->get(Invoice::class)->load($queueItem->getEntityId());
+            return $this->invoiceRepository->get($queueItem->getEntityId());
         }
 
-        return $this->objectManager->get(Creditmemo::class)->load($queueItem->getEntityId());
+        return $this->creditmemoRepository->get($queueItem->getEntityId());
     }
 
     /**
