@@ -19,7 +19,6 @@ use Magento\Framework\DataObject;
 use Magento\Framework\ObjectManagerInterface;
 use OnePica\AvaTax\Api\DataSourceInterface;
 use OnePica\AvaTax\Api\ResultInterface;
-use OnePica\AvaTax\Api\Service\ValidationResourceInterface;
 use OnePica\AvaTax\Model\Service\Resource\AbstractResource;
 use OnePica\AvaTax\Model\Service\Avatax16\Config;
 use OnePica\AvaTax\Model\Service\Result\Storage\Validation as ValidationResultStorage;
@@ -36,7 +35,7 @@ use OnePica\AvaTax\Model\Log;
  *
  * @package OnePica\AvaTax\Model\Service\Resource\Avatax
  */
-class Validation extends AbstractResource implements ValidationResourceInterface
+class Validation extends AbstractResource
 {
     /**
      * Avatax Success Resolution Quality
@@ -105,7 +104,8 @@ class Validation extends AbstractResource implements ValidationResourceInterface
 
             // log AvaTax validation request
             $this->logger->log(
-                Log::VALIDATE, $libAddress->toArray(),
+                Log::VALIDATE,
+                $libAddress->toArray(),
                 $result,
                 $store->getId(),
                 $config->getConnection()
@@ -115,7 +115,7 @@ class Validation extends AbstractResource implements ValidationResourceInterface
             if (!$libResult->getHasError()) {
                 $normalizedAddress = $this->objectManager->create(RequestAddress::class);
                 $this->updateAddressFromServiceResponse($normalizedAddress, $libResult);
-                $result->setAddress($normalizedAddress );
+                $result->setAddress($normalizedAddress);
             }
 
             // set resolution
@@ -172,8 +172,9 @@ class Validation extends AbstractResource implements ValidationResourceInterface
     /**
      * Update address from service response
      *
-     * @param RequestAddress $address
-     * @param                $response
+     * @param RequestAddress                                                   $address
+     * @param \OnePica\AvaTax16\AddressResolution\ResolveSingleAddressResponse $response
+     *
      * @return $this
      */
     protected function updateAddressFromServiceResponse($address, $response)

@@ -14,7 +14,6 @@
  */
 namespace OnePica\AvaTax\Model\Service\Resource\Avatax16\Queue;
 
-use OnePica\AvaTax\Api\Service\InvoiceResourceInterface;
 use OnePica\AvaTax\Model\Queue;
 use OnePica\AvaTax16\Document\Request;
 use OnePica\AvaTax\Model\Service\Result\Invoice as InvoiceResult;
@@ -24,7 +23,7 @@ use OnePica\AvaTax\Model\Service\Result\Invoice as InvoiceResult;
  *
  * @package OnePica\AvaTax\Model\Service\Resource\Avatax\Queue
  */
-class Invoice extends AbstractQueue implements InvoiceResourceInterface
+class Invoice extends AbstractQueue
 {
     /**
      * Get result object

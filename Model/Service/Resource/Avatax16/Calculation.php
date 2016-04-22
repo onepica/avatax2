@@ -23,7 +23,6 @@ use Magento\Quote\Model\Quote\Address;
 use Magento\Quote\Model\Quote\Address\Total;
 use Magento\Store\Model\Store;
 use OnePica\AvaTax\Api\ConfigRepositoryInterface;
-use OnePica\AvaTax\Api\Service\CalculationResourceInterface;
 use OnePica\AvaTax\Api\Service\LoggerInterface;
 use OnePica\AvaTax\Helper\Config;
 use OnePica\AvaTax\Model\Service\DataSource\Calculation as CalculationDataSource;
@@ -38,7 +37,7 @@ use OnePica\AvaTax16\Document\Response\Line;
  * @method \OnePica\AvaTax\Model\Service\Result\Calculation send(Store $store)
  * @package OnePica\AvaTax\Model\Service\Resource\Avatax
  */
-class Calculation extends AbstractResource implements CalculationResourceInterface
+class Calculation extends AbstractResource
 {
     /**
      * Timezone

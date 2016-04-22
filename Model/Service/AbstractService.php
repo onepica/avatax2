@@ -23,12 +23,12 @@ use Magento\Sales\Model\Order\Creditmemo;
 use Magento\Sales\Model\Order\Invoice;
 use Magento\Store\Model\Store;
 use OnePica\AvaTax\Api\ResultInterface;
-use OnePica\AvaTax\Api\Service\CalculationResourceInterface;
-use OnePica\AvaTax\Api\Service\CreditmemoResourceInterface;
-use OnePica\AvaTax\Api\Service\InvoiceResourceInterface;
-use OnePica\AvaTax\Api\Service\PingResourceInterface;
-use OnePica\AvaTax\Api\Service\ValidationResourceInterface;
 use OnePica\AvaTax\Api\ServiceInterface;
+use OnePica\AvaTax\Model\Service\Resource\Avatax16\Calculation;
+use OnePica\AvaTax\Model\Service\Resource\Avatax16\Ping;
+use OnePica\AvaTax\Model\Service\Resource\Avatax16\Queue\Creditmemo as CreditmemoResource;
+use OnePica\AvaTax\Model\Service\Resource\Avatax16\Queue\Invoice as InvoiceResource;
+use OnePica\AvaTax\Model\Service\Resource\Avatax16\Validation;
 use OnePica\AvaTax\Model\Service\Result\Base;
 use OnePica\AvaTax\Model\Queue;
 
@@ -49,35 +49,35 @@ abstract class AbstractService implements ServiceInterface
     /**
      * Invoice resource
      *
-     * @var InvoiceResourceInterface
+     * @var InvoiceResource
      */
     protected $invoiceResource;
 
     /**
      * Calculation resource
      *
-     * @var CalculationResourceInterface
+     * @var Calculation
      */
     protected $calculationResource;
 
     /**
      * ping resource
      *
-     * @var PingResourceInterface
+     * @var Ping
      */
     protected $pingResource;
 
     /**
      * Creditmemo resource
      *
-     * @var CreditmemoResourceInterface
+     * @var CreditmemoResource
      */
     protected $creditmemoResource;
 
     /**
      * Validation resource
      *
-     * @var ValidationResourceInterface
+     * @var Validation
      */
     protected $validationResource;
 
@@ -136,8 +136,8 @@ abstract class AbstractService implements ServiceInterface
     {
         if ($this->invoiceResource === null) {
             $this->invoiceResource = $this->objectManager->create($this->getInvoiceResourceClass());
-            if (!$this->invoiceResource instanceof InvoiceResourceInterface) {
-                throw new \LogicException('Resource must be instance of InvoiceResourceInterface.');
+            if (!$this->invoiceResource instanceof InvoiceResource) {
+                throw new \LogicException('Resource must be instance of InvoiceResource.');
             }
         }
 
@@ -154,8 +154,8 @@ abstract class AbstractService implements ServiceInterface
     {
         if ($this->invoiceResource === null) {
             $this->invoiceResource = $this->objectManager->create($this->getInvoiceResourceClass());
-            if (!$this->invoiceResource instanceof InvoiceResourceInterface) {
-                throw new \LogicException('Resource must be instance of InvoiceResourceInterface.');
+            if (!$this->invoiceResource instanceof InvoiceResource) {
+                throw new \LogicException('Resource must be instance of InvoiceResource.');
             }
         }
 
@@ -173,8 +173,8 @@ abstract class AbstractService implements ServiceInterface
     {
         if (null === $this->creditmemoResource) {
             $this->creditmemoResource = $this->objectManager->create($this->getCreditmemoResourceClass());
-            if (!$this->creditmemoResource instanceof CreditmemoResourceInterface) {
-                throw new \LogicException('Resource must be instance of CreditmemoResourceInterface.');
+            if (!$this->creditmemoResource instanceof CreditmemoResource) {
+                throw new \LogicException('Resource must be instance of CreditmemoResource.');
             }
         }
 
@@ -191,8 +191,8 @@ abstract class AbstractService implements ServiceInterface
     {
         if (null === $this->creditmemoResource) {
             $this->creditmemoResource = $this->objectManager->create($this->getCreditmemoResourceClass());
-            if (!$this->creditmemoResource instanceof CreditmemoResourceInterface) {
-                throw new \LogicException('Resource must be instance of CreditmemoResourceInterface.');
+            if (!$this->creditmemoResource instanceof CreditmemoResource) {
+                throw new \LogicException('Resource must be instance of CreditmemoResource.');
             }
         }
 
@@ -202,16 +202,15 @@ abstract class AbstractService implements ServiceInterface
     /**
      * Validate
      *
-     * @param DataObject $object
-     * @todo need to specify which object ($object) will be passed to this method
+     * @param \OnePica\AvaTax\Model\Service\Request\Address $object
      * @return ResultInterface
      */
     public function validate($object)
     {
         if (null === $this->validationResource) {
             $this->validationResource = $this->objectManager->create($this->getValidationResourceClass());
-            if (!$this->validationResource instanceof ValidationResourceInterface) {
-                throw new \LogicException('Resource must be instance of ValidationResourceInterface.');
+            if (!$this->validationResource instanceof Validation) {
+                throw new \LogicException('Resource must be instance of ValidationResource.');
             }
         }
 
@@ -230,8 +229,8 @@ abstract class AbstractService implements ServiceInterface
     {
         if (null === $this->calculationResource) {
             $this->calculationResource = $this->objectManager->create($this->getCalculationResourceClass());
-            if (!$this->calculationResource instanceof CalculationResourceInterface) {
-                throw new \LogicException('Resource must be instance of CalculationResourceInterface.');
+            if (!$this->calculationResource instanceof Calculation) {
+                throw new \LogicException('Resource must be instance of CalculationResource.');
             }
         }
 
@@ -248,8 +247,8 @@ abstract class AbstractService implements ServiceInterface
     {
         if (null === $this->pingResource) {
             $this->pingResource = $this->objectManager->create($this->getPingResourceClass());
-            if (!$this->pingResource instanceof PingResourceInterface) {
-                throw new \LogicException('Resource must be instance of PingResourceInterface.');
+            if (!$this->pingResource instanceof Ping) {
+                throw new \LogicException('Resource must be instance of PingResource.');
             }
         }
 
