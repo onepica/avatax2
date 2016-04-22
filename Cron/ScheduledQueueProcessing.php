@@ -14,7 +14,7 @@
  */
 namespace OnePica\AvaTax\Cron;
 
-use OnePica\AvaTax\Model\Queue\Processor as QueueProcessor;
+use OnePica\AvaTax\Api\QueueManagerInterface;
 
 /**
  * Class ScheduledQueueProcessing
@@ -24,20 +24,20 @@ use OnePica\AvaTax\Model\Queue\Processor as QueueProcessor;
 class ScheduledQueueProcessing
 {
     /**
-     * Queue processor
+     * Queue manager
      *
-     * @var QueueProcessor
+     * @var QueueManagerInterface
      */
-    protected $queueProcessor;
+    protected $queueManager;
 
     /**
      * ScheduledQueueProcessing constructor.
      *
-     * @param QueueProcessor $queueProcessor
+     * @param QueueManagerInterface $queueManager
      */
-    public function __construct(QueueProcessor $queueProcessor)
+    public function __construct(QueueManagerInterface $queueManager)
     {
-        $this->queueProcessor = $queueProcessor;
+        $this->queueManager = $queueManager;
     }
 
     /**
@@ -45,6 +45,6 @@ class ScheduledQueueProcessing
      */
     public function execute()
     {
-        $this->queueProcessor->processQueue();
+        $this->queueManager->processQueue();
     }
 }

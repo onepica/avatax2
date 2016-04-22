@@ -21,6 +21,7 @@ use Magento\Sales\Model\Order\Creditmemo;
 use Magento\Sales\Model\Order\CreditmemoRepository;
 use Magento\Sales\Model\Order\Invoice;
 use Magento\Sales\Model\Order\InvoiceRepository;
+use OnePica\AvaTax\Api\QueueManagerInterface;
 use OnePica\AvaTax\Api\QueueRepositoryInterface;
 use OnePica\AvaTax\Model\Queue;
 use OnePica\AvaTax\Helper\Config;
@@ -28,12 +29,11 @@ use OnePica\AvaTax\Model\Tool\Invoice as InvoiceServiceTool;
 use OnePica\AvaTax\Model\Tool\Creditmemo as CreditmemoServiceTool;
 
 /**
- * Class Processor
+ * Class Manager
  *
  * @package OnePica\AvaTax\Model\Queue
  */
-
-class Processor
+class Manager implements QueueManagerInterface
 {
     /**
      * Queue repository
