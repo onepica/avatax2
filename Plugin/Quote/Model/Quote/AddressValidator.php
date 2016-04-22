@@ -354,10 +354,13 @@ class AddressValidator
             switch ($field) {
                 case 'country_id':
                     $fieldValue = $countryFactory->create()->loadByCode($address->getCountry())->getName();
-                    $field = __('Country ');
+                    $field = __('Country');
                     break;
                 case 'region':
                     $fieldValue = $address->getRegion();
+                    break;
+                case 'street':
+                    $fieldValue = $address->getStreet();
                     break;
                 default:
                     $fieldValue = $address->getData($field);
@@ -365,10 +368,9 @@ class AddressValidator
             }
 
             foreach ($fieldRules as $rule) {
-                if (!$fieldValue || $fieldValue == $rule) {
+                if ($this->hasAddressFieldRuleError($fieldValue, $rule)) {
                     $hasError = true;
                     break;
-
                 }
             }
             if ($hasError) {
@@ -377,5 +379,33 @@ class AddressValidator
         }
 
         return $errors;
+    }
+
+    /**
+     * Has Address Field Rule Error
+     *
+     * @param string|array $fieldValue
+     * @param string $rule
+     * @return bool
+     */
+    protected function hasAddressFieldRuleError($fieldValue, $rule)
+    {
+        $hasError = false;
+
+        if (is_array($fieldValue)) {
+            // fix for street
+            foreach ($fieldValue as $value) {
+                if ($value == $rule) {
+                    $hasError = true;
+                    break;
+                }
+            }
+        } else {
+            if (!$fieldValue || $fieldValue == $rule) {
+                $hasError = true;
+            }
+        }
+
+        return $hasError;
     }
 }
