@@ -350,7 +350,7 @@ class AddressValidator
         $countryFactory = $this->objectManager->get('\Magento\Directory\Model\CountryFactory');
 
         foreach ($requiredFields as $field) {
-
+            $hasError = false;
             switch ($field) {
                 case 'country_id':
                     $fieldValue = $countryFactory->create()->loadByCode($address->getCountry())->getName();
@@ -365,9 +365,14 @@ class AddressValidator
             }
 
             foreach ($fieldRules as $rule) {
-                if ($fieldValue == $rule || !$fieldValue) {
-                    $errors[] = __('Invalid ') . __($field);
+                if (!$fieldValue || $fieldValue == $rule) {
+                    $hasError = true;
+                    break;
+
                 }
+            }
+            if ($hasError) {
+                $errors[] = __('Invalid ') . __($field);
             }
         }
 
