@@ -31,11 +31,13 @@
                         <label>Taxable Country</label>
                         <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
                         <comment>Address validation option works only for United States and Canada</comment>
+                        <can_be_empty>1</can_be_empty>
                     </field>
                     <field id="region_filter_mode" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Filter Requests by Region</label>
                         <source_model>OnePica\AvaTax\Model\Source\RegionFilter\Mode</source_model>
                         <comment>Re-save settings if Taxable Country was changed to use this option.</comment>
+                        <can_be_empty>1</can_be_empty>
                     </field>
                     <field id="region_filter_list" translate="label comment" type="multiselect" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                         <source_model>OnePica\AvaTax\Model\Source\RegionFilter\RegionList</source_model>
@@ -81,6 +83,7 @@
                     <field id="field_required_list" translate="label comment" type="multiselect" sortOrder="370" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Required Fileds</label>
                         <source_model>OnePica\AvaTax\Model\Source\AddressFieldList</source_model>
+                        <can_be_empty>1</can_be_empty>
                     </field>
                     <field id="field_rule" translate="label" type="text" sortOrder="380" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Field Rule</label>
