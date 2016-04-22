@@ -271,7 +271,7 @@ class Processor
         $this->searchCriteriaBuilder->addFilters($filters);
         $sortOrder = $this->sortOrderBuilder
                    ->create()
-                   ->setField(Queue::CREATED_AT)
+                   ->setField(Queue::QUEUE_ID)
                    ->setDirection(SortOrder::SORT_ASC);
 
         $items = $this->queueRepository->getList(
