@@ -22,8 +22,7 @@ use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\Quote\Address;
 use Magento\Quote\Model\Quote\Address\Total;
 use Magento\Store\Model\Store;
-use OnePica\AvaTax\Api\ConfigRepositoryInterface;
-use OnePica\AvaTax\Api\Service\CalculationResourceInterface;
+use OnePica\AvaTax\Model\Service\ConfigRepositoryInterface;
 use OnePica\AvaTax\Api\Service\LoggerInterface;
 use OnePica\AvaTax\Helper\Config;
 use OnePica\AvaTax\Model\Service\DataSource\Calculation as CalculationDataSource;
@@ -38,7 +37,7 @@ use OnePica\AvaTax16\Document\Response\Line;
  * @method \OnePica\AvaTax\Model\Service\Result\Calculation send(Store $store)
  * @package OnePica\AvaTax\Model\Service\Resource\Avatax
  */
-class Calculation extends AbstractResource implements CalculationResourceInterface
+class Calculation extends AbstractResource
 {
     /**
      * Timezone
@@ -71,12 +70,12 @@ class Calculation extends AbstractResource implements CalculationResourceInterfa
     /**
      * Calculation constructor.
      *
-     * @param \OnePica\AvaTax\Api\ConfigRepositoryInterface                             $configRepository
-     * @param \Magento\Framework\ObjectManagerInterface                                 $objectManager
-     * @param \OnePica\AvaTax\Helper\Config                                             $config
-     * @param \OnePica\AvaTax\Api\Service\LoggerInterface                               $logger
-     * @param CalculationDataSource                                                     $dataSource
-     * @param \Magento\Framework\Stdlib\DateTime\Timezone                               $timezone
+     * @param \OnePica\AvaTax\Model\Service\ConfigRepositoryInterface $configRepository
+     * @param \Magento\Framework\ObjectManagerInterface               $objectManager
+     * @param \OnePica\AvaTax\Helper\Config                           $config
+     * @param \OnePica\AvaTax\Api\Service\LoggerInterface             $logger
+     * @param CalculationDataSource                                   $dataSource
+     * @param \Magento\Framework\Stdlib\DateTime\Timezone             $timezone
      * @param CalculationResultStorage                                                  $resultStorage
      */
     public function __construct(
@@ -99,7 +98,7 @@ class Calculation extends AbstractResource implements CalculationResourceInterfa
      * @param \Magento\Quote\Model\Quote                          $quote
      * @param \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignment
      * @param  Total $total
-     * @return null|\OnePica\AvaTax\Api\ResultInterface
+     * @return null|\OnePica\AvaTax\Model\Service\Result\ResultInterface
      */
     public function calculate(
         Quote $quote,

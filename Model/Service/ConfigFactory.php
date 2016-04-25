@@ -16,7 +16,6 @@ namespace OnePica\AvaTax\Model\Service;
 
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Store\Model\Store;
-use OnePica\AvaTax\Api\ConfigFactoryInterface;
 
 /**
  * Class ConfigFactory
@@ -62,7 +61,7 @@ class ConfigFactory implements ConfigFactoryInterface
      * Create config object
      *
      * @param \Magento\Store\Model\Store $store
-     * @return \OnePica\AvaTax\Api\ConfigInterface
+     * @return \OnePica\AvaTax\Model\Service\Avatax16\ConfigInterface
      */
     public function create(Store $store)
     {

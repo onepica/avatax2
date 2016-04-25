@@ -14,9 +14,9 @@
  */
 namespace OnePica\AvaTax\Controller\Adminhtml\Queue;
 
+use OnePica\AvaTax\Api\QueueManagementInterface;
 use OnePica\AvaTax\Controller\Adminhtml\AbstractQueueAction;
 use Magento\Backend\App\Action\Context;
-use OnePica\AvaTax\Model\Queue\Processor as QueueProcessor;
 
 /**
  * Class ClearQueue
@@ -26,24 +26,24 @@ use OnePica\AvaTax\Model\Queue\Processor as QueueProcessor;
 class ClearQueue extends AbstractQueueAction
 {
     /**
-     * Queue processor model
+     * Queue management model
      *
-     * @var QueueProcessor
+     * @var QueueManagementInterface
      */
-    protected $queueProcessor;
+    protected $queueManagement;
 
     /**
      * Constructor
      *
-     * @param Context        $context
-     * @param QueueProcessor $queueProcessor
+     * @param Context                  $context
+     * @param QueueManagementInterface $queueManagement
      */
     public function __construct(
         Context $context,
-        QueueProcessor $queueProcessor)
-    {
+        QueueManagementInterface $queueManagement
+    ) {
         parent::__construct($context);
-        $this->queueProcessor = $queueProcessor;
+        $this->queueManagement = $queueManagement;
     }
 
     /**
@@ -52,7 +52,7 @@ class ClearQueue extends AbstractQueueAction
     public function execute()
     {
         try {
-            $this->queueProcessor->clear();
+            $this->queueManagement->clear();
             $this->getMessageManager()->addSuccess(__('Queue was cleared successfully'));
         } catch (\Exception $e) {
             $this->getMessageManager()->addError(__('Unable to clear Queue'));
@@ -60,6 +60,7 @@ class ClearQueue extends AbstractQueueAction
 
         /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
         $resultRedirect = $this->resultRedirectFactory->create();
+
         return $resultRedirect->setPath('*/*/');
     }
 }

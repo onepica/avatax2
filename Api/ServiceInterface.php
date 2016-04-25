@@ -22,6 +22,7 @@ use Magento\Sales\Model\Order\Creditmemo;
 use Magento\Sales\Model\Order\Invoice;
 use Magento\Store\Model\Store;
 use OnePica\AvaTax\Model\Queue;
+use OnePica\AvaTax\Model\Service\Result\ResultInterface;
 
 /**
  * Interface ServiceInterface
@@ -31,20 +32,13 @@ use OnePica\AvaTax\Model\Queue;
 interface ServiceInterface
 {
     /**
-     * Invoice
+     * Submit
      *
      * @param Queue $queue
-     * @return ResultInterface
-     */
-    public function invoice(Queue $queue);
-
-    /**
-     * Creditmemo
      *
-     * @param Queue $queue
      * @return ResultInterface
      */
-    public function creditmemo(Queue $queue);
+    public function submit(Queue $queue);
 
     /**
      * Validate
@@ -61,7 +55,8 @@ interface ServiceInterface
      * @param \Magento\Quote\Model\Quote                          $quote
      * @param \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignment
      * @param \Magento\Quote\Model\Quote\Address\Total            $total
-     * @return \OnePica\AvaTax\Api\ResultInterface
+     *
+     * @return \OnePica\AvaTax\Model\Service\Result\ResultInterface
      */
     public function calculate(Quote $quote, ShippingAssignmentInterface $shippingAssignment, Total $total);
 

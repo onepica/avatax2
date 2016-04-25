@@ -17,16 +17,14 @@ namespace OnePica\AvaTax\Model\Service\Resource\Avatax16;
 use DateTime;
 use Magento\Framework\DataObject;
 use Magento\Framework\ObjectManagerInterface;
-use OnePica\AvaTax\Api\DataSourceInterface;
-use OnePica\AvaTax\Api\ResultInterface;
-use OnePica\AvaTax\Api\Service\ValidationResourceInterface;
+use OnePica\AvaTax\Model\Service\DataSource\DataSourceInterface;
 use OnePica\AvaTax\Model\Service\Resource\AbstractResource;
 use OnePica\AvaTax\Model\Service\Avatax16\Config;
 use OnePica\AvaTax\Model\Service\Result\Storage\Validation as ValidationResultStorage;
 use OnePica\AvaTax16\Document\Part\Location\Address as AvaTax16LibAddress;
 use OnePica\AvaTax\Model\Service\Result\AddressValidation;
 use OnePica\AvaTax\Model\Service\Request\Address as RequestAddress;
-use OnePica\AvaTax\Api\ConfigRepositoryInterface;
+use OnePica\AvaTax\Model\Service\ConfigRepositoryInterface;
 use OnePica\AvaTax\Api\Service\LoggerInterface;
 use OnePica\AvaTax\Helper\Config as ConfigHelper;
 use OnePica\AvaTax\Model\Log;
@@ -36,7 +34,7 @@ use OnePica\AvaTax\Model\Log;
  *
  * @package OnePica\AvaTax\Model\Service\Resource\Avatax
  */
-class Validation extends AbstractResource implements ValidationResourceInterface
+class Validation extends AbstractResource
 {
     /**
      * Avatax Success Resolution Quality
@@ -55,12 +53,12 @@ class Validation extends AbstractResource implements ValidationResourceInterface
     /**
      * Constructor.
      *
-     * @param ConfigRepositoryInterface               $configRepository
-     * @param ObjectManagerInterface                  $objectManager
-     * @param ValidationResultStorage                 $resultStorage
-     * @param ConfigHelper                            $config
-     * @param \OnePica\AvaTax\Api\DataSourceInterface $dataSource
-     * @param LoggerInterface                         $logger
+     * @param \OnePica\AvaTax\Model\Service\ConfigRepositoryInterface      $configRepository
+     * @param ObjectManagerInterface                                       $objectManager
+     * @param ValidationResultStorage                                      $resultStorage
+     * @param ConfigHelper                                                 $config
+     * @param \OnePica\AvaTax\Model\Service\DataSource\DataSourceInterface $dataSource
+     * @param LoggerInterface                                              $logger
      */
     public function __construct(
         ConfigRepositoryInterface $configRepository,
@@ -78,7 +76,8 @@ class Validation extends AbstractResource implements ValidationResourceInterface
      * Validate
      *
      * @param RequestAddress $address
-     * @return ResultInterface
+     *
+     * @return \OnePica\AvaTax\Model\Service\Result\ResultInterface
      */
     public function validate($address)
     {
@@ -105,7 +104,8 @@ class Validation extends AbstractResource implements ValidationResourceInterface
 
             // log AvaTax validation request
             $this->logger->log(
-                Log::VALIDATE, $libAddress->toArray(),
+                Log::VALIDATE,
+                $libAddress->toArray(),
                 $result,
                 $store->getId(),
                 $config->getConnection()
@@ -115,7 +115,7 @@ class Validation extends AbstractResource implements ValidationResourceInterface
             if (!$libResult->getHasError()) {
                 $normalizedAddress = $this->objectManager->create(RequestAddress::class);
                 $this->updateAddressFromServiceResponse($normalizedAddress, $libResult);
-                $result->setAddress($normalizedAddress );
+                $result->setAddress($normalizedAddress);
             }
 
             // set resolution
@@ -172,8 +172,9 @@ class Validation extends AbstractResource implements ValidationResourceInterface
     /**
      * Update address from service response
      *
-     * @param RequestAddress $address
-     * @param                $response
+     * @param RequestAddress                                                   $address
+     * @param \OnePica\AvaTax16\AddressResolution\ResolveSingleAddressResponse $response
+     *
      * @return $this
      */
     protected function updateAddressFromServiceResponse($address, $response)

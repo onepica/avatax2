@@ -145,7 +145,7 @@ class CreateQueueItemForInvoice implements ObserverInterface
     protected function getRequestObject(Invoice $invoice)
     {
         $invoiceService = $this->objectManager->get(InvoiceTool::class);
-        $invoiceService->setInvoice($invoice);
+        $invoiceService->setQueueObject($invoice);
         return $invoiceService->getInvoiceServiceRequestObject();
     }
 }

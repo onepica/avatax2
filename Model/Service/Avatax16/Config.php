@@ -15,7 +15,7 @@
 namespace OnePica\AvaTax\Model\Service\Avatax16;
 
 use Magento\Store\Model\Store;
-use OnePica\AvaTax\Api\ConfigInterface;
+use OnePica\AvaTax\Model\Service\Avatax16\ConfigInterface;
 use OnePica\AvaTax\Helper\Config as ConfigHelper;
 use OnePica\AvaTax16\Config as LibConfig;
 use OnePica\AvaTax16\TaxService;

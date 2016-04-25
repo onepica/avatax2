@@ -14,8 +14,6 @@
  */
 namespace OnePica\AvaTax\Model\Service\Resource\Avatax16\Queue;
 
-use OnePica\AvaTax\Api\ResultInterface;
-use OnePica\AvaTax\Api\Service\CreditmemoResourceInterface;
 use OnePica\AvaTax\Model\Queue;
 use OnePica\AvaTax16\Document\Request;
 use OnePica\AvaTax16\Document\Request\Line;
@@ -26,7 +24,7 @@ use OnePica\AvaTax\Model\Service\Result\Creditmemo as CreditmemoResult;
  *
  * @package OnePica\AvaTax\Model\Service\Resource\Avatax\Queue
  */
-class Creditmemo extends AbstractQueue implements CreditmemoResourceInterface
+class Creditmemo extends AbstractQueue
 {
     /**
      * Add custom lines

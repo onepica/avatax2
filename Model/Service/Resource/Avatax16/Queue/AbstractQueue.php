@@ -19,13 +19,13 @@ use Magento\Framework\Stdlib\DateTime\Timezone;
 use Magento\Store\Model\Store;
 use Magento\Store\Model\StoreFactory;
 use OnePica\AvaTax\Model\Service\Resource\AbstractResource;
-use OnePica\AvaTax\Api\ConfigRepositoryInterface;
+use OnePica\AvaTax\Model\Service\ConfigRepositoryInterface;
 use OnePica\AvaTax\Helper\Config;
 use OnePica\AvaTax\Api\Service\LoggerInterface;
 use OnePica\AvaTax\Model\Service\DataSource\Queue as QueueDataSource;
 use OnePica\AvaTax16\Document\Request\Line;
 use OnePica\AvaTax\Model\Log;
-use OnePica\AvaTax\Api\ResultInterface;
+use OnePica\AvaTax\Model\Service\Result\ResultInterface;
 use OnePica\AvaTax16\Document\Request;
 use OnePica\AvaTax\Model\Queue;
 
@@ -53,13 +53,13 @@ abstract class AbstractQueue extends AbstractResource
     /**
      * AbstractResource constructor.
      *
-     * @param \OnePica\AvaTax\Api\ConfigRepositoryInterface $configRepository
-     * @param \Magento\Framework\ObjectManagerInterface     $objectManager
-     * @param \OnePica\AvaTax\Helper\Config                 $config
-     * @param \OnePica\AvaTax\Api\Service\LoggerInterface   $logger
-     * @param \OnePica\AvaTax\Model\Service\DataSource\Queue $dataSource
-     * @param Timezone $timezone
-     * @param StoreFactory $storeFactory
+     * @param \OnePica\AvaTax\Model\Service\ConfigRepositoryInterface $configRepository
+     * @param \Magento\Framework\ObjectManagerInterface               $objectManager
+     * @param \OnePica\AvaTax\Helper\Config                           $config
+     * @param \OnePica\AvaTax\Api\Service\LoggerInterface             $logger
+     * @param \OnePica\AvaTax\Model\Service\DataSource\Queue          $dataSource
+     * @param Timezone                                                $timezone
+     * @param StoreFactory                                            $storeFactory
      */
     public function __construct(
         ConfigRepositoryInterface $configRepository,

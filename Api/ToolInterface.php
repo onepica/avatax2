@@ -14,6 +14,8 @@
  */
 namespace OnePica\AvaTax\Api;
 
+use OnePica\AvaTax\Model\Service\Result\ResultInterface;
+
 /**
  * Interface ToolInterface
  *

@@ -15,7 +15,6 @@
 namespace OnePica\AvaTax\Model\Service\Result;
 
 use Magento\Framework\DataObject;
-use OnePica\AvaTax\Api\ResultInterface;
 
 /**
  * Class AbstractResult

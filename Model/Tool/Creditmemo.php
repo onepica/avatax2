@@ -14,85 +14,17 @@
  */
 namespace OnePica\AvaTax\Model\Tool;
 
-use OnePica\AvaTax\Api\ResultInterface;
-use OnePica\AvaTax\Api\Service\ResolverInterface;
-use OnePica\AvaTax\Model\ServiceFactory;
-use Magento\Sales\Model\Order\Creditmemo as OrderCreditmemo;
-use OnePica\AvaTax\Model\Queue;
-use OnePica\AvaTax\Helper\Data as DataHelper;
+use OnePica\AvaTax\Model\Service\Avatax16;
+use OnePica\AvaTax\Model\Service\Result\ResultInterface;
 
 /**
  * Class Creditmemo
  *
+ * @method Avatax16 getService()
  * @package OnePica\AvaTax\Model\Tool
  */
-class Creditmemo extends AbstractTool
+class Creditmemo extends AbstractQueueTool
 {
-    /**
-     * Creditmemo
-     *
-     * @var \Magento\Sales\Model\Order\Creditmemo
-     */
-    protected $creditmemo;
-
-    /**
-     * Queue
-     *
-     * @var \OnePica\AvaTax\Model\Queue
-     */
-    protected $queue;
-    /**
-     * Data helper
-     *
-     * @var DataHelper
-     */
-    protected $dataHelper;
-
-    /**
-     * Creditmemo constructor.
-     *
-     * @param \OnePica\AvaTax\Api\Service\ResolverInterface $resolver
-     * @param \OnePica\AvaTax\Model\ServiceFactory          $serviceFactory
-     * @param \Magento\Sales\Model\Order\Creditmemo         $creditmemo
-     * @param DataHelper                                    $dataHelper
-     */
-    public function __construct(
-        ResolverInterface $resolver,
-        ServiceFactory $serviceFactory,
-        OrderCreditmemo $creditmemo,
-        DataHelper $dataHelper
-    ) {
-        parent::__construct($resolver, $serviceFactory);
-        $this->setCreditmemo($creditmemo);
-        $this->dataHelper = $dataHelper;
-    }
-
-    /**
-     * Set creditmemo
-     *
-     * @param OrderCreditmemo $creditmemo
-     * @return $this
-     */
-    public function setCreditmemo(OrderCreditmemo $creditmemo)
-    {
-        $this->creditmemo = $creditmemo;
-
-        return $this;
-    }
-
-    /**
-     * Set queue
-     *
-     * @param Queue $queue
-     * @return $this
-     */
-    public function setQueue(Queue $queue)
-    {
-        $this->queue = $queue;
-
-        return $this;
-    }
-
     /**
      * Get Creditmemo Service Request Object
      *
@@ -100,39 +32,29 @@ class Creditmemo extends AbstractTool
      */
     public function getCreditmemoServiceRequestObject()
     {
-        return $this->getService()->getCreditmemoServiceRequestObject($this->creditmemo);
+        return $this->getService()->getCreditmemoServiceRequestObject($this->queueObject);
     }
 
     /**
-     * Execute.
-     * Process queue for creditmemo. Send request object to service
+     * Process Queue
      *
      * @return ResultInterface
-     * @throws \OnePica\AvaTax\Model\Service\Exception\Unbalanced
-     * @throws \OnePica\AvaTax\Model\Service\Exception\Commitfailure
      */
-    public function execute()
+    protected function processQueue()
     {
-        $creditmemoResult = $this->getService()->creditmemo($this->queue);
+        return $this->getService()->submit($this->queue);
+    }
 
-        //if successful
-        if (!$creditmemoResult->getHasError()) {
-            $message = __('Creditmemo #%1 was saved to AvaTax', $creditmemoResult->getDocumentCode());
-            $order = $this->creditmemo->getOrder();
-            $this->dataHelper->addStatusHistoryCommentToOrder($order, $message);
-
-            $totalTax = $creditmemoResult->getTotalTax();
-            if ($totalTax != ($this->queue->getTotalTaxAmount() * -1)) {
-                throw new \OnePica\AvaTax\Model\Service\Exception\Unbalanced(
-                    'Collected: ' . $this->queue->getTotalTaxAmount() . ', Actual: ' . $totalTax
-                );
-            }
-            //if not successful
-        } else {
-            $messages = $creditmemoResult->getErrors();
-            throw new \OnePica\AvaTax\Model\Service\Exception\Commitfailure(implode(' // ', $messages));
-        }
-
-        return $creditmemoResult;
+    /**
+     * Is queue tax same as response tax
+     *
+     * @param float $queueTax
+     * @param float $responseTax
+     *
+     * @return bool
+     */
+    protected function isQueueTaxSameAsResponseTax($queueTax, $responseTax)
+    {
+        return $queueTax == (-1) * $responseTax;
     }
 }

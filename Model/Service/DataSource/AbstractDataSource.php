@@ -28,7 +28,6 @@ use Magento\Store\Model\Store;
 use Magento\Tax\Helper\Data;
 use Magento\Tax\Model\ClassModelRegistry;
 use Magento\Tax\Model\ResourceModel\TaxClass\Collection;
-use OnePica\AvaTax\Api\DataSourceInterface;
 use OnePica\AvaTax\Helper\Config;
 use OnePica\AvaTax\Model\GiftWrappingHelperFactory;
 use OnePica\AvaTax\Model\Source\Avatax16\CustomerCodeFormat;

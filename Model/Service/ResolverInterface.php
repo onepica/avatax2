@@ -12,24 +12,27 @@
  * @copyright  Copyright (c) 2016 One Pica, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Api\Service;
 
-use Magento\Framework\DataObject;
-use OnePica\AvaTax\Api\ResultInterface;
+namespace OnePica\AvaTax\Model\Service;
 
 /**
- * Class ValidationResourceInterface
+ * Class Resolver
  *
- * @package OnePica\AvaTax\Api\Service
+ * @package OnePica\AvaTax\Model\Service
  */
-interface ValidationResourceInterface
+interface ResolverInterface
 {
     /**
-     * Validate
+     * Get service class
      *
-     * @param DataObject $object
-     * @todo need to specify which object ($object) will be passed to this method
-     * @return ResultInterface
+     * @return string
      */
-    public function validate($object);
+    public function getServiceClass();
+
+    /**
+     * Get service config class
+     *
+     * @return string
+     */
+    public function getServiceConfigClass();
 }

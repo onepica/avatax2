@@ -13,14 +13,14 @@
  * @copyright  Copyright (c) 2016 One Pica, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Api;
+namespace OnePica\AvaTax\Model\Service;
 
 use Magento\Store\Model\Store;
 
 /**
  * Interface ConfigRepositoryInterface
  *
- * @package OnePica\AvaTax\Api
+ * @package OnePica\AvaTax\Model\Service
  */
 interface ConfigRepositoryInterface
 {
@@ -28,7 +28,8 @@ interface ConfigRepositoryInterface
      * Get service config by store
      *
      * @param \Magento\Store\Model\Store $store
-     * @return ConfigInterface
+     *
+     * @return \OnePica\AvaTax\Model\Service\Avatax16\ConfigInterface
      */
     public function getConfigByStore(Store $store);
 }

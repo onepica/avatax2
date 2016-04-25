@@ -1,14 +1,15 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <preference for="OnePica\AvaTax\Api\ConfigRepositoryInterface" type="OnePica\AvaTax\Model\Service\ConfigRepository"/>
-    <preference for="OnePica\AvaTax\Api\Service\ResolverInterface" type="OnePica\AvaTax\Model\Service\Resolver"/>
+    <preference for="OnePica\AvaTax\Model\Service\ConfigRepositoryInterface" type="OnePica\AvaTax\Model\Service\ConfigRepository"/>
+    <preference for="OnePica\AvaTax\Model\Service\ResolverInterface" type="OnePica\AvaTax\Model\Service\Resolver"/>
     <preference for="OnePica\AvaTax\Api\Service\LoggerInterface" type="OnePica\AvaTax\Model\Service\Logger"/>
     <preference for="OnePica\AvaTax\Api\LogRepositoryInterface" type="OnePica\AvaTax\Model\LogRepository"/>
-    <preference for="OnePica\AvaTax\Api\DataSourceInterface" type="OnePica\AvaTax\Model\Service\DataSource\Calculation"/>
+    <preference for="OnePica\AvaTax\Model\Service\DataSource\DataSourceInterface" type="OnePica\AvaTax\Model\Service\DataSource\Calculation"/>
     <preference for="OnePica\AvaTax\Api\QueueRepositoryInterface" type="OnePica\AvaTax\Model\QueueRepository"/>
     <preference for="OnePica\AvaTax\Api\Data\QueueSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
     <preference for="OnePica\AvaTax\Api\Data\QueueInterface" type="OnePica\AvaTax\Model\Queue"/>
+    <preference for="OnePica\AvaTax\Api\QueueManagementInterface" type="OnePica\AvaTax\Model\QueueManagement"/>
     <virtualType name="OnePica\AvaTax\Model\Session\Storage" type="Magento\Framework\Session\Storage">
         <arguments>
             <argument name="namespace" xsi:type="string">onepica_avatax</argument>

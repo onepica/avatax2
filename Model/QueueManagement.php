@@ -12,27 +12,29 @@
  * @copyright  Copyright (c) 2016 One Pica, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model\Queue;
+namespace OnePica\AvaTax\Model;
 
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Api\SortOrderBuilder;
 use Magento\Framework\Stdlib\DateTime;
-use Magento\Framework\ObjectManagerInterface;
+use Magento\Sales\Model\Order\Creditmemo;
+use Magento\Sales\Model\Order\CreditmemoRepository;
+use Magento\Sales\Model\Order\Invoice;
+use Magento\Sales\Model\Order\InvoiceRepository;
+use OnePica\AvaTax\Api\QueueManagementInterface;
 use OnePica\AvaTax\Api\QueueRepositoryInterface;
-use OnePica\AvaTax\Model\Queue;
 use OnePica\AvaTax\Helper\Config;
 use OnePica\AvaTax\Model\Tool\Invoice as InvoiceServiceTool;
 use OnePica\AvaTax\Model\Tool\Creditmemo as CreditmemoServiceTool;
 
 /**
- * Class Processor
+ * Class Manager
  *
  * @package OnePica\AvaTax\Model\Queue
  */
-
-class Processor
+class QueueManagement implements QueueManagementInterface
 {
     /**
      * Queue repository
@@ -71,11 +73,6 @@ class Processor
     protected $dateTime;
 
     /**
-     * @var \Magento\Framework\ObjectManagerInterface
-     */
-    protected $objectManager;
-
-    /**
      * @var InvoiceServiceTool
      */
     protected $invoiceServiceTool;
@@ -86,16 +83,31 @@ class Processor
     protected $creditmemoServiceTool;
 
     /**
+     * Creditmemo repository
+     *
+     * @var CreditmemoRepository
+     */
+    protected $creditmemoRepository;
+
+    /**
+     * Invoice repository
+     *
+     * @var InvoiceRepository
+     */
+    protected $invoiceRepository;
+
+    /**
      * Constructor.
      *
      * @param QueueRepositoryInterface $queueRepository
-     * @param SearchCriteriaBuilder    $searchCriteriaBuilder,
+     * @param SearchCriteriaBuilder    $searchCriteriaBuilder
      * @param FilterBuilder            $filterBuilder
      * @param Config                   $config
      * @param DateTime                 $dateTime
-     * @param ObjectManagerInterface   $objectManager
      * @param InvoiceServiceTool       $invoiceServiceTool
      * @param CreditmemoServiceTool    $creditmemoServiceTool
+     * @param CreditmemoRepository     $creditmemoRepository
+     * @param InvoiceRepository        $invoiceRepository
      * @param SortOrderBuilder         $sortOrderBuilder
      */
     public function __construct(
@@ -104,9 +116,10 @@ class Processor
         FilterBuilder $filterBuilder,
         Config $config,
         DateTime $dateTime,
-        ObjectManagerInterface $objectManager,
         InvoiceServiceTool $invoiceServiceTool,
         CreditmemoServiceTool $creditmemoServiceTool,
+        CreditmemoRepository $creditmemoRepository,
+        InvoiceRepository $invoiceRepository,
         SortOrderBuilder $sortOrderBuilder
     ) {
         $this->queueRepository = $queueRepository;
@@ -114,9 +127,10 @@ class Processor
         $this->filterBuilder = $filterBuilder;
         $this->config = $config;
         $this->dateTime = $dateTime;
-        $this->objectManager = $objectManager;
         $this->invoiceServiceTool = $invoiceServiceTool;
         $this->creditmemoServiceTool = $creditmemoServiceTool;
+        $this->creditmemoRepository = $creditmemoRepository;
+        $this->invoiceRepository = $invoiceRepository;
         $this->sortOrderBuilder = $sortOrderBuilder;
     }
 
@@ -282,36 +296,29 @@ class Processor
         )->getItems();
 
         // process items
+        /** @var Queue $item */
         foreach ($items as $item) {
-            switch ($item->getType()) {
-                case Queue::TYPE_INVOICE:
-                    $this->processQueueInvoiceItem($item);
-                    break;
-                case Queue::TYPE_CREDITMEMO:
-                    $this->processQueueCreditmemoItem($item);
-                    break;
-            }
+            $this->processQueueItem($item);
         }
 
         return $this;
     }
 
     /**
-     * Attempt to send any pending invoices to Avalara
+     * Process queue item
      *
      * @param Queue $queue
-     * @return $this
      */
-    protected function processQueueInvoiceItem(Queue $queue)
+    protected function processQueueItem(Queue $queue)
     {
         $newAttemptValue = $queue->getAttempt() + 1;
         $queue->setAttempt($newAttemptValue);
         try {
-            $invoice = $this->objectManager->get('Magento\Sales\Model\Order\Invoice')->load($queue->getEntityId());
-            $this->invoiceServiceTool->setInvoice($invoice);
-            $this->invoiceServiceTool->setQueue($queue);
-            if ($invoice->getId()) {
-                $this->invoiceServiceTool->execute();
+            $queueObject = $this->getQueueObject($queue);
+            $tool = $this->getToolObject($queue);
+            $tool->setQueueObject($queueObject)->setQueue($queue);
+            if ($queueObject->getId()) {
+                $tool->execute();
             }
             $queue->setStatus(Queue::STATUS_COMPLETE)->setMessage(null)->save();
         } catch (\OnePica\AvaTax\Model\Service\Exception\Unbalanced $e) {
@@ -326,41 +333,37 @@ class Processor
                 ->setMessage($e->getMessage())
                 ->save();
         }
-
-        return $this;
     }
 
     /**
-     * Attempt to send any pending creditmemos to Avalara
+     * Get queue object
      *
-     * @param Queue $queue
-     * @return $this
+     * @param Queue $queueItem
+     *
+     * @return Invoice|Creditmemo
      */
-    protected function processQueueCreditmemoItem(Queue $queue)
+    protected function getQueueObject(Queue $queueItem)
     {
-        $newAttemptValue = $queue->getAttempt() + 1;
-        $queue->setAttempt($newAttemptValue);
-        try {
-            $creditmemo = $this->objectManager->get('Magento\Sales\Model\Order\Creditmemo')->load($queue->getEntityId());
-            $this->creditmemoServiceTool->setCreditmemo($creditmemo);
-            $this->creditmemoServiceTool->setQueue($queue);
-            if ($creditmemo->getId()) {
-                $this->creditmemoServiceTool->execute();
-            }
-            $queue->setStatus(Queue::STATUS_COMPLETE)->setMessage(null)->save();
-        } catch (\OnePica\AvaTax\Model\Service\Exception\Unbalanced $e) {
-            $queue->setStatus(Queue::STATUS_UNBALANCED)
-                ->setMessage($e->getMessage())
-                ->save();
-        } catch (\Exception $e) {
-            $status = ($queue->getAttempt() >= Queue::ATTEMPT_MAX)
-                ? Queue::STATUS_FAILED
-                : Queue::STATUS_RETRY;
-            $queue->setStatus($status)
-                ->setMessage($e->getMessage())
-                ->save();
+        if ($queueItem->getType() === Queue::TYPE_INVOICE) {
+            return $this->invoiceRepository->get($queueItem->getEntityId());
         }
 
-        return $this;
+        return $this->creditmemoRepository->get($queueItem->getEntityId());
+    }
+
+    /**
+     * Get tool object by queue item
+     *
+     * @param Queue $queue
+     *
+     * @return CreditmemoServiceTool|InvoiceServiceTool
+     */
+    protected function getToolObject(Queue $queue)
+    {
+        if ($queue->getType() === Queue::TYPE_INVOICE) {
+            return $this->invoiceServiceTool;
+        }
+
+        return $this->creditmemoServiceTool;
     }
 }

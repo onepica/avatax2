@@ -15,7 +15,7 @@
 namespace OnePica\AvaTax\Model\Service;
 
 use OnePica\AvaTax\Api\LogRepositoryInterface;
-use OnePica\AvaTax\Api\ResultInterface;
+use OnePica\AvaTax\Model\Service\Result\ResultInterface;
 use OnePica\AvaTax\Api\Service\LoggerInterface;
 use OnePica\AvaTax\Helper\Config;
 use OnePica\AvaTax\Model\Log;
