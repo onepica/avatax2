@@ -16,7 +16,6 @@
 namespace OnePica\AvaTax\Model\Service;
 
 use Magento\Store\Model\Store;
-use OnePica\AvaTax\Api\ConfigInterface;
 
 /**
  * Interface ConfigRepositoryInterface
@@ -29,7 +28,8 @@ interface ConfigRepositoryInterface
      * Get service config by store
      *
      * @param \Magento\Store\Model\Store $store
-     * @return ConfigInterface
+     *
+     * @return \OnePica\AvaTax\Model\Service\Avatax16\ConfigInterface
      */
     public function getConfigByStore(Store $store);
 }

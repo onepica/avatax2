@@ -28,7 +28,7 @@ interface ConfigFactoryInterface
      * Create config object
      *
      * @param \Magento\Store\Model\Store $store
-     * @return \OnePica\AvaTax\Api\ConfigInterface
+     * @return \OnePica\AvaTax\Model\Service\Avatax16\ConfigInterface
      */
     public function create(Store $store);
 }

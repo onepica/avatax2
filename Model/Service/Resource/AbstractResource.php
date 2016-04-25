@@ -245,7 +245,7 @@ abstract class AbstractResource
      * Get config by store
      *
      * @param Store $store
-     * @return \OnePica\AvaTax\Api\ConfigInterface
+     * @return \OnePica\AvaTax\Model\Service\Avatax16\ConfigInterface
      */
     protected function getConfigByStore($store)
     {
