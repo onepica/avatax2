@@ -26,24 +26,24 @@ use Magento\Backend\App\Action\Context;
 class ClearQueue extends AbstractQueueAction
 {
     /**
-     * Queue processor model
+     * Queue management model
      *
      * @var QueueManagementInterface
      */
-    protected $queueManager;
+    protected $queueManagement;
 
     /**
      * Constructor
      *
      * @param Context                  $context
-     * @param QueueManagementInterface $queueManager
+     * @param QueueManagementInterface $queueManagement
      */
     public function __construct(
         Context $context,
-        QueueManagementInterface $queueManager
+        QueueManagementInterface $queueManagement
     ) {
         parent::__construct($context);
-        $this->queueManager = $queueManager;
+        $this->queueManagement = $queueManagement;
     }
 
     /**
@@ -52,7 +52,7 @@ class ClearQueue extends AbstractQueueAction
     public function execute()
     {
         try {
-            $this->queueManager->clear();
+            $this->queueManagement->clear();
             $this->getMessageManager()->addSuccess(__('Queue was cleared successfully'));
         } catch (\Exception $e) {
             $this->getMessageManager()->addError(__('Unable to clear Queue'));

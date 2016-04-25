@@ -26,24 +26,24 @@ use Magento\Backend\App\Action\Context;
 class ProcessQueue extends AbstractQueueAction
 {
     /**
-     * Queue manager model
+     * Queue management model
      *
      * @var QueueManagementInterface
      */
-    protected $queueManager;
+    protected $queueManagement;
 
     /**
      * Constructor
      *
      * @param Context                  $context
-     * @param QueueManagementInterface $queueManager
+     * @param QueueManagementInterface $queueManagement
      */
     public function __construct(
         Context $context,
-        QueueManagementInterface $queueManager
+        QueueManagementInterface $queueManagement
     ) {
         parent::__construct($context);
-        $this->queueManager = $queueManager;
+        $this->queueManagement = $queueManagement;
     }
 
     /**
@@ -52,7 +52,7 @@ class ProcessQueue extends AbstractQueueAction
     public function execute()
     {
         try {
-            $this->queueManager->processQueue();
+            $this->queueManagement->processQueue();
             $this->getMessageManager()->addSuccess(__('Queue was processed successfully'));
         } catch (\Exception $e) {
             $this->getMessageManager()->addError(__('Unable to process Queue'));
