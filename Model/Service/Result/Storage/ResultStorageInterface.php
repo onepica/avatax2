@@ -12,12 +12,14 @@
  * @copyright  Copyright (c) 2016 One Pica, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Api;
+namespace OnePica\AvaTax\Model\Service\Result\Storage;
+
+use OnePica\AvaTax\Api\ResultInterface;
 
 /**
  * Interface ResultStorageInterface
  *
- * @package OnePica\AvaTax\Api
+ * @package OnePica\AvaTax\Model\Service\Result\Storage
  */
 interface ResultStorageInterface
 {

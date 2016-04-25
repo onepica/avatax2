@@ -16,7 +16,6 @@ namespace OnePica\AvaTax\Model\Service\Result\Storage;
 
 use DateTime;
 use OnePica\AvaTax\Api\ResultInterface;
-use OnePica\AvaTax\Api\ResultStorageInterface;
 use OnePica\AvaTax\Model\Service\Result\Base;
 use OnePica\AvaTax\Model\Session;
 
