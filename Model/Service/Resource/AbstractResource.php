@@ -21,7 +21,7 @@ use Magento\Sales\Model\Order\Invoice\Item as InvoiceItem;
 use Magento\Sales\Model\Order\Item as OrderItem;
 use Magento\Store\Model\Store;
 use OnePica\AvaTax\Api\ConfigRepositoryInterface;
-use OnePica\AvaTax\Api\DataSourceInterface;
+use OnePica\AvaTax\Model\Service\DataSource\DataSourceInterface;
 use OnePica\AvaTax\Api\ResultInterface;
 use OnePica\AvaTax\Api\Service\LoggerInterface;
 use OnePica\AvaTax\Helper\Config;
@@ -95,7 +95,7 @@ abstract class AbstractResource
     /**
      * Data source
      *
-     * @var \OnePica\AvaTax\Api\DataSourceInterface|\OnePica\AvaTax\Model\Service\DataSource\Calculation
+     * @var \OnePica\AvaTax\Model\Service\DataSource\DataSourceInterface|\OnePica\AvaTax\Model\Service\DataSource\Calculation
      */
     protected $dataSource;
 
@@ -121,11 +121,11 @@ abstract class AbstractResource
     /**
      * AbstractResource constructor.
      *
-     * @param \OnePica\AvaTax\Api\ConfigRepositoryInterface $configRepository
-     * @param \Magento\Framework\ObjectManagerInterface     $objectManager
-     * @param \OnePica\AvaTax\Helper\Config                 $config
-     * @param \OnePica\AvaTax\Api\Service\LoggerInterface   $logger
-     * @param \OnePica\AvaTax\Api\DataSourceInterface       $dataSource
+     * @param \OnePica\AvaTax\Api\ConfigRepositoryInterface                $configRepository
+     * @param \Magento\Framework\ObjectManagerInterface                    $objectManager
+     * @param \OnePica\AvaTax\Helper\Config                                $config
+     * @param \OnePica\AvaTax\Api\Service\LoggerInterface                  $logger
+     * @param \OnePica\AvaTax\Model\Service\DataSource\DataSourceInterface $dataSource
      */
     public function __construct(
         ConfigRepositoryInterface $configRepository,

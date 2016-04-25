@@ -17,7 +17,7 @@ namespace OnePica\AvaTax\Model\Service\Resource\Avatax16;
 use DateTime;
 use Magento\Framework\DataObject;
 use Magento\Framework\ObjectManagerInterface;
-use OnePica\AvaTax\Api\DataSourceInterface;
+use OnePica\AvaTax\Model\Service\DataSource\DataSourceInterface;
 use OnePica\AvaTax\Api\ResultInterface;
 use OnePica\AvaTax\Model\Service\Resource\AbstractResource;
 use OnePica\AvaTax\Model\Service\Avatax16\Config;
@@ -54,12 +54,12 @@ class Validation extends AbstractResource
     /**
      * Constructor.
      *
-     * @param ConfigRepositoryInterface               $configRepository
-     * @param ObjectManagerInterface                  $objectManager
-     * @param ValidationResultStorage                 $resultStorage
-     * @param ConfigHelper                            $config
-     * @param \OnePica\AvaTax\Api\DataSourceInterface $dataSource
-     * @param LoggerInterface                         $logger
+     * @param ConfigRepositoryInterface                                    $configRepository
+     * @param ObjectManagerInterface                                       $objectManager
+     * @param ValidationResultStorage                                      $resultStorage
+     * @param ConfigHelper                                                 $config
+     * @param \OnePica\AvaTax\Model\Service\DataSource\DataSourceInterface $dataSource
+     * @param LoggerInterface                                              $logger
      */
     public function __construct(
         ConfigRepositoryInterface $configRepository,
