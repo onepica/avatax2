@@ -16,6 +16,8 @@ namespace OnePica\AvaTax\Model\Queue;
 
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Api\SortOrder;
+use Magento\Framework\Api\SortOrderBuilder;
 use Magento\Framework\Stdlib\DateTime;
 use Magento\Sales\Model\Order\Creditmemo;
 use Magento\Sales\Model\Order\CreditmemoRepository;
@@ -46,6 +48,11 @@ class Manager implements QueueManagerInterface
     * @var SearchCriteriaBuilder
     */
     private $searchCriteriaBuilder;
+
+    /**
+     * @var SortOrderBuilder
+     */
+    private $sortOrderBuilder;
 
     /**
      * @var FilterBuilder
@@ -94,7 +101,7 @@ class Manager implements QueueManagerInterface
      * Constructor.
      *
      * @param QueueRepositoryInterface $queueRepository
-     * @param SearchCriteriaBuilder    $searchCriteriaBuilder ,
+     * @param SearchCriteriaBuilder    $searchCriteriaBuilder
      * @param FilterBuilder            $filterBuilder
      * @param Config                   $config
      * @param DateTime                 $dateTime
@@ -102,6 +109,7 @@ class Manager implements QueueManagerInterface
      * @param CreditmemoServiceTool    $creditmemoServiceTool
      * @param CreditmemoRepository     $creditmemoRepository
      * @param InvoiceRepository        $invoiceRepository
+     * @param SortOrderBuilder         $sortOrderBuilder
      */
     public function __construct(
         QueueRepositoryInterface $queueRepository,
@@ -113,6 +121,7 @@ class Manager implements QueueManagerInterface
         CreditmemoServiceTool $creditmemoServiceTool,
         CreditmemoRepository $creditmemoRepository,
         InvoiceRepository $invoiceRepository
+        SortOrderBuilder $sortOrderBuilder
     ) {
         $this->queueRepository = $queueRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -123,6 +132,7 @@ class Manager implements QueueManagerInterface
         $this->creditmemoServiceTool = $creditmemoServiceTool;
         $this->creditmemoRepository = $creditmemoRepository;
         $this->invoiceRepository = $invoiceRepository;
+        $this->sortOrderBuilder = $sortOrderBuilder;
     }
 
     /**
@@ -274,10 +284,16 @@ class Manager implements QueueManagerInterface
             ->create();
 
         $this->searchCriteriaBuilder->addFilters($filters);
+        $sortOrder = $this->sortOrderBuilder
+                   ->create()
+                   ->setField(Queue::QUEUE_ID)
+                   ->setDirection(SortOrder::SORT_ASC);
+
         $items = $this->queueRepository->getList(
             $this->searchCriteriaBuilder
                 ->create()
                 ->setPageSize($queueItemsCount)
+                ->setSortOrders([$sortOrder])
         )->getItems();
 
         // process items
