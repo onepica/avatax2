@@ -213,6 +213,11 @@
                         <label>Backend Error Message</label>
                         <validate>required-entry</validate>
                     </field>
+                    <field id="error_notification_toolbar" translate="label comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
+                        <label>Notification Toolbar</label>
+                        <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                        <comment>If there are issues syncing invoice or credit memo data, show warning in admin notification toolbar.</comment>
+                    </field>
                 </group>
             </group>
             <!--Hide some default settings-->
