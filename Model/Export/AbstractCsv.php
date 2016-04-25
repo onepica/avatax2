@@ -101,7 +101,7 @@ abstract class AbstractCsv implements ExportInterface
         $filename = null;
         $data = $this->collection->getExportData();
 
-        if (count($data)) {
+        if (count($data) > 0) {
             $filename = $this->getFileName();
             $sourceCsv = $this->createCsvModel($filename);
             $data = $this->collection->getExportData();
