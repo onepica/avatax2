@@ -14,7 +14,6 @@
  */
 namespace OnePica\AvaTax\Model\Service\Result;
 
-use OnePica\AvaTax\Api\AddressValidationResultInterface;
 use OnePica\AvaTax\Model\Service\Request\Address;
 
 /**
