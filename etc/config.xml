@@ -39,6 +39,7 @@
                     <frontend_error_message>Unfortunately, we could not calculate tax for your order. Please try again with a different address or contact us to complete your order.</frontend_error_message>
                     <backend_error_message>Unfortunately, we could not calculate tax for your order. Please try again with a different address.</backend_error_message>
                     <action_on_error>0</action_on_error>
+                    <error_notification_toolbar>1</error_notification_toolbar>
                 </avatax_error_handling_group>
             </avatax>
         </tax>

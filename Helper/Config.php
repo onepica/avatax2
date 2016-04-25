@@ -91,9 +91,10 @@ class Config extends AbstractHelper
     /**#@+
      * Error handling setting xml path
      */
-    const AVATAX_ACTION_ON_ERROR        = 'tax/avatax/avatax_error_handling_group/action_on_error';
-    const AVATAX_FRONTEND_ERROR_MESSAGE = 'tax/avatax/avatax_error_handling_group/frontend_error_message';
-    const AVATAX_BACKEND_ERROR_MESSAGE  = 'tax/avatax/avatax_error_handling_group/backend_error_message';
+    const AVATAX_ACTION_ON_ERROR             = 'tax/avatax/avatax_error_handling_group/action_on_error';
+    const AVATAX_FRONTEND_ERROR_MESSAGE      = 'tax/avatax/avatax_error_handling_group/frontend_error_message';
+    const AVATAX_BACKEND_ERROR_MESSAGE       = 'tax/avatax/avatax_error_handling_group/backend_error_message';
+    const AVATAX_ERROR_NOTIFICATION_TOOLBAR  = 'tax/avatax/avatax_error_handling_group/error_notification_toolbar';
     /**#@-*/
 
     /**
@@ -688,5 +689,16 @@ class Config extends AbstractHelper
     public function getAvatax16AddressValidationMessage($store = null)
     {
         return (string)$this->getConfig(self::AVATAX16_ADDRESS_VALIDATION_MESSAGE, $store);
+    }
+
+    /**
+     * Get Error Notification Toolbar
+     *
+     * @param Store|int $store
+     * @return int
+     */
+    public function getErrorNotificationToolbar($store = null)
+    {
+        return (int)$this->getConfig(self::AVATAX_ERROR_NOTIFICATION_TOOLBAR, $store);
     }
 }

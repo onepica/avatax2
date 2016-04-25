@@ -53,4 +53,12 @@ interface QueueRepositoryInterface
      * @return \Magento\Cms\Model\ResourceModel\Page\Collection
      */
     public function getList(\Magento\Framework\Api\SearchCriteriaInterface $criteria);
+
+    /**
+     * Get queue count by criteria
+     *
+     * @param \Magento\Framework\Api\SearchCriteriaInterface $criteria
+     * @return int
+     */
+    public function getCountByCriteria(\Magento\Framework\Api\SearchCriteriaInterface $criteria);
 }

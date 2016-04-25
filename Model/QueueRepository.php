@@ -173,4 +173,27 @@ class QueueRepository implements QueueRepositoryInterface
         $searchResults->setItems($collection->getItems());
         return $searchResults;
     }
+
+    /**
+     * Get queue count by criteria
+     *
+     * @param \Magento\Framework\Api\SearchCriteriaInterface $criteria
+     * @return int
+     */
+    public function getCountByCriteria(\Magento\Framework\Api\SearchCriteriaInterface $criteria)
+    {
+        $collection = $this->queueCollectionFactory->create();
+        foreach ($criteria->getFilterGroups() as $filterGroup) {
+            foreach ($filterGroup->getFilters() as $filter) {
+                if ($filter->getField() === 'store_id') {
+                    $collection->addStoreFilter($filter->getValue(), false);
+                    continue;
+                }
+                $condition = $filter->getConditionType() ?: 'eq';
+                $collection->addFieldToFilter($filter->getField(), [$condition => $filter->getValue()]);
+            }
+        }
+
+        return $collection->getSize();
+    }
 }
