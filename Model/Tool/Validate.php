@@ -16,7 +16,7 @@ namespace OnePica\AvaTax\Model\Tool;
 
 use Magento\Framework\DataObject;
 use OnePica\AvaTax\Model\Service\Result\ResultInterface;
-use OnePica\AvaTax\Api\Service\ResolverInterface;
+use OnePica\AvaTax\Model\Service\ResolverInterface;
 use OnePica\AvaTax\Model\ServiceFactory;
 use OnePica\AvaTax\Model\Service\Request\Address;
 
@@ -37,9 +37,9 @@ class Validate extends AbstractTool
     /**
      * Validate constructor.
      *
-     * @param \OnePica\AvaTax\Api\Service\ResolverInterface $resolver
-     * @param \OnePica\AvaTax\Model\ServiceFactory          $serviceFactory
-     * @param Address                                       $object
+     * @param \OnePica\AvaTax\Model\Service\ResolverInterface $resolver
+     * @param \OnePica\AvaTax\Model\ServiceFactory            $serviceFactory
+     * @param Address                                         $object
      */
     public function __construct(
         ResolverInterface $resolver,

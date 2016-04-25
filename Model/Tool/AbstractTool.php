@@ -14,7 +14,7 @@
  */
 namespace OnePica\AvaTax\Model\Tool;
 
-use OnePica\AvaTax\Api\Service\ResolverInterface;
+use OnePica\AvaTax\Model\Service\ResolverInterface;
 use OnePica\AvaTax\Api\ServiceInterface;
 use OnePica\AvaTax\Api\ToolInterface;
 use OnePica\AvaTax\Model\ServiceFactory;
@@ -43,8 +43,8 @@ abstract class AbstractTool implements ToolInterface
     /**
      * AbstractTool constructor.
      *
-     * @param \OnePica\AvaTax\Api\Service\ResolverInterface $resolver
-     * @param \OnePica\AvaTax\Model\ServiceFactory          $serviceFactory
+     * @param \OnePica\AvaTax\Model\Service\ResolverInterface $resolver
+     * @param \OnePica\AvaTax\Model\ServiceFactory            $serviceFactory
      */
     public function __construct(ResolverInterface $resolver, ServiceFactory $serviceFactory)
     {

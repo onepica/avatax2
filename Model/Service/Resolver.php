@@ -14,7 +14,7 @@
  */
 namespace OnePica\AvaTax\Model\Service;
 
-use OnePica\AvaTax\Api\Service\ResolverInterface;
+use OnePica\AvaTax\Model\Service\ResolverInterface;
 use OnePica\AvaTax\Helper\Config;
 
 /**

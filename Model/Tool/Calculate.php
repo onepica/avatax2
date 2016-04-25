@@ -17,7 +17,7 @@ namespace OnePica\AvaTax\Model\Tool;
 use Magento\Quote\Api\Data\ShippingAssignmentInterface;
 use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\Quote\Address\Total;
-use OnePica\AvaTax\Api\Service\ResolverInterface;
+use OnePica\AvaTax\Model\Service\ResolverInterface;
 use OnePica\AvaTax\Model\Service\Result\Calculation;
 use OnePica\AvaTax\Model\ServiceFactory;
 
@@ -52,7 +52,7 @@ class Calculate extends AbstractTool
     /**
      * Calculate constructor.
      *
-     * @param \OnePica\AvaTax\Api\Service\ResolverInterface       $resolver
+     * @param \OnePica\AvaTax\Model\Service\ResolverInterface     $resolver
      * @param \OnePica\AvaTax\Model\ServiceFactory                $serviceFactory
      * @param \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignment
      * @param \Magento\Quote\Model\Quote                          $quote
