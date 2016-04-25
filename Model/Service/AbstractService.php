@@ -135,15 +135,14 @@ abstract class AbstractService implements ServiceInterface
      */
     public function submit(Queue $queue)
     {
+        /** @var InvoiceResource|CreditmemoResource $queueObject */
         if ($queue->getType() === Queue::TYPE_INVOICE) {
-            /** @var InvoiceResource $queueObject */
             $queueObject = $this->objectManager->create($this->getInvoiceResourceClass());
-
-            return $queueObject->submit($queue);
+        } elseif ($queue->getType() === Queue::TYPE_CREDITMEMO) {
+            $queueObject = $this->objectManager->create($this->getCreditmemoResourceClass());
+        } else {
+            throw new \LogicException('Wrong Queue type.');
         }
-
-        /** @var CreditmemoResource $queueObject */
-        $queueObject = $this->objectManager->create($this->getCreditmemoResourceClass());
 
         return $queueObject->submit($queue);
     }

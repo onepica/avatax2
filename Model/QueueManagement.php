@@ -12,7 +12,7 @@
  * @copyright  Copyright (c) 2016 One Pica, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model\Queue;
+namespace OnePica\AvaTax\Model;
 
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\SearchCriteriaBuilder;
@@ -25,7 +25,6 @@ use Magento\Sales\Model\Order\Invoice;
 use Magento\Sales\Model\Order\InvoiceRepository;
 use OnePica\AvaTax\Api\QueueManagementInterface;
 use OnePica\AvaTax\Api\QueueRepositoryInterface;
-use OnePica\AvaTax\Model\Queue;
 use OnePica\AvaTax\Helper\Config;
 use OnePica\AvaTax\Model\Tool\Invoice as InvoiceServiceTool;
 use OnePica\AvaTax\Model\Tool\Creditmemo as CreditmemoServiceTool;
@@ -35,7 +34,7 @@ use OnePica\AvaTax\Model\Tool\Creditmemo as CreditmemoServiceTool;
  *
  * @package OnePica\AvaTax\Model\Queue
  */
-class Management implements QueueManagementInterface
+class QueueManagement implements QueueManagementInterface
 {
     /**
      * Queue repository
