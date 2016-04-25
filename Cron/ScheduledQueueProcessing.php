@@ -33,11 +33,11 @@ class ScheduledQueueProcessing
     /**
      * ScheduledQueueProcessing constructor.
      *
-     * @param QueueManagementInterface $queueManager
+     * @param QueueManagementInterface $queueManagement
      */
-    public function __construct(QueueManagementInterface $queueManager)
+    public function __construct(QueueManagementInterface $queueManagement)
     {
-        $this->queueManagement = $queueManager;
+        $this->queueManagement = $queueManagement;
     }
 
     /**
