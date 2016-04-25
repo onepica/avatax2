@@ -14,7 +14,7 @@
  */
 namespace OnePica\AvaTax\Controller\Adminhtml\Queue;
 
-use OnePica\AvaTax\Api\QueueManagerInterface;
+use OnePica\AvaTax\Api\QueueManagementInterface;
 use OnePica\AvaTax\Controller\Adminhtml\AbstractQueueAction;
 use Magento\Backend\App\Action\Context;
 
@@ -28,19 +28,19 @@ class ClearQueue extends AbstractQueueAction
     /**
      * Queue processor model
      *
-     * @var QueueManagerInterface
+     * @var QueueManagementInterface
      */
     protected $queueManager;
 
     /**
      * Constructor
      *
-     * @param Context               $context
-     * @param QueueManagerInterface $queueManager
+     * @param Context                  $context
+     * @param QueueManagementInterface $queueManager
      */
     public function __construct(
         Context $context,
-        QueueManagerInterface $queueManager
+        QueueManagementInterface $queueManager
     ) {
         parent::__construct($context);
         $this->queueManager = $queueManager;

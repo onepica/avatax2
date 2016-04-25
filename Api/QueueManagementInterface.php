@@ -16,11 +16,11 @@
 namespace OnePica\AvaTax\Api;
 
 /**
- * Interface QueueManager
+ * Interface QueueManagement
  *
  * @package OnePica\AvaTax\Api
  */
-interface QueueManagerInterface
+interface QueueManagementInterface
 {
     /**
      * Clear queue processed items
