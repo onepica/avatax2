@@ -28,7 +28,7 @@ class ScheduledQueueProcessing
      *
      * @var QueueManagementInterface
      */
-    protected $queueManager;
+    protected $queueManagement;
 
     /**
      * ScheduledQueueProcessing constructor.
@@ -37,7 +37,7 @@ class ScheduledQueueProcessing
      */
     public function __construct(QueueManagementInterface $queueManager)
     {
-        $this->queueManager = $queueManager;
+        $this->queueManagement = $queueManager;
     }
 
     /**
@@ -45,6 +45,6 @@ class ScheduledQueueProcessing
      */
     public function execute()
     {
-        $this->queueManager->processQueue();
+        $this->queueManagement->processQueue();
     }
 }
