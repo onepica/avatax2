@@ -24,7 +24,7 @@ use OnePica\AvaTax\Api\QueueManagementInterface;
 class ScheduledQueueProcessing
 {
     /**
-     * Queue manager
+     * Queue management
      *
      * @var QueueManagementInterface
      */
