@@ -35,7 +35,7 @@ use OnePica\AvaTax\Model\Tool\Creditmemo as CreditmemoServiceTool;
  *
  * @package OnePica\AvaTax\Model\Queue
  */
-class Manager implements QueueManagementInterface
+class Management implements QueueManagementInterface
 {
     /**
      * Queue repository

@@ -9,7 +9,7 @@
     <preference for="OnePica\AvaTax\Api\QueueRepositoryInterface" type="OnePica\AvaTax\Model\QueueRepository"/>
     <preference for="OnePica\AvaTax\Api\Data\QueueSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
     <preference for="OnePica\AvaTax\Api\Data\QueueInterface" type="OnePica\AvaTax\Model\Queue"/>
-    <preference for="OnePica\AvaTax\Api\QueueManagementInterface" type="OnePica\AvaTax\Model\Queue\Manager"/>
+    <preference for="OnePica\AvaTax\Api\QueueManagementInterface" type="OnePica\AvaTax\Model\Queue\Management"/>
     <virtualType name="OnePica\AvaTax\Model\Session\Storage" type="Magento\Framework\Session\Storage">
         <arguments>
             <argument name="namespace" xsi:type="string">onepica_avatax</argument>
