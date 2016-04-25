@@ -22,7 +22,7 @@ use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\Quote\Address;
 use Magento\Quote\Model\Quote\Address\Total;
 use Magento\Store\Model\Store;
-use OnePica\AvaTax\Api\ConfigRepositoryInterface;
+use OnePica\AvaTax\Model\Service\ConfigRepositoryInterface;
 use OnePica\AvaTax\Api\Service\LoggerInterface;
 use OnePica\AvaTax\Helper\Config;
 use OnePica\AvaTax\Model\Service\DataSource\Calculation as CalculationDataSource;
@@ -70,12 +70,12 @@ class Calculation extends AbstractResource
     /**
      * Calculation constructor.
      *
-     * @param \OnePica\AvaTax\Api\ConfigRepositoryInterface                             $configRepository
-     * @param \Magento\Framework\ObjectManagerInterface                                 $objectManager
-     * @param \OnePica\AvaTax\Helper\Config                                             $config
-     * @param \OnePica\AvaTax\Api\Service\LoggerInterface                               $logger
-     * @param CalculationDataSource                                                     $dataSource
-     * @param \Magento\Framework\Stdlib\DateTime\Timezone                               $timezone
+     * @param \OnePica\AvaTax\Model\Service\ConfigRepositoryInterface $configRepository
+     * @param \Magento\Framework\ObjectManagerInterface               $objectManager
+     * @param \OnePica\AvaTax\Helper\Config                           $config
+     * @param \OnePica\AvaTax\Api\Service\LoggerInterface             $logger
+     * @param CalculationDataSource                                   $dataSource
+     * @param \Magento\Framework\Stdlib\DateTime\Timezone             $timezone
      * @param CalculationResultStorage                                                  $resultStorage
      */
     public function __construct(

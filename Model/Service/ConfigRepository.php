@@ -16,7 +16,6 @@ namespace OnePica\AvaTax\Model\Service;
 
 use Magento\Store\Model\Store;
 use OnePica\AvaTax\Api\ConfigInterface;
-use OnePica\AvaTax\Api\ConfigRepositoryInterface;
 
 /**
  * Class ConfigRepository

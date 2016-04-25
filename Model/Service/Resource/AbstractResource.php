@@ -20,7 +20,7 @@ use Magento\Sales\Model\Order\Creditmemo\Item as CreditmemoItem;
 use Magento\Sales\Model\Order\Invoice\Item as InvoiceItem;
 use Magento\Sales\Model\Order\Item as OrderItem;
 use Magento\Store\Model\Store;
-use OnePica\AvaTax\Api\ConfigRepositoryInterface;
+use OnePica\AvaTax\Model\Service\ConfigRepositoryInterface;
 use OnePica\AvaTax\Model\Service\DataSource\DataSourceInterface;
 use OnePica\AvaTax\Api\ResultInterface;
 use OnePica\AvaTax\Api\Service\LoggerInterface;
@@ -67,7 +67,7 @@ abstract class AbstractResource
     /**
      * Config repository
      *
-     * @var \OnePica\AvaTax\Api\ConfigRepositoryInterface
+     * @var \OnePica\AvaTax\Model\Service\ConfigRepositoryInterface
      */
     protected $configRepository;
 
@@ -121,7 +121,7 @@ abstract class AbstractResource
     /**
      * AbstractResource constructor.
      *
-     * @param \OnePica\AvaTax\Api\ConfigRepositoryInterface                $configRepository
+     * @param \OnePica\AvaTax\Model\Service\ConfigRepositoryInterface      $configRepository
      * @param \Magento\Framework\ObjectManagerInterface                    $objectManager
      * @param \OnePica\AvaTax\Helper\Config                                $config
      * @param \OnePica\AvaTax\Api\Service\LoggerInterface                  $logger

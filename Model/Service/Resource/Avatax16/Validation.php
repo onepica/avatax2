@@ -25,7 +25,7 @@ use OnePica\AvaTax\Model\Service\Result\Storage\Validation as ValidationResultSt
 use OnePica\AvaTax16\Document\Part\Location\Address as AvaTax16LibAddress;
 use OnePica\AvaTax\Model\Service\Result\AddressValidation;
 use OnePica\AvaTax\Model\Service\Request\Address as RequestAddress;
-use OnePica\AvaTax\Api\ConfigRepositoryInterface;
+use OnePica\AvaTax\Model\Service\ConfigRepositoryInterface;
 use OnePica\AvaTax\Api\Service\LoggerInterface;
 use OnePica\AvaTax\Helper\Config as ConfigHelper;
 use OnePica\AvaTax\Model\Log;
@@ -54,7 +54,7 @@ class Validation extends AbstractResource
     /**
      * Constructor.
      *
-     * @param ConfigRepositoryInterface                                    $configRepository
+     * @param \OnePica\AvaTax\Model\Service\ConfigRepositoryInterface      $configRepository
      * @param ObjectManagerInterface                                       $objectManager
      * @param ValidationResultStorage                                      $resultStorage
      * @param ConfigHelper                                                 $config

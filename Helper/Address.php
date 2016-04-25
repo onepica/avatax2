@@ -27,7 +27,7 @@ use OnePica\AvaTax\Model\Source\Avatax16\Action as AvataxActionSource;
 use OnePica\AvaTax\Api\Service\LoggerInterface;
 use OnePica\AvaTax\Model\Log;
 use OnePica\AvaTax\Model\Service\Result\Base;
-use OnePica\AvaTax\Api\ConfigRepositoryInterface;
+use OnePica\AvaTax\Model\Service\ConfigRepositoryInterface;
 
 /**
  * Class Address
@@ -65,7 +65,7 @@ class Address extends AbstractHelper
     /**
      * Config repository
      *
-     * @var \OnePica\AvaTax\Api\ConfigRepositoryInterface
+     * @var \OnePica\AvaTax\Model\Service\ConfigRepositoryInterface
      */
     protected $configRepository;
 
@@ -84,14 +84,14 @@ class Address extends AbstractHelper
     protected $messageManager;
 
     /**
-     * @param Context $context
-     * @param Config $config
-     * @param ObjectManagerInterface $objectManager
-     * @param Filter $resultStorage
-     * @param LoggerInterface $logger
-     * @param ConfigRepositoryInterface $configRepository
-     * @param RegionFactory $regionFactory
-     * @param \Magento\Framework\Message\ManagerInterface $messageManager
+     * @param Context                                                 $context
+     * @param Config                                                  $config
+     * @param ObjectManagerInterface                                  $objectManager
+     * @param Filter                                                  $resultStorage
+     * @param LoggerInterface                                         $logger
+     * @param \OnePica\AvaTax\Model\Service\ConfigRepositoryInterface $configRepository
+     * @param RegionFactory                                           $regionFactory
+     * @param \Magento\Framework\Message\ManagerInterface             $messageManager
      */
     public function __construct(
         Context $context,
