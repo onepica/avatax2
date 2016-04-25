@@ -14,11 +14,13 @@
  */
 namespace OnePica\AvaTax\Model\Tool;
 
+use OnePica\AvaTax\Model\Service\Avatax16;
 use OnePica\AvaTax\Model\Service\Result\ResultInterface;
 
 /**
  * Class Creditmemo
  *
+ * @method Avatax16 getService()
  * @package OnePica\AvaTax\Model\Tool
  */
 class Creditmemo extends AbstractQueueTool
@@ -40,7 +42,7 @@ class Creditmemo extends AbstractQueueTool
      */
     protected function processQueue()
     {
-        return $this->getService()->creditmemo($this->queue);
+        return $this->getService()->submit($this->queue);
     }
 
     /**
@@ -48,6 +50,7 @@ class Creditmemo extends AbstractQueueTool
      *
      * @param float $queueTax
      * @param float $responseTax
+     *
      * @return bool
      */
     protected function isQueueTaxSameAsResponseTax($queueTax, $responseTax)

@@ -14,11 +14,13 @@
  */
 namespace OnePica\AvaTax\Model\Tool;
 
+use OnePica\AvaTax\Model\Service\Avatax16;
 use OnePica\AvaTax\Model\Service\Result\ResultInterface;
 
 /**
  * Class Invoice
  *
+ * @method Avatax16 getService()
  * @package OnePica\AvaTax\Model\Tool
  */
 class Invoice extends AbstractQueueTool
@@ -40,7 +42,7 @@ class Invoice extends AbstractQueueTool
      */
     protected function processQueue()
     {
-        return $this->getService()->invoice($this->queue);
+        return $this->getService()->submit($this->queue);
     }
 
     /**
@@ -48,6 +50,7 @@ class Invoice extends AbstractQueueTool
      *
      * @param float $queueTax
      * @param float $responseTax
+     *
      * @return bool
      */
     protected function isQueueTaxSameAsResponseTax($queueTax, $responseTax)

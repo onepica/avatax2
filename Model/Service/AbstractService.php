@@ -127,9 +127,32 @@ abstract class AbstractService implements ServiceInterface
     abstract public function getCalculationResourceClass();
 
     /**
+     * Submit
+     *
+     * @param Queue $queue
+     *
+     * @return ResultInterface
+     */
+    public function submit(Queue $queue)
+    {
+        if ($queue->getType() === Queue::TYPE_INVOICE) {
+            /** @var InvoiceResource $queueObject */
+            $queueObject = $this->objectManager->create($this->getInvoiceResourceClass());
+
+            return $queueObject->submit($queue);
+        }
+
+        /** @var CreditmemoResource $queueObject */
+        $queueObject = $this->objectManager->create($this->getCreditmemoResourceClass());
+
+        return $queueObject->submit($queue);
+    }
+
+    /**
      * Get Invoice Service Request Object
      *
      * @param \Magento\Sales\Model\Order\Invoice $invoice
+     *
      * @return mixed
      */
     public function getInvoiceServiceRequestObject(Invoice $invoice)
@@ -145,28 +168,10 @@ abstract class AbstractService implements ServiceInterface
     }
 
     /**
-     * Invoice
-     *
-     * @param Queue $queue
-     * @return ResultInterface
-     */
-    public function invoice(Queue $queue)
-    {
-        if ($this->invoiceResource === null) {
-            $this->invoiceResource = $this->objectManager->create($this->getInvoiceResourceClass());
-            if (!$this->invoiceResource instanceof InvoiceResource) {
-                throw new \LogicException('Resource must be instance of InvoiceResource.');
-            }
-        }
-
-        return $this->invoiceResource->submit($queue);
-    }
-
-
-    /**
      * Get Creditmemo Service Request Object
      *
      * @param \Magento\Sales\Model\Order\Creditmemo $creditmemo
+     *
      * @return mixed
      */
     public function getCreditmemoServiceRequestObject(Creditmemo $creditmemo)
@@ -182,27 +187,10 @@ abstract class AbstractService implements ServiceInterface
     }
 
     /**
-     * Creditmemo
-     *
-     * @param Queue $queue
-     * @return ResultInterface
-     */
-    public function creditmemo(Queue $queue)
-    {
-        if (null === $this->creditmemoResource) {
-            $this->creditmemoResource = $this->objectManager->create($this->getCreditmemoResourceClass());
-            if (!$this->creditmemoResource instanceof CreditmemoResource) {
-                throw new \LogicException('Resource must be instance of CreditmemoResource.');
-            }
-        }
-
-        return $this->creditmemoResource->submit($queue);
-    }
-
-    /**
      * Validate
      *
      * @param \OnePica\AvaTax\Model\Service\Request\Address $object
+     *
      * @return ResultInterface
      */
     public function validate($object)
@@ -242,6 +230,7 @@ abstract class AbstractService implements ServiceInterface
      * Process ping
      *
      * @param \Magento\Store\Model\Store $store
+     *
      * @return Base
      */
     public function ping(Store $store)

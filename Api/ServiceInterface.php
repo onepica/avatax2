@@ -32,20 +32,13 @@ use OnePica\AvaTax\Model\Service\Result\ResultInterface;
 interface ServiceInterface
 {
     /**
-     * Invoice
+     * Submit
      *
      * @param Queue $queue
-     * @return ResultInterface
-     */
-    public function invoice(Queue $queue);
-
-    /**
-     * Creditmemo
      *
-     * @param Queue $queue
      * @return ResultInterface
      */
-    public function creditmemo(Queue $queue);
+    public function submit(Queue $queue);
 
     /**
      * Validate
