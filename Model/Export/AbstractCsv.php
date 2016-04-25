@@ -93,19 +93,24 @@ abstract class AbstractCsv implements ExportInterface
     /**
      * Export
      *
-     * @return string
+     * @return string|null
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function export()
     {
-        $filename = $this->getFileName();
-        $sourceCsv = $this->createCsvModel($filename);
+        $filename = null;
         $data = $this->collection->getExportData();
 
-        $sourceCsv->setHeaderCols($this->retrieveColumnHeaders($data));
+        if (count($data)) {
+            $filename = $this->getFileName();
+            $sourceCsv = $this->createCsvModel($filename);
+            $data = $this->collection->getExportData();
 
-        foreach ($data as $item) {
-            $sourceCsv->writeRow($item);
+            $sourceCsv->setHeaderCols($this->retrieveColumnHeaders($data));
+
+            foreach ($data as $item) {
+                $sourceCsv->writeRow($item);
+            }
         }
 
         return $filename;

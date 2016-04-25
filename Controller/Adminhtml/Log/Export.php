@@ -18,6 +18,7 @@ use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\Response\Http\FileFactory;
 use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Controller\ResultFactory;
 use OnePica\AvaTax\Controller\Adminhtml\AbstractLogAction;
 use OnePica\AvaTax\Model\Log\Export\Csv;
 
@@ -65,12 +66,21 @@ class Export extends AbstractLogAction
     public function execute()
     {
         $fileName = $this->csv->export();
-        $data = [
-            'type'  => 'filename',
-            'value' => Csv::EXPORT_DIR . $fileName,
-            'rm'    => true
-        ];
+        if ($fileName) {
+            $data = [
+                'type'  => 'filename',
+                'value' => Csv::EXPORT_DIR . $fileName,
+                'rm'    => true
+            ];
 
-        return $this->fileFactory->create($fileName, $data, DirectoryList::VAR_DIR);
+            return $this->fileFactory->create($fileName, $data, DirectoryList::VAR_DIR);
+        } else {
+            $this->messageManager->addWarning(__('There are no log items to export.'));
+            /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
+            $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
+            $resultRedirect->setPath('adminhtml/system_config/edit/section/tax');
+
+            return $resultRedirect;
+        }
     }
 }
