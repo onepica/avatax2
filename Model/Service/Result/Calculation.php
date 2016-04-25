@@ -14,7 +14,6 @@
  */
 namespace OnePica\AvaTax\Model\Service\Result;
 
-use OnePica\AvaTax\Api\CalculationResultInterface;
 use OnePica\AvaTax16\Document\Response;
 
 /**
