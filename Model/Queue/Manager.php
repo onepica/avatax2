@@ -120,7 +120,7 @@ class Manager implements QueueManagerInterface
         InvoiceServiceTool $invoiceServiceTool,
         CreditmemoServiceTool $creditmemoServiceTool,
         CreditmemoRepository $creditmemoRepository,
-        InvoiceRepository $invoiceRepository
+        InvoiceRepository $invoiceRepository,
         SortOrderBuilder $sortOrderBuilder
     ) {
         $this->queueRepository = $queueRepository;
