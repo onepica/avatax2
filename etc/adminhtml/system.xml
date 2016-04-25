@@ -4,26 +4,30 @@
         <section id="tax">
             <group id="avatax" translate="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Avatax</label>
-                <field id="action" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Action</label>
-                    <source_model>OnePica\AvaTax\Model\Source\Avatax16\Action</source_model>
-                </field>
-                <field id="url" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>URL</label>
-                    <source_model>OnePica\AvaTax\Model\Source\Avatax16\Url</source_model>
-                </field>
-                <field id="account_number" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Account Number</label>
-                    <validate>required-entry</validate>
-                </field>
-                <field id="license_key" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Licence Key</label>
-                    <validate>required-entry</validate>
-                </field>
-                <field id="company_code" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Company Code</label>
-                    <validate>required-entry</validate>
-                </field>
+                <group id="general_group" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>General</label>
+                    <attribute type="expanded">1</attribute>
+                    <field id="action" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Action</label>
+                        <source_model>OnePica\AvaTax\Model\Source\Avatax16\Action</source_model>
+                    </field>
+                    <field id="url" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>URL</label>
+                        <source_model>OnePica\AvaTax\Model\Source\Avatax16\Url</source_model>
+                    </field>
+                    <field id="account_number" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Account Number</label>
+                        <validate>required-entry</validate>
+                    </field>
+                    <field id="license_key" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Licence Key</label>
+                        <validate>required-entry</validate>
+                    </field>
+                    <field id="company_code" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Company Code</label>
+                        <validate>required-entry</validate>
+                    </field>
+                </group>
                 <group id="region_filter_group" translate="label" sortOrder="55" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Region Filter Options</label>
                     <attribute type="expanded">1</attribute>
@@ -222,40 +226,112 @@
             </group>
             <!--Hide some default settings-->
             <group id="calculation">
-                <field id="algorithm" showInDefault="0" showInWebsite="0" showInStore="0" />
-                <field id="based_on" showInDefault="0" showInWebsite="0" showInStore="0" />
-                <field id="shipping_includes_tax" showInDefault="0" showInWebsite="0" showInStore="0" />
+                <field id="algorithm">
+                    <depends>
+                        <field id="tax/avatax/general_group/action" separator=",">0</field>
+                    </depends>
+                </field>
+                <field id="based_on">
+                    <depends>
+                        <field id="tax/avatax/general_group/action" separator=",">0</field>
+                    </depends>
+                </field>
+                <field id="shipping_includes_tax" >
+                    <depends>
+                        <field id="tax/avatax/general_group/action" separator=",">0</field>
+                    </depends>
+                </field>
                 <field id="apply_after_discount">
                     <depends>
                         <field id="price_includes_tax" separator=",">1</field>
                     </depends>
                 </field>
-                <field id="discount_tax" showInDefault="0" showInWebsite="0" showInStore="0" />
-                <field id="apply_tax_on" showInDefault="0" showInWebsite="0" showInStore="0" />
-                <field id="cross_border_trade_enabled" showInDefault="0" showInWebsite="0" showInStore="0" />
+                <field id="discount_tax">
+                    <depends>
+                        <field id="tax/avatax/general_group/action" separator=",">0</field>
+                    </depends>
+                </field>
+                <field id="apply_tax_on">
+                    <depends>
+                        <field id="tax/avatax/general_group/action" separator=",">0</field>
+                    </depends>
+                </field>
+                <field id="cross_border_trade_enabled">
+                    <depends>
+                        <field id="tax/avatax/general_group/action" separator=",">0</field>
+                    </depends>
+                </field>
             </group>
             <group id="display">
-                <field id="type" showInDefault="0" showInWebsite="0" showInStore="0" />
-                <field id="shipping" showInDefault="0" showInWebsite="0" showInStore="0"/>
+                <field id="type">
+                    <depends>
+                        <field id="tax/avatax/general_group/action" separator=",">0</field>
+                    </depends>
+                </field>
+                <field id="shipping">
+                    <depends>
+                        <field id="tax/avatax/general_group/action" separator=",">0</field>
+                    </depends>
+                </field>
             </group>
             <group id="classes">
                 <field id="shipping_tax_class">
                     <comment>If shipping class is set to None or has no Avatax Code, default code FR020100 will be send.</comment>
                 </field>
-                <field id="default_product_tax_class" showInDefault="0" showInWebsite="0" showInStore="0"/>
-                <field id="default_customer_tax_class" showInDefault="0" showInWebsite="0" showInStore="0"/>
+                <field id="default_product_tax_class" >
+                    <depends>
+                        <field id="tax/avatax/general_group/action" separator=",">0</field>
+                    </depends>
+                </field>
+                <field id="default_customer_tax_class">
+                    <depends>
+                        <field id="tax/avatax/general_group/action" separator=",">0</field>
+                    </depends>
+                </field>
             </group>
             <group id="cart_display">
-                <field id="price" showInDefault="0" showInWebsite="0" showInStore="0"/>
-                <field id="subtotal" showInDefault="0" showInWebsite="0" showInStore="0"/>
-                <field id="gift_wrapping" showInDefault="0" showInWebsite="0" showInStore="0"/>
-                <field id="printed_card" showInDefault="0" showInWebsite="0" showInStore="0"/>
+                <field id="price">
+                    <depends>
+                        <field id="tax/avatax/general_group/action" separator=",">0</field>
+                    </depends>
+                </field>
+                <field id="subtotal">
+                    <depends>
+                        <field id="tax/avatax/general_group/action" separator=",">0</field>
+                    </depends>
+                </field>
+                <field id="gift_wrapping">
+                    <depends>
+                        <field id="tax/avatax/general_group/action" separator=",">0</field>
+                    </depends>
+                </field>
+                <field id="printed_card">
+                    <depends>
+                        <field id="tax/avatax/general_group/action" separator=",">0</field>
+                    </depends>
+                </field>
             </group>
             <group id="weee">
-                <field id="enable" showInDefault="0" showInWebsite="0" showInStore="0" />
-                <field id="display_list" showInDefault="0" showInWebsite="0" showInStore="0" />
-                <field id="display" showInDefault="0" showInWebsite="0" showInStore="0" />
-                <field id="apply_vat" showInDefault="0" showInWebsite="0" showInStore="0" />
+                <field id="enable">
+                    <depends>
+                        <field id="tax/avatax/general_group/action" separator=",">0</field>
+                    </depends>
+                </field>
+                <field id="display_list">
+                    <depends>
+                        <field id="tax/avatax/general_group/action" separator=",">0</field>
+                    </depends>
+                </field>
+                <field id="display">
+                    <depends>
+                        <field id="tax/avatax/general_group/action" separator=",">0</field>
+                    </depends>
+                </field>
+                <field id="apply_vat">
+                    <depends>
+                        <field id="tax/avatax/general_group/action" separator=",">0</field>
+                    </depends>
+                </field>
             </group>
         </section>
     </system>
