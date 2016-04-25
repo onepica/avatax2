@@ -14,7 +14,7 @@
  */
 namespace OnePica\AvaTax\Api\Service;
 
-use OnePica\AvaTax\Api\ResultInterface;
+use OnePica\AvaTax\Model\Service\Result\ResultInterface;
 
 /**
  * Interface LoggerInterface
@@ -26,11 +26,12 @@ interface LoggerInterface
     /**
      * Log service data
      *
-     * @param string          $type
-     * @param mixed           $request
-     * @param ResultInterface $result
-     * @param null|int        $store
-     * @param mixed           $additional
+     * @param string                                               $type
+     * @param mixed                                                $request
+     * @param \OnePica\AvaTax\Model\Service\Result\ResultInterface $result
+     * @param null|int                                             $store
+     * @param mixed                                                $additional
+     * 
      * @return $this
      */
     public function log($type, $request, ResultInterface $result, $store = null, $additional = null);

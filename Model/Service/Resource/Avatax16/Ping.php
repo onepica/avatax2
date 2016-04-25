@@ -15,7 +15,6 @@
 namespace OnePica\AvaTax\Model\Service\Resource\Avatax16;
 
 use Magento\Store\Model\Store;
-use OnePica\AvaTax\Api\ResultInterface;
 use OnePica\AvaTax\Model\Log;
 use OnePica\AvaTax\Model\Service\Avatax16\Config;
 use OnePica\AvaTax\Model\Service\Resource\AbstractResource;
@@ -32,7 +31,8 @@ class Ping extends AbstractResource
      * Ping
      *
      * @param \Magento\Store\Model\Store $store
-     * @return ResultInterface
+     *
+     *@return \OnePica\AvaTax\Model\Service\Result\ResultInterface
      */
     public function ping(Store $store)
     {

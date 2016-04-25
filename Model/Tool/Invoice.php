@@ -14,7 +14,7 @@
  */
 namespace OnePica\AvaTax\Model\Tool;
 
-use OnePica\AvaTax\Api\ResultInterface;
+use OnePica\AvaTax\Model\Service\Result\ResultInterface;
 
 /**
  * Class Invoice

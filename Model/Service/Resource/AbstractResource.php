@@ -22,7 +22,7 @@ use Magento\Sales\Model\Order\Item as OrderItem;
 use Magento\Store\Model\Store;
 use OnePica\AvaTax\Model\Service\ConfigRepositoryInterface;
 use OnePica\AvaTax\Model\Service\DataSource\DataSourceInterface;
-use OnePica\AvaTax\Api\ResultInterface;
+use OnePica\AvaTax\Model\Service\Result\ResultInterface;
 use OnePica\AvaTax\Api\Service\LoggerInterface;
 use OnePica\AvaTax\Helper\Config;
 use OnePica\AvaTax\Model\Log;

@@ -22,7 +22,7 @@ use Magento\Quote\Model\Quote\Address\Total;
 use Magento\Sales\Model\Order\Creditmemo;
 use Magento\Sales\Model\Order\Invoice;
 use Magento\Store\Model\Store;
-use OnePica\AvaTax\Api\ResultInterface;
+use OnePica\AvaTax\Model\Service\Result\ResultInterface;
 use OnePica\AvaTax\Api\ServiceInterface;
 use OnePica\AvaTax\Model\Service\Resource\Avatax16\Calculation;
 use OnePica\AvaTax\Model\Service\Resource\Avatax16\Ping;
@@ -223,7 +223,8 @@ abstract class AbstractService implements ServiceInterface
      * @param \Magento\Quote\Model\Quote                          $quote
      * @param \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignment
      * @param \Magento\Quote\Model\Quote\Address\Total            $total
-     * @return \OnePica\AvaTax\Api\ResultInterface
+     *
+     * @return \OnePica\AvaTax\Model\Service\Result\ResultInterface
      */
     public function calculate(Quote $quote, ShippingAssignmentInterface $shippingAssignment, Total $total)
     {

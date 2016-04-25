@@ -25,7 +25,7 @@ use OnePica\AvaTax\Api\Service\LoggerInterface;
 use OnePica\AvaTax\Model\Service\DataSource\Queue as QueueDataSource;
 use OnePica\AvaTax16\Document\Request\Line;
 use OnePica\AvaTax\Model\Log;
-use OnePica\AvaTax\Api\ResultInterface;
+use OnePica\AvaTax\Model\Service\Result\ResultInterface;
 use OnePica\AvaTax16\Document\Request;
 use OnePica\AvaTax\Model\Queue;
 

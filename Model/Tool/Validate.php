@@ -15,7 +15,7 @@
 namespace OnePica\AvaTax\Model\Tool;
 
 use Magento\Framework\DataObject;
-use OnePica\AvaTax\Api\ResultInterface;
+use OnePica\AvaTax\Model\Service\Result\ResultInterface;
 use OnePica\AvaTax\Api\Service\ResolverInterface;
 use OnePica\AvaTax\Model\ServiceFactory;
 use OnePica\AvaTax\Model\Service\Request\Address;

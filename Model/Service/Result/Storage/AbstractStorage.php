@@ -15,7 +15,7 @@
 namespace OnePica\AvaTax\Model\Service\Result\Storage;
 
 use DateTime;
-use OnePica\AvaTax\Api\ResultInterface;
+use OnePica\AvaTax\Model\Service\Result\ResultInterface;
 use OnePica\AvaTax\Model\Service\Result\Base;
 use OnePica\AvaTax\Model\Session;
 
@@ -120,8 +120,9 @@ abstract class AbstractStorage implements ResultStorageInterface
     /**
      * Set result
      *
-     * @param mixed $request
-     * @param \OnePica\AvaTax\Api\ResultInterface $result
+     * @param mixed                                                $request
+     * @param \OnePica\AvaTax\Model\Service\Result\ResultInterface $result
+     *
      * @return $this
      */
     public function setResult($request, ResultInterface $result)

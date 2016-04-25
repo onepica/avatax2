@@ -14,7 +14,7 @@
  */
 namespace OnePica\AvaTax\Model\Service\Result\Storage;
 
-use OnePica\AvaTax\Api\ResultInterface;
+use OnePica\AvaTax\Model\Service\Result\ResultInterface;
 
 /**
  * Interface ResultStorageInterface
@@ -27,15 +27,17 @@ interface ResultStorageInterface
      * Get result by request
      *
      * @param mixed $request
-     * @return ResultInterface|null
+     *
+     * @return \OnePica\AvaTax\Model\Service\Result\ResultInterface|null
      */
     public function getResult($request);
 
     /**
      * Set result
      *
-     * @param mixed           $request
-     * @param ResultInterface $result
+     * @param mixed                                                $request
+     * @param \OnePica\AvaTax\Model\Service\Result\ResultInterface $result
+     *
      * @return $this
      */
     public function setResult($request, ResultInterface $result);

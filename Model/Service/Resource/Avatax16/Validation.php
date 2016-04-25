@@ -18,7 +18,6 @@ use DateTime;
 use Magento\Framework\DataObject;
 use Magento\Framework\ObjectManagerInterface;
 use OnePica\AvaTax\Model\Service\DataSource\DataSourceInterface;
-use OnePica\AvaTax\Api\ResultInterface;
 use OnePica\AvaTax\Model\Service\Resource\AbstractResource;
 use OnePica\AvaTax\Model\Service\Avatax16\Config;
 use OnePica\AvaTax\Model\Service\Result\Storage\Validation as ValidationResultStorage;
@@ -77,7 +76,8 @@ class Validation extends AbstractResource
      * Validate
      *
      * @param RequestAddress $address
-     * @return ResultInterface
+     *
+     * @return \OnePica\AvaTax\Model\Service\Result\ResultInterface
      */
     public function validate($address)
     {

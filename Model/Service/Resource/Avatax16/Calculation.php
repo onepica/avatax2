@@ -98,7 +98,7 @@ class Calculation extends AbstractResource
      * @param \Magento\Quote\Model\Quote                          $quote
      * @param \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignment
      * @param  Total $total
-     * @return null|\OnePica\AvaTax\Api\ResultInterface
+     * @return null|\OnePica\AvaTax\Model\Service\Result\ResultInterface
      */
     public function calculate(
         Quote $quote,
