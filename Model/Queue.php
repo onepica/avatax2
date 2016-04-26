@@ -102,9 +102,9 @@ class Queue extends AbstractModel implements QueueInterface
      *
      * @return int
      */
-    public function getEntityId()
+    public function getOrderId()
     {
-        return $this->_getData(self::ENTITY_ID);
+        return $this->_getData(self::ORDER_ID);
     }
     /**
      * Set Entity Id
@@ -112,9 +112,9 @@ class Queue extends AbstractModel implements QueueInterface
      * @param int $entityId
      * @return mixed
      */
-    public function setEntityId($entityId)
+    public function setOrderId($entityId)
     {
-        $this->setData(self::ENTITY_ID, $entityId);
+        $this->setData(self::ORDER_ID, $entityId);
 
         return $this;
     }
@@ -340,7 +340,7 @@ class Queue extends AbstractModel implements QueueInterface
      */
     public function setEntity($object)
     {
-        $this->setEntityId($object->getOrder()->getId());
+        $this->setOrderId($object->getOrder()->getId());
         $this->setEntityIncrementId($object->getIncrementId());
         $this->setStoreId($object->getStoreId());
 

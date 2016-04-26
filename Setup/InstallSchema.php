@@ -214,11 +214,11 @@ class InstallSchema implements InstallSchemaInterface
                 ['unsigned' => true, 'default' => '0'],
                 'Store Id'
             )->addColumn(
-                'entity_id',
+                'order_id',
                 Table::TYPE_INTEGER,
                 null,
                 ['unsigned' => true, 'nullable' => false],
-                'Entity id'
+                'Order id'
             )->addColumn(
                 'entity_increment_id',
                 Table::TYPE_TEXT,

@@ -48,7 +48,7 @@ interface QueueInterface
      */
     const QUEUE_ID            = 'queue_id';
     const STORE_ID            = 'store_id';
-    const ENTITY_ID           = 'entity_id';
+    const ORDER_ID            = 'order_id';
     const ENTITY_INCREMENT_ID = 'entity_increment_id';
     const TYPE                = 'type';
     const STATUS              = 'status';
@@ -95,15 +95,15 @@ interface QueueInterface
      *
      * @return int
      */
-    public function getEntityId();
+    public function getOrderId();
 
     /**
      * Set Entity Id
      *
      * @param int $entityId
-     * @return mixed
+     * @return $this
      */
-    public function setEntityId($entityId);
+    public function setOrderId($entityId);
 
 
     /**

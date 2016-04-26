@@ -129,7 +129,7 @@ abstract class AbstractSubmit extends AbstractTool
             . __('was saved to AvaTax');
 
         /** @var \Magento\Sales\Model\Order $order */
-        $order = $this->orderRepository->get($this->queue->getEntityId());
+        $order = $this->orderRepository->get($this->queue->getOrderId());
         $this->dataHelper->addStatusHistoryCommentToOrder($order, $message);
 
         /** @var Invoice $queueResult */
