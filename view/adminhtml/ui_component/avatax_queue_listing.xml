@@ -144,11 +144,11 @@
                 </item>
             </argument>
         </column>
-        <column name="entity_id">
+        <column name="order_id">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">textRange</item>
-                    <item name="label" xsi:type="string" translate="true">Entity ID</item>
+                    <item name="label" xsi:type="string" translate="true">Order ID</item>
                 </item>
             </argument>
         </column>
