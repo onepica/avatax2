@@ -61,17 +61,20 @@ class Submit extends AbstractTool
      * @param \OnePica\AvaTax\Model\Service\ResolverInterface $resolver
      * @param \OnePica\AvaTax\Model\ServiceFactory            $serviceFactory
      * @param DataHelper                                      $dataHelper
-     * @param OrderRepositoryInterface     $orderRepository
+     * @param OrderRepositoryInterface                        $orderRepository
+     * @param Queue                                           $queue
      */
     public function __construct(
         ResolverInterface $resolver,
         ServiceFactory $serviceFactory,
         DataHelper $dataHelper,
-        OrderRepositoryInterface $orderRepository
+        OrderRepositoryInterface $orderRepository,
+        Queue $queue = null
     ) {
         parent::__construct($resolver, $serviceFactory);
         $this->dataHelper = $dataHelper;
         $this->orderRepository = $orderRepository;
+        $this->queue = $queue;
     }
 
     /**
