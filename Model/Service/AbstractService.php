@@ -135,54 +135,41 @@ abstract class AbstractService implements ServiceInterface
      */
     public function submit(Queue $queue)
     {
-        /** @var InvoiceResource|CreditmemoResource $queueObject */
-        if ($queue->getType() === Queue::TYPE_INVOICE) {
-            $queueObject = $this->objectManager->create($this->getInvoiceResourceClass());
-        } elseif ($queue->getType() === Queue::TYPE_CREDITMEMO) {
-            $queueObject = $this->objectManager->create($this->getCreditmemoResourceClass());
+        return $this->getQueueResource($queue->getType())->submit($queue);
+    }
+
+    /**
+     * Get service request object
+     *
+     * @param Queue $queue
+     *
+     * @return mixed
+     */
+    public function getServiceRequestObject(Queue $queue)
+    {
+        if (null === $queue->getSalesObject()) {
+            throw new \LogicException('Sales object must be set.');
+        }
+
+        return $this->getQueueResource($queue->getType())->getServiceRequestObject($queue->getSalesObject());
+    }
+
+    /**
+     * Get queue resource object
+     *
+     * @param $type
+     *
+     * @return InvoiceResource|CreditmemoResource
+     */
+    protected function getQueueResource($type)
+    {
+        if ($type === Queue::TYPE_INVOICE) {
+            return $this->objectManager->create($this->getInvoiceResourceClass());
+        } elseif ($type === Queue::TYPE_CREDITMEMO) {
+            return $this->objectManager->create($this->getCreditmemoResourceClass());
         } else {
             throw new \LogicException('Wrong Queue type.');
         }
-
-        return $queueObject->submit($queue);
-    }
-
-    /**
-     * Get Invoice Service Request Object
-     *
-     * @param \Magento\Sales\Model\Order\Invoice $invoice
-     *
-     * @return mixed
-     */
-    public function getInvoiceServiceRequestObject(Invoice $invoice)
-    {
-        if ($this->invoiceResource === null) {
-            $this->invoiceResource = $this->objectManager->create($this->getInvoiceResourceClass());
-            if (!$this->invoiceResource instanceof InvoiceResource) {
-                throw new \LogicException('Resource must be instance of InvoiceResource.');
-            }
-        }
-
-        return $this->invoiceResource->getServiceRequestObject($invoice);
-    }
-
-    /**
-     * Get Creditmemo Service Request Object
-     *
-     * @param \Magento\Sales\Model\Order\Creditmemo $creditmemo
-     *
-     * @return mixed
-     */
-    public function getCreditmemoServiceRequestObject(Creditmemo $creditmemo)
-    {
-        if (null === $this->creditmemoResource) {
-            $this->creditmemoResource = $this->objectManager->create($this->getCreditmemoResourceClass());
-            if (!$this->creditmemoResource instanceof CreditmemoResource) {
-                throw new \LogicException('Resource must be instance of CreditmemoResource.');
-            }
-        }
-
-        return $this->creditmemoResource->getServiceRequestObject($creditmemo);
     }
 
     /**

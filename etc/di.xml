@@ -24,9 +24,6 @@
         <plugin name="magento-quote-model-quote-config-plugin"
                 type="OnePica\AvaTax\Plugin\Magento\Quote\Model\Quote\Config" sortOrder="10" />
     </type>
-    <preference for="OnePica\AvaTax\Api\QueueRepositoryInterface" type="OnePica\AvaTax\Model\QueueRepository"/>
-    <preference for="OnePica\AvaTax\Api\Data\QueueSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
-    <preference for="OnePica\AvaTax\Api\Data\QueueInterface" type="OnePica\AvaTax\Model\Queue"/>
     <type name="Magento\Tax\Model\Calculation">
         <plugin name="avatax_tax_calculation_plugin"
                 type="OnePica\AvaTax\Plugin\Magento\Tax\Model\Calculation" sortOrder="10" />

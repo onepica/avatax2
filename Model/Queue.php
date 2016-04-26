@@ -15,6 +15,8 @@
 namespace OnePica\AvaTax\Model;
 
 use Magento\Framework\Model\AbstractModel;
+use Magento\Sales\Model\Order\Creditmemo;
+use Magento\Sales\Model\Order\Invoice;
 use OnePica\AvaTax\Api\Data\QueueInterface;
 use OnePica\AvaTax\Model\ResourceModel\Queue as QueueResource;
 use OnePica\AvaTax\Model\ResourceModel\Log\Collection;
@@ -41,6 +43,13 @@ class Queue extends AbstractModel implements QueueInterface
      * Queue attempt max
      */
     const ATTEMPT_MAX = 5;
+
+    /**
+     * Sales object
+     *
+     * @var Invoice|Creditmemo
+     */
+    protected $salesObject;
 
     /**
      * Initialize resource model
@@ -98,23 +107,25 @@ class Queue extends AbstractModel implements QueueInterface
     }
 
     /**
-     * Get Entity Id
+     * Get Order Id
      *
      * @return int
      */
-    public function getEntityId()
+    public function getOrderId()
     {
-        return $this->_getData(self::ENTITY_ID);
+        return $this->_getData(self::ORDER_ID);
     }
+
     /**
-     * Set Entity Id
+     * Set Order Id
      *
-     * @param int $entityId
+     * @param int $orderId
+     *
      * @return mixed
      */
-    public function setEntityId($entityId)
+    public function setOrderId($orderId)
     {
-        $this->setData(self::ENTITY_ID, $entityId);
+        $this->setData(self::ORDER_ID, $orderId);
 
         return $this;
     }
@@ -124,9 +135,9 @@ class Queue extends AbstractModel implements QueueInterface
      *
      * @return string
      */
-    public function getEntityIncrementId()
+    public function getObjectIncrementId()
     {
-        return $this->_getData(self::ENTITY_INCREMENT_ID);
+        return $this->_getData(self::OBJECT_INCREMENT_ID);
     }
 
     /**
@@ -135,9 +146,9 @@ class Queue extends AbstractModel implements QueueInterface
      * @param string $entityIncrementId
      * @return mixed
      */
-    public function setEntityIncrementId($entityIncrementId)
+    public function setObjectIncrementId($entityIncrementId)
     {
-        $this->setData(self::ENTITY_INCREMENT_ID, $entityIncrementId);
+        $this->setData(self::OBJECT_INCREMENT_ID, $entityIncrementId);
 
         return $this;
     }
@@ -304,6 +315,30 @@ class Queue extends AbstractModel implements QueueInterface
     }
 
     /**
+     * Get Object Id
+     *
+     * @return int
+     */
+    public function getObjectId()
+    {
+        return $this->_getData(self::OBJECT_ID);
+    }
+
+    /**
+     * Set Object Id
+     *
+     * @param int $objectId
+     *
+     * @return $this
+     */
+    public function setObjectId($objectId)
+    {
+        $this->setData(self::OBJECT_ID, $objectId);
+
+        return $this;
+    }
+
+    /**
      * Get queue types
      *
      * @return array
@@ -335,14 +370,17 @@ class Queue extends AbstractModel implements QueueInterface
     /**
      * Set entity
      *
-     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
+     * @param Invoice|Creditmemo $object
+     *
      * @return $this
      */
     public function setEntity($object)
     {
-        $this->setEntityId($object->getId());
-        $this->setEntityIncrementId($object->getIncrementId());
+        $this->setObjectId($object->getId());
+        $this->setOrderId($object->getOrder()->getId());
+        $this->setObjectIncrementId($object->getIncrementId());
         $this->setStoreId($object->getStoreId());
+        $this->setSalesObject($object);
 
         return $this;
     }
@@ -368,5 +406,25 @@ class Queue extends AbstractModel implements QueueInterface
         $this->setData(self::TOTAL_TAX_AMOUNT, $totalTaxAmount);
 
         return $this;
+    }
+
+    /**
+     * Get sales object
+     *
+     * @return Creditmemo|Invoice
+     */
+    public function getSalesObject()
+    {
+        return $this->salesObject;
+    }
+
+    /**
+     * Set sales object
+     *
+     * @param Creditmemo|Invoice $salesObject
+     */
+    public function setSalesObject($salesObject)
+    {
+        $this->salesObject = $salesObject;
     }
 }

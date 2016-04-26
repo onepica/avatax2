@@ -23,7 +23,7 @@ use OnePica\AvaTax\Model\Queue;
 use OnePica\AvaTax\Model\QueueFactory;
 use OnePica\AvaTax\Model\QueueRepository;
 use OnePica\AvaTax\Helper\Address as AddressHelper;
-use OnePica\AvaTax\Model\Tool\Creditmemo as CreditmemoTool;
+use OnePica\AvaTax\Model\Tool\Submit;
 
 /**
  * Class CreateQueueItemForCreditmemo
@@ -112,8 +112,9 @@ class CreateQueueItemForCreditmemo implements ObserverInterface
             $queue->setTotalTaxAmount($totalTax);
 
             // save request object with data to use during queue processing
-            $requestObjectSerialized = serialize($this->getRequestObject($creditmemo));
+            $requestObjectSerialized = serialize($this->getRequestObject($queue));
             $queue->setRequestData($requestObjectSerialized);
+            $queue->setData('sales_object', null);
 
             $this->queueRepository->save($queue);
         }
@@ -133,19 +134,21 @@ class CreateQueueItemForCreditmemo implements ObserverInterface
             $tax += $item->getData('base_weee_tax_applied_row_amnt');
         }
 
-        return $tax;
+        return ($tax * -1);
     }
 
     /**
      * Get request object
      *
-     * @param Creditmemo $creditmemo
+     * @param Queue $queue
      * @return mixed
      */
-    protected function getRequestObject(Creditmemo $creditmemo)
+    protected function getRequestObject(Queue $queue)
     {
-        $creditmemoService = $this->objectManager->get(CreditmemoTool::class);
-        $creditmemoService->setQueueObject($creditmemo);
-        return $creditmemoService->getCreditmemoServiceRequestObject();
+        /** @var Submit $submit */
+        $submit = $this->objectManager->get(Submit::class);
+        $submit->setQueue($queue);
+        
+        return $submit->getServiceRequestObject();
     }
 }
