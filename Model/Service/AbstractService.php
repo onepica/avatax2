@@ -135,16 +135,7 @@ abstract class AbstractService implements ServiceInterface
      */
     public function submit(Queue $queue)
     {
-        /** @var InvoiceResource|CreditmemoResource $queueObject */
-        if ($queue->getType() === Queue::TYPE_INVOICE) {
-            $queueObject = $this->objectManager->create($this->getInvoiceResourceClass());
-        } elseif ($queue->getType() === Queue::TYPE_CREDITMEMO) {
-            $queueObject = $this->objectManager->create($this->getCreditmemoResourceClass());
-        } else {
-            throw new \LogicException('Wrong Queue type.');
-        }
-
-        return $queueObject->submit($queue);
+        return $this->getQueueResource($queue->getType())->submit($queue);
     }
 
     /**
@@ -156,14 +147,7 @@ abstract class AbstractService implements ServiceInterface
      */
     public function getInvoiceServiceRequestObject(Invoice $invoice)
     {
-        if ($this->invoiceResource === null) {
-            $this->invoiceResource = $this->objectManager->create($this->getInvoiceResourceClass());
-            if (!$this->invoiceResource instanceof InvoiceResource) {
-                throw new \LogicException('Resource must be instance of InvoiceResource.');
-            }
-        }
-
-        return $this->invoiceResource->getServiceRequestObject($invoice);
+        return $this->getQueueResource(Queue::TYPE_INVOICE)->getServiceRequestObject($invoice);
     }
 
     /**
@@ -175,14 +159,25 @@ abstract class AbstractService implements ServiceInterface
      */
     public function getCreditmemoServiceRequestObject(Creditmemo $creditmemo)
     {
-        if (null === $this->creditmemoResource) {
-            $this->creditmemoResource = $this->objectManager->create($this->getCreditmemoResourceClass());
-            if (!$this->creditmemoResource instanceof CreditmemoResource) {
-                throw new \LogicException('Resource must be instance of CreditmemoResource.');
-            }
-        }
+        return $this->getQueueResource(Queue::TYPE_CREDITMEMO)->getServiceRequestObject($creditmemo);
+    }
 
-        return $this->creditmemoResource->getServiceRequestObject($creditmemo);
+    /**
+     * Get queue resource object
+     *
+     * @param $type
+     *
+     * @return InvoiceResource|CreditmemoResource
+     */
+    protected function getQueueResource($type)
+    {
+        if ($type === Queue::TYPE_INVOICE) {
+            return $this->objectManager->create($this->getInvoiceResourceClass());
+        } elseif ($type === Queue::TYPE_CREDITMEMO) {
+            return $this->objectManager->create($this->getCreditmemoResourceClass());
+        } else {
+            throw new \LogicException('Wrong Queue type.');
+        }
     }
 
     /**
