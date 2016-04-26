@@ -20,14 +20,12 @@ use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Api\SortOrderBuilder;
 use Magento\Framework\Stdlib\DateTime;
 use Magento\Sales\Model\Order\Creditmemo;
-use Magento\Sales\Model\Order\CreditmemoRepository;
 use Magento\Sales\Model\Order\Invoice;
-use Magento\Sales\Model\Order\InvoiceRepository;
 use OnePica\AvaTax\Api\QueueManagementInterface;
 use OnePica\AvaTax\Api\QueueRepositoryInterface;
 use OnePica\AvaTax\Helper\Config;
-use OnePica\AvaTax\Model\Tool\Invoice as InvoiceServiceTool;
-use OnePica\AvaTax\Model\Tool\Creditmemo as CreditmemoServiceTool;
+use OnePica\AvaTax\Model\Tool\Submit\Invoice as InvoiceServiceTool;
+use OnePica\AvaTax\Model\Tool\Submit\Creditmemo as CreditmemoServiceTool;
 
 /**
  * Class Manager
@@ -83,20 +81,6 @@ class QueueManagement implements QueueManagementInterface
     protected $creditmemoServiceTool;
 
     /**
-     * Creditmemo repository
-     *
-     * @var CreditmemoRepository
-     */
-    protected $creditmemoRepository;
-
-    /**
-     * Invoice repository
-     *
-     * @var InvoiceRepository
-     */
-    protected $invoiceRepository;
-
-    /**
      * Constructor.
      *
      * @param QueueRepositoryInterface $queueRepository
@@ -106,8 +90,6 @@ class QueueManagement implements QueueManagementInterface
      * @param DateTime                 $dateTime
      * @param InvoiceServiceTool       $invoiceServiceTool
      * @param CreditmemoServiceTool    $creditmemoServiceTool
-     * @param CreditmemoRepository     $creditmemoRepository
-     * @param InvoiceRepository        $invoiceRepository
      * @param SortOrderBuilder         $sortOrderBuilder
      */
     public function __construct(
@@ -118,8 +100,6 @@ class QueueManagement implements QueueManagementInterface
         DateTime $dateTime,
         InvoiceServiceTool $invoiceServiceTool,
         CreditmemoServiceTool $creditmemoServiceTool,
-        CreditmemoRepository $creditmemoRepository,
-        InvoiceRepository $invoiceRepository,
         SortOrderBuilder $sortOrderBuilder
     ) {
         $this->queueRepository = $queueRepository;
@@ -129,8 +109,6 @@ class QueueManagement implements QueueManagementInterface
         $this->dateTime = $dateTime;
         $this->invoiceServiceTool = $invoiceServiceTool;
         $this->creditmemoServiceTool = $creditmemoServiceTool;
-        $this->creditmemoRepository = $creditmemoRepository;
-        $this->invoiceRepository = $invoiceRepository;
         $this->sortOrderBuilder = $sortOrderBuilder;
     }
 
@@ -314,12 +292,9 @@ class QueueManagement implements QueueManagementInterface
         $newAttemptValue = $queue->getAttempt() + 1;
         $queue->setAttempt($newAttemptValue);
         try {
-            $queueObject = $this->getQueueObject($queue);
             $tool = $this->getToolObject($queue);
-            $tool->setQueueObject($queueObject)->setQueue($queue);
-            if ($queueObject->getId()) {
-                $tool->execute();
-            }
+            $tool->setQueue($queue);
+            $tool->execute();
             $queue->setStatus(Queue::STATUS_COMPLETE)->setMessage(null)->save();
         } catch (\OnePica\AvaTax\Model\Service\Exception\Unbalanced $e) {
             $queue->setStatus(Queue::STATUS_UNBALANCED)
@@ -333,22 +308,6 @@ class QueueManagement implements QueueManagementInterface
                 ->setMessage($e->getMessage())
                 ->save();
         }
-    }
-
-    /**
-     * Get queue object
-     *
-     * @param Queue $queueItem
-     *
-     * @return Invoice|Creditmemo
-     */
-    protected function getQueueObject(Queue $queueItem)
-    {
-        if ($queueItem->getType() === Queue::TYPE_INVOICE) {
-            return $this->invoiceRepository->get($queueItem->getEntityId());
-        }
-
-        return $this->creditmemoRepository->get($queueItem->getEntityId());
     }
 
     /**

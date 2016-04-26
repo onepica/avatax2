@@ -12,21 +12,26 @@
  * @copyright  Copyright (c) 2016 One Pica, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model\Tool;
+namespace OnePica\AvaTax\Model\Tool\Submit;
 
+use Magento\Sales\Api\OrderRepositoryInterface;
+use OnePica\AvaTax\Model\Service\Exception\Commitfailure;
+use OnePica\AvaTax\Model\Service\Result\Creditmemo;
+use OnePica\AvaTax\Model\Service\Result\Invoice;
 use OnePica\AvaTax\Model\Service\Result\ResultInterface;
 use OnePica\AvaTax\Model\Service\ResolverInterface;
 use OnePica\AvaTax\Model\ServiceFactory;
 use Magento\Sales\Model\Order\Invoice as OrderInvoice;
 use OnePica\AvaTax\Model\Queue;
 use OnePica\AvaTax\Helper\Data as DataHelper;
+use OnePica\AvaTax\Model\Tool\AbstractTool;
 
 /**
- * Class AbstractQueueTool
+ * Class AbstractSubmit
  *
- * @package OnePica\AvaTax\Model\Tool
+ * @package OnePica\AvaTax\Model\Tool\Submit
  */
-abstract class AbstractQueueTool extends AbstractTool
+abstract class AbstractSubmit extends AbstractTool
 {
     /**
      * Queue object: Invoice or creditmemo object
@@ -48,6 +53,13 @@ abstract class AbstractQueueTool extends AbstractTool
      * @var DataHelper
      */
     protected $dataHelper;
+    
+    /**
+     * Order repository
+     *
+     * @var OrderRepositoryInterface
+     */
+    protected $orderRepository;
 
     /**
      * Invoice constructor.
@@ -55,14 +67,17 @@ abstract class AbstractQueueTool extends AbstractTool
      * @param \OnePica\AvaTax\Model\Service\ResolverInterface $resolver
      * @param \OnePica\AvaTax\Model\ServiceFactory            $serviceFactory
      * @param DataHelper                                      $dataHelper
+     * @param OrderRepositoryInterface     $orderRepository
      */
     public function __construct(
         ResolverInterface $resolver,
         ServiceFactory $serviceFactory,
-        DataHelper $dataHelper
+        DataHelper $dataHelper,
+        OrderRepositoryInterface $orderRepository
     ) {
         parent::__construct($resolver, $serviceFactory);
         $this->dataHelper = $dataHelper;
+        $this->orderRepository = $orderRepository;
     }
 
     /**
@@ -97,31 +112,32 @@ abstract class AbstractQueueTool extends AbstractTool
      *
      * @return ResultInterface
      * @throws \OnePica\AvaTax\Model\Service\Exception\Unbalanced
-     * @throws \OnePica\AvaTax\Model\Service\Exception\Commitfailure
+     * @throws Commitfailure
      */
     public function execute()
     {
         $queueResult = $this->processQueue();
         //if successful
-        if (!$queueResult->getHasError()) {
-            $message = __($this->queue->getType())
-                     . ' #'
-                     . $queueResult->getDocumentCode()
-                     . ' '
-                     . __('was saved to AvaTax');
+        if ($queueResult->getHasError()) {
+            throw new Commitfailure($queueResult->getErrorsAsString());
+        }
 
-            $order = $this->queueObject->getOrder();
-            $this->dataHelper->addStatusHistoryCommentToOrder($order, $message);
+        $message = __($this->queue->getType())
+            . ' #'
+            . $queueResult->getDocumentCode()
+            . ' '
+            . __('was saved to AvaTax');
 
-            $totalTax = $queueResult->getTotalTax();
-            if (!$this->isQueueTaxSameAsResponseTax($this->queue->getTotalTaxAmount(), $totalTax)) {
-                throw new \OnePica\AvaTax\Model\Service\Exception\Unbalanced(
-                    'Collected: ' . $this->queue->getTotalTaxAmount() . ', Actual: ' . $totalTax
-                );
-            }
-            //if not successful
-        } else {
-            throw new \OnePica\AvaTax\Model\Service\Exception\Commitfailure($queueResult->getErrorsAsString());
+        /** @var \Magento\Sales\Model\Order $order */
+        $order = $this->orderRepository->get($this->queue->getEntityId());
+        $this->dataHelper->addStatusHistoryCommentToOrder($order, $message);
+
+        /** @var Invoice $queueResult */
+        $totalTax = $queueResult->getTotalTax();
+        if (!$this->isQueueTaxSameAsResponseTax($this->queue->getTotalTaxAmount(), $totalTax)) {
+            throw new \OnePica\AvaTax\Model\Service\Exception\Unbalanced(
+                'Collected: ' . $this->queue->getTotalTaxAmount() . ', Actual: ' . $totalTax
+            );
         }
 
         return $queueResult;
@@ -130,16 +146,23 @@ abstract class AbstractQueueTool extends AbstractTool
     /**
      * Process Queue
      *
-     * @return ResultInterface
+     * @return Creditmemo|Invoice
      */
-    abstract protected function processQueue();
+    protected function processQueue()
+    {
+        return $this->getService()->submit($this->queue);
+    }
 
     /**
      * Is queue tax same as response tax
      *
      * @param float $queueTax
      * @param float $responseTax
+     *
      * @return bool
      */
-    abstract protected function isQueueTaxSameAsResponseTax($queueTax, $responseTax);
+    protected function isQueueTaxSameAsResponseTax($queueTax, $responseTax)
+    {
+        return $queueTax == $responseTax;
+    }
 }

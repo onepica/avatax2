@@ -23,7 +23,7 @@ use OnePica\AvaTax\Model\Queue;
 use OnePica\AvaTax\Model\QueueFactory;
 use OnePica\AvaTax\Model\QueueRepository;
 use OnePica\AvaTax\Helper\Address as AddressHelper;
-use OnePica\AvaTax\Model\Tool\Invoice as InvoiceTool;
+use OnePica\AvaTax\Model\Tool\Submit\Invoice as InvoiceTool;
 
 /**
  * Class CreateQueueItemForInvoice
@@ -144,8 +144,10 @@ class CreateQueueItemForInvoice implements ObserverInterface
      */
     protected function getRequestObject(Invoice $invoice)
     {
+        /** @var InvoiceTool $invoiceService */
         $invoiceService = $this->objectManager->get(InvoiceTool::class);
         $invoiceService->setQueueObject($invoice);
+        
         return $invoiceService->getInvoiceServiceRequestObject();
     }
 }

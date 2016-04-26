@@ -23,7 +23,7 @@ use OnePica\AvaTax\Model\Queue;
 use OnePica\AvaTax\Model\QueueFactory;
 use OnePica\AvaTax\Model\QueueRepository;
 use OnePica\AvaTax\Helper\Address as AddressHelper;
-use OnePica\AvaTax\Model\Tool\Creditmemo as CreditmemoTool;
+use OnePica\AvaTax\Model\Tool\Submit\Creditmemo as CreditmemoTool;
 
 /**
  * Class CreateQueueItemForCreditmemo
@@ -133,7 +133,7 @@ class CreateQueueItemForCreditmemo implements ObserverInterface
             $tax += $item->getData('base_weee_tax_applied_row_amnt');
         }
 
-        return $tax;
+        return ($tax * -1);
     }
 
     /**
@@ -144,8 +144,10 @@ class CreateQueueItemForCreditmemo implements ObserverInterface
      */
     protected function getRequestObject(Creditmemo $creditmemo)
     {
+        /** @var CreditmemoTool $creditmemoService */
         $creditmemoService = $this->objectManager->get(CreditmemoTool::class);
         $creditmemoService->setQueueObject($creditmemo);
+        
         return $creditmemoService->getCreditmemoServiceRequestObject();
     }
 }

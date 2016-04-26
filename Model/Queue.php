@@ -340,7 +340,7 @@ class Queue extends AbstractModel implements QueueInterface
      */
     public function setEntity($object)
     {
-        $this->setEntityId($object->getId());
+        $this->setEntityId($object->getOrder()->getId());
         $this->setEntityIncrementId($object->getIncrementId());
         $this->setStoreId($object->getStoreId());
 
