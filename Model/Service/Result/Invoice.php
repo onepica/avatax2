@@ -54,7 +54,7 @@ class Invoice extends Base
     /**
      * Get Total Tax
      *
-     * @return bool
+     * @return float
      */
     public function getTotalTax()
     {
