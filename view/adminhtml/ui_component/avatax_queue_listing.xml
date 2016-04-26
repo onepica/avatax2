@@ -152,11 +152,19 @@
                 </item>
             </argument>
         </column>
-        <column name="entity_increment_id">
+        <column name="object_id">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">textRange</item>
-                    <item name="label" xsi:type="string" translate="true">Entity Increment ID</item>
+                    <item name="label" xsi:type="string" translate="true">Object ID</item>
+                </item>
+            </argument>
+        </column>
+        <column name="object_increment_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="label" xsi:type="string" translate="true">Object Increment ID</item>
                 </item>
             </argument>
         </column>

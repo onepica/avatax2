@@ -220,11 +220,17 @@ class InstallSchema implements InstallSchemaInterface
                 ['unsigned' => true, 'nullable' => false],
                 'Order id'
             )->addColumn(
-                'entity_increment_id',
+                'object_id',
+                Table::TYPE_INTEGER,
+                null,
+                ['unsigned' => true, 'nullable' => false],
+                'Object id (Invoice or Creditmemo)'
+            )->addColumn(
+                'object_increment_id',
                 Table::TYPE_TEXT,
                 50,
                 [],
-                'Entity increment id'
+                'Object increment id (Invoice or Creditmemo)'
             )->addColumn(
                 'type',
                 Table::TYPE_TEXT,
@@ -286,6 +292,14 @@ class InstallSchema implements InstallSchemaInterface
                     AdapterInterface::INDEX_TYPE_INDEX
                 ),
                 ['order_id'],
+                AdapterInterface::INDEX_TYPE_INDEX
+            )->addIndex(
+                $setup->getIdxName(
+                    $setup->getTable('avatax_queue'),
+                    ['object_id'],
+                    AdapterInterface::INDEX_TYPE_INDEX
+                ),
+                ['object_id'],
                 AdapterInterface::INDEX_TYPE_INDEX
             )->addIndex(
                 $setup->getIdxName(

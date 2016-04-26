@@ -98,7 +98,7 @@ class Queue extends AbstractModel implements QueueInterface
     }
 
     /**
-     * Get Entity Id
+     * Get Order Id
      *
      * @return int
      */
@@ -106,15 +106,17 @@ class Queue extends AbstractModel implements QueueInterface
     {
         return $this->_getData(self::ORDER_ID);
     }
+
     /**
-     * Set Entity Id
+     * Set Order Id
      *
-     * @param int $entityId
+     * @param int $orderId
+     *
      * @return mixed
      */
-    public function setOrderId($entityId)
+    public function setOrderId($orderId)
     {
-        $this->setData(self::ORDER_ID, $entityId);
+        $this->setData(self::ORDER_ID, $orderId);
 
         return $this;
     }
@@ -124,9 +126,9 @@ class Queue extends AbstractModel implements QueueInterface
      *
      * @return string
      */
-    public function getEntityIncrementId()
+    public function getObjectIncrementId()
     {
-        return $this->_getData(self::ENTITY_INCREMENT_ID);
+        return $this->_getData(self::OBJECT_INCREMENT_ID);
     }
 
     /**
@@ -135,9 +137,9 @@ class Queue extends AbstractModel implements QueueInterface
      * @param string $entityIncrementId
      * @return mixed
      */
-    public function setEntityIncrementId($entityIncrementId)
+    public function setObjectIncrementId($entityIncrementId)
     {
-        $this->setData(self::ENTITY_INCREMENT_ID, $entityIncrementId);
+        $this->setData(self::OBJECT_INCREMENT_ID, $entityIncrementId);
 
         return $this;
     }
@@ -304,6 +306,30 @@ class Queue extends AbstractModel implements QueueInterface
     }
 
     /**
+     * Get Object Id
+     *
+     * @return int
+     */
+    public function getObjectId()
+    {
+        return $this->_getData(self::OBJECT_ID);
+    }
+
+    /**
+     * Set Object Id
+     *
+     * @param int $objectId
+     *
+     * @return $this
+     */
+    public function setObjectId($objectId)
+    {
+        $this->setData(self::OBJECT_ID, $objectId);
+
+        return $this;
+    }
+
+    /**
      * Get queue types
      *
      * @return array
@@ -340,8 +366,9 @@ class Queue extends AbstractModel implements QueueInterface
      */
     public function setEntity($object)
     {
+        $this->setObjectId($object->getId());
         $this->setOrderId($object->getOrder()->getId());
-        $this->setEntityIncrementId($object->getIncrementId());
+        $this->setObjectIncrementId($object->getIncrementId());
         $this->setStoreId($object->getStoreId());
 
         return $this;
