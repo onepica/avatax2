@@ -139,27 +139,19 @@ abstract class AbstractService implements ServiceInterface
     }
 
     /**
-     * Get Invoice Service Request Object
+     * Get service request object
      *
-     * @param \Magento\Sales\Model\Order\Invoice $invoice
+     * @param Queue $queue
      *
      * @return mixed
      */
-    public function getInvoiceServiceRequestObject(Invoice $invoice)
+    public function getServiceRequestObject(Queue $queue)
     {
-        return $this->getQueueResource(Queue::TYPE_INVOICE)->getServiceRequestObject($invoice);
-    }
+        if (null === $queue->getSalesObject()) {
+            throw new \LogicException('Sales object must be set.');
+        }
 
-    /**
-     * Get Creditmemo Service Request Object
-     *
-     * @param \Magento\Sales\Model\Order\Creditmemo $creditmemo
-     *
-     * @return mixed
-     */
-    public function getCreditmemoServiceRequestObject(Creditmemo $creditmemo)
-    {
-        return $this->getQueueResource(Queue::TYPE_CREDITMEMO)->getServiceRequestObject($creditmemo);
+        return $this->getQueueResource($queue->getType())->getServiceRequestObject($queue->getSalesObject());
     }
 
     /**

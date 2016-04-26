@@ -304,10 +304,10 @@ class InstallSchema implements InstallSchemaInterface
             )->addIndex(
                 $setup->getIdxName(
                     $setup->getTable('avatax_queue'),
-                    ['entity_increment_id'],
+                    ['object_increment_id'],
                     AdapterInterface::INDEX_TYPE_INDEX
                 ),
-                ['entity_increment_id'],
+                ['object_increment_id'],
                 AdapterInterface::INDEX_TYPE_INDEX
             )->addIndex(
                 $setup->getIdxName(

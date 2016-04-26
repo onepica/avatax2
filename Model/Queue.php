@@ -15,6 +15,8 @@
 namespace OnePica\AvaTax\Model;
 
 use Magento\Framework\Model\AbstractModel;
+use Magento\Sales\Model\Order\Creditmemo;
+use Magento\Sales\Model\Order\Invoice;
 use OnePica\AvaTax\Api\Data\QueueInterface;
 use OnePica\AvaTax\Model\ResourceModel\Queue as QueueResource;
 use OnePica\AvaTax\Model\ResourceModel\Log\Collection;
@@ -41,6 +43,13 @@ class Queue extends AbstractModel implements QueueInterface
      * Queue attempt max
      */
     const ATTEMPT_MAX = 5;
+
+    /**
+     * Sales object
+     *
+     * @var Invoice|Creditmemo
+     */
+    protected $salesObject;
 
     /**
      * Initialize resource model
@@ -361,7 +370,8 @@ class Queue extends AbstractModel implements QueueInterface
     /**
      * Set entity
      *
-     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $object
+     * @param Invoice|Creditmemo $object
+     *
      * @return $this
      */
     public function setEntity($object)
@@ -370,6 +380,7 @@ class Queue extends AbstractModel implements QueueInterface
         $this->setOrderId($object->getOrder()->getId());
         $this->setObjectIncrementId($object->getIncrementId());
         $this->setStoreId($object->getStoreId());
+        $this->setSalesObject($object);
 
         return $this;
     }
@@ -395,5 +406,25 @@ class Queue extends AbstractModel implements QueueInterface
         $this->setData(self::TOTAL_TAX_AMOUNT, $totalTaxAmount);
 
         return $this;
+    }
+
+    /**
+     * Get sales object
+     *
+     * @return Creditmemo|Invoice
+     */
+    public function getSalesObject()
+    {
+        return $this->salesObject;
+    }
+
+    /**
+     * Set sales object
+     *
+     * @param Creditmemo|Invoice $salesObject
+     */
+    public function setSalesObject($salesObject)
+    {
+        $this->salesObject = $salesObject;
     }
 }

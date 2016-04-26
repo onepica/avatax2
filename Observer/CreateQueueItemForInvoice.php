@@ -23,7 +23,7 @@ use OnePica\AvaTax\Model\Queue;
 use OnePica\AvaTax\Model\QueueFactory;
 use OnePica\AvaTax\Model\QueueRepository;
 use OnePica\AvaTax\Helper\Address as AddressHelper;
-use OnePica\AvaTax\Model\Tool\Submit\Invoice as InvoiceTool;
+use OnePica\AvaTax\Model\Tool\Submit;
 
 /**
  * Class CreateQueueItemForInvoice
@@ -112,8 +112,9 @@ class CreateQueueItemForInvoice implements ObserverInterface
             $queue->setTotalTaxAmount($totalTax);
 
             // save request object with data to use during queue processing
-            $requestObjectSerialized = serialize($this->getRequestObject($invoice));
+            $requestObjectSerialized = serialize($this->getRequestObject($queue));
             $queue->setRequestData($requestObjectSerialized);
+            $queue->setData('sales_object', null);
 
             $this->queueRepository->save($queue);
         }
@@ -139,15 +140,15 @@ class CreateQueueItemForInvoice implements ObserverInterface
     /**
      * Get request object
      *
-     * @param Invoice $invoice
+     * @param Queue $queue
      * @return mixed
      */
-    protected function getRequestObject(Invoice $invoice)
+    protected function getRequestObject(Queue $queue)
     {
-        /** @var InvoiceTool $invoiceService */
-        $invoiceService = $this->objectManager->get(InvoiceTool::class);
-        $invoiceService->setQueueObject($invoice);
-        
-        return $invoiceService->getInvoiceServiceRequestObject();
+        /** @var Submit $submit */
+        $submit = $this->objectManager->get(Submit::class);
+        $submit->setQueue($queue);
+
+        return $submit->getServiceRequestObject();
     }
 }

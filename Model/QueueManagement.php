@@ -24,8 +24,7 @@ use Magento\Sales\Model\Order\Invoice;
 use OnePica\AvaTax\Api\QueueManagementInterface;
 use OnePica\AvaTax\Api\QueueRepositoryInterface;
 use OnePica\AvaTax\Helper\Config;
-use OnePica\AvaTax\Model\Tool\Submit\Invoice as InvoiceServiceTool;
-use OnePica\AvaTax\Model\Tool\Submit\Creditmemo as CreditmemoServiceTool;
+use OnePica\AvaTax\Model\Tool\Submit;
 
 /**
  * Class Manager
@@ -42,8 +41,8 @@ class QueueManagement implements QueueManagementInterface
     protected $queueRepository;
 
     /**
-    * @var SearchCriteriaBuilder
-    */
+     * @var SearchCriteriaBuilder
+     */
     private $searchCriteriaBuilder;
 
     /**
@@ -71,14 +70,11 @@ class QueueManagement implements QueueManagementInterface
     protected $dateTime;
 
     /**
-     * @var InvoiceServiceTool
+     * Submit tool
+     *
+     * @var Submit
      */
-    protected $invoiceServiceTool;
-
-    /**
-     * @var CreditmemoServiceTool
-     */
-    protected $creditmemoServiceTool;
+    protected $submitToll;
 
     /**
      * Constructor.
@@ -88,9 +84,8 @@ class QueueManagement implements QueueManagementInterface
      * @param FilterBuilder            $filterBuilder
      * @param Config                   $config
      * @param DateTime                 $dateTime
-     * @param InvoiceServiceTool       $invoiceServiceTool
-     * @param CreditmemoServiceTool    $creditmemoServiceTool
      * @param SortOrderBuilder         $sortOrderBuilder
+     * @param Submit                   $submitToll
      */
     public function __construct(
         QueueRepositoryInterface $queueRepository,
@@ -98,18 +93,16 @@ class QueueManagement implements QueueManagementInterface
         FilterBuilder $filterBuilder,
         Config $config,
         DateTime $dateTime,
-        InvoiceServiceTool $invoiceServiceTool,
-        CreditmemoServiceTool $creditmemoServiceTool,
-        SortOrderBuilder $sortOrderBuilder
+        SortOrderBuilder $sortOrderBuilder,
+        Submit $submitToll
     ) {
         $this->queueRepository = $queueRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->filterBuilder = $filterBuilder;
         $this->config = $config;
         $this->dateTime = $dateTime;
-        $this->invoiceServiceTool = $invoiceServiceTool;
-        $this->creditmemoServiceTool = $creditmemoServiceTool;
         $this->sortOrderBuilder = $sortOrderBuilder;
+        $this->submitToll = $submitToll;
     }
 
     /**
@@ -292,7 +285,7 @@ class QueueManagement implements QueueManagementInterface
         $newAttemptValue = $queue->getAttempt() + 1;
         $queue->setAttempt($newAttemptValue);
         try {
-            $tool = $this->getToolObject($queue);
+            $tool = $this->submitToll;
             $tool->setQueue($queue);
             $tool->execute();
             $queue->setStatus(Queue::STATUS_COMPLETE)->setMessage(null)->save();
@@ -308,21 +301,5 @@ class QueueManagement implements QueueManagementInterface
                 ->setMessage($e->getMessage())
                 ->save();
         }
-    }
-
-    /**
-     * Get tool object by queue item
-     *
-     * @param Queue $queue
-     *
-     * @return CreditmemoServiceTool|InvoiceServiceTool
-     */
-    protected function getToolObject(Queue $queue)
-    {
-        if ($queue->getType() === Queue::TYPE_INVOICE) {
-            return $this->invoiceServiceTool;
-        }
-
-        return $this->creditmemoServiceTool;
     }
 }

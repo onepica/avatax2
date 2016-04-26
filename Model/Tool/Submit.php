@@ -12,9 +12,10 @@
  * @copyright  Copyright (c) 2016 One Pica, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model\Tool\Submit;
+namespace OnePica\AvaTax\Model\Tool;
 
 use Magento\Sales\Api\OrderRepositoryInterface;
+use OnePica\AvaTax\Model\Service\Avatax16;
 use OnePica\AvaTax\Model\Service\Exception\Commitfailure;
 use OnePica\AvaTax\Model\Service\Result\Creditmemo;
 use OnePica\AvaTax\Model\Service\Result\Invoice;
@@ -24,14 +25,14 @@ use OnePica\AvaTax\Model\ServiceFactory;
 use Magento\Sales\Model\Order\Invoice as OrderInvoice;
 use OnePica\AvaTax\Model\Queue;
 use OnePica\AvaTax\Helper\Data as DataHelper;
-use OnePica\AvaTax\Model\Tool\AbstractTool;
 
 /**
- * Class AbstractSubmit
+ * Class Submit
  *
+ * @method Avatax16 getService()
  * @package OnePica\AvaTax\Model\Tool\Submit
  */
-abstract class AbstractSubmit extends AbstractTool
+class Submit extends AbstractTool
 {
     /**
      * Queue object: Invoice or creditmemo object
@@ -141,6 +142,16 @@ abstract class AbstractSubmit extends AbstractTool
         }
 
         return $queueResult;
+    }
+
+    /**
+     * Get service object
+     *
+     * @return mixed
+     */
+    public function getServiceRequestObject()
+    {
+        return $this->getService()->getServiceRequestObject($this->queue);
     }
 
     /**
