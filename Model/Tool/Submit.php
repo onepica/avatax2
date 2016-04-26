@@ -35,13 +35,6 @@ use OnePica\AvaTax\Helper\Data as DataHelper;
 class Submit extends AbstractTool
 {
     /**
-     * Queue object: Invoice or creditmemo object
-     *
-     * @var \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo
-     */
-    protected $queueObject;
-
-    /**
      * Queue
      *
      * @var \OnePica\AvaTax\Model\Queue
@@ -79,19 +72,6 @@ class Submit extends AbstractTool
         parent::__construct($resolver, $serviceFactory);
         $this->dataHelper = $dataHelper;
         $this->orderRepository = $orderRepository;
-    }
-
-    /**
-     * Set queue object
-     *
-     * @param \Magento\Sales\Model\Order\Invoice|\Magento\Sales\Model\Order\Creditmemo $queueObject
-     * @return $this
-     */
-    public function setQueueObject($queueObject)
-    {
-        $this->queueObject = $queueObject;
-
-        return $this;
     }
 
     /**
