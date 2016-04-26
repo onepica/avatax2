@@ -74,7 +74,7 @@ class QueueManagement implements QueueManagementInterface
      *
      * @var Submit
      */
-    protected $submitToll;
+    protected $submitTool;
 
     /**
      * Constructor.
@@ -102,7 +102,7 @@ class QueueManagement implements QueueManagementInterface
         $this->config = $config;
         $this->dateTime = $dateTime;
         $this->sortOrderBuilder = $sortOrderBuilder;
-        $this->submitToll = $submitToll;
+        $this->submitTool = $submitToll;
     }
 
     /**
@@ -285,7 +285,7 @@ class QueueManagement implements QueueManagementInterface
         $newAttemptValue = $queue->getAttempt() + 1;
         $queue->setAttempt($newAttemptValue);
         try {
-            $tool = $this->submitToll;
+            $tool = $this->submitTool;
             $tool->setQueue($queue);
             $tool->execute();
             $queue->setStatus(Queue::STATUS_COMPLETE)->setMessage(null)->save();
