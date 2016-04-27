@@ -28,6 +28,11 @@ use OnePica\AvaTax16\TaxService;
 class Config implements ConfigInterface
 {
     /**
+     * Authorization header prefix
+     */
+    const AUTHORIZATION_HEADER_PREFIX = 'AvalaraAuth ';
+
+    /**
      * Connection
      *
      * @var \OnePica\AvaTax16\TaxService
@@ -79,7 +84,9 @@ class Config implements ConfigInterface
         $config->setBaseUrl($this->config->getServiceUrl($this->store));
         $config->setAccountId($this->config->getServiceAccountNumber($this->store));
         $config->setCompanyCode($this->config->getServiceCompanyCode($this->store));
-        $config->setAuthorizationHeader($this->config->getServiceLicenceKey($this->store));
+        $authorizationHeader = self::AUTHORIZATION_HEADER_PREFIX
+                             . $this->config->getServiceLicenceKey($this->store);
+        $config->setAuthorizationHeader($authorizationHeader);
         $config->setUserAgent($this->config->getUserAgent());
         $this->libConfig = $config;
         $this->connection = $this->getLibTaxService($config);
