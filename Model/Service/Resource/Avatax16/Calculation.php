@@ -529,7 +529,7 @@ class Calculation extends AbstractResource
         $summary = [];
 
         $calculatedSummary = $response->getCalculatedTaxSummary();
-        if (null === $calculatedSummary) {
+        if (null === $calculatedSummary || null === $calculatedSummary->getTaxByType()) {
             return $summary;
         }
 
