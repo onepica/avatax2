@@ -344,37 +344,40 @@ class AddressValidator
      */
     protected function checkAddressFields(AbstractAddress $address)
     {
-        $requiredFields = explode(",", $this->config->getFieldRequiredList($this->store));
-        $fieldRules = explode(",", $this->config->getFieldRule($this->store));
         $errors = null;
-        $countryFactory = $this->objectManager->get('\Magento\Directory\Model\CountryFactory');
+        $requiredFieldsStr = $this->config->getFieldRequiredList($this->store);
+        if ($requiredFieldsStr) {
+            $requiredFields = explode(",", $requiredFieldsStr);
+            $fieldRules = explode(",", $this->config->getFieldRule($this->store));
+            $countryFactory = $this->objectManager->get('\Magento\Directory\Model\CountryFactory');
 
-        foreach ($requiredFields as $field) {
-            $hasError = false;
-            switch ($field) {
-                case 'country_id':
-                    $fieldValue = $countryFactory->create()->loadByCode($address->getCountry())->getName();
-                    $field = __('Country');
-                    break;
-                case 'region':
-                    $fieldValue = $address->getRegion();
-                    break;
-                case 'street':
-                    $fieldValue = $address->getStreet();
-                    break;
-                default:
-                    $fieldValue = $address->getData($field);
-                    break;
-            }
-
-            foreach ($fieldRules as $rule) {
-                if ($this->hasAddressFieldRuleError($fieldValue, $rule)) {
-                    $hasError = true;
-                    break;
+            foreach ($requiredFields as $field) {
+                $hasError = false;
+                switch ($field) {
+                    case 'country_id':
+                        $fieldValue = $countryFactory->create()->loadByCode($address->getCountry())->getName();
+                        $field = __('Country');
+                        break;
+                    case 'region':
+                        $fieldValue = $address->getRegion();
+                        break;
+                    case 'street':
+                        $fieldValue = $address->getStreet();
+                        break;
+                    default:
+                        $fieldValue = $address->getData($field);
+                        break;
                 }
-            }
-            if ($hasError) {
-                $errors[] = __('Invalid ') . __($field);
+
+                foreach ($fieldRules as $rule) {
+                    if ($this->hasAddressFieldRuleError($fieldValue, $rule)) {
+                        $hasError = true;
+                        break;
+                    }
+                }
+                if ($hasError) {
+                    $errors[] = __('Invalid ') . __($field);
+                }
             }
         }
 
