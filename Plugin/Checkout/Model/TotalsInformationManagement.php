@@ -8,8 +8,8 @@
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@onepica.com>
- * @copyright  Copyright (c) 2016 One Pica, Inc.
+ * @author     OnePica Codemaster <codemaster@astound.com>
+ * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 namespace OnePica\AvaTax\Plugin\Checkout\Model;
