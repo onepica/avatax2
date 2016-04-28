@@ -54,6 +54,9 @@
             </argument>
         </arguments>
     </type>
+    <type name="Magento\Weee\Model\Total\Quote\Weee">
+        <plugin name="onepica_avatax_total_weee" type="OnePica\AvaTax\Plugin\Magento\Weee\Model\Total\Quote\Weee"/>
+    </type>
     <type name="Magento\Checkout\Model\ShippingInformationManagement">
         <plugin name="onepica_avatax_onepage_address_validation" type="OnePica\AvaTax\Plugin\Checkout\Model\ShippingInformationManagement" />
     </type>
