@@ -99,6 +99,10 @@ class ChangedSectionTax implements ObserverInterface
      */
     protected function showNotifications($store)
     {
+        if ($this->config->getActiveService() !== 'avatax16') {
+            return $this;
+        }
+
         if ($this->config->getServiceUrl($store) === \OnePica\AvaTax\Model\Source\Avatax16\Url::DEVELOPER_URL) {
             $this->manager->addNotice(__('You are using the AvaTax development connection URL.'));
         }
@@ -115,7 +119,7 @@ class ChangedSectionTax implements ObserverInterface
      *
      * @param \Magento\Store\Api\Data\StoreInterface $store
      *
-     * @return \OnePica\AvaTax\Model\Service\Result\Base
+     * @return $this
      */
     protected function sendPing($store)
     {
