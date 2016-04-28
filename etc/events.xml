@@ -9,4 +9,16 @@
     <event name="checkout_submit_before">
         <observer name="avatax_check_error" instance="Astound\AvaTax\Observer\CheckoutSubmitBefore"/>
     </event>
+    <event name="sales_order_invoice_pay">
+        <observer name="avatax_invoice_pay_set_flag" instance="Astound\AvaTax\Observer\SetAvataxQueueFlagForInvoice" />
+    </event>
+    <event name="sales_order_invoice_save_commit_after">
+        <observer name="avatax_create_invoice_queue_item" instance="Astound\AvaTax\Observer\CreateQueueItemForInvoice"/>
+    </event>
+    <event name="sales_order_creditmemo_refund">
+        <observer name="avatax_creditmemo_refund_set_flag" instance="Astound\AvaTax\Observer\SetAvataxQueueFlagForCreditmemo" />
+    </event>
+    <event name="sales_order_creditmemo_save_commit_after">
+        <observer name="avatax_create_creditmemo_queue_item" instance="Astound\AvaTax\Observer\CreateQueueItemForCreditmemo"/>
+    </event>
 </config>
