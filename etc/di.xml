@@ -64,6 +64,21 @@
     <type name="Magento\Quote\Model\Quote\Address">
         <plugin name="quote_model_quote_address_validator" type="OnePica\AvaTax\Plugin\Quote\Model\Quote\AddressValidator" />
     </type>
+    <type name="OnePica\AvaTax\Model\Service\Resource\Avatax16\Queue\AbstractQueue">
+        <arguments>
+            <argument name="timezone" xsi:type="object">OnePica\AvaTax\Stdlib\DateTime\Timezone</argument>
+        </arguments>
+    </type>
+    <type name="OnePica\AvaTax\Model\Service\Resource\Avatax16\Calculation">
+        <arguments>
+            <argument name="timezone" xsi:type="object">OnePica\AvaTax\Stdlib\DateTime\Timezone</argument>
+        </arguments>
+    </type>
+    <virtualType name="OnePica\AvaTax\Stdlib\DateTime\Timezone" type="Magento\Framework\Stdlib\DateTime\Timezone">
+        <arguments>
+            <argument name="scopeType" xsi:type="const">\Magento\Store\Model\ScopeInterface::SCOPE_STORE</argument>
+        </arguments>
+    </virtualType>
     <virtualType name="LogGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
         <arguments>
             <argument name="collection" xsi:type="object" shared="false">OnePica\AvaTax\Model\ResourceModel\Log\Collection</argument>

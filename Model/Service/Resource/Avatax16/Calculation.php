@@ -157,7 +157,9 @@ class Calculation extends AbstractResource
     {
         $header = parent::prepareHeader($store, $address);
         $header->setDocumentCode('quote-' . $address->getId());
-        $header->setTransactionDate($this->timezone->scopeDate($store)->format('Y-m-d'));
+        $header->setTransactionDate(
+            $this->timezone->scopeDate($store, null, true)->format('Y-m-d')
+        );
 
         return $header;
     }
