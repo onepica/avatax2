@@ -20,6 +20,7 @@ use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use OnePica\AvaTax\Helper\Config;
+use OnePica\AvaTax\Helper\Data;
 use OnePica\AvaTax\Model\Tool\Ping;
 
 /**
@@ -99,7 +100,7 @@ class ChangedSectionTax implements ObserverInterface
      */
     protected function showNotifications($store)
     {
-        if ($this->config->getActiveService() !== 'avatax16') {
+        if ($this->config->getActiveService() !== Data::AVATAX16_SERVICE) {
             return $this;
         }
 
