@@ -1,27 +1,27 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@astound.com>
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astound.com>
  * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model\ResourceModel\Log;
+namespace Astound\AvaTax\Model\ResourceModel\Log;
 
 use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
-use OnePica\AvaTax\Model\Log as LogModel;
-use OnePica\AvaTax\Model\ResourceModel\Log as LogResource;
+use Astound\AvaTax\Model\Log as LogModel;
+use Astound\AvaTax\Model\ResourceModel\Log as LogResource;
 
 /**
  * Class Collection
  *
- * @package OnePica\AvaTax\Model\ResourceModel\Log
+ * @package Astound\AvaTax\Model\ResourceModel\Log
  */
 class Collection extends AbstractCollection
 {
@@ -30,7 +30,7 @@ class Collection extends AbstractCollection
      *
      * @var string
      */
-    protected $_eventPrefix = 'onepica_avatax_log_collection';
+    protected $_eventPrefix = 'astound_avatax_log_collection';
 
     /**
      * Name of event parameter

@@ -1,38 +1,38 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@astound.com>
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astound.com>
  * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model\Service\Resource\Avatax16\Queue;
+namespace Astound\AvaTax\Model\Service\Resource\Avatax16\Queue;
 
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Framework\Stdlib\DateTime\Timezone;
 use Magento\Store\Model\Store;
 use Magento\Store\Model\StoreFactory;
-use OnePica\AvaTax\Model\Service\Resource\AbstractResource;
-use OnePica\AvaTax\Model\Service\ConfigRepositoryInterface;
-use OnePica\AvaTax\Helper\Config;
-use OnePica\AvaTax\Api\Service\LoggerInterface;
-use OnePica\AvaTax\Model\Service\DataSource\Queue as QueueDataSource;
+use Astound\AvaTax\Model\Service\Resource\AbstractResource;
+use Astound\AvaTax\Model\Service\ConfigRepositoryInterface;
+use Astound\AvaTax\Helper\Config;
+use Astound\AvaTax\Api\Service\LoggerInterface;
+use Astound\AvaTax\Model\Service\DataSource\Queue as QueueDataSource;
 use OnePica\AvaTax16\Document\Request\Line;
-use OnePica\AvaTax\Model\Log;
-use OnePica\AvaTax\Model\Service\Result\ResultInterface;
+use Astound\AvaTax\Model\Log;
+use Astound\AvaTax\Model\Service\Result\ResultInterface;
 use OnePica\AvaTax16\Document\Request;
-use OnePica\AvaTax\Model\Queue;
+use Astound\AvaTax\Model\Queue;
 
 /**
  * Class AbstractQueue
  *
- * @package OnePica\AvaTax\Model\Service\Resource\Avatax\Queue
+ * @package Astound\AvaTax\Model\Service\Resource\Avatax\Queue
  */
 abstract class AbstractQueue extends AbstractResource
 {
@@ -53,11 +53,11 @@ abstract class AbstractQueue extends AbstractResource
     /**
      * AbstractResource constructor.
      *
-     * @param \OnePica\AvaTax\Model\Service\ConfigRepositoryInterface $configRepository
+     * @param \Astound\AvaTax\Model\Service\ConfigRepositoryInterface $configRepository
      * @param \Magento\Framework\ObjectManagerInterface               $objectManager
-     * @param \OnePica\AvaTax\Helper\Config                           $config
-     * @param \OnePica\AvaTax\Api\Service\LoggerInterface             $logger
-     * @param \OnePica\AvaTax\Model\Service\DataSource\Queue          $dataSource
+     * @param \Astound\AvaTax\Helper\Config                           $config
+     * @param \Astound\AvaTax\Api\Service\LoggerInterface             $logger
+     * @param \Astound\AvaTax\Model\Service\DataSource\Queue          $dataSource
      * @param Timezone                                                $timezone
      * @param StoreFactory                                            $storeFactory
      */
@@ -104,7 +104,7 @@ abstract class AbstractQueue extends AbstractResource
         $result = $this->createResultObject();
 
         $config = $this->configRepository->getConfigByStore($store);
-        /** @var \OnePica\AvaTax\Model\Service\Avatax16\Config $config */
+        /** @var \Astound\AvaTax\Model\Service\Avatax16\Config $config */
         try {
             $libResult = $config->getConnection()->createTransaction($this->request);
             $result->setResponse($libResult->toArray());

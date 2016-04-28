@@ -1,38 +1,38 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@astound.com>
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astound.com>
  * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model\Service\Resource\Avatax16;
+namespace Astound\AvaTax\Model\Service\Resource\Avatax16;
 
 use DateTime;
 use Magento\Framework\DataObject;
 use Magento\Framework\ObjectManagerInterface;
-use OnePica\AvaTax\Model\Service\DataSource\DataSourceInterface;
-use OnePica\AvaTax\Model\Service\Resource\AbstractResource;
-use OnePica\AvaTax\Model\Service\Avatax16\Config;
-use OnePica\AvaTax\Model\Service\Result\Storage\Validation as ValidationResultStorage;
+use Astound\AvaTax\Model\Service\DataSource\DataSourceInterface;
+use Astound\AvaTax\Model\Service\Resource\AbstractResource;
+use Astound\AvaTax\Model\Service\Avatax16\Config;
+use Astound\AvaTax\Model\Service\Result\Storage\Validation as ValidationResultStorage;
 use OnePica\AvaTax16\Document\Part\Location\Address as AvaTax16LibAddress;
-use OnePica\AvaTax\Model\Service\Result\AddressValidation;
-use OnePica\AvaTax\Model\Service\Request\Address as RequestAddress;
-use OnePica\AvaTax\Model\Service\ConfigRepositoryInterface;
-use OnePica\AvaTax\Api\Service\LoggerInterface;
-use OnePica\AvaTax\Helper\Config as ConfigHelper;
-use OnePica\AvaTax\Model\Log;
+use Astound\AvaTax\Model\Service\Result\AddressValidation;
+use Astound\AvaTax\Model\Service\Request\Address as RequestAddress;
+use Astound\AvaTax\Model\Service\ConfigRepositoryInterface;
+use Astound\AvaTax\Api\Service\LoggerInterface;
+use Astound\AvaTax\Helper\Config as ConfigHelper;
+use Astound\AvaTax\Model\Log;
 
 /**
  * Class Validation
  *
- * @package OnePica\AvaTax\Model\Service\Resource\Avatax
+ * @package Astound\AvaTax\Model\Service\Resource\Avatax
  */
 class Validation extends AbstractResource
 {
@@ -53,11 +53,11 @@ class Validation extends AbstractResource
     /**
      * Constructor.
      *
-     * @param \OnePica\AvaTax\Model\Service\ConfigRepositoryInterface      $configRepository
+     * @param \Astound\AvaTax\Model\Service\ConfigRepositoryInterface      $configRepository
      * @param ObjectManagerInterface                                       $objectManager
      * @param ValidationResultStorage                                      $resultStorage
      * @param ConfigHelper                                                 $config
-     * @param \OnePica\AvaTax\Model\Service\DataSource\DataSourceInterface $dataSource
+     * @param \Astound\AvaTax\Model\Service\DataSource\DataSourceInterface $dataSource
      * @param LoggerInterface                                              $logger
      */
     public function __construct(
@@ -77,7 +77,7 @@ class Validation extends AbstractResource
      *
      * @param RequestAddress $address
      *
-     * @return \OnePica\AvaTax\Model\Service\Result\ResultInterface
+     * @return \Astound\AvaTax\Model\Service\Result\ResultInterface
      */
     public function validate($address)
     {

@@ -1,5 +1,5 @@
 {
-    "name": "onepica/module-avatax2",
+    "name": "astound/module-avatax2",
     "description": "Magento 2 extension for sales tax calculation performed by Avatax",
     "require": {
         "php": "~5.5.0|~5.6.0|~7.0.0",
@@ -15,7 +15,7 @@
             "registration.php"
         ],
         "psr-4": {
-            "OnePica\\AvaTax\\": ""
+            "Astound\\AvaTax\\": ""
         }
     }
 }

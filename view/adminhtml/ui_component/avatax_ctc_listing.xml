@@ -235,7 +235,7 @@
             </argument>
         </column>
 
-        <actionsColumn name="actions" class="OnePica\AvaTax\Ui\Component\Listing\Column\Actions">
+        <actionsColumn name="actions" class="Astound\AvaTax\Ui\Component\Listing\Column\Actions">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="urlAction" xsi:type="string">avatax/customertaxclasses/edit</item>

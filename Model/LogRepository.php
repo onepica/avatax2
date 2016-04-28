@@ -1,50 +1,50 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@astound.com>
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astound.com>
  * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model;
+namespace Astound\AvaTax\Model;
 
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use OnePica\AvaTax\Api\Data;
-use OnePica\AvaTax\Api\LogRepositoryInterface;
+use Astound\AvaTax\Api\Data;
+use Astound\AvaTax\Api\LogRepositoryInterface;
 
 /**
  * Class LogRepository
  *
- * @package OnePica\AvaTax\Model
+ * @package Astound\AvaTax\Model
  */
 class LogRepository implements LogRepositoryInterface
 {
     /**
      * Log factory
      *
-     * @var \OnePica\AvaTax\Model\LogFactory
+     * @var \Astound\AvaTax\Model\LogFactory
      */
     protected $logFactory;
 
     /**
      * Log resource model
      *
-     * @var \OnePica\AvaTax\Model\ResourceModel\Log
+     * @var \Astound\AvaTax\Model\ResourceModel\Log
      */
     protected $logResource;
 
     /**
      * LogRepository constructor.
      *
-     * @param \OnePica\AvaTax\Model\LogFactory        $logFactory
-     * @param \OnePica\AvaTax\Model\ResourceModel\Log $logResource
+     * @param \Astound\AvaTax\Model\LogFactory        $logFactory
+     * @param \Astound\AvaTax\Model\ResourceModel\Log $logResource
      */
     public function __construct(LogFactory $logFactory, ResourceModel\Log $logResource)
     {
@@ -55,8 +55,8 @@ class LogRepository implements LogRepositoryInterface
     /**
      * Save log
      *
-     * @param \OnePica\AvaTax\Api\Data\LogInterface $log
-     * @return \OnePica\AvaTax\Api\Data\LogInterface
+     * @param \Astound\AvaTax\Api\Data\LogInterface $log
+     * @return \Astound\AvaTax\Api\Data\LogInterface
      * @throws \Magento\Framework\Exception\CouldNotSaveException
      */
     public function save(Data\LogInterface $log)
@@ -74,7 +74,7 @@ class LogRepository implements LogRepositoryInterface
      * Retrieve log.
      *
      * @param int $logId
-     * @return \OnePica\AvaTax\Api\Data\LogInterface
+     * @return \Astound\AvaTax\Api\Data\LogInterface
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getById($logId)

@@ -1,30 +1,30 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@astound.com>
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astound.com>
  * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Observer;
+namespace Astound\AvaTax\Observer;
 
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Store\Model\StoreManagerInterface;
-use OnePica\AvaTax\Model\Tool\Ping;
+use Astound\AvaTax\Model\Tool\Ping;
 
 /**
  * Class ChangedSectionTax
  *
- * @package OnePica\AvaTax\Observer
+ * @package Astound\AvaTax\Observer
  */
 class ChangedSectionTax implements ObserverInterface
 {
@@ -82,7 +82,7 @@ class ChangedSectionTax implements ObserverInterface
      * Send ping
      *
      * @param \Magento\Store\Api\Data\StoreInterface $store
-     * @return \OnePica\AvaTax\Model\Service\Result\Base
+     * @return \Astound\AvaTax\Model\Service\Result\Base
      */
     protected function sendPing($store)
     {

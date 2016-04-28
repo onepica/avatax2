@@ -1,72 +1,72 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <preference for="OnePica\AvaTax\Model\Service\ConfigRepositoryInterface" type="OnePica\AvaTax\Model\Service\ConfigRepository"/>
-    <preference for="OnePica\AvaTax\Model\Service\ResolverInterface" type="OnePica\AvaTax\Model\Service\Resolver"/>
-    <preference for="OnePica\AvaTax\Api\Service\LoggerInterface" type="OnePica\AvaTax\Model\Service\Logger"/>
-    <preference for="OnePica\AvaTax\Api\LogRepositoryInterface" type="OnePica\AvaTax\Model\LogRepository"/>
-    <preference for="OnePica\AvaTax\Model\Service\DataSource\DataSourceInterface" type="OnePica\AvaTax\Model\Service\DataSource\Calculation"/>
-    <preference for="OnePica\AvaTax\Api\QueueRepositoryInterface" type="OnePica\AvaTax\Model\QueueRepository"/>
-    <preference for="OnePica\AvaTax\Api\Data\QueueSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
-    <preference for="OnePica\AvaTax\Api\Data\QueueInterface" type="OnePica\AvaTax\Model\Queue"/>
-    <preference for="OnePica\AvaTax\Api\QueueManagementInterface" type="OnePica\AvaTax\Model\QueueManagement"/>
-    <virtualType name="OnePica\AvaTax\Model\Session\Storage" type="Magento\Framework\Session\Storage">
+    <preference for="Astound\AvaTax\Model\Service\ConfigRepositoryInterface" type="Astound\AvaTax\Model\Service\ConfigRepository"/>
+    <preference for="Astound\AvaTax\Model\Service\ResolverInterface" type="Astound\AvaTax\Model\Service\Resolver"/>
+    <preference for="Astound\AvaTax\Api\Service\LoggerInterface" type="Astound\AvaTax\Model\Service\Logger"/>
+    <preference for="Astound\AvaTax\Api\LogRepositoryInterface" type="Astound\AvaTax\Model\LogRepository"/>
+    <preference for="Astound\AvaTax\Model\Service\DataSource\DataSourceInterface" type="Astound\AvaTax\Model\Service\DataSource\Calculation"/>
+    <preference for="Astound\AvaTax\Api\QueueRepositoryInterface" type="Astound\AvaTax\Model\QueueRepository"/>
+    <preference for="Astound\AvaTax\Api\Data\QueueSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+    <preference for="Astound\AvaTax\Api\Data\QueueInterface" type="Astound\AvaTax\Model\Queue"/>
+    <preference for="Astound\AvaTax\Api\QueueManagementInterface" type="Astound\AvaTax\Model\QueueManagement"/>
+    <virtualType name="Astound\AvaTax\Model\Session\Storage" type="Magento\Framework\Session\Storage">
         <arguments>
-            <argument name="namespace" xsi:type="string">onepica_avatax</argument>
+            <argument name="namespace" xsi:type="string">astound_avatax</argument>
         </arguments>
     </virtualType>
-    <type name="OnePica\AvaTax\Model\Session">
+    <type name="Astound\AvaTax\Model\Session">
         <arguments>
-            <argument name="storage" xsi:type="object">OnePica\AvaTax\Model\Session\Storage</argument>
+            <argument name="storage" xsi:type="object">Astound\AvaTax\Model\Session\Storage</argument>
         </arguments>
     </type>
     <type name="Magento\Quote\Model\Quote\Config">
         <plugin name="magento-quote-model-quote-config-plugin"
-                type="OnePica\AvaTax\Plugin\Magento\Quote\Model\Quote\Config" sortOrder="10" />
+                type="Astound\AvaTax\Plugin\Magento\Quote\Model\Quote\Config" sortOrder="10" />
     </type>
     <type name="Magento\Tax\Model\Calculation">
         <plugin name="avatax_tax_calculation_plugin"
-                type="OnePica\AvaTax\Plugin\Magento\Tax\Model\Calculation" sortOrder="10" />
+                type="Astound\AvaTax\Plugin\Magento\Tax\Model\Calculation" sortOrder="10" />
     </type>
     <type name="Magento\Tax\Model\Config">
         <plugin name="avatax_tax_config_plugin"
-                type="OnePica\AvaTax\Plugin\Magento\Tax\Model\Config" sortOrder="10" />
+                type="Astound\AvaTax\Plugin\Magento\Tax\Model\Config" sortOrder="10" />
     </type>
     <type name="Magento\Tax\Helper\Data">
         <plugin name="avatax_tax_data_helper_plugin"
-                type="OnePica\AvaTax\Plugin\Magento\Tax\Helper\Data" sortOrder="10" />
+                type="Astound\AvaTax\Plugin\Magento\Tax\Helper\Data" sortOrder="10" />
     </type>
     <type name="Magento\Weee\Model\Config">
         <plugin name="avatax_weee_model_config_plugin"
-                type="OnePica\AvaTax\Plugin\Magento\Weee\Model\Config" sortOrder="10" />
+                type="Astound\AvaTax\Plugin\Magento\Weee\Model\Config" sortOrder="10" />
     </type>
     <type name="Magento\GiftWrapping\Helper\Data">
         <plugin name="avatax_giftwrapping_data_helper_plugin"
-                type="OnePica\AvaTax\Plugin\Magento\GiftWrapping\Helper\Data" sortOrder="10" />
+                type="Astound\AvaTax\Plugin\Magento\GiftWrapping\Helper\Data" sortOrder="10" />
     </type>
-    <type name="OnePica\AvaTax\Model\Service\Resolver">
+    <type name="Astound\AvaTax\Model\Service\Resolver">
         <arguments>
             <argument name="data" xsi:type="array">
                 <item name="avatax16" xsi:type="array">
-                    <item name="service" xsi:type="string">OnePica\AvaTax\Model\Service\Avatax16</item>
-                    <item name="service_config" xsi:type="string">OnePica\AvaTax\Model\Service\Avatax16\Config</item>
+                    <item name="service" xsi:type="string">Astound\AvaTax\Model\Service\Avatax16</item>
+                    <item name="service_config" xsi:type="string">Astound\AvaTax\Model\Service\Avatax16\Config</item>
                 </item>
             </argument>
         </arguments>
     </type>
     <type name="Magento\Checkout\Model\ShippingInformationManagement">
-        <plugin name="onepica_avatax_onepage_address_validation" type="OnePica\AvaTax\Plugin\Checkout\Model\ShippingInformationManagement" />
+        <plugin name="astound_avatax_onepage_address_validation" type="Astound\AvaTax\Plugin\Checkout\Model\ShippingInformationManagement" />
     </type>
     <type name="Magento\Checkout\Model\TotalsInformationManagement">
-        <plugin name="onepica_avatax_checkout_cart_totals_information"
-                type="OnePica\AvaTax\Plugin\Checkout\Model\TotalsInformationManagement" />
+        <plugin name="astound_avatax_checkout_cart_totals_information"
+                type="Astound\AvaTax\Plugin\Checkout\Model\TotalsInformationManagement" />
     </type>
     <type name="Magento\Quote\Model\Quote\Address">
-        <plugin name="quote_model_quote_address_validator" type="OnePica\AvaTax\Plugin\Quote\Model\Quote\AddressValidator" />
+        <plugin name="quote_model_quote_address_validator" type="Astound\AvaTax\Plugin\Quote\Model\Quote\AddressValidator" />
     </type>
     <virtualType name="LogGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
         <arguments>
-            <argument name="collection" xsi:type="object" shared="false">OnePica\AvaTax\Model\ResourceModel\Log\Collection</argument>
+            <argument name="collection" xsi:type="object" shared="false">Astound\AvaTax\Model\ResourceModel\Log\Collection</argument>
             <argument name="filterPool" xsi:type="object" shared="false">LogGirdFilterPool</argument>
         </arguments>
     </virtualType>
@@ -78,16 +78,16 @@
             </argument>
         </arguments>
     </virtualType>
-    <type name="OnePica\AvaTax\Model\ResourceModel\Log\Grid\Collection">
+    <type name="Astound\AvaTax\Model\ResourceModel\Log\Grid\Collection">
         <arguments>
             <argument name="mainTable" xsi:type="string">avatax_log</argument>
-            <argument name="eventPrefix" xsi:type="string">onepica_avatax_log_collection</argument>
+            <argument name="eventPrefix" xsi:type="string">astound_avatax_log_collection</argument>
             <argument name="eventObject" xsi:type="string">avatax_log_collection</argument>
-            <argument name="resourceModel" xsi:type="string">OnePica\AvaTax\Model\ResourceModel\Log</argument>
+            <argument name="resourceModel" xsi:type="string">Astound\AvaTax\Model\ResourceModel\Log</argument>
         </arguments>
     </type>
 <!-- Customer Tax Classes -->
-    <virtualType name="Magento\Tax\Model\ResourceModel\Customer\Grid\Collection" type="OnePica\AvaTax\Model\ResourceModel\Customer\TaxClass\Grid\Collection">
+    <virtualType name="Magento\Tax\Model\ResourceModel\Customer\Grid\Collection" type="Astound\AvaTax\Model\ResourceModel\Customer\TaxClass\Grid\Collection">
         <arguments>
             <argument name="mainTable" xsi:type="string">tax_class</argument>
             <argument name="resourceModel" xsi:type="string">Magento\Tax\Model\ResourceModel\TaxClass</argument>
@@ -113,7 +113,7 @@
     </virtualType>
 <!--  -->
 <!-- Product Tax Classes -->
-    <virtualType name="Magento\Tax\Model\ResourceModel\Product\Grid\Collection" type="OnePica\AvaTax\Model\ResourceModel\Product\TaxClass\Grid\Collection">
+    <virtualType name="Magento\Tax\Model\ResourceModel\Product\Grid\Collection" type="Astound\AvaTax\Model\ResourceModel\Product\TaxClass\Grid\Collection">
         <arguments>
             <argument name="mainTable" xsi:type="string">tax_class</argument>
             <argument name="resourceModel" xsi:type="string">Magento\Tax\Model\ResourceModel\TaxClass</argument>
@@ -143,8 +143,8 @@
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
         <arguments>
             <argument name="collections" xsi:type="array">
-                <item name="avatax_queue_listing_data_source" xsi:type="string">OnePica\AvaTax\Model\ResourceModel\Queue\Grid\Collection</item>
-                <item name="avatax_log_listing_data_source" xsi:type="string">OnePica\AvaTax\Model\ResourceModel\Log\Grid\Collection</item>
+                <item name="avatax_queue_listing_data_source" xsi:type="string">Astound\AvaTax\Model\ResourceModel\Queue\Grid\Collection</item>
+                <item name="avatax_log_listing_data_source" xsi:type="string">Astound\AvaTax\Model\ResourceModel\Log\Grid\Collection</item>
                 <item name="ctc_listing_data_source" xsi:type="string">Magento\Tax\Model\ResourceModel\Customer\Grid\Collection</item>
                 <item name="ptc_listing_data_source" xsi:type="string">Magento\Tax\Model\ResourceModel\Product\Grid\Collection</item>
             </argument>

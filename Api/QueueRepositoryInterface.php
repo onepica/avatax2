@@ -1,38 +1,38 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@astound.com>
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astound.com>
  * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Api;
+namespace Astound\AvaTax\Api;
 
 /**
  * Interface QueueRepositoryInterface
  *
- * @package OnePica\AvaTax\Api
+ * @package Astound\AvaTax\Api
  */
 interface QueueRepositoryInterface
 {
     /**
      * Save Queue
      *
-     * @param \OnePica\AvaTax\Api\Data\QueueInterface $queue
-     * @return \OnePica\AvaTax\Api\Data\QueueInterface
+     * @param \Astound\AvaTax\Api\Data\QueueInterface $queue
+     * @return \Astound\AvaTax\Api\Data\QueueInterface
      */
     public function save(Data\QueueInterface $queue);
 
     /**
      * Delete Queue
      *
-     * @param \OnePica\AvaTax\Api\Data\QueueInterface $queue
+     * @param \Astound\AvaTax\Api\Data\QueueInterface $queue
      * @return bool
      */
     public function delete(Data\QueueInterface $queue);
@@ -41,7 +41,7 @@ interface QueueRepositoryInterface
      * Retrieve Queue
      *
      * @param int $queueId
-     * @return \OnePica\AvaTax\Api\Data\QueueInterface
+     * @return \Astound\AvaTax\Api\Data\QueueInterface
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getById($queueId);

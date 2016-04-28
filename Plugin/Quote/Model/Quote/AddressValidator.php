@@ -1,34 +1,34 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@astound.com>
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astound.com>
  * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Plugin\Quote\Model\Quote;
+namespace Astound\AvaTax\Plugin\Quote\Model\Quote;
 
 use Magento\Customer\Model\Address\AbstractAddress;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Store\Model\Store;
-use OnePica\AvaTax\Helper\Config;
-use OnePica\AvaTax\Model\Tool\Validate;
-use OnePica\AvaTax\Model\Service\Request\Address as RequestAddress;
-use OnePica\AvaTax\Model\Service\Result\AddressValidation;
-use OnePica\AvaTax\Helper\Data as AvataxDataHelper;
-use OnePica\AvaTax\Helper\Address as AvataxAddressHelper;
+use Astound\AvaTax\Helper\Config;
+use Astound\AvaTax\Model\Tool\Validate;
+use Astound\AvaTax\Model\Service\Request\Address as RequestAddress;
+use Astound\AvaTax\Model\Service\Result\AddressValidation;
+use Astound\AvaTax\Helper\Data as AvataxDataHelper;
+use Astound\AvaTax\Helper\Address as AvataxAddressHelper;
 
 /**
  * Quote address validator
  *
- * @package OnePica\AvaTax\Plugin\Quote\Model\Quote\AddressValidator
+ * @package Astound\AvaTax\Plugin\Quote\Model\Quote\AddressValidator
  */
 class AddressValidator
 {
@@ -226,7 +226,7 @@ class AddressValidator
      */
     protected function convertAddressToRequestAddress(AbstractAddress $address)
     {
-        $requestAddress = $this->objectManager->create('OnePica\AvaTax\Model\Service\Request\Address');
+        $requestAddress = $this->objectManager->create('Astound\AvaTax\Model\Service\Request\Address');
         $requestAddress->setStore($this->store);
         $requestAddress->setLine1($address->getStreetLine(1));
         $requestAddress->setLine2($address->getStreetLine(2));

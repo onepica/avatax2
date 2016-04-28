@@ -2,10 +2,10 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
     <group id="default">
-        <job name="avatax_scheduled_log_clean" instance="OnePica\AvaTax\Cron\ScheduledLogClean" method="execute">
+        <job name="avatax_scheduled_log_clean" instance="Astound\AvaTax\Cron\ScheduledLogClean" method="execute">
             <schedule>0 0 * * *</schedule>
         </job>
-        <job name="avatax_scheduled_queue_processing" instance="OnePica\AvaTax\Cron\ScheduledQueueProcessing" method="execute">
+        <job name="avatax_scheduled_queue_processing" instance="Astound\AvaTax\Cron\ScheduledQueueProcessing" method="execute">
             <schedule>0 * * * *</schedule>
         </job>
     </group>

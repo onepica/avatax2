@@ -1,18 +1,18 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@astound.com>
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astound.com>
  * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model\Service\Resource;
+namespace Astound\AvaTax\Model\Service\Resource;
 
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Quote\Model\Quote\Item as QuoteItem;
@@ -20,22 +20,22 @@ use Magento\Sales\Model\Order\Creditmemo\Item as CreditmemoItem;
 use Magento\Sales\Model\Order\Invoice\Item as InvoiceItem;
 use Magento\Sales\Model\Order\Item as OrderItem;
 use Magento\Store\Model\Store;
-use OnePica\AvaTax\Model\Service\ConfigRepositoryInterface;
-use OnePica\AvaTax\Model\Service\DataSource\DataSourceInterface;
-use OnePica\AvaTax\Model\Service\Result\ResultInterface;
-use OnePica\AvaTax\Api\Service\LoggerInterface;
-use OnePica\AvaTax\Helper\Config;
-use OnePica\AvaTax\Model\Log;
-use OnePica\AvaTax\Model\Service\DataSource\Calculation;
-use OnePica\AvaTax\Model\Service\Result\Base;
+use Astound\AvaTax\Model\Service\ConfigRepositoryInterface;
+use Astound\AvaTax\Model\Service\DataSource\DataSourceInterface;
+use Astound\AvaTax\Model\Service\Result\ResultInterface;
+use Astound\AvaTax\Api\Service\LoggerInterface;
+use Astound\AvaTax\Helper\Config;
+use Astound\AvaTax\Model\Log;
+use Astound\AvaTax\Model\Service\DataSource\Calculation;
+use Astound\AvaTax\Model\Service\Result\Base;
 use OnePica\AvaTax16\Document\Request\Header;
 use OnePica\AvaTax16\Document\Request\Line;
 
 /**
  * Class AbstractResource
  *
- * @property \OnePica\AvaTax\Model\Service\ConfigRepository $configRepository
- * @package OnePica\AvaTax\Model\Service\Resource
+ * @property \Astound\AvaTax\Model\Service\ConfigRepository $configRepository
+ * @package Astound\AvaTax\Model\Service\Resource
  */
 abstract class AbstractResource
 {
@@ -67,7 +67,7 @@ abstract class AbstractResource
     /**
      * Config repository
      *
-     * @var \OnePica\AvaTax\Model\Service\ConfigRepositoryInterface
+     * @var \Astound\AvaTax\Model\Service\ConfigRepositoryInterface
      */
     protected $configRepository;
 
@@ -81,7 +81,7 @@ abstract class AbstractResource
     /**
      * Service logger
      *
-     * @var \OnePica\AvaTax\Api\Service\LoggerInterface
+     * @var \Astound\AvaTax\Api\Service\LoggerInterface
      */
     protected $logger;
 
@@ -95,7 +95,7 @@ abstract class AbstractResource
     /**
      * Data source
      *
-     * @var \OnePica\AvaTax\Model\Service\DataSource\DataSourceInterface|\OnePica\AvaTax\Model\Service\DataSource\Calculation
+     * @var \Astound\AvaTax\Model\Service\DataSource\DataSourceInterface|\Astound\AvaTax\Model\Service\DataSource\Calculation
      */
     protected $dataSource;
 
@@ -114,18 +114,18 @@ abstract class AbstractResource
     protected $lineToItemId = [];
 
     /**
-     * @var \OnePica\AvaTax\Helper\Config
+     * @var \Astound\AvaTax\Helper\Config
      */
     protected $config;
 
     /**
      * AbstractResource constructor.
      *
-     * @param \OnePica\AvaTax\Model\Service\ConfigRepositoryInterface      $configRepository
+     * @param \Astound\AvaTax\Model\Service\ConfigRepositoryInterface      $configRepository
      * @param \Magento\Framework\ObjectManagerInterface                    $objectManager
-     * @param \OnePica\AvaTax\Helper\Config                                $config
-     * @param \OnePica\AvaTax\Api\Service\LoggerInterface                  $logger
-     * @param \OnePica\AvaTax\Model\Service\DataSource\DataSourceInterface $dataSource
+     * @param \Astound\AvaTax\Helper\Config                                $config
+     * @param \Astound\AvaTax\Api\Service\LoggerInterface                  $logger
+     * @param \Astound\AvaTax\Model\Service\DataSource\DataSourceInterface $dataSource
      */
     public function __construct(
         ConfigRepositoryInterface $configRepository,
@@ -172,7 +172,7 @@ abstract class AbstractResource
         $result = $this->createResultObject();
 
         $config = $this->configRepository->getConfigByStore($store);
-        /** @var \OnePica\AvaTax\Model\Service\Avatax16\Config $config */
+        /** @var \Astound\AvaTax\Model\Service\Avatax16\Config $config */
         try {
             $libResult = $config->getConnection()->createCalculation($this->request);
             $result->setResponse($libResult);
@@ -245,7 +245,7 @@ abstract class AbstractResource
      * Get config by store
      *
      * @param Store $store
-     * @return \OnePica\AvaTax\Model\Service\Avatax16\ConfigInterface
+     * @return \Astound\AvaTax\Model\Service\Avatax16\ConfigInterface
      */
     protected function getConfigByStore($store)
     {

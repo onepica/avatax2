@@ -1,18 +1,18 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@astound.com>
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astound.com>
  * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model;
+namespace Astound\AvaTax\Model;
 
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\SearchCriteriaBuilder;
@@ -21,15 +21,15 @@ use Magento\Framework\Api\SortOrderBuilder;
 use Magento\Framework\Stdlib\DateTime;
 use Magento\Sales\Model\Order\Creditmemo;
 use Magento\Sales\Model\Order\Invoice;
-use OnePica\AvaTax\Api\QueueManagementInterface;
-use OnePica\AvaTax\Api\QueueRepositoryInterface;
-use OnePica\AvaTax\Helper\Config;
-use OnePica\AvaTax\Model\Tool\Submit;
+use Astound\AvaTax\Api\QueueManagementInterface;
+use Astound\AvaTax\Api\QueueRepositoryInterface;
+use Astound\AvaTax\Helper\Config;
+use Astound\AvaTax\Model\Tool\Submit;
 
 /**
  * Class Manager
  *
- * @package OnePica\AvaTax\Model\Queue
+ * @package Astound\AvaTax\Model\Queue
  */
 class QueueManagement implements QueueManagementInterface
 {
@@ -58,7 +58,7 @@ class QueueManagement implements QueueManagementInterface
     /**
      * Config helper
      *
-     * @var \OnePica\AvaTax\Helper\Config
+     * @var \Astound\AvaTax\Helper\Config
      */
     protected $config;
 
@@ -289,7 +289,7 @@ class QueueManagement implements QueueManagementInterface
             $tool->setQueue($queue);
             $tool->execute();
             $queue->setStatus(Queue::STATUS_COMPLETE)->setMessage(null)->save();
-        } catch (\OnePica\AvaTax\Model\Service\Exception\Unbalanced $e) {
+        } catch (\Astound\AvaTax\Model\Service\Exception\Unbalanced $e) {
             $queue->setStatus(Queue::STATUS_UNBALANCED)
                 ->setMessage($e->getMessage())
                 ->save();

@@ -1,43 +1,43 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@astound.com>
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astound.com>
  * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model\Tool;
+namespace Astound\AvaTax\Model\Tool;
 
 use Magento\Sales\Api\OrderRepositoryInterface;
-use OnePica\AvaTax\Model\Service\Avatax16;
-use OnePica\AvaTax\Model\Service\Exception\Commitfailure;
-use OnePica\AvaTax\Model\Service\Result\Creditmemo;
-use OnePica\AvaTax\Model\Service\Result\Invoice;
-use OnePica\AvaTax\Model\Service\Result\ResultInterface;
-use OnePica\AvaTax\Model\Service\ResolverInterface;
-use OnePica\AvaTax\Model\ServiceFactory;
+use Astound\AvaTax\Model\Service\Avatax16;
+use Astound\AvaTax\Model\Service\Exception\Commitfailure;
+use Astound\AvaTax\Model\Service\Result\Creditmemo;
+use Astound\AvaTax\Model\Service\Result\Invoice;
+use Astound\AvaTax\Model\Service\Result\ResultInterface;
+use Astound\AvaTax\Model\Service\ResolverInterface;
+use Astound\AvaTax\Model\ServiceFactory;
 use Magento\Sales\Model\Order\Invoice as OrderInvoice;
-use OnePica\AvaTax\Model\Queue;
-use OnePica\AvaTax\Helper\Data as DataHelper;
+use Astound\AvaTax\Model\Queue;
+use Astound\AvaTax\Helper\Data as DataHelper;
 
 /**
  * Class Submit
  *
  * @method Avatax16 getService()
- * @package OnePica\AvaTax\Model\Tool\Submit
+ * @package Astound\AvaTax\Model\Tool\Submit
  */
 class Submit extends AbstractTool
 {
     /**
      * Queue
      *
-     * @var \OnePica\AvaTax\Model\Queue
+     * @var \Astound\AvaTax\Model\Queue
      */
     protected $queue;
 
@@ -58,8 +58,8 @@ class Submit extends AbstractTool
     /**
      * Invoice constructor.
      *
-     * @param \OnePica\AvaTax\Model\Service\ResolverInterface $resolver
-     * @param \OnePica\AvaTax\Model\ServiceFactory            $serviceFactory
+     * @param \Astound\AvaTax\Model\Service\ResolverInterface $resolver
+     * @param \Astound\AvaTax\Model\ServiceFactory            $serviceFactory
      * @param DataHelper                                      $dataHelper
      * @param OrderRepositoryInterface                        $orderRepository
      * @param Queue                                           $queue
@@ -95,7 +95,7 @@ class Submit extends AbstractTool
      * Process queue. Send request object to service
      *
      * @return ResultInterface
-     * @throws \OnePica\AvaTax\Model\Service\Exception\Unbalanced
+     * @throws \Astound\AvaTax\Model\Service\Exception\Unbalanced
      * @throws Commitfailure
      */
     public function execute()
@@ -119,7 +119,7 @@ class Submit extends AbstractTool
         /** @var Invoice $queueResult */
         $totalTax = $queueResult->getTotalTax();
         if (!$this->isQueueTaxSameAsResponseTax($this->queue->getTotalTaxAmount(), $totalTax)) {
-            throw new \OnePica\AvaTax\Model\Service\Exception\Unbalanced(
+            throw new \Astound\AvaTax\Model\Service\Exception\Unbalanced(
                 'Collected: ' . $this->queue->getTotalTaxAmount() . ', Actual: ' . $totalTax
             );
         }

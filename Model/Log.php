@@ -1,23 +1,23 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@astound.com>
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astound.com>
  * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model;
+namespace Astound\AvaTax\Model;
 
 use Magento\Framework\Model\AbstractModel;
-use OnePica\AvaTax\Api\Data\LogInterface;
-use OnePica\AvaTax\Model\ResourceModel\Log as LogResource;
-use OnePica\AvaTax\Model\ResourceModel\Log\Collection;
+use Astound\AvaTax\Api\Data\LogInterface;
+use Astound\AvaTax\Model\ResourceModel\Log as LogResource;
+use Astound\AvaTax\Model\ResourceModel\Log\Collection;
 
 /**
  * Class Log
@@ -26,7 +26,7 @@ use OnePica\AvaTax\Model\ResourceModel\Log\Collection;
  * @method LogResource getResource()
  * @method $this save()
  *
- * @package OnePica\AvaTax\Model
+ * @package Astound\AvaTax\Model
  */
 class Log extends AbstractModel implements LogInterface
 {
@@ -35,7 +35,7 @@ class Log extends AbstractModel implements LogInterface
      *
      * @var string
      */
-    protected $_eventPrefix = 'onepica_avatax_log';
+    protected $_eventPrefix = 'astound_avatax_log';
 
     /**
      * Initialize resource model

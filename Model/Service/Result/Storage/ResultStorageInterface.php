@@ -1,25 +1,25 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@astound.com>
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astound.com>
  * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model\Service\Result\Storage;
+namespace Astound\AvaTax\Model\Service\Result\Storage;
 
-use OnePica\AvaTax\Model\Service\Result\ResultInterface;
+use Astound\AvaTax\Model\Service\Result\ResultInterface;
 
 /**
  * Interface ResultStorageInterface
  *
- * @package OnePica\AvaTax\Model\Service\Result\Storage
+ * @package Astound\AvaTax\Model\Service\Result\Storage
  */
 interface ResultStorageInterface
 {
@@ -28,7 +28,7 @@ interface ResultStorageInterface
      *
      * @param mixed $request
      *
-     * @return \OnePica\AvaTax\Model\Service\Result\ResultInterface|null
+     * @return \Astound\AvaTax\Model\Service\Result\ResultInterface|null
      */
     public function getResult($request);
 
@@ -36,7 +36,7 @@ interface ResultStorageInterface
      * Set result
      *
      * @param mixed                                                $request
-     * @param \OnePica\AvaTax\Model\Service\Result\ResultInterface $result
+     * @param \Astound\AvaTax\Model\Service\Result\ResultInterface $result
      *
      * @return $this
      */

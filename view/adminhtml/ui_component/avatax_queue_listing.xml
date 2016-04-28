@@ -170,7 +170,7 @@
         </column>
         <column name="type">
             <argument name="data" xsi:type="array">
-                <item name="options" xsi:type="object">OnePica\AvaTax\Model\Source\Queue\Type</item>
+                <item name="options" xsi:type="object">Astound\AvaTax\Model\Source\Queue\Type</item>
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">select</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
@@ -182,7 +182,7 @@
         </column>
         <column name="status">
             <argument name="data" xsi:type="array">
-                <item name="options" xsi:type="object">OnePica\AvaTax\Model\Source\Queue\Status</item>
+                <item name="options" xsi:type="object">Astound\AvaTax\Model\Source\Queue\Status</item>
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">select</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>

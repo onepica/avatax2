@@ -1,18 +1,18 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@astound.com>
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astound.com>
  * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model\ResourceModel\Queue\Grid;
+namespace Astound\AvaTax\Model\ResourceModel\Queue\Grid;
 
 use Magento\Framework\Api\Search\AggregationInterface;
 use Magento\Framework\Api\Search\SearchResultInterface;
@@ -21,13 +21,13 @@ use Magento\Framework\Data\Collection\EntityFactoryInterface;
 use Magento\Framework\DB\Adapter\AdapterInterface;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
-use OnePica\AvaTax\Model\ResourceModel\Queue\Collection as QueueCollection;
+use Astound\AvaTax\Model\ResourceModel\Queue\Collection as QueueCollection;
 use Psr\Log\LoggerInterface;
 
 /**
  * Class Collection
  *
- * @package OnePica\AvaTax\Model\ResourceModel\Queue\Grid
+ * @package Astound\AvaTax\Model\ResourceModel\Queue\Grid
  */
 class Collection extends QueueCollection implements SearchResultInterface
 {

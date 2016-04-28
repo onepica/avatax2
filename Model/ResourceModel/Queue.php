@@ -1,31 +1,31 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@astound.com>
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astound.com>
  * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model\ResourceModel;
+namespace Astound\AvaTax\Model\ResourceModel;
 
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 use Magento\Framework\Model\ResourceModel\Db\Context;
 use Magento\Framework\Stdlib\DateTime;
-use OnePica\AvaTax\Api\Data\QueueInterface;
-use OnePica\AvaTax\Api\Service\LoggerInterface;
-use OnePica\AvaTax\Model\Log as LogModel;
-use OnePica\AvaTax\Model\Service\Result\BaseFactory as BaseResultFactory;
+use Astound\AvaTax\Api\Data\QueueInterface;
+use Astound\AvaTax\Api\Service\LoggerInterface;
+use Astound\AvaTax\Model\Log as LogModel;
+use Astound\AvaTax\Model\Service\Result\BaseFactory as BaseResultFactory;
 
 /**
  * Class Queue
  *
- * @package OnePica\AvaTax\Model\ResourceModel
+ * @package Astound\AvaTax\Model\ResourceModel
  */
 class Queue extends AbstractDb
 {
@@ -49,7 +49,7 @@ class Queue extends AbstractDb
     /**
      * Service logger
      *
-     * @var \OnePica\AvaTax\Api\Service\LoggerInterface
+     * @var \Astound\AvaTax\Api\Service\LoggerInterface
      */
     protected $logger;
 

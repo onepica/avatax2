@@ -1,19 +1,19 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@astound.com>
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astound.com>
  * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
-namespace OnePica\AvaTax\Model\Sales\Total\Quote;
+namespace Astound\AvaTax\Model\Sales\Total\Quote;
 
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
@@ -21,13 +21,13 @@ use Magento\Quote\Api\Data\ShippingAssignmentInterface;
 use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\Quote\Address\Total;
 use Magento\Tax\Helper\Data as TaxDataHelper;
-use OnePica\AvaTax\Helper\Address;
-use OnePica\AvaTax\Helper\Config;
+use Astound\AvaTax\Helper\Address;
+use Astound\AvaTax\Helper\Config;
 
 /**
  * Class FixedTax
  *
- * @package OnePica\AvaTax\Model\Sales\Total\Quote
+ * @package Astound\AvaTax\Model\Sales\Total\Quote
  */
 class FixedTax extends AbstractCollector
 {
