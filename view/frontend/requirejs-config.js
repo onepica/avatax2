@@ -7,7 +7,7 @@
  *
  * @category   Astound
  * @package    Astound_AvaTax
- * @author     Astound Codemaster <codemaster@astound.com>
+ * @author     Astound Codemaster <codemaster@astoundcommerce.com>
  * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
