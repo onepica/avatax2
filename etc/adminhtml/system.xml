@@ -176,10 +176,10 @@
                         <label>Sales Person Code</label>
                         <comment>Optional. The sales person code for orders.</comment>
                     </field>
-                    <field id="location_code" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Location Code</label>
-                        <comment>Optional. The location code for orders.</comment>
-                    </field>
+                    <!--<field id="location_code" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">-->
+                        <!--<label>Location Code</label>-->
+                        <!--<comment>Optional. The location code for orders.</comment>-->
+                    <!--</field>-->
                     <field id="first_reference_code" translate="label" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>First Reference Code</label>
                         <source_model>Astound\AvaTax\Model\Source\ProductAttribute</source_model>

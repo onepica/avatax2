@@ -19,6 +19,8 @@ use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use Astound\AvaTax\Helper\Config;
+use Astound\AvaTax\Helper\Data;
 use Astound\AvaTax\Model\Tool\Ping;
 
 /**
@@ -50,32 +52,67 @@ class ChangedSectionTax implements ObserverInterface
     protected $manager;
 
     /**
+     * Config
+     *
+     * @var Config
+     */
+    protected $config;
+
+    /**
      * ChangedSectionTax constructor.
      *
      * @param StoreManagerInterface                     $storeManager
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param ManagerInterface                          $manager
+     * @param Config                                    $config
      */
     public function __construct(
         StoreManagerInterface $storeManager,
         ObjectManagerInterface $objectManager,
-        ManagerInterface $manager
+        ManagerInterface $manager,
+        Config $config
     ) {
         $this->storeManager = $storeManager;
         $this->objectManager = $objectManager;
         $this->manager = $manager;
+        $this->config = $config;
     }
 
     /**
      * Execute
      *
      * @param Observer $observer
+     *
      * @return void
      */
     public function execute(Observer $observer)
     {
         $store = $this->storeManager->getStore((int)$observer->getData('store'));
-        $this->sendPing($store);
+        $this->sendPing($store)->showNotifications($store);
+    }
+
+    /**
+     * Show notification
+     *
+     * @param \Magento\Store\Api\Data\StoreInterface $store
+     *
+     * @return $this
+     */
+    protected function showNotifications($store)
+    {
+        if ($this->config->getActiveService() !== Data::AVATAX16_SERVICE) {
+            return $this;
+        }
+
+        if ($this->config->getServiceUrl($store) === \Astound\AvaTax\Model\Source\Avatax16\Url::DEVELOPER_URL) {
+            $this->manager->addNotice(__('You are using the AvaTax development connection URL.'));
+        }
+
+        if ($this->config->getServiceAction($store) === \Astound\AvaTax\Model\Source\Avatax16\Action::ACTION_CALC) {
+            $this->manager->addNotice(__('Orders will not be sent to the AvaTax system.'));
+        }
+        
+        return $this;
     }
 
     /**
@@ -83,6 +120,8 @@ class ChangedSectionTax implements ObserverInterface
      *
      * @param \Magento\Store\Api\Data\StoreInterface $store
      * @return \Astound\AvaTax\Model\Service\Result\Base
+     *
+     * @return $this
      */
     protected function sendPing($store)
     {

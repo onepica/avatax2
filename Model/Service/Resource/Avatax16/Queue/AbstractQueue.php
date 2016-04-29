@@ -188,8 +188,9 @@ abstract class AbstractQueue extends AbstractResource
         $store = $object->getStore();
         $order = $object->getOrder();
         $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
-        $objectDate = $this->convertGmtDate($object->getCreatedAt(), $store);
-        $orderDate = $this->convertGmtDate($order->getCreatedAt(), $store);
+
+        $objectDate = $this->convertGmtDate($object->getCreatedAt());
+        $orderDate = $this->convertGmtDate($order->getCreatedAt());
 
         $header = parent::prepareHeader($store, $shippingAddress);
         $header->setDocumentCode($this->getDocumentCodeForObject($object));
@@ -200,15 +201,14 @@ abstract class AbstractQueue extends AbstractResource
     }
 
     /**
-     * Retrieve converted date taking into account the current time zone and store.
+     * Retrieve converted date taking into account the current time zone.
      *
      * @param string $gmt
-     * @param Store  $store
      * @return string
      */
-    protected function convertGmtDate($gmt, $store)
+    protected function convertGmtDate($gmt)
     {
-        return $this->timezone->scopeDate($store, $gmt)->format('Y-m-d');
+        return $this->timezone->date($gmt)->format('Y-m-d');
     }
 
     /**

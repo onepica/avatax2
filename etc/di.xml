@@ -54,6 +54,9 @@
             </argument>
         </arguments>
     </type>
+    <type name="Magento\Weee\Model\Total\Quote\Weee">
+        <plugin name="astound_avatax_total_weee" type="Astound\AvaTax\Plugin\Magento\Weee\Model\Total\Quote\Weee"/>
+    </type>
     <type name="Magento\Checkout\Model\ShippingInformationManagement">
         <plugin name="astound_avatax_onepage_address_validation" type="Astound\AvaTax\Plugin\Checkout\Model\ShippingInformationManagement" />
     </type>
@@ -64,6 +67,21 @@
     <type name="Magento\Quote\Model\Quote\Address">
         <plugin name="quote_model_quote_address_validator" type="Astound\AvaTax\Plugin\Quote\Model\Quote\AddressValidator" />
     </type>
+    <type name="Astound\AvaTax\Model\Service\Resource\Avatax16\Queue\AbstractQueue">
+        <arguments>
+            <argument name="timezone" xsi:type="object">Astound\AvaTax\Stdlib\DateTime\Timezone</argument>
+        </arguments>
+    </type>
+    <type name="Astound\AvaTax\Model\Service\Resource\Avatax16\Calculation">
+        <arguments>
+            <argument name="timezone" xsi:type="object">Astound\AvaTax\Stdlib\DateTime\Timezone</argument>
+        </arguments>
+    </type>
+    <virtualType name="Astound\AvaTax\Stdlib\DateTime\Timezone" type="Magento\Framework\Stdlib\DateTime\Timezone">
+        <arguments>
+            <argument name="scopeType" xsi:type="const">\Magento\Store\Model\ScopeInterface::SCOPE_STORE</argument>
+        </arguments>
+    </virtualType>
     <virtualType name="LogGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
         <arguments>
             <argument name="collection" xsi:type="object" shared="false">Astound\AvaTax\Model\ResourceModel\Log\Collection</argument>

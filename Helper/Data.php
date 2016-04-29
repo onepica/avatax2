@@ -23,6 +23,12 @@ use Magento\Framework\App\Helper\AbstractHelper;
  */
 class Data extends AbstractHelper
 {
+    /**#@+
+     * Services
+     */
+    const AVATAX16_SERVICE = 'avatax16';
+    /**#@-*/
+
     /**
      * Shipping address validation disable
      */
