@@ -6,14 +6,14 @@
  * Time: 2:35 PM
  */
 
-namespace OnePica\AvaTax\Controller\Adminhtml\CustomerTaxClasses;
+namespace Astound\AvaTax\Controller\Adminhtml\CustomerTaxClasses;
 
-use OnePica\AvaTax\Controller\Adminhtml\TaxClass\AbstractSaveAction;
+use Astound\AvaTax\Controller\Adminhtml\TaxClass\AbstractSaveAction;
 
 /**
  * Class Save
  *
- * @package OnePica\AvaTax\Controller\Adminhtml\CustomerTaxClasses
+ * @package Astound\AvaTax\Controller\Adminhtml\CustomerTaxClasses
  */
 class Save extends AbstractSaveAction
 {
@@ -34,6 +34,6 @@ class Save extends AbstractSaveAction
      */
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('OnePica_AvaTax::customer_tax_classes');
+        return $this->_authorization->isAllowed('Astound_AvaTax::customer_tax_classes');
     }
 }

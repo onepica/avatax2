@@ -1,9 +1,12 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
     <event name="checkout_type_multishipping_set_shipping_items">
-        <observer name="checkout_multishipping_set_shipping_items" instance="OnePica\AvaTax\Observer\CheckoutMultishippingSetShippingItems" />
+        <observer name="checkout_multishipping_set_shipping_items" instance="Astound\AvaTax\Observer\CheckoutMultishippingSetShippingItems" />
     </event>
     <event name="checkout_submit_all_after">
-        <observer name="avatax_delete_validation_messages" instance="OnePica\AvaTax\Observer\DeleteValidationMessages"/>
+        <observer name="avatax_delete_validation_messages" instance="Astound\AvaTax\Observer\DeleteValidationMessages"/>
+    </event>
+    <event name="controller_action_predispatch_checkout_onepage_success">
+        <observer name="avatax_delete_validation_messages" instance="Astound\AvaTax\Observer\DeleteValidationMessages"/>
     </event>
 </config>

@@ -4,7 +4,7 @@
     <!-- Queue -->
     <virtualType name="QueueGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
         <arguments>
-            <argument name="collection" xsi:type="object" shared="false">OnePica\AvaTax\Model\ResourceModel\Queue\Collection</argument>
+            <argument name="collection" xsi:type="object" shared="false">Astound\AvaTax\Model\ResourceModel\Queue\Collection</argument>
             <argument name="filterPool" xsi:type="object" shared="false">QueueGirdFilterPool</argument>
         </arguments>
     </virtualType>
@@ -16,12 +16,12 @@
             </argument>
         </arguments>
     </virtualType>
-    <type name="OnePica\AvaTax\Model\ResourceModel\Queue\Grid\Collection">
+    <type name="Astound\AvaTax\Model\ResourceModel\Queue\Grid\Collection">
         <arguments>
             <argument name="mainTable" xsi:type="string">avatax_queue</argument>
-            <argument name="eventPrefix" xsi:type="string">onepica_avatax_queue_collection</argument>
+            <argument name="eventPrefix" xsi:type="string">astound_avatax_queue_collection</argument>
             <argument name="eventObject" xsi:type="string">avatax_queue_collection</argument>
-            <argument name="resourceModel" xsi:type="string">OnePica\AvaTax\Model\ResourceModel\Queue</argument>
+            <argument name="resourceModel" xsi:type="string">Astound\AvaTax\Model\ResourceModel\Queue</argument>
         </arguments>
     </type>
     <!-- Queue END -->
@@ -29,7 +29,7 @@
     <type name="Magento\Framework\Notification\MessageList">
         <arguments>
             <argument name="messages" xsi:type="array">
-                <item name="avatax_queue_error_notification" xsi:type="string">OnePica\AvaTax\Model\AdminNotification\System\Message\QueueError</item>
+                <item name="avatax_queue_error_notification" xsi:type="string">Astound\AvaTax\Model\AdminNotification\System\Message\QueueError</item>
             </argument>
         </arguments>
     </type>

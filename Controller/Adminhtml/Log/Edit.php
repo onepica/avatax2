@@ -1,33 +1,33 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@onepica.com>
- * @copyright  Copyright (c) 2016 One Pica, Inc.
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astoundcommerce.com>
+ * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Controller\Adminhtml\Log;
+namespace Astound\AvaTax\Controller\Adminhtml\Log;
 
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Result\PageFactory;
-use OnePica\AvaTax\Api\LogRepositoryInterface;
-use OnePica\AvaTax\Block\Adminhtml\Log\View;
-use OnePica\AvaTax\Controller\Adminhtml\AbstractLogAction;
-use OnePica\AvaTax\Model\Log;
+use Astound\AvaTax\Api\LogRepositoryInterface;
+use Astound\AvaTax\Block\Adminhtml\Log\View;
+use Astound\AvaTax\Controller\Adminhtml\AbstractLogAction;
+use Astound\AvaTax\Model\Log;
 
 /**
  * Class Edit
  *
- * @package OnePica\AvaTax\Controller\Adminhtml\Log
+ * @package Astound\AvaTax\Controller\Adminhtml\Log
  */
 class Edit extends AbstractLogAction
 {
@@ -48,7 +48,7 @@ class Edit extends AbstractLogAction
     /**
      * Log repository
      *
-     * @var \OnePica\AvaTax\Api\LogRepositoryInterface
+     * @var \Astound\AvaTax\Api\LogRepositoryInterface
      */
     protected $logRepository;
 
@@ -58,7 +58,7 @@ class Edit extends AbstractLogAction
      * @param \Magento\Backend\App\Action\Context        $context
      * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
      * @param Registry                                   $registry
-     * @param \OnePica\AvaTax\Api\LogRepositoryInterface $logRepository
+     * @param \Astound\AvaTax\Api\LogRepositoryInterface $logRepository
      */
     public function __construct(
         Context $context,

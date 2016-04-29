@@ -1,18 +1,18 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@onepica.com>
- * @copyright  Copyright (c) 2016 One Pica, Inc.
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astoundcommerce.com>
+ * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model\Service\Resource\Avatax16;
+namespace Astound\AvaTax\Model\Service\Resource\Avatax16;
 
 use DateTime;
 use Magento\Framework\ObjectManagerInterface;
@@ -22,20 +22,20 @@ use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\Quote\Address;
 use Magento\Quote\Model\Quote\Address\Total;
 use Magento\Store\Model\Store;
-use OnePica\AvaTax\Model\Service\ConfigRepositoryInterface;
-use OnePica\AvaTax\Api\Service\LoggerInterface;
-use OnePica\AvaTax\Helper\Config;
-use OnePica\AvaTax\Model\Service\DataSource\Calculation as CalculationDataSource;
-use OnePica\AvaTax\Model\Service\Resource\AbstractResource;
-use OnePica\AvaTax\Model\Service\Result\Storage\Calculation as CalculationResultStorage;
+use Astound\AvaTax\Model\Service\ConfigRepositoryInterface;
+use Astound\AvaTax\Api\Service\LoggerInterface;
+use Astound\AvaTax\Helper\Config;
+use Astound\AvaTax\Model\Service\DataSource\Calculation as CalculationDataSource;
+use Astound\AvaTax\Model\Service\Resource\AbstractResource;
+use Astound\AvaTax\Model\Service\Result\Storage\Calculation as CalculationResultStorage;
 use OnePica\AvaTax16\Document\Request;
 use OnePica\AvaTax16\Document\Response\Line;
 
 /**
  * Class Calculation
  *
- * @method \OnePica\AvaTax\Model\Service\Result\Calculation send(Store $store)
- * @package OnePica\AvaTax\Model\Service\Resource\Avatax
+ * @method \Astound\AvaTax\Model\Service\Result\Calculation send(Store $store)
+ * @package Astound\AvaTax\Model\Service\Resource\Avatax
  */
 class Calculation extends AbstractResource
 {
@@ -70,10 +70,10 @@ class Calculation extends AbstractResource
     /**
      * Calculation constructor.
      *
-     * @param \OnePica\AvaTax\Model\Service\ConfigRepositoryInterface $configRepository
+     * @param \Astound\AvaTax\Model\Service\ConfigRepositoryInterface $configRepository
      * @param \Magento\Framework\ObjectManagerInterface               $objectManager
-     * @param \OnePica\AvaTax\Helper\Config                           $config
-     * @param \OnePica\AvaTax\Api\Service\LoggerInterface             $logger
+     * @param \Astound\AvaTax\Helper\Config                           $config
+     * @param \Astound\AvaTax\Api\Service\LoggerInterface             $logger
      * @param CalculationDataSource                                   $dataSource
      * @param \Magento\Framework\Stdlib\DateTime\Timezone             $timezone
      * @param CalculationResultStorage                                                  $resultStorage
@@ -98,7 +98,7 @@ class Calculation extends AbstractResource
      * @param \Magento\Quote\Model\Quote                          $quote
      * @param \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignment
      * @param  Total $total
-     * @return null|\OnePica\AvaTax\Model\Service\Result\ResultInterface
+     * @return null|\Astound\AvaTax\Model\Service\Result\ResultInterface
      */
     public function calculate(
         Quote $quote,
@@ -396,11 +396,11 @@ class Calculation extends AbstractResource
     /**
      * Create result object
      *
-     * @return \OnePica\AvaTax\Model\Service\Result\Calculation
+     * @return \Astound\AvaTax\Model\Service\Result\Calculation
      */
     protected function createResultObject()
     {
-        return $this->objectManager->create(\OnePica\AvaTax\Model\Service\Result\Calculation::class);
+        return $this->objectManager->create(\Astound\AvaTax\Model\Service\Result\Calculation::class);
     }
 
     /**
@@ -463,7 +463,7 @@ class Calculation extends AbstractResource
     /**
      * Can send request
      *
-     * @param \OnePica\AvaTax\Model\Service\Result\Calculation $result
+     * @param \Astound\AvaTax\Model\Service\Result\Calculation $result
      * @return bool|null
      */
     protected function canSendRequest($result)
@@ -488,7 +488,7 @@ class Calculation extends AbstractResource
     /**
      * Prepare result
      *
-     * @param \OnePica\AvaTax\Model\Service\Result\Calculation $result
+     * @param \Astound\AvaTax\Model\Service\Result\Calculation $result
      * @return $this
      */
     protected function prepareResult($result)
@@ -521,7 +521,7 @@ class Calculation extends AbstractResource
     /**
      * Prepare summary
      *
-     * @param \OnePica\AvaTax\Model\Service\Result\Calculation $result
+     * @param \Astound\AvaTax\Model\Service\Result\Calculation $result
      * @return array
      */
     protected function prepareSummary($result)
@@ -563,7 +563,7 @@ class Calculation extends AbstractResource
     /**
      * Get Jurisdictions rate array
      *
-     * @param \OnePica\AvaTax\Model\Service\Result\Calculation $result
+     * @param \Astound\AvaTax\Model\Service\Result\Calculation $result
      * @return array
      */
     protected function getJurisdictionsRate($result)

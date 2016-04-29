@@ -1,24 +1,24 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
     <event name="sales_model_service_quote_submit_before">
-        <observer name="avatax_quote_submit_before" instance="OnePica\AvaTax\Observer\QuoteSubmitBefore"/>
+        <observer name="avatax_quote_submit_before" instance="Astound\AvaTax\Observer\QuoteSubmitBefore"/>
     </event>
     <event name="sales_quote_item_set_product">
-        <observer name="avatax_quote_item_set_data" instance="OnePica\AvaTax\Observer\QuoteItemSetProduct"/>
+        <observer name="avatax_quote_item_set_data" instance="Astound\AvaTax\Observer\QuoteItemSetProduct"/>
     </event>
     <event name="checkout_submit_before">
-        <observer name="avatax_check_error" instance="OnePica\AvaTax\Observer\CheckoutSubmitBefore"/>
+        <observer name="avatax_check_error" instance="Astound\AvaTax\Observer\CheckoutSubmitBefore"/>
     </event>
     <event name="sales_order_invoice_pay">
-        <observer name="avatax_invoice_pay_set_flag" instance="OnePica\AvaTax\Observer\SetAvataxQueueFlagForInvoice" />
+        <observer name="avatax_invoice_pay_set_flag" instance="Astound\AvaTax\Observer\SetAvataxQueueFlagForInvoice" />
     </event>
     <event name="sales_order_invoice_save_commit_after">
-        <observer name="avatax_create_invoice_queue_item" instance="OnePica\AvaTax\Observer\CreateQueueItemForInvoice"/>
+        <observer name="avatax_create_invoice_queue_item" instance="Astound\AvaTax\Observer\CreateQueueItemForInvoice"/>
     </event>
     <event name="sales_order_creditmemo_refund">
-        <observer name="avatax_creditmemo_refund_set_flag" instance="OnePica\AvaTax\Observer\SetAvataxQueueFlagForCreditmemo" />
+        <observer name="avatax_creditmemo_refund_set_flag" instance="Astound\AvaTax\Observer\SetAvataxQueueFlagForCreditmemo" />
     </event>
     <event name="sales_order_creditmemo_save_commit_after">
-        <observer name="avatax_create_creditmemo_queue_item" instance="OnePica\AvaTax\Observer\CreateQueueItemForCreditmemo"/>
+        <observer name="avatax_create_creditmemo_queue_item" instance="Astound\AvaTax\Observer\CreateQueueItemForCreditmemo"/>
     </event>
 </config>

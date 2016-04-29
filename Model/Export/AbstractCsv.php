@@ -1,30 +1,30 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@onepica.com>
- * @copyright  Copyright (c) 2016 One Pica, Inc.
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astoundcommerce.com>
+ * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model\Export;
+namespace Astound\AvaTax\Model\Export;
 
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Filesystem;
 use Magento\ImportExport\Model\Export\Adapter\CsvFactory;
-use OnePica\AvaTax\Api\ExportInterface;
-use OnePica\AvaTax\Helper\Config;
+use Astound\AvaTax\Api\ExportInterface;
+use Astound\AvaTax\Helper\Config;
 
 /**
  * Abstract Class AbstractCsv implements ExportInterface
 
  *
- * @package OnePica\AvaTax\Model\Queue\Export
+ * @package Astound\AvaTax\Model\Queue\Export
  */
 abstract class AbstractCsv implements ExportInterface
 {
@@ -55,7 +55,7 @@ abstract class AbstractCsv implements ExportInterface
     /**
      * Config helper
      *
-     * @var \OnePica\AvaTax\Helper\Config
+     * @var \Astound\AvaTax\Helper\Config
      */
     protected $config;
 
@@ -78,7 +78,7 @@ abstract class AbstractCsv implements ExportInterface
      *
      * @param Filesystem                    $filesystem
      * @param CsvFactory                    $outputCsvFactory
-     * @param \OnePica\AvaTax\Helper\Config $config
+     * @param \Astound\AvaTax\Helper\Config $config
      */
     public function __construct(
         Filesystem $filesystem,

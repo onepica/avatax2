@@ -1,18 +1,18 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@onepica.com>
- * @copyright  Copyright (c) 2016 One Pica, Inc.
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astoundcommerce.com>
+ * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model\Service;
+namespace Astound\AvaTax\Model\Service;
 
 use Magento\Framework\DataObject;
 use Magento\Framework\ObjectManagerInterface;
@@ -22,20 +22,20 @@ use Magento\Quote\Model\Quote\Address\Total;
 use Magento\Sales\Model\Order\Creditmemo;
 use Magento\Sales\Model\Order\Invoice;
 use Magento\Store\Model\Store;
-use OnePica\AvaTax\Model\Service\Result\ResultInterface;
-use OnePica\AvaTax\Api\ServiceInterface;
-use OnePica\AvaTax\Model\Service\Resource\Avatax16\Calculation;
-use OnePica\AvaTax\Model\Service\Resource\Avatax16\Ping;
-use OnePica\AvaTax\Model\Service\Resource\Avatax16\Queue\Creditmemo as CreditmemoResource;
-use OnePica\AvaTax\Model\Service\Resource\Avatax16\Queue\Invoice as InvoiceResource;
-use OnePica\AvaTax\Model\Service\Resource\Avatax16\Validation;
-use OnePica\AvaTax\Model\Service\Result\Base;
-use OnePica\AvaTax\Model\Queue;
+use Astound\AvaTax\Model\Service\Result\ResultInterface;
+use Astound\AvaTax\Api\ServiceInterface;
+use Astound\AvaTax\Model\Service\Resource\Avatax16\Calculation;
+use Astound\AvaTax\Model\Service\Resource\Avatax16\Ping;
+use Astound\AvaTax\Model\Service\Resource\Avatax16\Queue\Creditmemo as CreditmemoResource;
+use Astound\AvaTax\Model\Service\Resource\Avatax16\Queue\Invoice as InvoiceResource;
+use Astound\AvaTax\Model\Service\Resource\Avatax16\Validation;
+use Astound\AvaTax\Model\Service\Result\Base;
+use Astound\AvaTax\Model\Queue;
 
 /**
  * Class AbstractService
  *
- * @package OnePica\AvaTax\Model\Service
+ * @package Astound\AvaTax\Model\Service
  */
 abstract class AbstractService implements ServiceInterface
 {
@@ -175,7 +175,7 @@ abstract class AbstractService implements ServiceInterface
     /**
      * Validate
      *
-     * @param \OnePica\AvaTax\Model\Service\Request\Address $object
+     * @param \Astound\AvaTax\Model\Service\Request\Address $object
      *
      * @return ResultInterface
      */
@@ -198,7 +198,7 @@ abstract class AbstractService implements ServiceInterface
      * @param \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignment
      * @param \Magento\Quote\Model\Quote\Address\Total            $total
      *
-     * @return \OnePica\AvaTax\Model\Service\Result\ResultInterface
+     * @return \Astound\AvaTax\Model\Service\Result\ResultInterface
      */
     public function calculate(Quote $quote, ShippingAssignmentInterface $shippingAssignment, Total $total)
     {

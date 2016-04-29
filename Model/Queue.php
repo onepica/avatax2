@@ -1,25 +1,25 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@onepica.com>
- * @copyright  Copyright (c) 2016 One Pica, Inc.
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astoundcommerce.com>
+ * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model;
+namespace Astound\AvaTax\Model;
 
 use Magento\Framework\Model\AbstractModel;
 use Magento\Sales\Model\Order\Creditmemo;
 use Magento\Sales\Model\Order\Invoice;
-use OnePica\AvaTax\Api\Data\QueueInterface;
-use OnePica\AvaTax\Model\ResourceModel\Queue as QueueResource;
-use OnePica\AvaTax\Model\ResourceModel\Log\Collection;
+use Astound\AvaTax\Api\Data\QueueInterface;
+use Astound\AvaTax\Model\ResourceModel\Queue as QueueResource;
+use Astound\AvaTax\Model\ResourceModel\Log\Collection;
 
 /**
  * Class Queue
@@ -28,7 +28,7 @@ use OnePica\AvaTax\Model\ResourceModel\Log\Collection;
  * @method QueueResource getResource()
  * @method $this save()
  *
- * @package OnePica\AvaTax\Model
+ * @package Astound\AvaTax\Model
  */
 class Queue extends AbstractModel implements QueueInterface
 {
@@ -37,7 +37,7 @@ class Queue extends AbstractModel implements QueueInterface
      *
      * @var string
      */
-    protected $_eventPrefix = 'onepica_avatax_queue';
+    protected $_eventPrefix = 'astound_avatax_queue';
 
     /**
      * Queue attempt max

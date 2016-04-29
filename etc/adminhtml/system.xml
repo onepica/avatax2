@@ -9,11 +9,11 @@
                     <attribute type="expanded">1</attribute>
                     <field id="action" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Action</label>
-                        <source_model>OnePica\AvaTax\Model\Source\Avatax16\Action</source_model>
+                        <source_model>Astound\AvaTax\Model\Source\Avatax16\Action</source_model>
                     </field>
                     <field id="url" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>URL</label>
-                        <source_model>OnePica\AvaTax\Model\Source\Avatax16\Url</source_model>
+                        <source_model>Astound\AvaTax\Model\Source\Avatax16\Url</source_model>
                     </field>
                     <field id="account_number" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Account Number</label>
@@ -39,12 +39,12 @@
                     </field>
                     <field id="region_filter_mode" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Filter Requests by Region</label>
-                        <source_model>OnePica\AvaTax\Model\Source\RegionFilter\Mode</source_model>
+                        <source_model>Astound\AvaTax\Model\Source\RegionFilter\Mode</source_model>
                         <comment>Re-save settings if Taxable Country was changed to use this option.</comment>
                         <can_be_empty>1</can_be_empty>
                     </field>
                     <field id="region_filter_list" translate="label comment" type="multiselect" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <source_model>OnePica\AvaTax\Model\Source\RegionFilter\RegionList</source_model>
+                        <source_model>Astound\AvaTax\Model\Source\RegionFilter\RegionList</source_model>
                         <comment>Select regions to use AvaTax services.</comment>
                         <depends>
                             <field id="region_filter_mode" separator="|">1|2</field>
@@ -56,7 +56,7 @@
                     <attribute type="expanded">1</attribute>
                     <field id="validate_address" translate="label comment" type="select" sortOrder="310" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Address Validation</label>
-                        <source_model>OnePica\AvaTax\Model\Source\ValidateAddress</source_model>
+                        <source_model>Astound\AvaTax\Model\Source\ValidateAddress</source_model>
                         <comment>Require a validated address from AvaTax to checkout</comment>
                     </field>
                     <field id="normalize_address" translate="label comment" type="select" sortOrder="320" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -86,7 +86,7 @@
                     <attribute type="expanded">1</attribute>
                     <field id="field_required_list" translate="label comment" type="multiselect" sortOrder="370" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Required Fields</label>
-                        <source_model>OnePica\AvaTax\Model\Source\AddressFieldList</source_model>
+                        <source_model>Astound\AvaTax\Model\Source\AddressFieldList</source_model>
                         <can_be_empty>1</can_be_empty>
                     </field>
                     <field id="field_rule" translate="label" type="text" sortOrder="380" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -99,11 +99,11 @@
                     <attribute type="expanded">1</attribute>
                     <field id="log_mode" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Log Mode</label>
-                        <source_model>OnePica\AvaTax\Model\Source\Avatax16\LogMode</source_model>
+                        <source_model>Astound\AvaTax\Model\Source\Avatax16\LogMode</source_model>
                     </field>
                     <field id="allowed_log_types" translate="label" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Allowed Log Types</label>
-                        <source_model>OnePica\AvaTax\Model\Source\Avatax16\LogType</source_model>
+                        <source_model>Astound\AvaTax\Model\Source\Avatax16\LogType</source_model>
                         <can_be_empty>1</can_be_empty>
                     </field>
                     <field id="log_lifetime" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
@@ -127,11 +127,11 @@
                     </field>
                     <field id="export_log_button" type="button" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Export Logs</label>
-                        <frontend_model>OnePica\AvaTax\Block\Adminhtml\System\Config\Form\Field\Log\Export</frontend_model>
+                        <frontend_model>Astound\AvaTax\Block\Adminhtml\System\Config\Form\Field\Log\Export</frontend_model>
                     </field>
                     <field id="export_queue_button" type="button" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Export Queue</label>
-                        <frontend_model>OnePica\AvaTax\Block\Adminhtml\System\Config\Form\Field\Queue\Export</frontend_model>
+                        <frontend_model>Astound\AvaTax\Block\Adminhtml\System\Config\Form\Field\Queue\Export</frontend_model>
                     </field>
                 </group>
                 <group id="avatax_data_mapping_group" translate="label" sortOrder="70" showInDefault="1" showInStore="1" showInWebsite="1">
@@ -139,7 +139,7 @@
                     <attribute type="expanded">1</attribute>
                     <field id="customer_code_format" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Customer Code Format</label>
-                        <source_model>OnePica\AvaTax\Model\Source\Avatax16\CustomerCodeFormat</source_model>
+                        <source_model>Astound\AvaTax\Model\Source\Avatax16\CustomerCodeFormat</source_model>
                         <comment><![CDATA[Recommended: <code>customer_id</code>]]></comment>
                     </field>
                     <field id="shipping_sku" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -182,12 +182,12 @@
                     <!--</field>-->
                     <field id="first_reference_code" translate="label" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>First Reference Code</label>
-                        <source_model>OnePica\AvaTax\Model\Source\ProductAttribute</source_model>
+                        <source_model>Astound\AvaTax\Model\Source\ProductAttribute</source_model>
                         <comment>Optional. An attribute code to pass with each product.</comment>
                     </field>
                     <field id="second_reference_code" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Second Reference Code</label>
-                        <source_model>OnePica\AvaTax\Model\Source\ProductAttribute</source_model>
+                        <source_model>Astound\AvaTax\Model\Source\ProductAttribute</source_model>
                         <comment>Optional. An attribute code to pass with each product.</comment>
                     </field>
                     <field id="use_upc_code" translate="label" type="select" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -196,7 +196,7 @@
                     </field>
                     <field id="upc_code" translate="label" type="select" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>UPC Code</label>
-                        <source_model>OnePica\AvaTax\Model\Source\ProductAttribute</source_model>
+                        <source_model>Astound\AvaTax\Model\Source\ProductAttribute</source_model>
                         <depends>
                             <field id="use_upc_code">1</field>
                         </depends>
@@ -207,7 +207,7 @@
                     <attribute type="expanded">1</attribute>
                     <field id="action_on_error" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Action on Error</label>
-                        <source_model>OnePica\AvaTax\Model\Source\Avatax16\Error</source_model>
+                        <source_model>Astound\AvaTax\Model\Source\Avatax16\Error</source_model>
                     </field>
                     <field id="frontend_error_message" translate="label" type="textarea" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Frontend Error Message</label>

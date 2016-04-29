@@ -1,29 +1,29 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@onepica.com>
- * @copyright  Copyright (c) 2016 One Pica, Inc.
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astoundcommerce.com>
+ * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model\Service;
+namespace Astound\AvaTax\Model\Service;
 
-use OnePica\AvaTax\Model\Service\Resource\Avatax16\Calculation;
-use OnePica\AvaTax\Model\Service\Resource\Avatax16\Ping;
-use OnePica\AvaTax\Model\Service\Resource\Avatax16\Queue\Creditmemo;
-use OnePica\AvaTax\Model\Service\Resource\Avatax16\Queue\Invoice;
-use OnePica\AvaTax\Model\Service\Resource\Avatax16\Validation;
+use Astound\AvaTax\Model\Service\Resource\Avatax16\Calculation;
+use Astound\AvaTax\Model\Service\Resource\Avatax16\Ping;
+use Astound\AvaTax\Model\Service\Resource\Avatax16\Queue\Creditmemo;
+use Astound\AvaTax\Model\Service\Resource\Avatax16\Queue\Invoice;
+use Astound\AvaTax\Model\Service\Resource\Avatax16\Validation;
 
 /**
  * Class Avatax
  *
- * @package OnePica\AvaTax\Model\Service
+ * @package Astound\AvaTax\Model\Service
  */
 class Avatax16 extends AbstractService
 {

@@ -132,7 +132,7 @@
         </column>
         <column name="log_type">
             <argument name="data" xsi:type="array">
-                <item name="options" xsi:type="object">OnePica\AvaTax\Model\Source\Avatax16\LogType</item>
+                <item name="options" xsi:type="object">Astound\AvaTax\Model\Source\Avatax16\LogType</item>
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">select</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
@@ -144,7 +144,7 @@
         </column>
         <column name="log_level">
             <argument name="data" xsi:type="array">
-                <item name="options" xsi:type="object">OnePica\AvaTax\Model\Source\Avatax16\LogLevel</item>
+                <item name="options" xsi:type="object">Astound\AvaTax\Model\Source\Avatax16\LogLevel</item>
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">select</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
@@ -164,7 +164,7 @@
                 </item>
             </argument>
         </column>
-        <actionsColumn name="actions" class="OnePica\AvaTax\Ui\Component\Listing\Column\Actions">
+        <actionsColumn name="actions" class="Astound\AvaTax\Ui\Component\Listing\Column\Actions">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="urlAction" xsi:type="string">avatax/log/edit</item>
