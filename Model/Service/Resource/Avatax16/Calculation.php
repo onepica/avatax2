@@ -175,7 +175,7 @@ class Calculation extends AbstractResource
     protected function prepareLines($store, $object, $total)
     {
         $this->lines = [];
-        $this->addLine($this->prepareShippingLine($store, $total), $this->getShippingSku($store));
+        $this->addLine($this->prepareShippingLine($store, $object->getShipping()->getAddress()), $this->getShippingSku($store));
         $this->addLine($this->prepareGwOrderLine($store, $total), $this->getGwOrderSku($store));
         $this->addLine($this->prepareGwPrintedCardLine($store, $total), $this->getGwPrintedCardSku($store));
         $this->addItemsLine($store, $object->getItems());
@@ -187,14 +187,15 @@ class Calculation extends AbstractResource
      * Prepare shipping line
      *
      * @param \Magento\Store\Model\Store $store
-     * @param  Total                     $object
+     * @param  \Magento\Quote\Model\Quote\Address $object
      * @return \OnePica\AvaTax16\Document\Request\Line
      */
     protected function prepareShippingLine($store, $object)
     {
         $line = parent::prepareShippingLine($store, $object);
         $shippingAmount = (float)$object->getData('base_shipping_amount');
-        $discountAmount = (float)$object->getData('base_shipping_discount_amount');
+        //todo replace to base_shipping_discount_amount when will be available (magento bug)
+        $discountAmount = (float)$object->getData('shipping_discount_amount');
 
         if ($this->dataSource->applyTaxAfterDiscount($store) && $discountAmount) {
             $line->setDiscounted('true');
