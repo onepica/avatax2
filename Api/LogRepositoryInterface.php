@@ -1,31 +1,31 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@onepica.com>
- * @copyright  Copyright (c) 2016 One Pica, Inc.
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astoundcommerce.com>
+ * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Api;
+namespace Astound\AvaTax\Api;
 
 /**
  * Interface LogRepositoryInterface
  *
- * @package OnePica\AvaTax\Api
+ * @package Astound\AvaTax\Api
  */
 interface LogRepositoryInterface
 {
     /**
      * Save log.
      *
-     * @param \OnePica\AvaTax\Api\Data\LogInterface $log
-     * @return \OnePica\AvaTax\Api\Data\LogInterface
+     * @param \Astound\AvaTax\Api\Data\LogInterface $log
+     * @return \Astound\AvaTax\Api\Data\LogInterface
      */
     public function save(Data\LogInterface $log);
 
@@ -33,7 +33,7 @@ interface LogRepositoryInterface
      * Retrieve log.
      *
      * @param int $logId
-     * @return \OnePica\AvaTax\Api\Data\LogInterface
+     * @return \Astound\AvaTax\Api\Data\LogInterface
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getById($logId);

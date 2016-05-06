@@ -1,18 +1,18 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@onepica.com>
- * @copyright  Copyright (c) 2016 One Pica, Inc.
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astoundcommerce.com>
+ * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model\Service\DataSource;
+namespace Astound\AvaTax\Model\Service\DataSource;
 
 use Magento\Customer\Model\Customer;
 use Magento\Customer\Model\CustomerRegistry;
@@ -28,15 +28,19 @@ use Magento\Store\Model\Store;
 use Magento\Tax\Helper\Data;
 use Magento\Tax\Model\ClassModelRegistry;
 use Magento\Tax\Model\ResourceModel\TaxClass\Collection;
-use OnePica\AvaTax\Api\DataSourceInterface;
-use OnePica\AvaTax\Helper\Config;
-use OnePica\AvaTax\Model\GiftWrappingHelperFactory;
-use OnePica\AvaTax\Model\Source\Avatax16\CustomerCodeFormat;
+use Astound\AvaTax\Helper\Config;
+use Astound\AvaTax\Model\GiftWrappingHelperFactory;
+use Astound\AvaTax\Model\Source\Avatax16\CustomerCodeFormat;
 use OnePica\AvaTax16\Document\Part\Location;
 use OnePica\AvaTax16\Document\Part\Location\Address as AvataxAddress;
 
 abstract class AbstractDataSource implements DataSourceInterface
 {
+    /**
+     * Default shipping tax class
+     */
+    const DEFAULT_SHIPPING_TAX_CLASS = 'FR020100';
+
     /**#@+
      * Tax location purpose
      */
@@ -47,7 +51,7 @@ abstract class AbstractDataSource implements DataSourceInterface
     /**
      * Config helper
      *
-     * @var \OnePica\AvaTax\Helper\Config
+     * @var \Astound\AvaTax\Helper\Config
      */
     protected $config;
 
@@ -103,13 +107,13 @@ abstract class AbstractDataSource implements DataSourceInterface
     /**
      * DataSource constructor.
      *
-     * @param \OnePica\AvaTax\Helper\Config                   $config
+     * @param \Astound\AvaTax\Helper\Config                   $config
      * @param \Magento\Customer\Model\CustomerRegistry        $customerRegistry
      * @param \Magento\Tax\Model\ClassModelRegistry           $classModelRegistry
      * @param \Magento\Directory\Model\RegionFactory          $regionFactory
      * @param Data                                            $taxDataHelper
      * @param Collection                                      $taxClassCollection
-     * @param \OnePica\AvaTax\Model\GiftWrappingHelperFactory $giftWrappingHelperFactory
+     * @param \Astound\AvaTax\Model\GiftWrappingHelperFactory $giftWrappingHelperFactory
      */
     public function __construct(
         Config $config,
@@ -202,7 +206,7 @@ abstract class AbstractDataSource implements DataSourceInterface
      */
     public function getTaxBuyerCode($store, $address)
     {
-        return (string)$address->getVatId() ?: (string)$this->getBillingAddressFromAddress($address)->getVatId();
+        return (string)$address->getVatId();
     }
 
     /**
@@ -390,7 +394,13 @@ abstract class AbstractDataSource implements DataSourceInterface
      */
     public function getShippingTaxClass($store = null)
     {
-        return 'FR020100';
+        $shippingTaxClass = $this->getOpAvataxCode($this->taxDataHelper->getShippingTaxClass($store));
+
+        if ($shippingTaxClass === '') {
+            $shippingTaxClass = self::DEFAULT_SHIPPING_TAX_CLASS;
+        }
+
+        return $shippingTaxClass;
     }
 
     /**

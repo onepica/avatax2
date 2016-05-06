@@ -1,23 +1,24 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@onepica.com>
- * @copyright  Copyright (c) 2016 One Pica, Inc.
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astoundcommerce.com>
+ * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Plugin\Checkout\Model;
+namespace Astound\AvaTax\Plugin\Checkout\Model;
 
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\Quote\Address;
 use Magento\Framework\ObjectManagerInterface;
-use OnePica\AvaTax\Helper\Config;
+use Astound\AvaTax\Helper\Config;
+use Astound\AvaTax\Helper\Address as AvataxAddressHelper;
 
 /**
  * Class ShippingInformationManagement
@@ -35,20 +36,47 @@ class ShippingInformationManagement
     protected $objectManager;
 
     /**
+     * Quote repository
+     *
+     * @var CartRepositoryInterface
+     */
+    protected $quoteRepository;
+
+    /**
+     *  Address repository
+     *
+     * @var \Magento\Customer\Api\AddressRepositoryInterface
+     */
+    protected $addressRepository;
+
+    /**
+     * Address helper
+     *
+     * @var AvataxAddressHelper
+     */
+    protected $addressHelper;
+
+    /**
      * ShippingInformationManagement constructor
      *
      * @param Config $config
      * @param CartRepositoryInterface $quoteRepository
      * @param ObjectManagerInterface $objectManager
+     * @param \Magento\Customer\Api\AddressRepositoryInterface $addressRepository
+     * @param AvataxAddressHelper $addressHelper
      */
     public function __construct(
         Config $config,
         CartRepositoryInterface $quoteRepository,
-        ObjectManagerInterface $objectManager
+        ObjectManagerInterface $objectManager,
+        \Magento\Customer\Api\AddressRepositoryInterface $addressRepository,
+        AvataxAddressHelper $addressHelper
     ) {
         $this->config = $config;
         $this->quoteRepository = $quoteRepository;
         $this->objectManager = $objectManager;
+        $this->addressRepository = $addressRepository;
+        $this->addressHelper = $addressHelper;
     }
 
     /**
@@ -65,11 +93,20 @@ class ShippingInformationManagement
         $cartId,
         \Magento\Checkout\Api\Data\ShippingInformationInterface $addressInformation
     ) {
-        $this->validateAndNormalize($addressInformation);
+        $customerAddressId = $addressInformation->getShippingAddress()->getCustomerAddressId();
+        $quote = $this->quoteRepository->getActive($cartId);
+        $storeId = $quote->getStoreId();
+
+        if ($customerAddressId) {
+            $addressData = $this->addressRepository->getById($customerAddressId);
+            $quote->getShippingAddress()->importCustomerAddressData($addressData);
+        }
+
+        $this->validateAndNormalize($addressInformation, $storeId);
         $paymentInformation = $proceed($cartId, $addressInformation);
         // set updated addresses for response
         $paymentDetailsExtensionAttributes = $this->objectManager
-            ->get('\OnePica\AvaTax\Model\Payment\PaymentDetailsExtension');
+            ->get('\Astound\AvaTax\Model\Payment\PaymentDetailsExtension');
         $paymentDetailsExtensionAttributes->setValidatedAddress($addressInformation->getShippingAddress());
         $paymentInformation->setExtensionAttributes($paymentDetailsExtensionAttributes);
 
@@ -80,9 +117,11 @@ class ShippingInformationManagement
      * Validate and normalize
      *
      * @param \Magento\Checkout\Api\Data\ShippingInformationInterface $addressInformation
+     * @param int $storeId
      */
     protected function validateAndNormalize(
-        \Magento\Checkout\Api\Data\ShippingInformationInterface $addressInformation
+        \Magento\Checkout\Api\Data\ShippingInformationInterface $addressInformation,
+        $storeId
     ) {
         $shippingAddress = $addressInformation->getShippingAddress();
         $shippingAddress->setAddressType(Address::ADDRESS_TYPE_SHIPPING);
@@ -91,6 +130,10 @@ class ShippingInformationManagement
         if ($validationResult !== true) {
             $this->showErrorsAndStopCheckout($validationResult);
         } elseif ($shippingAddress->getData('is_normalized')) {
+            // add normalize message
+            $message = $this->config->getOnepageNormalizeMessage($storeId);
+            $this->addressHelper->addValidationNotice($message);
+
             /** fix for logged in users with address
              * due to address changes it will be new address
              */

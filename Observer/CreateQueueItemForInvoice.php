@@ -1,55 +1,55 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@onepica.com>
- * @copyright  Copyright (c) 2016 One Pica, Inc.
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astoundcommerce.com>
+ * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Observer;
+namespace Astound\AvaTax\Observer;
 
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Sales\Model\Order\Invoice;
 use Magento\Framework\ObjectManagerInterface;
-use OnePica\AvaTax\Helper\Config;
-use OnePica\AvaTax\Model\Queue;
-use OnePica\AvaTax\Model\QueueFactory;
-use OnePica\AvaTax\Model\QueueRepository;
-use OnePica\AvaTax\Helper\Address as AddressHelper;
-use OnePica\AvaTax\Model\Tool\Invoice as InvoiceTool;
+use Astound\AvaTax\Helper\Config;
+use Astound\AvaTax\Model\Queue;
+use Astound\AvaTax\Model\QueueFactory;
+use Astound\AvaTax\Model\QueueRepository;
+use Astound\AvaTax\Helper\Address as AddressHelper;
+use Astound\AvaTax\Model\Tool\Submit;
 
 /**
  * Class CreateQueueItemForInvoice
  *
- * @package OnePica\AvaTax\Observer
+ * @package Astound\AvaTax\Observer
  */
 class CreateQueueItemForInvoice implements ObserverInterface
 {
     /**
      * Config helper
      *
-     * @var \OnePica\AvaTax\Helper\Config
+     * @var \Astound\AvaTax\Helper\Config
      */
     protected $config;
 
     /**
      * Queue Factory
      *
-     * @var \OnePica\AvaTax\Model\QueueFactory
+     * @var \Astound\AvaTax\Model\QueueFactory
      */
     protected $queueFactory;
 
     /**
      * Queue Repository
      *
-     * @var \OnePica\AvaTax\Model\QueueRepository
+     * @var \Astound\AvaTax\Model\QueueRepository
      */
     protected $queueRepository;
 
@@ -112,8 +112,9 @@ class CreateQueueItemForInvoice implements ObserverInterface
             $queue->setTotalTaxAmount($totalTax);
 
             // save request object with data to use during queue processing
-            $requestObjectSerialized = serialize($this->getRequestObject($invoice));
+            $requestObjectSerialized = serialize($this->getRequestObject($queue));
             $queue->setRequestData($requestObjectSerialized);
+            $queue->setData('sales_object', null);
 
             $this->queueRepository->save($queue);
         }
@@ -139,13 +140,15 @@ class CreateQueueItemForInvoice implements ObserverInterface
     /**
      * Get request object
      *
-     * @param Invoice $invoice
+     * @param Queue $queue
      * @return mixed
      */
-    protected function getRequestObject(Invoice $invoice)
+    protected function getRequestObject(Queue $queue)
     {
-        $invoiceService = $this->objectManager->get(InvoiceTool::class);
-        $invoiceService->setInvoice($invoice);
-        return $invoiceService->getInvoiceServiceRequestObject();
+        /** @var Submit $submit */
+        $submit = $this->objectManager->get(Submit::class);
+        $submit->setQueue($queue);
+
+        return $submit->getServiceRequestObject();
     }
 }

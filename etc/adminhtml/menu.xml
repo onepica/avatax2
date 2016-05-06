@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
-        <add id="OnePica_AvaTax::sales_tax" title="AvaTax" module="OnePica_AvaTax" sortOrder="80" dependsOnModule="Magento_Sales" parent="Magento_Sales::sales" resource="OnePica_AvaTax::sales_tax"/>
-        <add id="OnePica_AvaTax::customer_tax_classes" title="Customer Tax Classes" module="OnePica_AvaTax" sortOrder="20" dependsOnModule="Magento_Sales" parent="OnePica_AvaTax::sales_tax" action="avatax/customertaxclasses/index" resource="OnePica_AvaTax::customer_tax_classes"/>
-        <add id="OnePica_AvaTax::product_tax_classes" title="Product Tax Classes" module="OnePica_AvaTax" sortOrder="40" dependsOnModule="Magento_Sales" parent="OnePica_AvaTax::sales_tax" action="avatax/producttaxclasses/index" resource="OnePica_AvaTax::product_tax_classes"/>
-        <add id="OnePica_AvaTax::sales_avatax_queue" title="AvaTax Order Sync Queue" module="OnePica_AvaTax" sortOrder="60"
-             parent="OnePica_AvaTax::sales_tax" action="avatax/queue" resource="OnePica_AvaTax::avatax_queue"/>
-        <add id="OnePica_AvaTax::sales_avatax_log" title="Log" module="OnePica_AvaTax" sortOrder="70"
-             parent="OnePica_AvaTax::sales_tax" action="avatax/log" resource="OnePica_AvaTax::avatax_log"/>
+        <add id="Astound_AvaTax::sales_tax" title="AvaTax" module="Astound_AvaTax" sortOrder="80" dependsOnModule="Magento_Sales" parent="Magento_Sales::sales" resource="Astound_AvaTax::sales_tax"/>
+        <add id="Astound_AvaTax::customer_tax_classes" title="Customer Tax Classes" module="Astound_AvaTax" sortOrder="20" dependsOnModule="Magento_Sales" parent="Astound_AvaTax::sales_tax" action="avatax/customertaxclasses/index" resource="Astound_AvaTax::customer_tax_classes"/>
+        <add id="Astound_AvaTax::product_tax_classes" title="Product Tax Classes" module="Astound_AvaTax" sortOrder="40" dependsOnModule="Magento_Sales" parent="Astound_AvaTax::sales_tax" action="avatax/producttaxclasses/index" resource="Astound_AvaTax::product_tax_classes"/>
+        <add id="Astound_AvaTax::sales_avatax_queue" title="AvaTax Order Sync Queue" module="Astound_AvaTax" sortOrder="60"
+             parent="Astound_AvaTax::sales_tax" action="avatax/queue" resource="Astound_AvaTax::avatax_queue"/>
+        <add id="Astound_AvaTax::sales_avatax_log" title="Log" module="Astound_AvaTax" sortOrder="70"
+             parent="Astound_AvaTax::sales_tax" action="avatax/log" resource="Astound_AvaTax::avatax_log"/>
     </menu>
 </config>

@@ -1,18 +1,18 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@onepica.com>
- * @copyright  Copyright (c) 2016 One Pica, Inc.
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astoundcommerce.com>
+ * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model\Service;
+namespace Astound\AvaTax\Model\Service;
 
 use Magento\Framework\DataObject;
 use Magento\Framework\ObjectManagerInterface;
@@ -22,20 +22,20 @@ use Magento\Quote\Model\Quote\Address\Total;
 use Magento\Sales\Model\Order\Creditmemo;
 use Magento\Sales\Model\Order\Invoice;
 use Magento\Store\Model\Store;
-use OnePica\AvaTax\Api\ResultInterface;
-use OnePica\AvaTax\Api\Service\CalculationResourceInterface;
-use OnePica\AvaTax\Api\Service\CreditmemoResourceInterface;
-use OnePica\AvaTax\Api\Service\InvoiceResourceInterface;
-use OnePica\AvaTax\Api\Service\PingResourceInterface;
-use OnePica\AvaTax\Api\Service\ValidationResourceInterface;
-use OnePica\AvaTax\Api\ServiceInterface;
-use OnePica\AvaTax\Model\Service\Result\Base;
-use OnePica\AvaTax\Model\Queue;
+use Astound\AvaTax\Model\Service\Result\ResultInterface;
+use Astound\AvaTax\Api\ServiceInterface;
+use Astound\AvaTax\Model\Service\Resource\Avatax16\Calculation;
+use Astound\AvaTax\Model\Service\Resource\Avatax16\Ping;
+use Astound\AvaTax\Model\Service\Resource\Avatax16\Queue\Creditmemo as CreditmemoResource;
+use Astound\AvaTax\Model\Service\Resource\Avatax16\Queue\Invoice as InvoiceResource;
+use Astound\AvaTax\Model\Service\Resource\Avatax16\Validation;
+use Astound\AvaTax\Model\Service\Result\Base;
+use Astound\AvaTax\Model\Queue;
 
 /**
  * Class AbstractService
  *
- * @package OnePica\AvaTax\Model\Service
+ * @package Astound\AvaTax\Model\Service
  */
 abstract class AbstractService implements ServiceInterface
 {
@@ -49,35 +49,35 @@ abstract class AbstractService implements ServiceInterface
     /**
      * Invoice resource
      *
-     * @var InvoiceResourceInterface
+     * @var InvoiceResource
      */
     protected $invoiceResource;
 
     /**
      * Calculation resource
      *
-     * @var CalculationResourceInterface
+     * @var Calculation
      */
     protected $calculationResource;
 
     /**
      * ping resource
      *
-     * @var PingResourceInterface
+     * @var Ping
      */
     protected $pingResource;
 
     /**
      * Creditmemo resource
      *
-     * @var CreditmemoResourceInterface
+     * @var CreditmemoResource
      */
     protected $creditmemoResource;
 
     /**
      * Validation resource
      *
-     * @var ValidationResourceInterface
+     * @var Validation
      */
     protected $validationResource;
 
@@ -127,91 +127,64 @@ abstract class AbstractService implements ServiceInterface
     abstract public function getCalculationResourceClass();
 
     /**
-     * Get Invoice Service Request Object
-     *
-     * @param \Magento\Sales\Model\Order\Invoice $invoice
-     * @return mixed
-     */
-    public function getInvoiceServiceRequestObject(Invoice $invoice)
-    {
-        if ($this->invoiceResource === null) {
-            $this->invoiceResource = $this->objectManager->create($this->getInvoiceResourceClass());
-            if (!$this->invoiceResource instanceof InvoiceResourceInterface) {
-                throw new \LogicException('Resource must be instance of InvoiceResourceInterface.');
-            }
-        }
-
-        return $this->invoiceResource->getServiceRequestObject($invoice);
-    }
-
-    /**
-     * Invoice
+     * Submit
      *
      * @param Queue $queue
+     *
      * @return ResultInterface
      */
-    public function invoice(Queue $queue)
+    public function submit(Queue $queue)
     {
-        if ($this->invoiceResource === null) {
-            $this->invoiceResource = $this->objectManager->create($this->getInvoiceResourceClass());
-            if (!$this->invoiceResource instanceof InvoiceResourceInterface) {
-                throw new \LogicException('Resource must be instance of InvoiceResourceInterface.');
-            }
-        }
-
-        return $this->invoiceResource->submit($queue);
-    }
-
-
-    /**
-     * Get Creditmemo Service Request Object
-     *
-     * @param \Magento\Sales\Model\Order\Creditmemo $creditmemo
-     * @return mixed
-     */
-    public function getCreditmemoServiceRequestObject(Creditmemo $creditmemo)
-    {
-        if (null === $this->creditmemoResource) {
-            $this->creditmemoResource = $this->objectManager->create($this->getCreditmemoResourceClass());
-            if (!$this->creditmemoResource instanceof CreditmemoResourceInterface) {
-                throw new \LogicException('Resource must be instance of CreditmemoResourceInterface.');
-            }
-        }
-
-        return $this->creditmemoResource->getServiceRequestObject($creditmemo);
+        return $this->getQueueResource($queue->getType())->submit($queue);
     }
 
     /**
-     * Creditmemo
+     * Get service request object
      *
      * @param Queue $queue
-     * @return ResultInterface
+     *
+     * @return mixed
      */
-    public function creditmemo(Queue $queue)
+    public function getServiceRequestObject(Queue $queue)
     {
-        if (null === $this->creditmemoResource) {
-            $this->creditmemoResource = $this->objectManager->create($this->getCreditmemoResourceClass());
-            if (!$this->creditmemoResource instanceof CreditmemoResourceInterface) {
-                throw new \LogicException('Resource must be instance of CreditmemoResourceInterface.');
-            }
+        if (null === $queue->getSalesObject()) {
+            throw new \LogicException('Sales object must be set.');
         }
 
-        return $this->creditmemoResource->submit($queue);
+        return $this->getQueueResource($queue->getType())->getServiceRequestObject($queue->getSalesObject());
+    }
+
+    /**
+     * Get queue resource object
+     *
+     * @param $type
+     *
+     * @return InvoiceResource|CreditmemoResource
+     */
+    protected function getQueueResource($type)
+    {
+        if ($type === Queue::TYPE_INVOICE) {
+            return $this->objectManager->create($this->getInvoiceResourceClass());
+        } elseif ($type === Queue::TYPE_CREDITMEMO) {
+            return $this->objectManager->create($this->getCreditmemoResourceClass());
+        } else {
+            throw new \LogicException('Wrong Queue type.');
+        }
     }
 
     /**
      * Validate
      *
-     * @param DataObject $object
-     * @todo need to specify which object ($object) will be passed to this method
+     * @param \Astound\AvaTax\Model\Service\Request\Address $object
+     *
      * @return ResultInterface
      */
     public function validate($object)
     {
         if (null === $this->validationResource) {
             $this->validationResource = $this->objectManager->create($this->getValidationResourceClass());
-            if (!$this->validationResource instanceof ValidationResourceInterface) {
-                throw new \LogicException('Resource must be instance of ValidationResourceInterface.');
+            if (!$this->validationResource instanceof Validation) {
+                throw new \LogicException('Resource must be instance of ValidationResource.');
             }
         }
 
@@ -224,14 +197,15 @@ abstract class AbstractService implements ServiceInterface
      * @param \Magento\Quote\Model\Quote                          $quote
      * @param \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignment
      * @param \Magento\Quote\Model\Quote\Address\Total            $total
-     * @return \OnePica\AvaTax\Api\ResultInterface
+     *
+     * @return \Astound\AvaTax\Model\Service\Result\ResultInterface
      */
     public function calculate(Quote $quote, ShippingAssignmentInterface $shippingAssignment, Total $total)
     {
         if (null === $this->calculationResource) {
             $this->calculationResource = $this->objectManager->create($this->getCalculationResourceClass());
-            if (!$this->calculationResource instanceof CalculationResourceInterface) {
-                throw new \LogicException('Resource must be instance of CalculationResourceInterface.');
+            if (!$this->calculationResource instanceof Calculation) {
+                throw new \LogicException('Resource must be instance of CalculationResource.');
             }
         }
 
@@ -242,14 +216,15 @@ abstract class AbstractService implements ServiceInterface
      * Process ping
      *
      * @param \Magento\Store\Model\Store $store
+     *
      * @return Base
      */
     public function ping(Store $store)
     {
         if (null === $this->pingResource) {
             $this->pingResource = $this->objectManager->create($this->getPingResourceClass());
-            if (!$this->pingResource instanceof PingResourceInterface) {
-                throw new \LogicException('Resource must be instance of PingResourceInterface.');
+            if (!$this->pingResource instanceof Ping) {
+                throw new \LogicException('Resource must be instance of PingResource.');
             }
         }
 

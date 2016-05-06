@@ -1,18 +1,18 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@onepica.com>
- * @copyright  Copyright (c) 2016 One Pica, Inc.
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astoundcommerce.com>
+ * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Helper;
+namespace Astound\AvaTax\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
@@ -22,29 +22,25 @@ use Magento\Framework\Module\ModuleListInterface;
 use Magento\Sales\Model\Order\Shipment;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\Store;
-use OnePica\AvaTax\Model\Source\Avatax16\Action;
+use Astound\AvaTax\Model\Source\Avatax16\Action;
 
 /**
  * Class Config
  *
- * @package OnePica\AvaTax\Helper
+ * @package Astound\AvaTax\Helper
  */
 class Config extends AbstractHelper
 {
     /**
      * Module name
      */
-    const MODULE_NAME = 'OnePica_AvaTax';
+    const MODULE_NAME = 'Astound_AvaTax';
 
     /**#@+
      * Config xml path
      */
     const AVATAX_ACTIVE_SERVICE                     = 'tax/avatax/active_service';
-    const AVATAX_SERVICE_ACTION                     = 'tax/avatax/action';
-    const AVATAX_SERVICE_URL                        = 'tax/avatax/url';
-    const AVATAX_SERVICE_ACCOUNT_NUMBER             = 'tax/avatax/account_number';
-    const AVATAX_SERVICE_LICENCE_KEY                = 'tax/avatax/license_key';
-    const AVATAX_SERVICE_COMPANY_CODE               = 'tax/avatax/company_code';
+    const AVATAX_SERVICE_LOG_MODE                   = 'tax/avatax/avatax_log_group/log_mode';
     const AVATAX_SERVICE_ALLOWED_LOG_TYPES          = 'tax/avatax/avatax_log_group/allowed_log_types';
     const AVATAX_SERVICE_LOG_LIFETIME               = 'tax/avatax/avatax_log_group/log_lifetime';
     const AVATAX_SERVICE_QUEUE_SUCCESS_LIFETIME     = 'tax/avatax/avatax_log_group/queue_success_lifetime';
@@ -62,6 +58,16 @@ class Config extends AbstractHelper
     const AVATAX_REGION_FILTER_TAXABLE_COUNTRY      = 'tax/avatax/region_filter_group/taxable_country';
     const AVATAX_REGION_FILTER_MODE                 = 'tax/avatax/region_filter_group/region_filter_mode';
     const AVATAX_REGION_FILTER_LIST                 = 'tax/avatax/region_filter_group/region_filter_list';
+    /**#@-*/
+
+    /**#@+
+     * General settings xml paths
+     */
+    const AVATAX_SERVICE_ACTION                     = 'tax/avatax/general_group/action';
+    const AVATAX_SERVICE_URL                        = 'tax/avatax/general_group/url';
+    const AVATAX_SERVICE_ACCOUNT_NUMBER             = 'tax/avatax/general_group/account_number';
+    const AVATAX_SERVICE_LICENCE_KEY                = 'tax/avatax/general_group/license_key';
+    const AVATAX_SERVICE_COMPANY_CODE               = 'tax/avatax/general_group/company_code';
     /**#@-*/
 
     /**#@+
@@ -85,9 +91,10 @@ class Config extends AbstractHelper
     /**#@+
      * Error handling setting xml path
      */
-    const AVATAX_ACTION_ON_ERROR        = 'tax/avatax/avatax_error_handling_group/action_on_error';
-    const AVATAX_FRONTEND_ERROR_MESSAGE = 'tax/avatax/avatax_error_handling_group/frontend_error_message';
-    const AVATAX_BACKEND_ERROR_MESSAGE  = 'tax/avatax/avatax_error_handling_group/backend_error_message';
+    const AVATAX_ACTION_ON_ERROR             = 'tax/avatax/avatax_error_handling_group/action_on_error';
+    const AVATAX_FRONTEND_ERROR_MESSAGE      = 'tax/avatax/avatax_error_handling_group/frontend_error_message';
+    const AVATAX_BACKEND_ERROR_MESSAGE       = 'tax/avatax/avatax_error_handling_group/backend_error_message';
+    const AVATAX_ERROR_NOTIFICATION_TOOLBAR  = 'tax/avatax/avatax_error_handling_group/error_notification_toolbar';
     /**#@-*/
 
     /**
@@ -205,6 +212,17 @@ class Config extends AbstractHelper
     public function getServiceCompanyCode($store = null)
     {
         return (string)$this->getConfig(self::AVATAX_SERVICE_COMPANY_CODE, $store);
+    }
+
+    /**
+     * Get log mode
+     *
+     * @param null $store
+     * @return int
+     */
+    public function getLogMode($store = null)
+    {
+        return (int)$this->getConfig(self::AVATAX_SERVICE_LOG_MODE, $store);
     }
 
     /**
@@ -671,5 +689,16 @@ class Config extends AbstractHelper
     public function getAvatax16AddressValidationMessage($store = null)
     {
         return (string)$this->getConfig(self::AVATAX16_ADDRESS_VALIDATION_MESSAGE, $store);
+    }
+
+    /**
+     * Get Error Notification Toolbar
+     *
+     * @param Store|int $store
+     * @return int
+     */
+    public function getErrorNotificationToolbar($store = null)
+    {
+        return (int)$this->getConfig(self::AVATAX_ERROR_NOTIFICATION_TOOLBAR, $store);
     }
 }

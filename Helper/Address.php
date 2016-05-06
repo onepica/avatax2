@@ -1,36 +1,38 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@onepica.com>
- * @copyright  Copyright (c) 2016 One Pica, Inc.
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astoundcommerce.com>
+ * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Helper;
+namespace Astound\AvaTax\Helper;
 
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Customer\Model\Address\AbstractAddress;
+use Magento\Framework\Message\MessageInterface;
 use Magento\Store\Model\Store;
 use Magento\Framework\App\Helper\Context;
-use OnePica\AvaTax\Helper\Data as AvataxDataHelper;
-use OnePica\AvaTax\Model\Service\Result\Storage\Filter;
-use OnePica\AvaTax\Model\Source\Avatax16\Action as AvataxActionSource;
-use OnePica\AvaTax\Api\Service\LoggerInterface;
-use OnePica\AvaTax\Model\Log;
-use OnePica\AvaTax\Model\Service\Result\Base;
-use OnePica\AvaTax\Api\ConfigRepositoryInterface;
+use Magento\Directory\Model\RegionFactory;
+use Astound\AvaTax\Helper\Data as AvataxDataHelper;
+use Astound\AvaTax\Model\Service\Result\Storage\Filter;
+use Astound\AvaTax\Model\Source\Avatax16\Action as AvataxActionSource;
+use Astound\AvaTax\Api\Service\LoggerInterface;
+use Astound\AvaTax\Model\Log;
+use Astound\AvaTax\Model\Service\Result\Base;
+use Astound\AvaTax\Model\Service\ConfigRepositoryInterface;
 
 /**
  * Class Address
  *
- * @package OnePica\AvaTax\Helper
+ * @package Astound\AvaTax\Helper
  */
 class Address extends AbstractHelper
 {
@@ -56,24 +58,40 @@ class Address extends AbstractHelper
     /**
      * Service logger
      *
-     * @var \OnePica\AvaTax\Api\Service\LoggerInterface
+     * @var \Astound\AvaTax\Api\Service\LoggerInterface
      */
     protected $logger;
 
     /**
      * Config repository
      *
-     * @var \OnePica\AvaTax\Api\ConfigRepositoryInterface
+     * @var \Astound\AvaTax\Model\Service\ConfigRepositoryInterface
      */
     protected $configRepository;
 
     /**
-     * @param Context $context
-     * @param Config $config
-     * @param ObjectManagerInterface $objectManager
-     * @param Filter $resultStorage
-     * @param LoggerInterface $logger
-     * @param ConfigRepositoryInterface $configRepository
+     * Region Factory
+     *
+     * @var \Magento\Directory\Model\RegionFactory
+     */
+    protected $regionFactory;
+
+    /**
+     * Message manager object
+     *
+     * @var \Magento\Framework\Message\ManagerInterface
+     */
+    protected $messageManager;
+
+    /**
+     * @param Context                                                 $context
+     * @param Config                                                  $config
+     * @param ObjectManagerInterface                                  $objectManager
+     * @param Filter                                                  $resultStorage
+     * @param LoggerInterface                                         $logger
+     * @param \Astound\AvaTax\Model\Service\ConfigRepositoryInterface $configRepository
+     * @param RegionFactory                                           $regionFactory
+     * @param \Magento\Framework\Message\ManagerInterface             $messageManager
      */
     public function __construct(
         Context $context,
@@ -81,7 +99,9 @@ class Address extends AbstractHelper
         Config $config,
         Filter $resultStorage,
         LoggerInterface $logger,
-        ConfigRepositoryInterface $configRepository
+        ConfigRepositoryInterface $configRepository,
+        RegionFactory $regionFactory,
+        \Magento\Framework\Message\ManagerInterface $messageManager
     ) {
         parent::__construct($context);
         $this->config = $config;
@@ -89,6 +109,8 @@ class Address extends AbstractHelper
         $this->resultStorage = $resultStorage;
         $this->logger = $logger;
         $this->configRepository = $configRepository;
+        $this->regionFactory = $regionFactory;
+        $this->messageManager = $messageManager;
     }
 
     /**
@@ -317,5 +339,41 @@ class Address extends AbstractHelper
         $customerAddress->setData($addressData);
 
         return $customerAddress;
+    }
+
+    /**
+     * Get region
+     *
+     * @param string $region
+     * @param string $country
+     * @return \Magento\Directory\Model\Region|null
+     */
+    public function getRegion($region, $country)
+    {
+        $regionObj = $this->regionFactory->create();
+        $regionObj->loadByCode($region, $country);
+        if (!$regionObj->getId()) {
+            $regionObj->loadByName($region, $country);
+        }
+
+        return $regionObj->getId() ? $regionObj : null;
+    }
+
+    /**
+     * Add validation notice
+     *
+     * @param string $message
+     * @return $this
+     */
+    public function addValidationNotice($message)
+    {
+        $messageObject = $this->messageManager->createMessage(
+            MessageInterface::TYPE_NOTICE,
+            AvataxDataHelper::MESSAGE_GROUP_CODE
+        );
+        $messageObject->setText($message);
+        $this->messageManager->addMessage($messageObject);
+
+        return $this;
     }
 }

@@ -1,49 +1,49 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@onepica.com>
- * @copyright  Copyright (c) 2016 One Pica, Inc.
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astoundcommerce.com>
+ * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Controller\Adminhtml\Queue;
+namespace Astound\AvaTax\Controller\Adminhtml\Queue;
 
-use OnePica\AvaTax\Controller\Adminhtml\AbstractQueueAction;
+use Astound\AvaTax\Api\QueueManagementInterface;
+use Astound\AvaTax\Controller\Adminhtml\AbstractQueueAction;
 use Magento\Backend\App\Action\Context;
-use OnePica\AvaTax\Model\Queue\Processor as QueueProcessor;
 
 /**
  * Class ClearQueue
  *
- * @package OnePica\AvaTax\Controller\Adminhtml\Log
+ * @package Astound\AvaTax\Controller\Adminhtml\Log
  */
 class ClearQueue extends AbstractQueueAction
 {
     /**
-     * Queue processor model
+     * Queue management model
      *
-     * @var QueueProcessor
+     * @var QueueManagementInterface
      */
-    protected $queueProcessor;
+    protected $queueManagement;
 
     /**
      * Constructor
      *
-     * @param Context        $context
-     * @param QueueProcessor $queueProcessor
+     * @param Context                  $context
+     * @param QueueManagementInterface $queueManagement
      */
     public function __construct(
         Context $context,
-        QueueProcessor $queueProcessor)
-    {
+        QueueManagementInterface $queueManagement
+    ) {
         parent::__construct($context);
-        $this->queueProcessor = $queueProcessor;
+        $this->queueManagement = $queueManagement;
     }
 
     /**
@@ -52,7 +52,7 @@ class ClearQueue extends AbstractQueueAction
     public function execute()
     {
         try {
-            $this->queueProcessor->clear();
+            $this->queueManagement->clear();
             $this->getMessageManager()->addSuccess(__('Queue was cleared successfully'));
         } catch (\Exception $e) {
             $this->getMessageManager()->addError(__('Unable to clear Queue'));
@@ -60,6 +60,7 @@ class ClearQueue extends AbstractQueueAction
 
         /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
         $resultRedirect = $this->resultRedirectFactory->create();
+
         return $resultRedirect->setPath('*/*/');
     }
 }

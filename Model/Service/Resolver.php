@@ -1,26 +1,26 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@onepica.com>
- * @copyright  Copyright (c) 2016 One Pica, Inc.
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astoundcommerce.com>
+ * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model\Service;
+namespace Astound\AvaTax\Model\Service;
 
-use OnePica\AvaTax\Api\Service\ResolverInterface;
-use OnePica\AvaTax\Helper\Config;
+use Astound\AvaTax\Model\Service\ResolverInterface;
+use Astound\AvaTax\Helper\Config;
 
 /**
  * Class Resolver
  *
- * @package OnePica\AvaTax\Model\Service
+ * @package Astound\AvaTax\Model\Service
  */
 class Resolver implements ResolverInterface
 {
@@ -34,7 +34,7 @@ class Resolver implements ResolverInterface
     /**
      * Config helper
      *
-     * @var \OnePica\AvaTax\Helper\Config
+     * @var \Astound\AvaTax\Helper\Config
      */
     protected $config;
 
@@ -42,7 +42,7 @@ class Resolver implements ResolverInterface
      * Resolver constructor.
      *
      * @param array                         $data
-     * @param \OnePica\AvaTax\Helper\Config $config
+     * @param \Astound\AvaTax\Helper\Config $config
      */
     public function __construct(array $data, Config $config)
     {

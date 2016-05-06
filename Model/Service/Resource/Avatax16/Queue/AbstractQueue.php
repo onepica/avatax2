@@ -1,37 +1,38 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@onepica.com>
- * @copyright  Copyright (c) 2016 One Pica, Inc.
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astoundcommerce.com>
+ * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model\Service\Resource\Avatax16\Queue;
+namespace Astound\AvaTax\Model\Service\Resource\Avatax16\Queue;
 
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Framework\Stdlib\DateTime\Timezone;
 use Magento\Store\Model\Store;
-use OnePica\AvaTax\Model\Service\Resource\AbstractResource;
-use OnePica\AvaTax\Api\ConfigRepositoryInterface;
-use OnePica\AvaTax\Helper\Config;
-use OnePica\AvaTax\Api\Service\LoggerInterface;
-use OnePica\AvaTax\Model\Service\DataSource\Queue as QueueDataSource;
+use Magento\Store\Model\StoreFactory;
+use Astound\AvaTax\Model\Service\Resource\AbstractResource;
+use Astound\AvaTax\Model\Service\ConfigRepositoryInterface;
+use Astound\AvaTax\Helper\Config;
+use Astound\AvaTax\Api\Service\LoggerInterface;
+use Astound\AvaTax\Model\Service\DataSource\Queue as QueueDataSource;
 use OnePica\AvaTax16\Document\Request\Line;
-use OnePica\AvaTax\Model\Log;
-use OnePica\AvaTax\Api\ResultInterface;
+use Astound\AvaTax\Model\Log;
+use Astound\AvaTax\Model\Service\Result\ResultInterface;
 use OnePica\AvaTax16\Document\Request;
-use OnePica\AvaTax\Model\Queue;
+use Astound\AvaTax\Model\Queue;
 
 /**
  * Class AbstractQueue
  *
- * @package OnePica\AvaTax\Model\Service\Resource\Avatax\Queue
+ * @package Astound\AvaTax\Model\Service\Resource\Avatax\Queue
  */
 abstract class AbstractQueue extends AbstractResource
 {
@@ -43,14 +44,22 @@ abstract class AbstractQueue extends AbstractResource
     protected $timezone;
 
     /**
+     * Store factory
+     *
+     * @var \Magento\Store\Model\StoreFactory
+     */
+    protected $storeFactory;
+
+    /**
      * AbstractResource constructor.
      *
-     * @param \OnePica\AvaTax\Api\ConfigRepositoryInterface $configRepository
-     * @param \Magento\Framework\ObjectManagerInterface     $objectManager
-     * @param \OnePica\AvaTax\Helper\Config                 $config
-     * @param \OnePica\AvaTax\Api\Service\LoggerInterface   $logger
-     * @param \OnePica\AvaTax\Model\Service\DataSource\Queue $dataSource
-     * @param Timezone $timezone
+     * @param \Astound\AvaTax\Model\Service\ConfigRepositoryInterface $configRepository
+     * @param \Magento\Framework\ObjectManagerInterface               $objectManager
+     * @param \Astound\AvaTax\Helper\Config                           $config
+     * @param \Astound\AvaTax\Api\Service\LoggerInterface             $logger
+     * @param \Astound\AvaTax\Model\Service\DataSource\Queue          $dataSource
+     * @param Timezone                                                $timezone
+     * @param StoreFactory                                            $storeFactory
      */
     public function __construct(
         ConfigRepositoryInterface $configRepository,
@@ -58,10 +67,12 @@ abstract class AbstractQueue extends AbstractResource
         Config $config,
         LoggerInterface $logger,
         QueueDataSource $dataSource,
-        Timezone $timezone
+        Timezone $timezone,
+        StoreFactory $storeFactory
     ) {
         parent::__construct($configRepository, $objectManager, $config, $logger, $dataSource);
         $this->timezone = $timezone;
+        $this->storeFactory = $storeFactory;
     }
 
     /**
@@ -74,8 +85,10 @@ abstract class AbstractQueue extends AbstractResource
     public function submit(Queue $queue)
     {
         $requestObject = unserialize($queue->getData('request_data'));
+        $store = $this->storeFactory->create()->load($queue->getStoreId());
+        $header = $requestObject->getHeader();
+        $this->setCredentialsForHeader($header, $store);
         $this->request = $requestObject;
-        $store = $this->objectManager->get('Magento\Store\Model\StoreManagerInterface')->getStore($queue->getStoreId());
         $result = $this->send($store);
         return $result;
     }
@@ -91,7 +104,7 @@ abstract class AbstractQueue extends AbstractResource
         $result = $this->createResultObject();
 
         $config = $this->configRepository->getConfigByStore($store);
-        /** @var \OnePica\AvaTax\Model\Service\Avatax16\Config $config */
+        /** @var \Astound\AvaTax\Model\Service\Avatax16\Config $config */
         try {
             $libResult = $config->getConnection()->createTransaction($this->request);
             $result->setResponse($libResult->toArray());
@@ -132,8 +145,12 @@ abstract class AbstractQueue extends AbstractResource
     {
         $orderItems = $object->getOrder()->getItems();
         $objectItems = $object->getItems();
+        /** @var \Magento\Sales\Model\Order\Item $orderItem */
         foreach ($orderItems as $orderItem) {
             $avataxData = $orderItem->getData('avatax_data');
+            if ($orderItem->getChildrenItems() && !$this->isProductCalculated($orderItem)) {
+                $avataxData = $orderItem->getChildrenItems()[0]->getData('avatax_data');
+            }
             foreach ($objectItems as $item) {
                 if ($item->getOrderItemId() == $orderItem->getId()) {
                     $item->setData('avatax_data', $avataxData);
@@ -171,8 +188,9 @@ abstract class AbstractQueue extends AbstractResource
         $store = $object->getStore();
         $order = $object->getOrder();
         $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
-        $objectDate = $this->convertGmtDate($object->getCreatedAt(), $store);
-        $orderDate = $this->convertGmtDate($order->getCreatedAt(), $store);
+
+        $objectDate = $this->convertGmtDate($object->getCreatedAt());
+        $orderDate = $this->convertGmtDate($order->getCreatedAt());
 
         $header = parent::prepareHeader($store, $shippingAddress);
         $header->setDocumentCode($this->getDocumentCodeForObject($object));
@@ -183,15 +201,14 @@ abstract class AbstractQueue extends AbstractResource
     }
 
     /**
-     * Retrieve converted date taking into account the current time zone and store.
+     * Retrieve converted date taking into account the current time zone.
      *
      * @param string $gmt
-     * @param Store  $store
      * @return string
      */
-    protected function convertGmtDate($gmt, $store)
+    protected function convertGmtDate($gmt)
     {
-        return $this->timezone->scopeDate($store, $gmt)->format('Y-m-d');
+        return $this->timezone->date($gmt)->format('Y-m-d');
     }
 
     /**
@@ -355,7 +372,7 @@ abstract class AbstractQueue extends AbstractResource
 
         /** @var \Magento\Sales\Model\Order\Invoice\Item|\Magento\Sales\Model\Order\Creditmemo\Item $item */
         foreach ($items as $item) {
-            if ($this->isProductCalculated($item)) {
+            if ($this->isProductCalculated($item->getOrderItem())) {
                 continue;
             }
 

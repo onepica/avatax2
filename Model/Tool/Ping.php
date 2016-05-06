@@ -1,28 +1,28 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@onepica.com>
- * @copyright  Copyright (c) 2016 One Pica, Inc.
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astoundcommerce.com>
+ * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model\Tool;
+namespace Astound\AvaTax\Model\Tool;
 
 use Magento\Store\Model\Store;
-use OnePica\AvaTax\Api\Service\ResolverInterface;
-use OnePica\AvaTax\Model\Service\Result\Base;
-use OnePica\AvaTax\Model\ServiceFactory;
+use Astound\AvaTax\Model\Service\ResolverInterface;
+use Astound\AvaTax\Model\Service\Result\Base;
+use Astound\AvaTax\Model\ServiceFactory;
 
 /**
  * Class Ping
  *
- * @package OnePica\AvaTax\Model\Tool
+ * @package Astound\AvaTax\Model\Tool
  */
 class Ping extends AbstractTool
 {
@@ -36,9 +36,9 @@ class Ping extends AbstractTool
     /**
      * Ping constructor.
      *
-     * @param \OnePica\AvaTax\Api\Service\ResolverInterface $resolver
-     * @param \OnePica\AvaTax\Model\ServiceFactory          $serviceFactory
-     * @param \Magento\Store\Model\Store                    $store
+     * @param \Astound\AvaTax\Model\Service\ResolverInterface $resolver
+     * @param \Astound\AvaTax\Model\ServiceFactory            $serviceFactory
+     * @param \Magento\Store\Model\Store                      $store
      */
     public function __construct(
         ResolverInterface $resolver,

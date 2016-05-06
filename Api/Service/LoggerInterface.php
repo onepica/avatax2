@@ -1,36 +1,37 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@onepica.com>
- * @copyright  Copyright (c) 2016 One Pica, Inc.
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astoundcommerce.com>
+ * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Api\Service;
+namespace Astound\AvaTax\Api\Service;
 
-use OnePica\AvaTax\Api\ResultInterface;
+use Astound\AvaTax\Model\Service\Result\ResultInterface;
 
 /**
  * Interface LoggerInterface
  *
- * @package OnePica\AvaTax\Api\Service
+ * @package Astound\AvaTax\Api\Service
  */
 interface LoggerInterface
 {
     /**
      * Log service data
      *
-     * @param string          $type
-     * @param mixed           $request
-     * @param ResultInterface $result
-     * @param null|int        $store
-     * @param mixed           $additional
+     * @param string                                               $type
+     * @param mixed                                                $request
+     * @param \Astound\AvaTax\Model\Service\Result\ResultInterface $result
+     * @param null|int                                             $store
+     * @param mixed                                                $additional
+     * 
      * @return $this
      */
     public function log($type, $request, ResultInterface $result, $store = null, $additional = null);

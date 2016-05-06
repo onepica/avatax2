@@ -1,31 +1,44 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@onepica.com>
- * @copyright  Copyright (c) 2016 One Pica, Inc.
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astoundcommerce.com>
+ * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model\ResourceModel;
+namespace Astound\AvaTax\Model\ResourceModel;
 
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 use Magento\Framework\Model\ResourceModel\Db\Context;
 use Magento\Framework\Stdlib\DateTime;
-use OnePica\AvaTax\Api\Data\QueueInterface;
+use Astound\AvaTax\Api\Data\QueueInterface;
+use Astound\AvaTax\Api\Service\LoggerInterface;
+use Astound\AvaTax\Model\Log as LogModel;
+use Astound\AvaTax\Model\Service\Result\BaseFactory as BaseResultFactory;
 
 /**
  * Class Queue
  *
- * @package OnePica\AvaTax\Model\ResourceModel
+ * @package Astound\AvaTax\Model\ResourceModel
  */
 class Queue extends AbstractDb
 {
+    /**
+     * Saved result
+     */
+    const SAVED_RESULT = 'Saved';
+
+    /**
+     * Deleted result
+     */
+    const DELETED_RESULT = 'Deleted';
+
     /**
      * DateTime model
      *
@@ -34,19 +47,39 @@ class Queue extends AbstractDb
     protected $dateTime;
 
     /**
+     * Service logger
+     *
+     * @var \Astound\AvaTax\Api\Service\LoggerInterface
+     */
+    protected $logger;
+
+    /**
+     * Base Result Factory
+     *
+     * @var BaseResultFactory
+     */
+    protected $baseResultFactory;
+
+    /**
      * Log constructor.
      *
-     * @param Context  $context
-     * @param DateTime $dateTime
-     * @param null     $connectionName
+     * @param Context           $context
+     * @param DateTime          $dateTime
+     * @param LoggerInterface   $logger
+     * @param BaseResultFactory $baseResultFactory
+     * @param null              $connectionName
      */
     public function __construct(
         Context $context,
         DateTime $dateTime,
+        LoggerInterface $logger,
+        BaseResultFactory $baseResultFactory,
         $connectionName = null
     ) {
         parent::__construct($context, $connectionName);
         $this->dateTime = $dateTime;
+        $this->logger = $logger;
+        $this->baseResultFactory = $baseResultFactory;
     }
 
     /**
@@ -71,5 +104,52 @@ class Queue extends AbstractDb
         $object->setUpdatedAt($this->dateTime->formatDate(true));
 
         return parent::_beforeSave($object);
+    }
+
+    /**
+     * Process queue data after saving
+     *
+     * @param \Magento\Framework\Model\AbstractModel $object
+     * @return $this
+     */
+    protected function _afterSave(\Magento\Framework\Model\AbstractModel $object)
+    {
+        parent::_afterSave($object);
+        $this->logAction($object, self::SAVED_RESULT);
+
+        return $this;
+    }
+
+    /**
+     * Process queue data after deleting
+     *
+     * @param \Magento\Framework\Model\AbstractModel $object
+     * @return $this
+     */
+    protected function _afterDelete(\Magento\Framework\Model\AbstractModel $object)
+    {
+        parent::_afterDelete($object);
+        $this->logAction($object, self::DELETED_RESULT);
+
+        return $this;
+    }
+
+    /**
+     * Log action
+     *
+     * @param \Magento\Framework\Model\AbstractModel $object
+     * @param string $result
+     * @return $this
+     */
+    protected function logAction(\Magento\Framework\Model\AbstractModel $object, $result)
+    {
+        $request = $object->toArray();
+        // remove request object with credential data from log
+        unset($request['request_data']);
+        $baseResult = $this->baseResultFactory->create();
+        $baseResult->setResponse($result);
+        $this->logger->log(LogModel::QUEUE, $request, $baseResult, $object->getStoreId());
+
+        return $this;
     }
 }

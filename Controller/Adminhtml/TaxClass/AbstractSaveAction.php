@@ -6,16 +6,16 @@
  * Time: 2:35 PM
  */
 
-namespace OnePica\AvaTax\Controller\Adminhtml\TaxClass;
+namespace Astound\AvaTax\Controller\Adminhtml\TaxClass;
 
 use Magento\Backend\App\Action;
-use Magento\TestFramework\Event\Magento;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Tax\Model\ClassModel;
 
 /**
  * Class AbstractSaveAction
  *
- * @package OnePica\AvaTax\Controller\Adminhtml\TaxClass
+ * @package Astound\AvaTax\Controller\Adminhtml\TaxClass
  */
 abstract class AbstractSaveAction extends Action
 {
@@ -54,7 +54,7 @@ abstract class AbstractSaveAction extends Action
                     return $resultRedirect->setPath('*/*/edit', ['id' => $model->getId(), '_current' => true]);
                 }
                 return $resultRedirect->setPath('*/*/');
-            } catch (\LocalizedException $e) {
+            } catch (LocalizedException $e) {
                 $this->getMessageManager()->addError($e->getMessage());
             } catch (\RuntimeException $e) {
                 $this->getMessageManager()->addError($e->getMessage());

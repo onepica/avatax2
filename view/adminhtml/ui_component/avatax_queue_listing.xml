@@ -131,7 +131,7 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">textRange</item>
-                    <item name="sorting" xsi:type="string">asc</item>
+                    <item name="sorting" xsi:type="string">desc</item>
                     <item name="label" xsi:type="string" translate="true">ID</item>
                 </item>
             </argument>
@@ -140,32 +140,37 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">textRange</item>
-                    <item name="sorting" xsi:type="string">asc</item>
                     <item name="label" xsi:type="string" translate="true">Store ID</item>
                 </item>
             </argument>
         </column>
-        <column name="entity_id">
+        <column name="order_id">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">textRange</item>
-                    <item name="sorting" xsi:type="string">asc</item>
-                    <item name="label" xsi:type="string" translate="true">Entity ID</item>
+                    <item name="label" xsi:type="string" translate="true">Order ID</item>
                 </item>
             </argument>
         </column>
-        <column name="entity_increment_id">
+        <column name="object_id">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">textRange</item>
-                    <item name="sorting" xsi:type="string">asc</item>
-                    <item name="label" xsi:type="string" translate="true">Entity Increment ID</item>
+                    <item name="label" xsi:type="string" translate="true">Object ID</item>
+                </item>
+            </argument>
+        </column>
+        <column name="object_increment_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="label" xsi:type="string" translate="true">Object Increment ID</item>
                 </item>
             </argument>
         </column>
         <column name="type">
             <argument name="data" xsi:type="array">
-                <item name="options" xsi:type="object">OnePica\AvaTax\Model\Source\Queue\Type</item>
+                <item name="options" xsi:type="object">Astound\AvaTax\Model\Source\Queue\Type</item>
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">select</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
@@ -177,7 +182,7 @@
         </column>
         <column name="status">
             <argument name="data" xsi:type="array">
-                <item name="options" xsi:type="object">OnePica\AvaTax\Model\Source\Queue\Status</item>
+                <item name="options" xsi:type="object">Astound\AvaTax\Model\Source\Queue\Status</item>
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">select</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
@@ -191,7 +196,6 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">textRange</item>
-                    <item name="sorting" xsi:type="string">asc</item>
                     <item name="label" xsi:type="string" translate="true">Attempt</item>
                 </item>
             </argument>
@@ -200,7 +204,6 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">textRange</item>
-                    <item name="sorting" xsi:type="string">asc</item>
                     <item name="label" xsi:type="string" translate="true">Message</item>
                 </item>
             </argument>

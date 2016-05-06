@@ -1,32 +1,32 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@onepica.com>
- * @copyright  Copyright (c) 2016 One Pica, Inc.
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astoundcommerce.com>
+ * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Plugin\Magento\Tax\Model;
+namespace Astound\AvaTax\Plugin\Magento\Tax\Model;
 
 use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Class Calculation
  *
- * @package OnePica\AvaTax\Plugin\Magento\Tax\Model
+ * @package Astound\AvaTax\Plugin\Magento\Tax\Model
  */
 class Calculation
 {
     /**
      * Config
      *
-     * @var \OnePica\AvaTax\Helper\Config
+     * @var \Astound\AvaTax\Helper\Config
      */
     protected $config;
 
@@ -40,10 +40,10 @@ class Calculation
     /**
      * Calculation constructor.
      *
-     * @param \OnePica\AvaTax\Helper\Config              $config
+     * @param \Astound\AvaTax\Helper\Config              $config
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      */
-    public function __construct(\OnePica\AvaTax\Helper\Config $config, StoreManagerInterface $storeManager)
+    public function __construct(\Astound\AvaTax\Helper\Config $config, StoreManagerInterface $storeManager)
     {
         $this->config = $config;
         $this->storeManager = $storeManager;

@@ -1,18 +1,18 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@onepica.com>
- * @copyright  Copyright (c) 2016 One Pica, Inc.
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astoundcommerce.com>
+ * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model\Service\DataSource;
+namespace Astound\AvaTax\Model\Service\DataSource;
 
 use Magento\Customer\Model\Customer;
 use Magento\Framework\DataObject;
@@ -26,7 +26,7 @@ use OnePica\AvaTax16\Document\Part\Location;
 /**
  * Class DataSource
  *
- * @package OnePica\AvaTax\Model\Service
+ * @package Astound\AvaTax\Model\Service
  */
 class Calculation extends AbstractDataSource
 {
@@ -63,5 +63,23 @@ class Calculation extends AbstractDataSource
     protected function getCustomerTaxClassIdFromAddress($address)
     {
         return $address->getQuote()->getCustomerTaxClassId();
+    }
+
+    /**
+     * Get item avalara goods and services type
+     * Tax class.
+     *
+     * @param QuoteItem|\Magento\Quote\Model\Quote\Address\Item $item
+     * @param Store                                             $store
+     *
+     * @return string|null
+     */
+    public function getItemAvalaraGoodsAndServicesType($item, $store)
+    {
+        if ($item->getChildren()) {
+            $item = $item->getChildren()[0];
+        }
+
+        return parent::getItemAvalaraGoodsAndServicesType($item, $store);
     }
 }

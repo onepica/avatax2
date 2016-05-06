@@ -1,33 +1,34 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@onepica.com>
- * @copyright  Copyright (c) 2016 One Pica, Inc.
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astoundcommerce.com>
+ * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Plugin\Quote\Model\Quote;
+namespace Astound\AvaTax\Plugin\Quote\Model\Quote;
 
 use Magento\Customer\Model\Address\AbstractAddress;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Store\Model\StoreManagerInterface;
-use OnePica\AvaTax\Helper\Config;
-use OnePica\AvaTax\Model\Tool\Validate;
-use OnePica\AvaTax\Model\Service\Request\Address as RequestAddress;
-use OnePica\AvaTax\Model\Service\Result\AddressValidation;
-use OnePica\AvaTax\Helper\Data as AvataxDataHelper;
-use OnePica\AvaTax\Helper\Address as AvataxAddressHelper;
+use Magento\Store\Model\Store;
+use Astound\AvaTax\Helper\Config;
+use Astound\AvaTax\Model\Tool\Validate;
+use Astound\AvaTax\Model\Service\Request\Address as RequestAddress;
+use Astound\AvaTax\Model\Service\Result\AddressValidation;
+use Astound\AvaTax\Helper\Data as AvataxDataHelper;
+use Astound\AvaTax\Helper\Address as AvataxAddressHelper;
 
 /**
  * Quote address validator
  *
- * @package OnePica\AvaTax\Plugin\Quote\Model\Quote\AddressValidator
+ * @package Astound\AvaTax\Plugin\Quote\Model\Quote\AddressValidator
  */
 class AddressValidator
 {
@@ -65,6 +66,13 @@ class AddressValidator
     protected $addressHelper;
 
     /**
+     * Store
+     *
+     * @var \Magento\Store\Model\Store
+     */
+    protected $store;
+
+    /**
      * ShippingInformationManagement constructor
      *
      * @param Config $config
@@ -85,6 +93,23 @@ class AddressValidator
         $this->storeManager = $storeManager;
         $this->messageManager = $messageManager;
         $this->addressHelper = $addressHelper;
+    }
+
+    /**
+     * Init Store
+     *
+     * @param AbstractAddress $address
+     * @return $this
+     */
+    protected function initStore(AbstractAddress $address)
+    {
+        $storeId = $address->getQuote()
+                 ? $address->getQuote()->getStore()->getId()
+                 : null;
+
+        $this->store = $this->storeManager->getStore($storeId);
+
+        return $this;
     }
 
     /**
@@ -110,6 +135,8 @@ class AddressValidator
      */
     public function validate(AbstractAddress $address)
     {
+        $this->initStore($address);
+
         if (!$this->isValidationRequired($address)) {
             return true;
         }
@@ -125,10 +152,7 @@ class AddressValidator
         $validator = $this->objectManager->create(Validate::class, ['object' => $requestAddress]);
         $serviceResult = $validator->execute();
         $this->normalizeAddress($address, $serviceResult);
-        if ($address->getData('is_normalized') === true) {
-            $message = $this->getOnepageNormalizeMessage();
-            $this->addNotice($message);
-        }
+
         $result = $serviceResult->getErrors() ? $serviceResult->getErrors() : true;
         if ($result === true) {
             return true;
@@ -168,11 +192,12 @@ class AddressValidator
      */
     protected function isValidationRequired(AbstractAddress $address)
     {
-        if ($this->getValidationMode() &&
-            $address->getAddressType() == \Magento\Quote\Model\Quote\Address::ADDRESS_TYPE_SHIPPING
+        $isShippingAddress = $address->getAddressType() == \Magento\Quote\Model\Quote\Address::ADDRESS_TYPE_SHIPPING;
+        if ($this->getValidationMode()
+            && ($isShippingAddress || $address->getQuote()->isVirtual())
             && $this->addressHelper->isAddressActionable(
                 $address,
-                $this->storeManager->getStore(),
+                $this->store,
                 AvataxDataHelper::REGION_FILTER_MODE_ALL,
                 true
             )
@@ -190,7 +215,7 @@ class AddressValidator
      */
     protected function getValidationMode()
     {
-        return $this->config->getValidateAddress($this->storeManager->getStore());
+        return $this->config->getValidateAddress($this->store);
     }
 
     /**
@@ -201,9 +226,8 @@ class AddressValidator
      */
     protected function convertAddressToRequestAddress(AbstractAddress $address)
     {
-        $requestAddress = $this->objectManager->create('OnePica\AvaTax\Model\Service\Request\Address');
-        $store = $this->storeManager->getStore();
-        $requestAddress->setStore($store);
+        $requestAddress = $this->objectManager->create('Astound\AvaTax\Model\Service\Request\Address');
+        $requestAddress->setStore($this->store);
         $requestAddress->setLine1($address->getStreetLine(1));
         $requestAddress->setLine2($address->getStreetLine(2));
         $requestAddress->setCity($address->getCity());
@@ -219,22 +243,54 @@ class AddressValidator
      *
      * @param AbstractAddress   $address
      * @param AddressValidation $serviceResult
+     * @return $this
      */
     protected function normalizeAddress(AbstractAddress $address, AddressValidation $serviceResult)
     {
-        if ($this->isNormalizeAddressEnabled() && !$serviceResult->getHasError()) {
+        if ($this->isNormalizeAddressEnabled()
+            && !$serviceResult->getHasError()
+            && $serviceResult->getResolution()
+        ) {
+            $addressWasChanged = false;
             $normalizedAddress = $serviceResult->getAddress();
             $street[] = $normalizedAddress->getLine1();
             if ($normalizedAddress->getLine2()) {
                 $street[] = $normalizedAddress->getLine2();
             }
-            $address->setStreet($street);
-            $address->setCity($normalizedAddress->getCity());
-            $address->setRegion($normalizedAddress->getRegion());
-            $address->setPostcode($normalizedAddress->getPostcode());
-            $address->setCountry($normalizedAddress->getCountry());
-            $address->setData('is_normalized', true);
+
+            if (!empty(array_diff($street, $address->getStreet()))) {
+                $address->setStreet($street);
+                $addressWasChanged = true;
+            }
+
+            if ($address->getCity() != $normalizedAddress->getCity()) {
+                $address->setCity($normalizedAddress->getCity());
+                $addressWasChanged = true;
+            }
+
+            $region = $this->addressHelper->getRegion($normalizedAddress->getRegion(), $address->getCountry());
+            if ($region && $address->getRegion() != $region->getName()) {
+                $address->setRegion($region->getName());
+                $address->setRegionId($region->getRegionId());
+                $addressWasChanged = true;
+            }
+
+            if ($address->getPostcode() != $normalizedAddress->getPostcode()) {
+                $address->setPostcode($normalizedAddress->getPostcode());
+                $addressWasChanged = true;
+            }
+
+            if ($address->getCountry() != $normalizedAddress->getCountry()) {
+                $address->setCountry($normalizedAddress->getCountry());
+                $addressWasChanged = true;
+            }
+
+            if ($addressWasChanged) {
+                $address->setData('is_normalized', true);
+            }
         }
+
+        return $this;
     }
 
     /**
@@ -244,7 +300,7 @@ class AddressValidator
      */
     protected function isNormalizeAddressEnabled()
     {
-        return $this->config->getNormalizeAddress($this->storeManager->getStore());
+        return $this->config->getNormalizeAddress($this->store);
     }
 
     /**
@@ -255,9 +311,8 @@ class AddressValidator
      */
     protected function addNotice($message)
     {
-        // TODO: investigate of displays messages using meddage group
-       // $this->messageManager->addNotice($message, AvataxDataHelper::MESSAGE_GROUP_CODE);
-        $this->messageManager->addNotice($message);
+        $this->addressHelper->addValidationNotice($message);
+
         return $this;
     }
 
@@ -268,7 +323,7 @@ class AddressValidator
      */
     protected function getValidateAddressMode()
     {
-        return $this->config->getValidateAddress($this->storeManager->getStore());
+        return $this->config->getValidateAddress($this->store);
     }
 
     /**
@@ -278,7 +333,7 @@ class AddressValidator
      */
     protected function getOnepageNormalizeMessage()
     {
-        return $this->config->getOnepageNormalizeMessage($this->storeManager->getStore());
+        return $this->config->getOnepageNormalizeMessage($this->store);
     }
 
     /**
@@ -289,34 +344,71 @@ class AddressValidator
      */
     protected function checkAddressFields(AbstractAddress $address)
     {
-        $store = $this->storeManager->getStore();
-        $requiredFields = explode(",", $this->config->getFieldRequiredList($store));
-        $fieldRules = explode(",", $this->config->getFieldRule($store));
         $errors = null;
-        $countryFactory = $this->objectManager->get('\Magento\Directory\Model\CountryFactory');
+        $requiredFieldsStr = $this->config->getFieldRequiredList($this->store);
+        if ($requiredFieldsStr) {
+            $requiredFields = explode(",", $requiredFieldsStr);
+            $fieldRules = explode(",", $this->config->getFieldRule($this->store));
+            $countryFactory = $this->objectManager->get('\Magento\Directory\Model\CountryFactory');
 
-        foreach ($requiredFields as $field) {
+            foreach ($requiredFields as $field) {
+                $hasError = false;
+                switch ($field) {
+                    case 'country_id':
+                        $fieldValue = $countryFactory->create()->loadByCode($address->getCountry())->getName();
+                        $field = __('Country');
+                        break;
+                    case 'region':
+                        $fieldValue = $address->getRegion();
+                        break;
+                    case 'street':
+                        $fieldValue = $address->getStreet();
+                        break;
+                    default:
+                        $fieldValue = $address->getData($field);
+                        break;
+                }
 
-            switch ($field) {
-                case 'country_id':
-                    $fieldValue = $countryFactory->create()->loadByCode($address->getCountry())->getName();
-                    $field = __('Country ');
-                    break;
-                case 'region':
-                    $fieldValue = $address->getRegion();
-                    break;
-                default:
-                    $fieldValue = $address->getData($field);
-                    break;
-            }
-
-            foreach ($fieldRules as $rule) {
-                if ($fieldValue == $rule || !$fieldValue) {
+                foreach ($fieldRules as $rule) {
+                    if ($this->hasAddressFieldRuleError($fieldValue, $rule)) {
+                        $hasError = true;
+                        break;
+                    }
+                }
+                if ($hasError) {
                     $errors[] = __('Invalid ') . __($field);
                 }
             }
         }
 
         return $errors;
+    }
+
+    /**
+     * Has Address Field Rule Error
+     *
+     * @param string|array $fieldValue
+     * @param string $rule
+     * @return bool
+     */
+    protected function hasAddressFieldRuleError($fieldValue, $rule)
+    {
+        $hasError = false;
+
+        if (is_array($fieldValue)) {
+            // fix for street
+            foreach ($fieldValue as $value) {
+                if ($value == $rule) {
+                    $hasError = true;
+                    break;
+                }
+            }
+        } else {
+            if (!$fieldValue || $fieldValue == $rule) {
+                $hasError = true;
+            }
+        }
+
+        return $hasError;
     }
 }

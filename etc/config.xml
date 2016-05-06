@@ -9,6 +9,7 @@
                     <taxable_country>CA,US</taxable_country>
                 </region_filter_group>
                 <avatax_log_group>
+                    <log_mode>1</log_mode>
                     <log_lifetime>3</log_lifetime>
                     <queue_success_lifetime>7</queue_success_lifetime>
                     <queue_failed_lifetime>60</queue_failed_lifetime>
@@ -26,7 +27,7 @@
                     <sales_person_code>Magento</sales_person_code>
                 </avatax_data_mapping_group>
                 <address_validation_group>
-                    <validate_address>0</validate_address>
+                    <validate_address>1</validate_address>
                     <normalize_address>0</normalize_address>
                     <address_validation_countries>CA,US</address_validation_countries>
                     <avatax16_onepage_validate_address_message>Unable to validate address.</avatax16_onepage_validate_address_message>
@@ -38,6 +39,7 @@
                     <frontend_error_message>Unfortunately, we could not calculate tax for your order. Please try again with a different address or contact us to complete your order.</frontend_error_message>
                     <backend_error_message>Unfortunately, we could not calculate tax for your order. Please try again with a different address.</backend_error_message>
                     <action_on_error>0</action_on_error>
+                    <error_notification_toolbar>1</error_notification_toolbar>
                 </avatax_error_handling_group>
             </avatax>
         </tax>

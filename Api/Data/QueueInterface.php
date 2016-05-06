@@ -1,23 +1,23 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@onepica.com>
- * @copyright  Copyright (c) 2016 One Pica, Inc.
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astoundcommerce.com>
+ * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Api\Data;
+namespace Astound\AvaTax\Api\Data;
 
 /**
  * Interface QueueInterface
  *
- * @package OnePica\AvaTax\Api\Data
+ * @package Astound\AvaTax\Api\Data
  */
 interface QueueInterface
 {
@@ -48,8 +48,9 @@ interface QueueInterface
      */
     const QUEUE_ID            = 'queue_id';
     const STORE_ID            = 'store_id';
-    const ENTITY_ID           = 'entity_id';
-    const ENTITY_INCREMENT_ID = 'entity_increment_id';
+    const ORDER_ID            = 'order_id';
+    const OBJECT_ID           = 'object_id';
+    const OBJECT_INCREMENT_ID = 'object_increment_id';
     const TYPE                = 'type';
     const STATUS              = 'status';
     const ATTEMPT             = 'attempt';
@@ -91,35 +92,35 @@ interface QueueInterface
     public function setStoreId($storeId);
 
     /**
-     * Get Entity Id
+     * Get Order Id
      *
      * @return int
      */
-    public function getEntityId();
+    public function getOrderId();
 
     /**
-     * Set Entity Id
+     * Set Order Id
      *
-     * @param int $entityId
-     * @return mixed
+     * @param int $orderId
+     *
+     * @return $this
      */
-    public function setEntityId($entityId);
-
+    public function setOrderId($orderId);
 
     /**
-     * Get Entity Increment Id
+     * Get Object Increment Id
      *
      * @return string
      */
-    public function getEntityIncrementId();
+    public function getObjectIncrementId();
 
     /**
-     * Set Entity Increment Id
+     * Set Object Increment Id
      *
      * @param string $entityIncrementId
-     * @return mixed
+     * @return string
      */
-    public function setEntityIncrementId($entityIncrementId);
+    public function setObjectIncrementId($entityIncrementId);
 
     /**
      * Get  type
@@ -248,4 +249,20 @@ interface QueueInterface
      * @return $this
      */
     public function setTotalTaxAmount($totalTaxAmount);
+
+    /**
+     * Get Object Id
+     *
+     * @return int
+     */
+    public function getObjectId();
+
+    /**
+     * Set Object Id
+     *
+     * @param int $objectId
+     *
+     * @return $this
+     */
+    public function setObjectId($objectId);
 }

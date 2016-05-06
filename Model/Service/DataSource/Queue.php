@@ -1,18 +1,18 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@onepica.com>
- * @copyright  Copyright (c) 2016 One Pica, Inc.
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astoundcommerce.com>
+ * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model\Service\DataSource;
+namespace Astound\AvaTax\Model\Service\DataSource;
 
 use Magento\Customer\Model\CustomerRegistry;
 use Magento\Directory\Model\RegionFactory;
@@ -23,15 +23,15 @@ use Magento\Tax\Model\ResourceModel\TaxClass\Collection;
 use Magento\Customer\Api\GroupRepositoryInterface;
 use Magento\Store\Model\Store;
 use Magento\Framework\Exception\NoSuchEntityException;
-use OnePica\AvaTax\Helper\Config;
-use OnePica\AvaTax\Model\GiftWrappingHelperFactory;
-use OnePica\AvaTax\Model\Source\Avatax16\CustomerCodeFormat;
+use Astound\AvaTax\Helper\Config;
+use Astound\AvaTax\Model\GiftWrappingHelperFactory;
+use Astound\AvaTax\Model\Source\Avatax16\CustomerCodeFormat;
 
 
 /**
  * Class DataSource
  *
- * @package OnePica\AvaTax\Model\Service
+ * @package Astound\AvaTax\Model\Service
  */
 class Queue extends AbstractDataSource
 {
@@ -43,13 +43,13 @@ class Queue extends AbstractDataSource
     /**
      * DataSource constructor.
      *
-     * @param \OnePica\AvaTax\Helper\Config                   $config
+     * @param \Astound\AvaTax\Helper\Config                   $config
      * @param \Magento\Customer\Model\CustomerRegistry        $customerRegistry
      * @param \Magento\Tax\Model\ClassModelRegistry           $classModelRegistry
      * @param \Magento\Directory\Model\RegionFactory          $regionFactory
      * @param Data                                            $taxDataHelper
      * @param Collection                                      $taxClassCollection
-     * @param \OnePica\AvaTax\Model\GiftWrappingHelperFactory $giftWrappingHelperFactory
+     * @param \Astound\AvaTax\Model\GiftWrappingHelperFactory $giftWrappingHelperFactory
      * @param GroupRepositoryInterface $groupRepository
      */
     public function __construct(

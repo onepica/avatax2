@@ -1,41 +1,48 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@onepica.com>
- * @copyright  Copyright (c) 2016 One Pica, Inc.
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astoundcommerce.com>
+ * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model\Sales\Total\Quote;
+namespace Astound\AvaTax\Model\Sales\Total\Quote;
 
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Quote\Model\Quote\Address\Total\AbstractTotal;
 use Magento\Tax\Helper\Data as TaxDataHelper;
-use OnePica\AvaTax\Helper\Address;
-use OnePica\AvaTax\Helper\Config;
+use Astound\AvaTax\Helper\Address;
+use Astound\AvaTax\Helper\Config;
+use Astound\AvaTax\Helper\Data as AvataxDataHelper;
 use Magento\Quote\Api\Data\ShippingAssignmentInterface;
 use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\Quote\Address\Total as AddressTotal;
-use OnePica\AvaTax\Model\Tool\Calculate;
+use Astound\AvaTax\Model\Service\Result\Calculation;
+use Astound\AvaTax\Model\Tool\Calculate;
 
 /**
  * Class AbstractCollector
  *
- * @package OnePica\AvaTax\Model\Sales\Total\Quote
+ * @package Astound\AvaTax\Model\Sales\Total\Quote
  */
 abstract class AbstractCollector extends AbstractTotal
 {
     /**
-     * Calculate tool registry key
+     * Avatax error quote key
      */
-    const CALCULATE_TOOL_KEY = 'avatax_calculate_tool';
+    const AVATAX_ERROR = 'avatax_error';
+
+    /**
+     * Calculate tool registry key pattern
+     */
+    const CALCULATE_RESULT_KEY_PATTERN = 'avatax_calculate_result_%s';
 
     /**
      * Object manager
@@ -61,7 +68,7 @@ abstract class AbstractCollector extends AbstractTotal
     /**
      * Config
      *
-     * @var \OnePica\AvaTax\Helper\Config
+     * @var \Astound\AvaTax\Helper\Config
      */
     protected $config;
 
@@ -94,7 +101,7 @@ abstract class AbstractCollector extends AbstractTotal
      * @param \Magento\Framework\Registry                       $registry
      * @param \Magento\Framework\Pricing\PriceCurrencyInterface $priceCurrency
      * @param \Magento\Tax\Helper\Data                          $taxDataHelper
-     * @param \OnePica\AvaTax\Helper\Config                     $config
+     * @param \Astound\AvaTax\Helper\Config                     $config
      * @param Address                                           $addressHelper
      */
     public function __construct(
@@ -132,10 +139,10 @@ abstract class AbstractCollector extends AbstractTotal
             return $this;
         }
 
-        $result = $this->getCalculateTool($quote, $shippingAssignment, $total)->execute();
+        $result = $this->getCalculationResult($quote, $shippingAssignment, $total);
 
-        if ($result !== null && $result->getHasError()) {
-            $quote->setData('avatax_error', true);
+        if ($result !== null && $result->getHasError() && !$quote->getData(self::AVATAX_ERROR)) {
+            $quote->setData(self::AVATAX_ERROR, true);
         }
 
         return $this;
@@ -147,29 +154,28 @@ abstract class AbstractCollector extends AbstractTotal
      * @param Quote                       $quote
      * @param ShippingAssignmentInterface $shippingAssignment
      * @param AddressTotal                $total
-     * @return Calculate
+     * @return Calculation
      */
-    protected function getCalculateTool(
+    protected function getCalculationResult(
         Quote $quote,
         ShippingAssignmentInterface $shippingAssignment,
         AddressTotal $total
     ) {
-        $tool = $this->registry->registry(self::CALCULATE_TOOL_KEY);
-
-        if ($tool === null) {
-            $tool = $this->objectManager->create(
+        $result = $this->registry->registry($this->getRegistryKey($shippingAssignment));
+        if ($result === null) {
+            $result = $this->objectManager->create(
                 Calculate::class,
                 [
                     'shippingAssignment' => $shippingAssignment,
                     'quote'              => $quote,
                     'total'              => $total
                 ]
-            );
+            )->execute();
 
-            $this->registry->register(self::CALCULATE_TOOL_KEY, $tool);
+            $this->registry->register($this->getRegistryKey($shippingAssignment), $result);
         }
 
-        return $tool;
+        return $result;
     }
 
     /**
@@ -187,12 +193,30 @@ abstract class AbstractCollector extends AbstractTotal
 
         if (!$address->getPostcode()
             || !$shippingAssignment->getItems()
-            || !$this->addressHelper->isAddressActionable($address, $quote->getStore())
+            || !$this->addressHelper->isAddressActionable(
+                $address,
+                $quote->getStore(),
+                AvataxDataHelper::REGION_FILTER_MODE_TAX
+            )
+            || !$shippingAssignment->getShipping()->getAddress()->getId()
 
         ) {
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * Get registry key
+     *
+     * @param ShippingAssignmentInterface $shippingAssignment
+     * @return string
+     */
+    protected function getRegistryKey(ShippingAssignmentInterface $shippingAssignment)
+    {
+        $addressId = $shippingAssignment->getShipping()->getAddress()->getId();
+
+        return sprintf(self::CALCULATE_RESULT_KEY_PATTERN, $addressId);
     }
 }

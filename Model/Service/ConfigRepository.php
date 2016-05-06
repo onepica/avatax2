@@ -1,27 +1,26 @@
 <?php
 /**
- * OnePica_AvaTax
+ * Astound_AvaTax
  * NOTICE OF LICENSE
  * This source file is subject to the Open Software License (OSL 3.0),
  * a copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
  *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@onepica.com>
- * @copyright  Copyright (c) 2016 One Pica, Inc.
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astoundcommerce.com>
+ * @copyright  Copyright (c) 2016 Astound, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-namespace OnePica\AvaTax\Model\Service;
+namespace Astound\AvaTax\Model\Service;
 
 use Magento\Store\Model\Store;
-use OnePica\AvaTax\Api\ConfigInterface;
-use OnePica\AvaTax\Api\ConfigRepositoryInterface;
+use Astound\AvaTax\Model\Service\Avatax16\ConfigInterface;
 
 /**
  * Class ConfigRepository
  *
- * @package OnePica\AvaTax\Model\Service
+ * @package Astound\AvaTax\Model\Service
  */
 class ConfigRepository implements ConfigRepositoryInterface
 {
@@ -35,14 +34,14 @@ class ConfigRepository implements ConfigRepositoryInterface
     /**
      * Config factory
      *
-     * @var \OnePica\AvaTax\Model\Service\ConfigFactory
+     * @var \Astound\AvaTax\Model\Service\ConfigFactory
      */
     protected $configFactory;
 
     /**
      * ConfigRepository constructor.
      *
-     * @param \OnePica\AvaTax\Model\Service\ConfigFactory $configFactory
+     * @param \Astound\AvaTax\Model\Service\ConfigFactory $configFactory
      */
     public function __construct(ConfigFactory $configFactory)
     {
