@@ -467,6 +467,7 @@ abstract class AbstractDataSource implements DataSourceInterface
 
         if ($this->config->getUseUpcCode($store)) {
             $itemCode = (string)$this->avataxData->getData($item->getId() . '/upc_code');
+            $itemCode = !empty($itemCode) ? 'UPC:' . $itemCode : '';
         }
 
         if (empty($itemCode)) {
