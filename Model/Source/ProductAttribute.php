@@ -39,6 +39,20 @@ class ProductAttribute implements OptionSourceInterface
     protected $attributeCollection;
 
     /**
+     * Skipped Attributes
+     *
+     * @var Collection
+     */
+    protected $skippedAttributes = array(
+        'category_ids',
+        'custom_layout_update',
+        'email_template',
+        'image_label',
+        'small_image_label',
+        'thumbnail_label'
+    );
+
+    /**
      * ProductAttribute constructor.
      *
      * @param Collection $attributeCollection
@@ -66,6 +80,9 @@ class ProductAttribute implements OptionSourceInterface
         ];
 
         $this->attributeCollection->addFieldToSelect(['attribute_code', 'frontend_label']);
+        $this->attributeCollection->addFieldToFilter('backend_type', ['in' => array('text', 'static', 'varchar')]);
+        $this->attributeCollection->addFieldToFilter('frontend_input', ['in' => array('text', 'textarea')]);
+        $this->attributeCollection->addFieldToFilter('attribute_code', ['nin' => $this->skippedAttributes]);
 
         /** @var \Magento\Catalog\Model\ResourceModel\Eav\Attribute $item */
         foreach ($this->attributeCollection as $item) {
