@@ -65,8 +65,12 @@
                         <comment>Replace address with well-formed one from AvaTax</comment>
                     </field>
                     <field id="avatax16_onepage_validate_address_message" translate="label comment" type="textarea" sortOrder="325" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Address Validation Error</label>
+                        <label>Onepage Checkout Address Validation Error</label>
                         <comment>Only applies if address validation is enabled</comment>
+                    </field>
+                    <field id="validate_address_message" translate="label comment" type="textarea" sortOrder="327" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Multi-Address Checkout Address Validation Error</label>
+                        <comment>Only applies if address validation is enabled and shows ONLY for the multi-address checkout</comment>
                     </field>
                     <field id="onepage_normalize_message" translate="label comment" type="textarea" sortOrder="330" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Onepage Checkout Address Normalized Notice</label>
@@ -75,10 +79,6 @@
                     <field id="multiaddress_normalize_message" translate="label comment" type="textarea" sortOrder="340" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Multi-Address Checkout Address Normalized Notice</label>
                         <comment>Only applies if address normalization is enabled</comment>
-                    </field>
-                    <field id="validate_address_message" translate="label comment" type="textarea" sortOrder="350" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Multi-Address Address Validation Error</label>
-                        <comment>Only applies if address validation is enabled and shows ONLY for the multi-address checkout</comment>
                     </field>
                 </group>
                 <group id="request_settings_group" translate="label" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
