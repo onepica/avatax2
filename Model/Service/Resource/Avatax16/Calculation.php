@@ -15,6 +15,7 @@
 namespace Astound\AvaTax\Model\Service\Resource\Avatax16;
 
 use DateTime;
+use Magento\Framework\DataObject;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Framework\Stdlib\DateTime\Timezone;
 use Magento\Quote\Api\Data\ShippingAssignmentInterface;
@@ -175,7 +176,8 @@ class Calculation extends AbstractResource
     protected function prepareLines($store, $object, $total)
     {
         $this->lines = [];
-        $this->addLine($this->prepareShippingLine($store, $object->getShipping()->getAddress()), $this->getShippingSku($store));
+        $dataObject = new DataObject(['total' => $total, 'address' => $object->getShipping()->getAddress()]);
+        $this->addLine($this->prepareShippingLine($store, $dataObject), $this->getShippingSku($store));
         $this->addLine($this->prepareGwOrderLine($store, $total), $this->getGwOrderSku($store));
         $this->addLine($this->prepareGwPrintedCardLine($store, $total), $this->getGwPrintedCardSku($store));
         $this->addItemsLine($store, $object->getItems());
@@ -186,16 +188,16 @@ class Calculation extends AbstractResource
     /**
      * Prepare shipping line
      *
-     * @param \Magento\Store\Model\Store $store
-     * @param  \Magento\Quote\Model\Quote\Address $object
+     * @param \Magento\Store\Model\Store  $store
+     * @param  DataObject                 $object
      * @return \OnePica\AvaTax16\Document\Request\Line
      */
     protected function prepareShippingLine($store, $object)
     {
         $line = parent::prepareShippingLine($store, $object);
-        $shippingAmount = (float)$object->getData('base_shipping_amount');
+        $shippingAmount = (float)$object->getData('total')->getData('base_shipping_amount');
         //todo replace to base_shipping_discount_amount when will be available (magento bug)
-        $discountAmount = (float)$object->getData('shipping_discount_amount');
+        $discountAmount = (float)$object->getData('address')->getData('shipping_discount_amount');
 
         if ($this->dataSource->applyTaxAfterDiscount($store) && $discountAmount) {
             $line->setDiscounted('true');
