@@ -20,6 +20,10 @@
             <argument name="storage" xsi:type="object">Astound\AvaTax\Model\Session\Storage</argument>
         </arguments>
     </type>
+    <type name="Magento\Quote\Model\Quote\Address\Item">
+        <plugin name="avatax-quote-address-item-plugin"
+                type="Astound\AvaTax\Plugin\Quote\Model\Quote\Address\Item" sortOrder="10"/>
+    </type>
     <type name="Magento\Quote\Model\Quote\Config">
         <plugin name="magento-quote-model-quote-config-plugin"
                 type="Astound\AvaTax\Plugin\Magento\Quote\Model\Quote\Config" sortOrder="10" />
