@@ -21,6 +21,7 @@ use Magento\Framework\DataObject;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Api\Data\AddressInterface;
 use Magento\Quote\Model\Quote\Address;
+use Magento\Quote\Model\Quote\Address\Item as QuoteAddressItem;
 use Magento\Quote\Model\Quote\Item as QuoteItem;
 use Magento\Sales\Model\Order\Creditmemo\Item as CreditmemoItem;
 use Magento\Sales\Model\Order\Invoice\Item as InvoiceItem;
@@ -467,6 +468,7 @@ abstract class AbstractDataSource implements DataSourceInterface
 
         if ($this->config->getUseUpcCode($store)) {
             $itemCode = (string)$this->avataxData->getData($item->getId() . '/upc_code');
+            $itemCode = !empty($itemCode) ? 'UPC:' . $itemCode : '';
         }
 
         if (empty($itemCode)) {
@@ -495,8 +497,8 @@ abstract class AbstractDataSource implements DataSourceInterface
     /**
      * Get item meta data
      *
-     * @param QuoteItem|InvoiceItem|CreditmemoItem $item
-     * @param Store                                $store
+     * @param QuoteItem|InvoiceItem|CreditmemoItem|QuoteAddressItem $item
+     * @param Store                                                 $store
      * @return array
      */
     public function getItemMetaData($item, $store)
