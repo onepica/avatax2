@@ -54,6 +54,18 @@ interface LogInterface
     /**#@-*/
 
     /**
+     * @return int
+     */
+    public function getLogId();
+
+    /**
+     * @param $id
+     *
+     * @return $this
+     */
+    public function setLogId($id);
+
+    /**
      * Get store id
      *
      * @return int
@@ -64,7 +76,7 @@ interface LogInterface
      * Set store id
      *
      * @param int $storeId
-     * @return mixed
+     * @return $this
      */
     public function setStoreId($storeId);
 
@@ -79,7 +91,7 @@ interface LogInterface
      * Set log level
      *
      * @param string $logLevel
-     * @return mixed
+     * @return $this
      */
     public function setLogLevel($logLevel);
 
@@ -94,7 +106,7 @@ interface LogInterface
      * Set log type
      *
      * @param string $logType
-     * @return string
+     * @return $this
      */
     public function setLogType($logType);
 
@@ -109,7 +121,7 @@ interface LogInterface
      * Set request
      *
      * @param string $request
-     * @return string
+     * @return $this
      */
     public function setRequest($request);
 
@@ -124,7 +136,7 @@ interface LogInterface
      * Set response
      *
      * @param string $response
-     * @return string
+     * @return $this
      */
     public function setResponse($response);
 
@@ -139,7 +151,7 @@ interface LogInterface
      * Set additional info
      *
      * @param string $additionalInfo
-     * @return string
+     * @return $this
      */
     public function setAdditionalInfo($additionalInfo);
 
@@ -154,7 +166,7 @@ interface LogInterface
      * Set created at
      *
      * @param string $createdAt
-     * @return string
+     * @return $this
      */
     public function setCreatedAt($createdAt);
 }

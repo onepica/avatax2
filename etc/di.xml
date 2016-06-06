@@ -5,6 +5,7 @@
     <preference for="Astound\AvaTax\Model\Service\ResolverInterface" type="Astound\AvaTax\Model\Service\Resolver"/>
     <preference for="Astound\AvaTax\Api\Service\LoggerInterface" type="Astound\AvaTax\Model\Service\Logger"/>
     <preference for="Astound\AvaTax\Api\LogRepositoryInterface" type="Astound\AvaTax\Model\LogRepository"/>
+    <preference for="Astound\AvaTax\Api\Data\LogInterface" type="Astound\AvaTax\Model\Log"/>
     <preference for="Astound\AvaTax\Model\Service\DataSource\DataSourceInterface" type="Astound\AvaTax\Model\Service\DataSource\Calculation"/>
     <preference for="Astound\AvaTax\Api\QueueRepositoryInterface" type="Astound\AvaTax\Model\QueueRepository"/>
     <preference for="Astound\AvaTax\Api\Data\QueueSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>

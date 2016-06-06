@@ -48,6 +48,30 @@ class Log extends AbstractModel implements LogInterface
     }
 
     /**
+     * Get log id
+     * 
+     * @return int
+     */
+    public function getLogId()
+    {
+        return $this->getId();
+    }
+
+    /**
+     * Set log id
+     * 
+     * @param int $id
+     *
+     * @return $this
+     */
+    public function setLogId($id)
+    {
+        $this->setId($id);
+
+        return $this;
+    }
+
+    /**
      * Get store id
      *
      * @return int
