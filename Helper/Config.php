@@ -36,6 +36,11 @@ class Config extends AbstractHelper
      */
     const MODULE_NAME = 'Astound_AvaTax';
 
+    /**
+     * Internal avalara identifier of magento 2 platform
+     */
+    const MAGENTO_PLATFORM_IDENTIFIER = 'a0o33000004B2xE';
+
     /**#@+
      * Config xml path
      */
@@ -539,10 +544,8 @@ class Config extends AbstractHelper
      */
     public function getUserAgent()
     {
-        $userAgent = $this->productMetadata->getName() . ' ';
-        $userAgent .= $this->getMagentoEdition() . ' v';
-        $userAgent .= $this->productMetadata->getVersion() . ' ';
-        $userAgent .= self::MODULE_NAME . ' v' . $this->getModuleVersion();
+        $userAgent = self::MAGENTO_PLATFORM_IDENTIFIER . '|';
+        $userAgent .= $this->getModuleVersion();
 
         return $userAgent;
     }
