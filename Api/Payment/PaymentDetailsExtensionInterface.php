@@ -30,5 +30,5 @@ interface PaymentDetailsExtensionInterface extends \Magento\Checkout\Api\Data\Pa
      * @param \Magento\Quote\Api\Data\AddressInterface $address
      * @return $this
      */
-    public function setValidatedAddress($address);
+    public function setValidatedAddress(\Magento\Quote\Api\Data\AddressInterface $address);
 }
