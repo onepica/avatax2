@@ -6,4 +6,7 @@
     <event name="sales_model_service_quote_submit_before">
         <observer name="avatax_prevent_admin_order_creation" instance="Astound\AvaTax\Observer\Adminhtml\PreventOrderCreation" />
     </event>
+    <event name="checkout_submit_all_after">
+        <observer name="avatax_add_address_normalization_notice" instance="Astound\AvaTax\Observer\Adminhtml\AddAddressNormalizationNotice" />
+    </event>
 </config>
