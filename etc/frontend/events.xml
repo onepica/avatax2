@@ -7,6 +7,9 @@
         <observer name="avatax_delete_validation_messages" instance="Astound\AvaTax\Observer\DeleteValidationMessages"/>
     </event>
     <event name="controller_action_predispatch_checkout_onepage_success">
-        <observer name="avatax_delete_validation_messages" instance="Astound\AvaTax\Observer\DeleteValidationMessages"/>
+        <observer name="avatax_delete_validation_messages_onepage_success" instance="Astound\AvaTax\Observer\DeleteValidationMessages"/>
+    </event>
+    <event name="controller_action_predispatch_checkout_index_index">
+        <observer name="avatax_load_billing_address_for_virtual_quote" instance="Astound\AvaTax\Observer\LoadDefaultBillingAddressForVirtualQuote"/>
     </event>
 </config>
