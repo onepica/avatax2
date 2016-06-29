@@ -13,5 +13,4 @@ $addressData = include __DIR__ . '/address_data.php';
 $customerAddress->setCustomerId(1)->setData($addressData);
 $customerAddress->save();
 
-
 $objectManager->get('Magento\Framework\Registry')->register('astound_avatax_customer_address', $customerAddress);
