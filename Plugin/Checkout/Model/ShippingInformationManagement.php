@@ -17,8 +17,10 @@ namespace Astound\AvaTax\Plugin\Checkout\Model;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\Quote\Address;
 use Magento\Framework\ObjectManagerInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Astound\AvaTax\Helper\Config;
 use Astound\AvaTax\Helper\Address as AvataxAddressHelper;
+use Astound\AvaTax\Model\Source\Avatax16\Error;
 
 /**
  * Class ShippingInformationManagement
@@ -104,6 +106,10 @@ class ShippingInformationManagement
 
         $this->validateAndNormalize($addressInformation, $storeId);
         $paymentInformation = $proceed($cartId, $addressInformation);
+
+        // check for tax calculation error
+        $this->checkForCalculationError($quote);
+
         // set updated addresses for response
         $paymentDetailsExtensionAttributes = $this->objectManager
             ->get('\Astound\AvaTax\Model\Payment\PaymentDetailsExtension');
@@ -138,6 +144,26 @@ class ShippingInformationManagement
              * due to address changes it will be new address
              */
             $shippingAddress->setCustomerAddressId(null);
+        }
+    }
+
+    /**
+     * Check for calculation error
+     *
+     * @param \Magento\Quote\Model\Quote $quote
+     * @throws LocalizedException
+     */
+    protected function checkForCalculationError(\Magento\Quote\Model\Quote $quote)
+    {
+        /** @var \Magento\Quote\Model\Quote $quote */
+        $store = $quote->getStore();
+        $quoteHasError = (bool)$quote->getData('avatax_error');
+
+        if ($this->config->isAvaTaxEnabled($store)
+            && $quoteHasError
+            && $this->config->getActionOnError($store) === Error::DISABLE_CHECKOUT
+        ) {
+            throw new LocalizedException(__($this->config->getFrontendErrorMessage($store)));
         }
     }
 
