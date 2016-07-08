@@ -44,18 +44,19 @@ class AddressValidatorTest extends \PHPUnit_Framework_TestCase
      * @magentoConfigFixture current_store tax/avatax/region_filter_group/taxable_country CA,US
      * @magentoConfigFixture current_store tax/avatax/region_filter_group/region_filter_mode 2
      * @magentoConfigFixture current_store tax/avatax/region_filter_group/region_filter_list 12,43
+     * @magentoConfigFixture current_store tax/avatax/address_validation_group/validate_address 1
      *
      * @magentoAppIsolation enabled
      * @magentoDbIsolation  enabled
      */
-    public function testValidate()
+    public function testValidationEnablePreventOrder()
     {
         /** @var \Magento\Framework\Registry $registry */
         $registry = $this->objectManager->get('Magento\Framework\Registry');
         $defaultAddress = $registry->registry('astound_avatax_quote_address');
 
         // valid address
-        $address = clone $defaultAddress;
+        $address = $defaultAddress;
         $this->assertTrue($address->validate());
 
         // invalid address, wrong postcode and street
