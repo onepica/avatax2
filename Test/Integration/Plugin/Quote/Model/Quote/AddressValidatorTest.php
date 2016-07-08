@@ -82,4 +82,34 @@ class AddressValidatorTest extends \PHPUnit_Framework_TestCase
         $address->setRegionId(1);
         $this->assertTrue($address->validate());
     }
+
+    /**
+     * @magentoDataFixture   ../../../../app/code/Astound/AvaTax/Test/Integration/SetUpCredentials.php
+     * @magentoDataFixture   ../../../../app/code/Astound/AvaTax/Test/Integration/Plugin/Quote/Model/Quote/_files/quote_address.php
+     * @magentoConfigFixture current_store tax/avatax/general_group/action 2
+     * @magentoConfigFixture current_store tax/avatax/region_filter_group/taxable_country CA,US
+     * @magentoConfigFixture current_store tax/avatax/region_filter_group/region_filter_mode 2
+     * @magentoConfigFixture current_store tax/avatax/region_filter_group/region_filter_list 12,43
+     * @magentoConfigFixture current_store tax/avatax/address_validation_group/validate_address 2
+     *
+     * @magentoAppIsolation enabled
+     * @magentoDbIsolation  enabled
+     */
+    public function testValidationEnableAllowOrder()
+    {
+        /** @var \Magento\Framework\Registry $registry */
+        $registry = $this->objectManager->get('Magento\Framework\Registry');
+        $defaultAddress = $registry->registry('astound_avatax_quote_address');
+
+        // valid address
+        $address = $defaultAddress;
+        $this->assertTrue($address->validate());
+
+        // invalid address, wrong postcode and street
+        // should be valid, because of the allow order mode
+        $address = clone $defaultAddress;
+        $address->setPostcode('xxxxxx');
+        $address->setStreet('xxxxxx');
+        $this->assertTrue($address->validate());
+    }
 }
