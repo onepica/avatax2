@@ -136,12 +136,13 @@ class AddressValidatorTest extends \PHPUnit_Framework_TestCase
         $address = clone $defaultAddress;
         $address->validate();
         $this->assertTrue($address->getData('is_normalized'));
-        $this->assertEquals($address->getPostcode(), '10038-3919');
+        $this->assertEquals($address->getPostcode(), '10038-3901');
 
         // Address is normalized already
         // shouldn't be normalized
         $address = clone $defaultAddress;
-        $address->setPostcode('10038-3919');
+        $address->setPostcode('10038-3901');
+        $address->validate();
         $this->assertEmpty($address->getData('is_normalized'));
     }
 }
