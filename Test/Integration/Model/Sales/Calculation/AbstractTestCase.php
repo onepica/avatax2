@@ -20,6 +20,8 @@ use \Magento\TestFramework\Helper\Bootstrap;
 use \Magento\Framework\App\Config\MutableScopeConfigInterface;
 use \Magento\Store\Model\ScopeInterface;
 use \Magento\Framework\DataObject;
+use \Magento\Store\Model\StoreManagerInterface;
+use \Astound\AvaTax\Model\Service\Avatax16;
 
 /**
  * Class AbstractEstimation
@@ -38,6 +40,30 @@ abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->objectManager = Bootstrap::getObjectManager();
+
+        $this->assertService();
+    }
+
+    /**
+     * Check if Server is available with given credentials
+     *
+     * @throws \Exception
+     */
+    protected function assertService()
+    {
+        /** @var \Magento\Store\Model\StoreManagerInterface $sm */
+        $sm = $this->objectManager->get(StoreManagerInterface::class);
+        $store = $sm->getStore('default');
+
+        /** @var \Astound\AvaTax\Model\Service\Avatax16 $service */
+        $service = $this->objectManager->create(Avatax16::class);
+        $pingResult = $service->ping($store);
+        if ($pingResult->getHasError()) {
+            throw new \Exception(
+                'Service ping request returns error : '
+                . $pingResult->getErrorsAsString()
+            );
+        }
     }
 
     /**
