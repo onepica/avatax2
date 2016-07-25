@@ -25,15 +25,7 @@ use Astound\AvaTax\Test\Integration\Model\Sales\Calculation\AbstractTestCase;
 class AbstractEstimation extends AbstractTestCase
 {
     /**
-     * Scenario: Client estimate tax in cart
-     *  Given cart contains 1 simple product
-     *  And product price is 100
-     *  And flat shipping price is 10
-     *  And shipping address is "US, NewYork, NewYork, 10038"
-     *  And Tax Calculation Settings/Catalog Prices set as Excluded Tax
-     *  Then Tax rate should be 0.08875
-     *  And Total tax should be 9.32
-     *
+     *  Base Scenario
      */
     public function scenario_x()
     {

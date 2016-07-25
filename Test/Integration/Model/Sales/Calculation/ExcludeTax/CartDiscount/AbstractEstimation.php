@@ -27,15 +27,9 @@ use \Magento\Tax\Model\Config as TaxConfig;
 abstract class AbstractEstimation extends AbstractTestCase
 {
     /**
-     * Scenario: Client estimate tax in cart
-     *  Given cart contains 1 simple product
-     *  And product price is 100
-     *  And flat shipping price is 10
-     *  And shipping address is "US, NewYork, NewYork, 10038"
-     *  And rate discount on subtotal is 20%
-     *  Then Tax rate should be 0.08875
-     *  And Total tax should be 7.54
+     * Base Scenario
      *
+     * @param callable|null $beforeCollectTotals
      */
     protected function scenario_x(callable $beforeCollectTotals = null)
     {
