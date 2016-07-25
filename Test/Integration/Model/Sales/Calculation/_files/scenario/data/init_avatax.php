@@ -30,9 +30,3 @@ foreach ($configData as $path => $value) {
         0
     );
 }
-
-/** @var  \Magento\Framework\App\Config\ScopePool $scopePool */
-//$scopePool = $objectManager->get(\Magento\Framework\App\Config\ScopePool::class);
-//$scopePool->clean();
-
-$test = '';

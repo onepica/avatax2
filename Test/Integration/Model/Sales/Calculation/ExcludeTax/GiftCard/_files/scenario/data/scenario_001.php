@@ -1,4 +1,17 @@
 <?php
+/**
+ * Astound_AvaTax
+ * NOTICE OF LICENSE
+ * This source file is subject to the Open Software License (OSL 3.0),
+ * a copy of which is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * @category   Astound
+ * @package    Astound_AvaTax
+ * @author     Astound Codemaster <codemaster@astoundcommerce.com>
+ * @copyright  Copyright (c) 2016 Astound, Inc.
+ * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ */
 
 require '/../../../../../_files/scenario/data/init_fixture.php';
 require '/../../../../../_files/scenario/data/init_expected.php';
@@ -33,19 +46,6 @@ $expected->addData(
         'grand_total'=>109.77
     )
 );
-/**
- * Astound_AvaTax
- * NOTICE OF LICENSE
- * This source file is subject to the Open Software License (OSL 3.0),
- * a copy of which is available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
- *
- * @category   Astound
- * @package    Astound_AvaTax
- * @author     Astound Codemaster <codemaster@astoundcommerce.com>
- * @copyright  Copyright (c) 2016 Astound, Inc.
- * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
- */
 
 /** @var Astound\AvaTax\Helper\Config $scopeConfig */
 $scopeConfig = $objectManager->create(\Astound\AvaTax\Helper\Config::class);
@@ -58,5 +58,3 @@ require '/../../../../../_files/create/giftcard/codes_pool.php';
 require '/../../../../../_files/create/giftcard/giftcardaccount.php';
 require '/../../../../../_files/create/quote.php';
 require '/../../../../../_files/create/giftcard/quote_with_giftcard_saved.php';
-
-

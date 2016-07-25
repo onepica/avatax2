@@ -45,11 +45,6 @@ $customerRepository = $objectManager->create('Magento\Customer\Api\CustomerRepos
 /** @var \Magento\Quote\Model\Quote $quote */
 $quote = $objectManager->create(\Magento\Quote\Model\Quote::class);
 
-//$coll = $quote->getCollection()->load();
-//foreach ($coll as $q) {
-//    $q->delete();
-//}
-
 $quote->setStoreId(1)
     ->setIsActive(true)
     ->setIsMultiShipping(false)
@@ -71,4 +66,3 @@ $quote->setHasDataChanges(true);
 $quote->save();
 
 $fixtureData->setQuoteId($quote->getId());
-

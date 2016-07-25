@@ -58,5 +58,3 @@ require '/../../../../../_files/create/giftcard/codes_pool.php';
 require '/../../../../../_files/create/giftcard/giftcardaccount.php';
 require '/../../../../../_files/create/quote.php';
 require '/../../../../../_files/create/giftcard/quote_with_giftcard_saved.php';
-
-

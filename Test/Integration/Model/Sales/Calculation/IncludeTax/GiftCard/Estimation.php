@@ -98,6 +98,4 @@ class Estimation extends \PHPUnit_Framework_TestCase
             "Grand Total is calculated with mistake."
         );
     }
-
-
 }
