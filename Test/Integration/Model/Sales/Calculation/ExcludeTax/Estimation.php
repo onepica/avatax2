@@ -37,7 +37,7 @@ class Estimation extends AbstractEstimation
      *
      *  @magentoConfigFixture default_store tax/calculation/price_includes_tax 0
      *  @magentoConfigFixture default_store carriers/flatrate/price 10
-     *  @magentoDataFixture   ../../../../app/code/Astound/AvaTax/Test/Integration/Model/Sales/Calculation/_files/scenario/data/init_avatax.php
+     *  @magentoDataFixture   ../../../../app/code/Astound/AvaTax/Test/Integration/_files/scenario/setup_credentials.php
      *  @magentoDataFixture   ../../../../app/code/Astound/AvaTax/Test/Integration/Model/Sales/Calculation/ExcludeTax/_files/scenario/data/scenario_001.php
      *  @magentoDbIsolation enabled
      *  @test
@@ -62,7 +62,7 @@ class Estimation extends AbstractEstimation
      *
      *  @magentoConfigFixture default_store tax/calculation/price_includes_tax 0
      *  @magentoConfigFixture default_store carriers/flatrate/price 10
-     *  @magentoDataFixture   ../../../../app/code/Astound/AvaTax/Test/Integration/Model/Sales/Calculation/_files/scenario/data/init_avatax.php
+     *  @magentoDataFixture   ../../../../app/code/Astound/AvaTax/Test/Integration/_files/scenario/setup_credentials.php
      *  @magentoDataFixture   ../../../../app/code/Astound/AvaTax/Test/Integration/Model/Sales/Calculation/ExcludeTax/_files/scenario/data/scenario_002.php
      *  @magentoDbIsolation enabled
      *  @test

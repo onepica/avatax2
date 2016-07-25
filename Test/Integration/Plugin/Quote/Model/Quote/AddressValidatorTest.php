@@ -38,7 +38,7 @@ class AddressValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @magentoDataFixture   ../../../../app/code/Astound/AvaTax/Test/Integration/SetUpCredentials.php
+     * @magentoDataFixture   ../../../../app/code/Astound/AvaTax/Test/Integration/_files/scenario/setup_credentials.php
      * @magentoDataFixture   ../../../../app/code/Astound/AvaTax/Test/Integration/Plugin/Quote/Model/Quote/_files/quote_address.php
      * @magentoConfigFixture current_store tax/avatax/general_group/action 2
      * @magentoConfigFixture current_store tax/avatax/region_filter_group/taxable_country CA,US
@@ -84,7 +84,7 @@ class AddressValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @magentoDataFixture   ../../../../app/code/Astound/AvaTax/Test/Integration/SetUpCredentials.php
+     * @magentoDataFixture   ../../../../app/code/Astound/AvaTax/Test/Integration/_files/scenario/setup_credentials.php
      * @magentoDataFixture   ../../../../app/code/Astound/AvaTax/Test/Integration/Plugin/Quote/Model/Quote/_files/quote_address.php
      * @magentoConfigFixture current_store tax/avatax/general_group/action 2
      * @magentoConfigFixture current_store tax/avatax/region_filter_group/taxable_country CA,US
@@ -114,7 +114,7 @@ class AddressValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @magentoDataFixture   ../../../../app/code/Astound/AvaTax/Test/Integration/SetUpCredentials.php
+     * @magentoDataFixture   ../../../../app/code/Astound/AvaTax/Test/Integration/_files/scenario/setup_credentials.php
      * @magentoDataFixture   ../../../../app/code/Astound/AvaTax/Test/Integration/Plugin/Quote/Model/Quote/_files/quote_address_normalizable.php
      * @magentoConfigFixture current_store tax/avatax/general_group/action 2
      * @magentoConfigFixture current_store tax/avatax/region_filter_group/taxable_country CA,US

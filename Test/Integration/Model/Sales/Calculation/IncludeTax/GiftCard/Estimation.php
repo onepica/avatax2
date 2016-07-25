@@ -40,7 +40,7 @@ class Estimation extends AbstractTestCase
      *
      *  @magentoConfigFixture default_store tax/calculation/price_includes_tax 1
      *  @magentoConfigFixture default_store carriers/flatrate/price 10
-     *  @magentoDataFixture   ../../../../app/code/Astound/AvaTax/Test/Integration/Model/Sales/Calculation/_files/scenario/data/init_avatax.php
+     *  @magentoDataFixture   ../../../../app/code/Astound/AvaTax/Test/Integration/_files/scenario/setup_credentials.php
      *  @magentoDataFixture   ../../../../app/code/Astound/AvaTax/Test/Integration/Model/Sales/Calculation/IncludeTax/GiftCard/_files/scenario/data/scenario_001.php
      *  @magentoDbIsolation enabled
      *  @test
