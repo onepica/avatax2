@@ -15,26 +15,15 @@
 
 namespace Astound\AvaTax\Test\Integration\Model\Sales\Calculation\IncludeTax;
 
-use \Magento\TestFramework\Helper\Bootstrap;
+use Astound\AvaTax\Test\Integration\Model\Sales\Calculation\AbstractTestCase;
 
 /**
  * Class AbstractEstimation
  *
  * @package Astound\AvaTax\Test\Integration\Model\Sales\Calculation\IncludeTax
  */
-abstract class AbstractEstimation extends \PHPUnit_Framework_TestCase
+abstract class AbstractEstimation extends AbstractTestCase
 {
-    /** @var \Magento\Framework\ObjectManagerInterface */
-    protected $objectManager;
-    /**
-     *
-     * @throws \Exception
-     */
-    protected function setUp()
-    {
-        $this->objectManager = Bootstrap::getObjectManager();
-    }
-
     /**
      * Scenario: Client estimate tax in cart
      *  Given cart contains 1 simple product
@@ -51,6 +40,9 @@ abstract class AbstractEstimation extends \PHPUnit_Framework_TestCase
         $registry = $this->objectManager->get(\Magento\Framework\Registry::class);
         $fixtureData = $registry->registry("fixture");
         $expected = $registry->registry('expected');
+
+        //check config settings
+        $this->assertExpectedConfig($expected);
 
         /** @var \Magento\Quote\Model\Quote $quote */
         $quote = $this->objectManager->create(\Magento\Quote\Model\Quote::class);

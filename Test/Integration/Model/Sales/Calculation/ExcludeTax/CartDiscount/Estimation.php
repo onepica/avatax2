@@ -134,7 +134,7 @@ class Estimation extends AbstractEstimation
      *  @magentoConfigFixture default_store tax/calculation/apply_after_discount 0
      *  @magentoConfigFixture default_store carriers/flatrate/price 10
      *  @magentoDataFixture   ../../../../app/code/Astound/AvaTax/Test/Integration/Model/Sales/Calculation/_files/scenario/data/init_avatax.php
-     *  @magentoDataFixture   ../../../../app/code/Astound/AvaTax/Test/Integration/Model/Sales/Calculation/ExcludeTax/CartDiscount/_files/scenario/data/scenario_002.php
+     *  @magentoDataFixture   ../../../../app/code/Astound/AvaTax/Test/Integration/Model/Sales/Calculation/ExcludeTax/CartDiscount/_files/scenario/data/scenario_004.php
      *  @magentoDbIsolation enabled
      *  @test
      */

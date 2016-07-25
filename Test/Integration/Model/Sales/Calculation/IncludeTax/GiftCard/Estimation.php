@@ -15,25 +15,15 @@
 
 namespace Astound\AvaTax\Test\Integration\Model\Sales\Calculation\IncludeTax\GiftCard;
 
-use \Magento\TestFramework\Helper\Bootstrap;
+use Astound\AvaTax\Test\Integration\Model\Sales\Calculation\AbstractTestCase;
 
 /**
  * Class Estimation
  *
  * @package Astound\AvaTax\Test\Integration\Model\Sales\Calculation\IncludeTax\GiftCard
  */
-class Estimation extends \PHPUnit_Framework_TestCase
+class Estimation extends AbstractTestCase
 {
-    /** @var \Magento\Framework\ObjectManagerInterface */
-    protected $objectManager;
-    /**
-     *
-     * @throws \Exception
-     */
-    protected function setUp()
-    {
-        $this->objectManager = Bootstrap::getObjectManager();
-    }
     /**
      * Scenario: Client estimate tax in cart
      *  Given cart contains 1 simple product
@@ -47,7 +37,7 @@ class Estimation extends \PHPUnit_Framework_TestCase
      *  And Shipping cost is 10
      *  And Grand total is 119.76
      *
-     *  @magentoConfigFixture default_store tax/calculation/price_includes_tax 0
+     *  @magentoConfigFixture default_store tax/calculation/price_includes_tax 1
      *  @magentoConfigFixture default_store carriers/flatrate/price 10
      *  @magentoDataFixture   ../../../../app/code/Astound/AvaTax/Test/Integration/Model/Sales/Calculation/_files/scenario/data/init_avatax.php
      *  @magentoDataFixture   ../../../../app/code/Astound/AvaTax/Test/Integration/Model/Sales/Calculation/IncludeTax/GiftCard/_files/scenario/data/scenario_001.php
@@ -60,6 +50,9 @@ class Estimation extends \PHPUnit_Framework_TestCase
         $registry = $this->objectManager->get(\Magento\Framework\Registry::class);
         $fixtureData = $registry->registry("fixture");
         $expected = $registry->registry('expected');
+
+        //check config settings
+        $this->assertExpectedConfig($expected);
 
         /** @var \Magento\Quote\Model\Quote $quote */
         $quote = $this->objectManager->create(\Magento\Quote\Model\Quote::class);

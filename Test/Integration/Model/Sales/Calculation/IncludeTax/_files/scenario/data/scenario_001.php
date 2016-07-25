@@ -38,11 +38,19 @@ $data->addData(
 $expected = $registry->registry('expected');
 $expected->addData(
     array(
-        "product_price"=>100,
-        "product_qty"=>1,
-        'shipping_cost'=>9.18,
-        "total_tax"=>8.97,
-        'grand_total'=>110
+        "product_price" => 100,
+        "product_qty"   => 1,
+        'shipping_cost' => 9.18,
+        "total_tax"     => 8.97,
+        'grand_total'   => 110,
+        'config'        => array(
+            'store' => array(
+                'default' => array(
+                    'tax/calculation/price_includes_tax' => 1,
+                    'carriers/flatrate/price'            => 10
+                )
+            )
+        )
     )
 );
 

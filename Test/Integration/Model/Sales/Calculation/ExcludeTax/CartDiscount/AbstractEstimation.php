@@ -15,27 +15,17 @@
 
 namespace Astound\AvaTax\Test\Integration\Model\Sales\Calculation\ExcludeTax\CartDiscount;
 
+use Astound\AvaTax\Test\Integration\Model\Sales\Calculation\AbstractTestCase;
 use \Magento\TestFramework\Helper\Bootstrap;
-
 use \Magento\Tax\Model\Config as TaxConfig;
-use \Magento\Store\Model\ScopeInterface;
+
 /**
  * Class AbstractEstimation
  *
  * @package Astound\AvaTax\Test\Integration\Model\Sales\Calculation\ExcludeTax\CartDiscount
  */
-abstract class AbstractEstimation extends \PHPUnit_Framework_TestCase
+abstract class AbstractEstimation extends AbstractTestCase
 {
-    /** @var \Magento\Framework\ObjectManagerInterface */
-    protected $objectManager;
-    /**
-     * @throws \Exception
-     */
-    protected function setUp()
-    {
-        $this->objectManager = Bootstrap::getObjectManager();
-    }
-
     /**
      * Scenario: Client estimate tax in cart
      *  Given cart contains 1 simple product
@@ -55,20 +45,8 @@ abstract class AbstractEstimation extends \PHPUnit_Framework_TestCase
         $fixtureData = $registry->registry("fixture");
         $expected = $registry->registry('expected');
 
-//        if ($assertConfig) {
-//            $assertConfig($expected);
-//        }
-//        // ------------------------------------------------------------------------------------------- //
-//        /** @var \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig */
-//        $scopeConfig = $this->objectManager->get(\Magento\Framework\App\Config\ScopeConfigInterface::class);
-//        $value = $scopeConfig->getValue(TaxConfig::CONFIG_XML_PATH_APPLY_AFTER_DISCOUNT, ScopeInterface::SCOPE_STORE);
-//        echo TaxConfig::CONFIG_XML_PATH_APPLY_AFTER_DISCOUNT . ' : ' . $value . PHP_EOL;
-//
-//        /** @var \Magento\Tax\Helper\Data $data */
-//        $data = $this->objectManager->create(\Magento\Tax\Helper\Data::class);
-//        $value = $data->applyTaxAfterDiscount();
-//        echo TaxConfig::CONFIG_XML_PATH_APPLY_AFTER_DISCOUNT . ' : ' . $value  . PHP_EOL;
-//        // ------------------------------------------------------------------------------------------- //
+        // check config settings
+        $this->assertExpectedConfig($expected);
 
         /** @var \Magento\Quote\Model\Quote $quote */
         $quote = $this->objectManager->create(\Magento\Quote\Model\Quote::class);

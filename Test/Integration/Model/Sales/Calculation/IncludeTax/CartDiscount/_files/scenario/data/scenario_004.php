@@ -40,12 +40,21 @@ $data->addData(
 $expected = $registry->registry('expected');
 $expected->addData(
     array(
-        "product_price"=>100,
-        "product_qty"=>1,
-        'shipping_cost'=>9.18,
-        "total_tax"=>8.97,
-        'grand_total'=>100,
-        "cart_sales_rule_discount_rate"=>10
+        "product_price"                 => 100,
+        "product_qty"                   => 1,
+        'shipping_cost'                 => 9.18,
+        "total_tax"                     => 8.97,
+        'grand_total'                   => 100,
+        "cart_sales_rule_discount_rate" => 10,
+        'config'                        => array(
+            'store' => array(
+                'default' => array(
+                    'tax/calculation/price_includes_tax'   => 1,
+                    'tax/calculation/apply_after_discount' => 0,
+                    'carriers/flatrate/price'              => 10
+                )
+            )
+        )
     )
 );
 
