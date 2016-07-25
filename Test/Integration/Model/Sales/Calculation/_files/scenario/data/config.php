@@ -18,8 +18,8 @@ use Astound\AvaTax\Model\Source\Avatax16\Action;
 
 return array(
         AvaTaxConfig::AVATAX_SERVICE_ACTION => Action::ACTION_CALC_SUBMIT,
-        AvaTaxConfig::AVATAX_SERVICE_URL => 'https://tax-qa.avlr.sh/v2',
-        AvaTaxConfig::AVATAX_SERVICE_ACCOUNT_NUMBER => '12213ceb-ccaa-4858-9e10-32246e81a546',
-        AvaTaxConfig::AVATAX_SERVICE_LICENCE_KEY => 'RsEEliKdpUajNWh5BN6P4RYRQR83QuL5X0dI4U5Zk2Vay/awKJ9gbFJwHn+i1Lft',
-        AvaTaxConfig::AVATAX_SERVICE_COMPANY_CODE => 'ASTOUND',
+        AvaTaxConfig::AVATAX_SERVICE_URL => '',
+        AvaTaxConfig::AVATAX_SERVICE_ACCOUNT_NUMBER => '',
+        AvaTaxConfig::AVATAX_SERVICE_LICENCE_KEY => '',
+        AvaTaxConfig::AVATAX_SERVICE_COMPANY_CODE => '',
     );
