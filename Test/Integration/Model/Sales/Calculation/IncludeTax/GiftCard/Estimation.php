@@ -33,9 +33,10 @@ class Estimation extends AbstractTestCase
      *  And shipping address is "US, NewYork, NewYork, 10038"
      *  And Tax Calculation Settings/Catalog Prices : Exclude Tax
      *  Then Tax rate should be 0.08875
-     *  And Total tax should be 9.76
-     *  And Shipping cost is 10
-     *  And Grand total is 119.76
+     *  And Total tax should be 8.97
+     *  And Shipping cost is 9.18
+     *  And Gift Card Account Amount is -9.99
+     *  And Grand total is 100.01
      *
      *  @magentoConfigFixture default_store tax/calculation/price_includes_tax 1
      *  @magentoConfigFixture default_store carriers/flatrate/price 10

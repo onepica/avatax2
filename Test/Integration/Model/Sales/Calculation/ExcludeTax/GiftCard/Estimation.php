@@ -35,7 +35,8 @@ class Estimation extends AbstractTestCase
      *  Then Tax rate should be 0.08875
      *  And Total tax should be 9.76
      *  And Shipping cost is 10
-     *  And Grand total is 119.76
+     *  And Gift Card Account Amount is -9.99
+     *  And Grand total is 109.77
      *
      *  @magentoConfigFixture default_store tax/calculation/price_includes_tax 0
      *  @magentoConfigFixture default_store carriers/flatrate/price 10
@@ -46,20 +47,6 @@ class Estimation extends AbstractTestCase
      */
     public function scenario_001()
     {
-        /** @var \Magento\Store\Model\StoreManagerInterface $sm */
-        $sm = $this->objectManager->get(\Magento\Store\Model\StoreManagerInterface::class);
-        $store = $sm->getStore('default');
-
-        /** @var \Astound\AvaTax\Model\Service\Avatax16 $service */
-        $service = $this->objectManager->create(\Astound\AvaTax\Model\Service\Avatax16::class);
-        $pingResult = $service->ping($store);
-        if ($pingResult->getHasError()) {
-            throw new \Exception(
-                'Service ping request returns error : '
-                . $pingResult->getErrorsAsString()
-            );
-        }
-
         /** @var \Magento\Framework\Registry $registry */
         $registry = $this->objectManager->get(\Magento\Framework\Registry::class);
         $fixtureData = $registry->registry("fixture");
