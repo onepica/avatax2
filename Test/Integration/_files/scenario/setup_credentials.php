@@ -17,7 +17,7 @@ use Magento\TestFramework\Helper\Bootstrap;
 
 $objectManager = Bootstrap::getObjectManager();
 
-$fileConfig = __DIR__.'/config.php';
+$fileConfig = __DIR__.'/credentials.php';
 $configData = include $fileConfig;
 
 foreach ($configData as $path => $value) {
