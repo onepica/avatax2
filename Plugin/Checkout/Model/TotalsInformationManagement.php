@@ -16,6 +16,7 @@ namespace Astound\AvaTax\Plugin\Checkout\Model;
 
 use Astound\AvaTax\Helper\Config;
 use Astound\AvaTax\Model\Sales\Total\Quote\AbstractCollector;
+use Astound\AvaTax\Model\Source\Avatax16\Error;
 
 /**
  * Class TotalsInformationManagement
@@ -85,7 +86,10 @@ class TotalsInformationManagement
             return $calculate;
         }
 
-        if ($quote->getData(AbstractCollector::AVATAX_ERROR)) {
+        if (
+            $this->config->getActionOnError($store) === Error::DISABLE_CHECKOUT
+            && $quote->getData(AbstractCollector::AVATAX_ERROR)
+        ) {
             $this->messageManager->addError($this->config->getFrontendErrorMessage($store));
         }
 

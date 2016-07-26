@@ -39,7 +39,7 @@ class PaymentDetailsExtension extends \Magento\Framework\Api\AbstractSimpleObjec
      * @param \Magento\Quote\Api\Data\AddressInterface $address
      * @return $this
      */
-    public function setValidatedAddress($address)
+    public function setValidatedAddress(\Magento\Quote\Api\Data\AddressInterface $address)
     {
         $this->setData('validated_address', $address);
         return $this;

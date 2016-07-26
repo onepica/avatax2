@@ -52,7 +52,7 @@ class QuoteItems extends AbstractCollector
         }
 
         $store = $quote->getStore();
-        $itemAppliedTax = [];
+        $itemAppliedTax = $total->getItemsAppliedTaxes();
         /** @var \Magento\Quote\Model\Quote\Item|\Magento\Quote\Model\Quote\Address\Item $item */
         foreach ($shippingAssignment->getItems() as $item) {
             $baseTotalTax = $this->getItemTax($item, $result);

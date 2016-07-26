@@ -40,11 +40,6 @@ abstract class AbstractCollector extends AbstractTotal
     const AVATAX_ERROR = 'avatax_error';
 
     /**
-     * Calculate tool registry key pattern
-     */
-    const CALCULATE_RESULT_KEY_PATTERN = 'avatax_calculate_result_%s';
-
-    /**
      * Object manager
      *
      * @var \Magento\Framework\ObjectManagerInterface
@@ -161,7 +156,7 @@ abstract class AbstractCollector extends AbstractTotal
         ShippingAssignmentInterface $shippingAssignment,
         AddressTotal $total
     ) {
-        $result = $this->registry->registry($this->getRegistryKey($shippingAssignment));
+        $result = $shippingAssignment->getCachedResult();
         if ($result === null) {
             $result = $this->objectManager->create(
                 Calculate::class,
@@ -172,7 +167,7 @@ abstract class AbstractCollector extends AbstractTotal
                 ]
             )->execute();
 
-            $this->registry->register($this->getRegistryKey($shippingAssignment), $result);
+            $shippingAssignment->setCachedResult($result);
         }
 
         return $result;
@@ -198,25 +193,10 @@ abstract class AbstractCollector extends AbstractTotal
                 $quote->getStore(),
                 AvataxDataHelper::REGION_FILTER_MODE_TAX
             )
-            || !$shippingAssignment->getShipping()->getAddress()->getId()
-
         ) {
             return true;
         }
 
         return false;
-    }
-
-    /**
-     * Get registry key
-     *
-     * @param ShippingAssignmentInterface $shippingAssignment
-     * @return string
-     */
-    protected function getRegistryKey(ShippingAssignmentInterface $shippingAssignment)
-    {
-        $addressId = $shippingAssignment->getShipping()->getAddress()->getId();
-
-        return sprintf(self::CALCULATE_RESULT_KEY_PATTERN, $addressId);
     }
 }
