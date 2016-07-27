@@ -16,6 +16,9 @@
 use \Magento\TestFramework\Helper\Bootstrap;
 use \Magento\GiftCardAccount\Model\Giftcardaccount;
 
+$quote = $objectManager->create(\Magento\Quote\Model\Quote::class);
+$quote->load($fixtureData->getQuoteId());
+
 /** @var  \Magento\GiftCardAccount\Model\Giftcardaccount $giftCardAccount */
 $giftCardAccount = Bootstrap::getObjectManager()->create(Giftcardaccount::class);
 $giftCardAccount->loadByCode('giftcardaccount_fixture');
