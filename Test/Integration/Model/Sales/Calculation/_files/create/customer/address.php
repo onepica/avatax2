@@ -50,3 +50,10 @@ if ($fixtureData->getAddress()) {
 $customerAddress->save();
 
 $fixtureData->setCustomerAddressId($customerAddress->getId());
+
+//save customer address to customer
+/** @var Magento\Customer\Model\Customer $customer */
+$customer = $objectManager->create(Magento\Customer\Model\Customer::class);
+$customer->load($fixtureCustomerID);
+$customer->addAddress($customerAddress);
+$customer->save();
